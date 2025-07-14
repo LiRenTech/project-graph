@@ -1,6 +1,6 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import React from "react";
+import { Rectangle } from "../core/dataStruct/shape/Rectangle";
+import { Vector } from "../core/dataStruct/Vector";
 import { SubWindow } from "../core/service/SubWindow";
 import { cn } from "../utils/cn";
 import Input from "./Input";
@@ -80,7 +80,6 @@ export namespace Dialog {
         ),
         rect: Rectangle.inCenter(new Vector(400, 300)),
         titleBarOverlay: true,
-        closable: false,
       });
     });
   }
@@ -100,7 +99,12 @@ export namespace Dialog {
     return (
       <div
         data-pg-drag-region
-        className={cn("flex h-full flex-col gap-4 text-wrap break-words p-8", `el-dialog-${type}`)}
+        className={cn("flex h-full flex-col gap-4 text-wrap break-words p-8", {
+          "bg-blue-950": type === "info",
+          "bg-green-950": type === "success",
+          "bg-yellow-950": type === "warning",
+          "bg-red-950": type === "error",
+        })}
       >
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex-1 overflow-auto">

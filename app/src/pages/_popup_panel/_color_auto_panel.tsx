@@ -1,7 +1,8 @@
-import { Color } from "@graphif/data-structures";
-import { ToggleLeft, ToggleRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Settings } from "../../core/service/Settings";
+import { Color } from "../../core/dataStruct/Color";
 import { cn } from "../../utils/cn";
+import { ToggleLeft, ToggleRight } from "lucide-react";
 
 /**
  * 自动设置颜色的面板

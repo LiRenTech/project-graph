@@ -13,9 +13,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "test": "pnpm --filter @graphif/project-graph test",
-    "tauri": "pnpm --filter @graphif/project-graph tauri",
-    "prepublish": "pnpm run build"
+    "test": "pnpm --filter @pg/app test",
+    "tauri": "pnpm --filter @pg/app tauri"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -42,7 +41,6 @@
     },
     "onlyBuiltDependencies": [
       "@swc/core",
-      "bcrypt",
       "esbuild",
       "msw",
       "sharp"

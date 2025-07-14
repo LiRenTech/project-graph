@@ -1,11 +1,10 @@
-import { ProgressNumber } from "@graphif/data-structures";
-import { Project } from "../../../Project";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 
 /**
  * 一次性特效类
  * timeProgress 0~max 表示时间进度，0表示开始，单位：帧
  */
-export abstract class Effect {
+export abstract class EffectObject {
   constructor(
     /**
      * 注意这个进度条初始值应该是0
@@ -15,21 +14,21 @@ export abstract class Effect {
   ) {}
 
   /** 子特效（构成树形组合模式） */
-  protected subEffects: Effect[] = [];
+  protected subEffects: EffectObject[] = [];
 
-  tick(project: Project): void {
+  tick(): void {
     // 自动+1帧
     this.timeProgress.add(1);
     // 子特效tick
     for (const subEffect of this.subEffects) {
-      subEffect.tick(project);
+      subEffect.tick();
     }
   }
 
   /**
    * 渲染方法
    */
-  abstract render(project: Project): void;
+  abstract render(): void;
 
   /**
    * 获取对象的类名

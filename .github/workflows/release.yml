@@ -7,11 +7,6 @@ on:
       version:
         description: "App version (x.y.z)"
         required: true
-      prerelease:
-        type: boolean
-        description: "Is pre-release"
-        required: false
-        default: false
 
 jobs:
   build:
@@ -27,7 +22,7 @@ jobs:
       aur_key_algorithm: "ed25519"
       aur_package_name: "project-graph-bin"
       delete_release: false
-      prerelease: ${{ inputs.prerelease }}
+      prerelease: false
       release_name: "v${{ inputs.version }}"
       release_tag: "v${{ inputs.version }}"
       task_build: "tauri:build"

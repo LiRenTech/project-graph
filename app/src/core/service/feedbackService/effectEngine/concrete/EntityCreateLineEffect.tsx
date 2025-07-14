@@ -1,11 +1,12 @@
-import { ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 import { TechLineEffect } from "./TechLineEffect";
 
-export class EntityCreateLineEffect extends Effect {
+export class EntityCreateLineEffect extends EffectObject {
   getClassName(): string {
     return "EntityCreateLineEffect";
   }
@@ -19,8 +20,8 @@ export class EntityCreateLineEffect extends Effect {
     const initLen = 20;
     const segmentCount = 50;
     const preChange = -1;
-    // const effectColor = this.project.stageStyleManager.currentStyle.CollideBoxSelectedColor;
-    const effectColor = this.project.stageStyleManager.currentStyle.StageObjectBorder;
+    // const effectColor = StageStyleManager.currentStyle.CollideBoxSelectedColor;
+    const effectColor = StageStyleManager.currentStyle.StageObjectBorder;
     const rotateDegrees = 90;
     // 顶部线
     for (let i = 0; i < 5; i++) {
@@ -96,9 +97,13 @@ export class EntityCreateLineEffect extends Effect {
     return new EntityCreateLineEffect(new ProgressNumber(0, 30), rectangle);
   }
 
-  render(project: Project) {
+  override tick() {
+    super.tick();
+  }
+
+  render(): void {
     for (const subEffect of this.subEffects) {
-      subEffect.render(project);
+      subEffect.render();
     }
   }
 }

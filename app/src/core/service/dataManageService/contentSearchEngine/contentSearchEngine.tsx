@@ -1,5 +1,8 @@
-import { Color, ProgressNumber } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Camera } from "../../../stage/Camera";
+import { Stage } from "../../../stage/Stage";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
@@ -9,10 +12,7 @@ import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 
-@service("contentSearch")
-export class ContentSearch {
-  constructor(private readonly project: Project) {}
-
+export class ContentSearchEngine {
   /**
    * 搜索结果
    */
@@ -58,7 +58,7 @@ export class ContentSearch {
     if (searchString === "") {
       return false;
     }
-    for (const node of this.project.stageManager.getStageObjects()) {
+    for (const node of StageManager.getStageObject()) {
       const text = this.getStageObjectText(node);
       if (this.isCaseSensitive) {
         if (text.includes(searchString)) {
@@ -77,11 +77,11 @@ export class ContentSearch {
         // 选择第一个搜索结果节点
         const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
         // currentNode.isSelected = true;
-        this.project.effects.addEffect(
+        Stage.effectMachine.addEffect(
           new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
         );
         // 摄像机对准现在的节点
-        this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
+        Camera.location = currentNode.collisionBox.getRectangle().center.clone();
       }
 
       return true;
@@ -96,21 +96,21 @@ export class ContentSearch {
     if (this.currentSearchResultIndex < this.searchResultNodes.length - 1) {
       this.currentSearchResultIndex++;
     } else {
-      this.project.effects.addEffect(TextRiseEffect.default("已经到底了"));
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到底了"));
       return;
     }
     // 取消选择所有节点
-    for (const node of this.project.stageManager.getTextNodes()) {
+    for (const node of StageManager.getTextNodes()) {
       node.isSelected = false;
     }
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 
@@ -121,20 +121,20 @@ export class ContentSearch {
     if (this.currentSearchResultIndex > 0) {
       this.currentSearchResultIndex--;
     } else {
-      this.project.effects.addEffect(TextRiseEffect.default("已经到头了"));
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到头了"));
     }
     // 取消选择所有节点
-    for (const node of this.project.stageManager.getTextNodes()) {
+    for (const node of StageManager.getTextNodes()) {
       node.isSelected = false;
     }
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 }

@@ -3,7 +3,9 @@ title: Mac问题
 icon: Apple
 ---
 
-### 安装后打开显示“已损坏，无法打开”
+### 安装后打开显示“Project Graph 已损坏，无法打开”
+
+![image](https://s2.loli.net/2024/12/14/1YmknvPljQyR98U.png)
 
 原因是开发者没有 Apple Developer Program 会员资格，请打开终端输入以下命令命令解除限制：
 
@@ -27,7 +29,9 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 - `com.apple.quarantine`：属性名
 - `/Applications/Project\ Graph.app`：文件路径
 
-<Callout>实际上指令前不加 sudo 也可以，无需输入密码。</Callout>
+<Callout>
+实际上指令前不加 sudo 也可以，无需输入密码。
+</Callout>
 
 ### 运行后节点无法输入文字
 

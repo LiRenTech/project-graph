@@ -1,11 +1,15 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
+import { Color } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Effect } from "../effectObject";
+import { Camera } from "../../../../stage/Camera";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
-export class EntityJumpMoveEffect extends Effect {
+export class EntityJumpMoveEffect extends EffectObject {
   getClassName(): string {
     return "EntityJumpMoveEffect";
   }
@@ -17,7 +21,7 @@ export class EntityJumpMoveEffect extends Effect {
     super(new ProgressNumber(0, time));
   }
 
-  render(project: Project) {
+  render() {
     const currentRect = this.rectStart.clone();
     currentRect.location = currentRect.location.add(this.delta.clone().multiply(this.timeProgress.rate));
 
@@ -27,25 +31,25 @@ export class EntityJumpMoveEffect extends Effect {
     currentRect.location.y -= addHeight;
 
     // 画地面阴影
-    project.shapeRenderer.renderRectWithShadow(
-      project.renderer.transformWorld2View(groundShadowRect),
-      this.project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
+    ShapeRenderer.renderRectWithShadow(
+      groundShadowRect.transformWorld2View(),
+      StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       Color.Transparent,
-      2 * project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
+      2 * Camera.currentScale,
+      StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       10,
       0,
       0,
-      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
 
     // 画跳高的框
-    project.shapeRenderer.renderRect(
-      project.renderer.transformWorld2View(currentRect),
+    ShapeRenderer.renderRect(
+      currentRect.transformWorld2View(),
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
   }
 }

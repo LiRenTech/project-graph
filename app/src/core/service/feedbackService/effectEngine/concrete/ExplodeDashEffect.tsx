@@ -1,13 +1,18 @@
-import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { Stage } from "../../../../stage/Stage";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
 /**
  * 方块的爆炸粉尘效果
  */
-export class ExplodeDashEffect extends Effect {
+export class ExplodeDashEffect extends EffectObject {
   getClassName(): string {
     return "ExplodeDashEffect";
   }
@@ -15,15 +20,13 @@ export class ExplodeDashEffect extends Effect {
   ashSpeedArray: Vector[] = [];
 
   private getDashCountPreEntity(): number {
-    // // 说明是按Delete删除的
-    // if (project.controller.cutting.warningEntity.length === 0) {
-    //   return 0;
-    // }
+    // 说明是按Delete删除的
+    if (Stage.cuttingMachine.warningEntity.length === 0) {
+      return 0;
+    }
 
-    // // 说明是按鼠标删除的，可以多一些
-    // return Math.floor(1000 / project.controller.cutting.warningEntity.length);
-    // TODO: 把逻辑移动到render()
-    return 30;
+    // 说明是按鼠标删除的，可以多一些
+    return Math.floor(1000 / Stage.cuttingMachine.warningEntity.length);
   }
 
   constructor(
@@ -48,26 +51,26 @@ export class ExplodeDashEffect extends Effect {
     }
   }
 
-  override tick(project: Project) {
-    super.tick(project);
+  override tick() {
+    super.tick();
     for (let i = 0; i < this.ashLocationArray.length; i++) {
       this.ashLocationArray[i] = this.ashLocationArray[i].add(this.ashSpeedArray[i]);
     }
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const ashLocation of this.ashLocationArray) {
-      const viewLocation = project.renderer.transformWorld2View(ashLocation);
+      const viewLocation = Renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        project.stageStyleManager.currentStyle.StageObjectBorder,
-        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         this.timeProgress.rate,
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
   }
 }

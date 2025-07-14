@@ -19,17 +19,15 @@ export function SettingField({
   placeholder = "",
   icon = <></>,
   kind = "file",
-  extra = <></>,
 }: {
   settingKey: keyof Settings.Settings;
-  type?: "text" | "password" | "number" | "slider" | "switch" | "select" | "file";
+  type?: "text" | "number" | "slider" | "switch" | "select" | "file";
   min?: number;
   max?: number;
   step?: number;
   placeholder?: string;
   icon?: React.ReactNode;
   kind?: "file" | "directory";
-  extra?: React.ReactNode;
 }) {
   const [value, setValue] = React.useState<any>();
   const { t, i18n } = useTranslation("settings");
@@ -59,9 +57,7 @@ export function SettingField({
         className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 hover:rotate-180 group-hover/field:opacity-100"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
-      {extra}
       {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
-      {type === "password" && <Input value={value} onChange={setValue} placeholder={placeholder} type="password" />}
       {type === "number" && <Input value={value} onChange={setValue} number />}
       {type === "slider" && <Slider value={value} onChange={setValue} min={min} max={max} step={step} />}
       {type === "switch" && <Switch value={value} onChange={setValue} />}

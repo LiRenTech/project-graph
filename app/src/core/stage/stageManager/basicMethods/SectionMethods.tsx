@@ -1,20 +1,17 @@
-import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Section } from "../../stageObject/entity/Section";
+import { StageManager } from "../StageManager";
 
-@service("sectionMethods")
-export class SectionMethods {
-  constructor(protected readonly project: Project) {}
-
+export namespace SectionMethods {
   /**
    * 获取一个实体的第一层所有父亲Sections
    * 注：需要遍历所有Section
    * @param entity
    */
-  getFatherSections(entity: Entity): Section[] {
+  export function getFatherSections(entity: Entity): Section[] {
     const result = [];
-    for (const section of this.project.stageManager.getSections()) {
+    for (const section of StageManager.getSections()) {
       if (section.children.includes(entity)) {
         result.push(section);
       }
@@ -28,14 +25,14 @@ export class SectionMethods {
    * 会返回 [C, B, A]
    * @param entity
    */
-  getFatherSectionsList(entity: Entity): Section[] {
+  export function getFatherSectionsList(entity: Entity): Section[] {
     const result = [];
-    for (const section of this.project.stageManager.getSections()) {
-      if (this.isEntityInSection_fake(entity, section)) {
+    for (const section of StageManager.getSections()) {
+      if (isEntityInSection_fake(entity, section)) {
         result.push(section);
       }
     }
-    return this.getSortedSectionsByZ(result).reverse();
+    return getSortedSectionsByZ(result).reverse();
   }
 
   /**
@@ -45,9 +42,9 @@ export class SectionMethods {
    * 点击发生在 SectionA 中时，会返回 [SectionA]，不含有 SectionB
    * @returns
    */
-  getSectionsByInnerLocation(location: Vector): Section[] {
+  export function getSectionsByInnerLocation(location: Vector): Section[] {
     const sections: Section[] = [];
-    for (const section of this.project.stageManager.getSections()) {
+    for (const section of StageManager.getSections()) {
       if (section.isCollapsed || section.isHiddenBySectionCollapse) {
         continue;
       }
@@ -55,14 +52,14 @@ export class SectionMethods {
         sections.push(section);
       }
     }
-    return this.deeperSections(sections);
+    return deeperSections(sections);
   }
 
   /**
    * 用于去除重叠集合，当有完全包含的集合时，返回最小的集合
    * @param sections
    */
-  private deeperSections(sections: Section[]): Section[] {
+  function deeperSections(sections: Section[]): Section[] {
     const outerSections: Section[] = []; // 要被排除的Section
 
     for (const sectionI of sections) {
@@ -70,7 +67,7 @@ export class SectionMethods {
         if (sectionI === sectionJ) {
           continue;
         }
-        if (this.isEntityInSection(sectionI, sectionJ) && !this.isEntityInSection(sectionJ, sectionI)) {
+        if (isEntityInSection(sectionI, sectionJ) && !isEntityInSection(sectionJ, sectionI)) {
           // I 在 J 中，J不在I中，J大，排除J
           outerSections.push(sectionJ);
         }
@@ -90,7 +87,7 @@ export class SectionMethods {
    * @param sections
    * @returns
    */
-  shallowerSection(sections: Section[]): Section[] {
+  export function shallowerSection(sections: Section[]): Section[] {
     const rootSections: Section[] = [];
     const sectionMap = new Map<string, Section>();
     // 首先将所有section放入map，方便快速查找
@@ -113,7 +110,7 @@ export class SectionMethods {
     return rootSections;
   }
 
-  shallowerNotSectionEntities(entities: Entity[]): Entity[] {
+  export function shallowerNotSectionEntities(entities: Entity[]): Entity[] {
     // shallowerSection + 所有非Section的实体
     const sections = entities.filter((entity) => entity instanceof Section);
     const nonSections = entities.filter((entity) => !(entity instanceof Section));
@@ -122,7 +119,7 @@ export class SectionMethods {
     for (const entity of nonSections) {
       let isAnyChild = false;
       for (const section of sections) {
-        if (this.isEntityInSection(entity, section)) {
+        if (isEntityInSection(entity, section)) {
           isAnyChild = true;
         }
       }
@@ -139,8 +136,8 @@ export class SectionMethods {
    * @param entity
    * @param section
    */
-  isEntityInSection(entity: Entity, section: Section): boolean {
-    return this._isEntityInSection(entity, section, 0);
+  export function isEntityInSection(entity: Entity, section: Section): boolean {
+    return _isEntityInSection(entity, section, 0);
   }
 
   /**
@@ -149,13 +146,13 @@ export class SectionMethods {
    * @param entity
    * @param section
    */
-  private isEntityInSection_fake(entity: Entity, section: Section): boolean {
+  function isEntityInSection_fake(entity: Entity, section: Section): boolean {
     const entityBox = entity.collisionBox.getRectangle();
     const sectionBox = section.collisionBox.getRectangle();
     return entityBox.isCollideWithRectangle(sectionBox);
   }
 
-  private _isEntityInSection(entity: Entity, section: Section, deep = 0): boolean {
+  function _isEntityInSection(entity: Entity, section: Section, deep = 0): boolean {
     if (deep > 996) {
       return false;
     }
@@ -166,7 +163,7 @@ export class SectionMethods {
       // 涉及跨级检测
       for (const child of section.children) {
         if (child instanceof Section) {
-          return this._isEntityInSection(entity, child, deep + 1);
+          return _isEntityInSection(entity, child, deep + 1);
         }
       }
       return false;
@@ -177,7 +174,7 @@ export class SectionMethods {
    * 检测一个Section内部是否符合树形嵌套结构
    * @param rootNode
    */
-  isTreePack(rootNode: Section) {
+  export function isTreePack(rootNode: Section) {
     const dfs = (node: Entity, visited: Entity[]): boolean => {
       if (visited.includes(node)) {
         return false;
@@ -199,7 +196,7 @@ export class SectionMethods {
    * 返回一个Section框的最大嵌套深度
    * @param section
    */
-  getSectionMaxDeep(section: Section): number {
+  export function getSectionMaxDeep(section: Section): number {
     const visited: Section[] = [];
     const dfs = (node: Section, deep = 1): number => {
       if (visited.includes(node)) {
@@ -222,7 +219,7 @@ export class SectionMethods {
    * 可以解决复制多个Section时，内部实体的连线问题
    * @param selectedEntities
    */
-  getAllEntitiesInSelectedSectionsOrEntities(selectedEntities: Entity[]): Entity[] {
+  export function getAllEntitiesInSelectedSectionsOrEntities(selectedEntities: Entity[]): Entity[] {
     const entityUUIDSet = new Set<string>();
     const dfs = (currentEntity: Entity) => {
       if (currentEntity.uuid in entityUUIDSet) {
@@ -238,10 +235,10 @@ export class SectionMethods {
     for (const entity of selectedEntities) {
       dfs(entity);
     }
-    return this.project.stageManager.getEntitiesByUUIDs(Array.from(entityUUIDSet));
+    return StageManager.getEntitiesByUUIDs(Array.from(entityUUIDSet));
   }
 
-  getSortedSectionsByZ(sections: Section[]): Section[] {
+  export function getSortedSectionsByZ(sections: Section[]): Section[] {
     // 先按y排序，从上到下，先不管z
     return sections.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
   }

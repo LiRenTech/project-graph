@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
+import { Stage } from "../../core/stage/Stage";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";

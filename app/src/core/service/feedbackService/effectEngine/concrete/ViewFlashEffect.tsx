@@ -1,12 +1,15 @@
-import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
 /**
  * 屏幕闪颜色效果
  */
-export class ViewFlashEffect extends Effect {
+export class ViewFlashEffect extends EffectObject {
   getClassName(): string {
     return "ViewFlashEffect";
   }
@@ -18,20 +21,17 @@ export class ViewFlashEffect extends Effect {
   }
 
   static SaveFile() {
-    return new ViewFlashEffect(
-      this.project.stageStyleManager.currentStyle.effects.windowFlash,
-      new ProgressNumber(0, 10),
-    );
+    return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
   }
   static Portal() {
     return new ViewFlashEffect(new Color(127, 75, 124), new ProgressNumber(0, 10));
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
-    project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
       mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate),
       Color.Transparent,

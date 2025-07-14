@@ -9,7 +9,7 @@ const lastRelease = execSync(
   .trim();
 
 // 获取 Git 提交记录
-const commits = execSync(`git log ${lastRelease}.. --pretty=format:"%s" --reverse`).toString().trim();
+const commits = execSync(`git log ${lastRelease}..master --pretty=format:"%s" --reverse`).toString().trim();
 
 // 定义提示信息
 const prompt = `**请根据以下规则处理提交历史：**

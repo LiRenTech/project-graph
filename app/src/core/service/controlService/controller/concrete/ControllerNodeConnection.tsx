@@ -1,16 +1,24 @@
-import { ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line } from "@graphif/shapes";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Direction } from "../../../../../types/directions";
-import { isMac } from "../../../../../utils/platform";
-import { Project } from "../../../../Project";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../../dataStruct/Vector";
+import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
-import { Settings } from "../../../Settings";
-import { MouseLocation } from "../../MouseLocation";
+import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { addTextNodeByLocation } from "./utilsControl";
+import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
+import { Line } from "../../../../dataStruct/shape/Line";
+import { Direction } from "../../../../../types/directions";
+import { isMac } from "../../../../../utils/platform";
+import { MouseLocation } from "../../MouseLocation";
 
 /**
  * 连线控制器
@@ -20,7 +28,7 @@ import { ControllerClass } from "../ControllerClass";
  * 折连、
  * 拖拽再生连（可多重）、
  */
-export class ControllerNodeConnectionClass extends ControllerClass {
+class ControllerNodeConnectionClass extends ControllerClass {
   private _isControlKeyDown = false;
   private _controlKeyEventRegistered = false;
 
@@ -34,7 +42,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         clientY: MouseLocation.vector().y,
       });
       this.mousedown(fakeMouseEvent);
-      this.project.controller.isMouseDown[2] = true;
+      Controller.isMouseDown[2] = true;
     }
   };
 
@@ -48,7 +56,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         clientY: MouseLocation.vector().y,
       });
       this.mouseup(fakeMouseEvent);
-      this.project.controller.isMouseDown[2] = false;
+      Controller.isMouseDown[2] = false;
     }
   };
 
@@ -78,13 +86,13 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     return this._isUsing;
   }
 
-  constructor(protected readonly project: Project) {
-    super(project);
+  constructor() {
+    super();
     this.registerControlKeyEvents();
   }
 
-  dispose() {
-    super.dispose();
+  destroy() {
+    super.destroy();
     this.unregisterControlKeyEvents();
   }
   /**
@@ -106,21 +114,21 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     // 如果是左键，则检查是否在连接的过程中按下
     if (this.isConnecting()) {
       const clickedConnectableEntity: ConnectableEntity | null =
-        this.project.stageManager.findConnectableEntityByLocation(pressWorldLocation);
+        StageManager.findConnectableEntityByLocation(pressWorldLocation);
       if (clickedConnectableEntity === null) {
         // 是否是在Section内部双击
-        const sections = this.project.sectionMethods.getSectionsByInnerLocation(pressWorldLocation);
+        const sections = SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
 
-        const pointUUID = this.project.nodeAdder.addConnectPoint(pressWorldLocation, sections);
-        const connectPoint = this.project.stageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
+        const pointUUID = StageNodeAdder.addConnectPoint(pressWorldLocation, sections);
+        const connectPoint = StageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
 
         for (const fromEntity of this.connectFromEntities) {
-          this.project.stageManager.connectEntity(fromEntity, connectPoint);
+          StageManager.connectEntity(fromEntity, connectPoint);
           this.addConnectEffect(fromEntity, connectPoint);
         }
         this.connectFromEntities = [connectPoint];
         // 选中这个质点
-        for (const entity of this.project.stageManager.getConnectableEntity()) {
+        for (const entity of StageManager.getConnectableEntity()) {
           if (entity.isSelected) {
             entity.isSelected = false;
           }
@@ -134,12 +142,12 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!(event.button == 2 || event.button == 0)) {
       return;
     }
-    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
       // 把鼠标左键切换为连线模式的情况
       this.onMouseDown(event);
-    } else if (event.button === 0 && Settings.sync.mouseLeftMode !== "connectAndCut") {
+    } else if (event.button === 0 && Stage.leftMouseMode !== LeftMouseModeEnum.connectAndCut) {
       // 右键拖拽连线的时候点击左键
-      const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+      const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
       this.createConnectPointWhenConnect(pressWorldLocation);
     } else if (event.button === 2) {
       // if (Stage.mouseRightDragBackground === "moveCamera") {
@@ -151,7 +159,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   };
 
   private onMouseDown(event: MouseEvent) {
-    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this._lastRightMousePressLocation = pressWorldLocation.clone();
 
@@ -159,14 +167,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     this.mouseLocations = [pressWorldLocation.clone()];
 
     const clickedConnectableEntity: ConnectableEntity | null =
-      this.project.stageManager.findConnectableEntityByLocation(pressWorldLocation);
+      StageManager.findConnectableEntityByLocation(pressWorldLocation);
     if (clickedConnectableEntity === null) {
       return;
     }
 
     // 右键点击了某个节点
     this.connectFromEntities = [];
-    for (const node of this.project.stageManager.getConnectableEntity()) {
+    for (const node of StageManager.getConnectableEntity()) {
       if (node.isSelected) {
         this.connectFromEntities.push(node);
       }
@@ -187,14 +195,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
      */
     if (this.connectFromEntities.includes(clickedConnectableEntity)) {
       // 多重连接
-      for (const node of this.project.stageManager.getConnectableEntity()) {
+      for (const node of StageManager.getConnectableEntity()) {
         if (node.isSelected) {
           // 特效
-          this.project.effects.addEffect(
+          Stage.effectMachine.addEffect(
             new RectangleNoteEffect(
               new ProgressNumber(0, 15),
               node.collisionBox.getRectangle().clone(),
-              this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
+              StageStyleManager.currentStyle.effects.successShadow.clone(),
             ),
           );
         }
@@ -204,18 +212,18 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       // 只触发一次连接
       this.connectFromEntities = [clickedConnectableEntity];
       // 特效
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new RectangleNoteEffect(
           new ProgressNumber(0, 15),
           clickedConnectableEntity.collisionBox.getRectangle().clone(),
-          this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
+          StageStyleManager.currentStyle.effects.successShadow.clone(),
         ),
       );
     }
     // 播放音效
     SoundService.play.connectLineStart();
     this._isUsing = true;
-    this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   }
 
   /**
@@ -224,22 +232,22 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   private isMouseHoverOnTarget = false;
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
+    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
       return;
     }
     if (!this._isUsing) {
       return;
     }
-    if (this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
       this.mouseMove(event);
     }
-    if (this.project.controller.isMouseDown[2]) {
+    if (Controller.isMouseDown[2]) {
       this.mouseMove(event);
     }
   };
 
   private mouseMove(event: MouseEvent) {
-    const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 添加轨迹
     if (
       this.mouseLocations.length === 0 ||
@@ -249,7 +257,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     }
     // 连接线
     let isFindConnectToNode = false;
-    for (const entity of this.project.stageManager.getConnectableEntity()) {
+    for (const entity of StageManager.getConnectableEntity()) {
       if (entity.collisionBox.isContainsPoint(worldLocation)) {
         // 找到了连接的节点，吸附上去
         this.connectToEntity = entity;
@@ -266,7 +274,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       this.isMouseHoverOnTarget = false;
     }
     // 由于连接线要被渲染器绘制，所以需要更新总控制里的lastMoveLocation
-    this.project.controller.lastMoveLocation = worldLocation.clone();
+    Controller.lastMoveLocation = worldLocation.clone();
   }
 
   public mouseup: (event: MouseEvent) => void = (event) => {
@@ -276,7 +284,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!this.isConnecting()) {
       return;
     }
-    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
       this.mouseUp(event);
     } else if (event.button === 2) {
       this.mouseUp(event);
@@ -284,8 +292,8 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   };
 
   private mouseUp(event: MouseEvent) {
-    const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const releaseTargetEntity = this.project.stageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
 
     // 根据轨迹判断方向
     const [sourceDirection, targetDirection] = this.getConnectDirectionByMouseTrack();
@@ -310,10 +318,10 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
       const newConnectFromEntities = this.connectFromEntities;
 
-      this.project.controllerUtils.addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
-        const createdNode = this.project.stageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
+      addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
+        const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
         for (const fromEntity of newConnectFromEntities) {
-          const connectResult = this.project.stageManager.connectEntity(fromEntity, createdNode);
+          const connectResult = StageManager.connectEntity(fromEntity, createdNode);
           if (connectResult) {
             this.addConnectEffect(fromEntity, createdNode);
           }
@@ -321,7 +329,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       });
     }
     this.clear();
-    this.project.controller.setCursorNameHook(CursorNameEnum.Default);
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
 
   /**
@@ -398,14 +406,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
    */
   private clickMultiConnect(releaseWorldLocation: Vector) {
     // 右键点击位置和抬起位置重叠，说明是右键单击事件，没有发生拖拽现象
-    const releaseTargetEntity = this.project.stageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
     if (!releaseTargetEntity) {
       return;
     }
-    const selectedEntities = this.project.stageManager.getConnectableEntity().filter((entity) => entity.isSelected);
+    const selectedEntities = StageManager.getConnectableEntity().filter((entity) => entity.isSelected);
     // 还要保证当前舞台有节点被选中
     // 连线
-    this.project.stageManager.connectMultipleEntities(selectedEntities, releaseTargetEntity);
+    StageManager.connectMultipleEntities(selectedEntities, releaseTargetEntity);
 
     for (const selectedEntity of selectedEntities) {
       this.addConnectEffect(selectedEntity, releaseTargetEntity);
@@ -427,7 +435,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     // 鼠标在待连接节点上抬起
     // let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
 
-    const isPressC = this.project.controller.pressingKeySet.has("c");
+    const isPressC = Controller.pressingKeySet.has("c");
     let sourceRectRate: [number, number] = [0.5, 0.5];
     switch (sourceDirection) {
       case Direction.Left:
@@ -460,7 +468,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         break;
     }
     // 连线
-    this.project.stageManager.connectMultipleEntities(
+    StageManager.connectMultipleEntities(
       this.connectFromEntities,
       connectToEntity,
       isPressC,
@@ -478,8 +486,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   }
 
   private addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
-    for (const effect of this.project.edgeRenderer.getConnectedEffects(from, to)) {
-      this.project.effects.addEffect(effect);
+    for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
+      Stage.effectMachine.addEffect(effect);
     }
   }
 }
+
+/**
+ * 右键连线功能 的控制器
+ * 有两节点连线，还可以触发多重连接
+ */
+export const ControllerNodeConnection = new ControllerNodeConnectionClass();

@@ -1,4 +1,4 @@
-// import { Vector } from "@graphif/data-structures";
+// import { Vector } from "../../../dataStruct/Vector";
 // import { Entity } from "../abstract/StageEntity";
 // import { CollisionBox } from "../collisionBox/collisionBox";
 

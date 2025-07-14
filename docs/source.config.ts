@@ -1,15 +1,9 @@
-import { defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
+import { defineConfig, defineDocs } from "fumadocs-mdx/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { z } from "zod";
 
 export const docs = defineDocs({
   dir: "content/docs",
-  docs: {
-    schema: frontmatterSchema.extend({
-      relatedFile: z.string().optional(),
-    }),
-  },
 });
 
 export default defineConfig({

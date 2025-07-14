@@ -1,105 +1,112 @@
 import { getEnterKey } from "../../../../utils/keyboardFunctions";
-import { Project, service } from "../../../Project";
+import { Stage } from "../../../stage/Stage";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../Settings";
+import { editTextNode } from "../controller/concrete/utilsControl";
+import { KeyboardOnlyGraphEngine } from "./keyboardOnlyGraphEngine";
 
 /**
  * 纯键盘控制的相关引擎
  */
-@service("keyboardOnlyEngine")
-export class KeyboardOnlyEngine {
-  private textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
-  private textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
-  autoLayoutWhenTreeGenerate: Settings.Settings["autoLayoutWhenTreeGenerate"] = true;
-
-  constructor(private readonly project: Project) {
-    this.bindKeyEvents();
-    Settings.watch("textNodeStartEditMode", (value) => {
-      this.textNodeStartEditMode = value;
-    });
-    Settings.watch("textNodeSelectAllWhenStartEditByKeyboard", (value) => {
-      this.textNodeSelectAllWhenStartEditByKeyboard = value;
-    });
-    Settings.watch("autoLayoutWhenTreeGenerate", (value) => {
-      this.autoLayoutWhenTreeGenerate = value;
-    });
-  }
+export namespace KeyboardOnlyEngine {
+  let textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
+  let textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
+  export let autoLayoutWhenTreeGenerate: Settings.Settings["autoLayoutWhenTreeGenerate"] = true;
 
   /**
    * 只有在某些面板打开的时候，这个引擎才会禁用，防止误触
    */
-  private openning = true;
-  setOpenning(value: boolean) {
-    this.openning = value;
+  let openning = true;
+  export function setOpenning(value: boolean) {
+    openning = value;
   }
-  isOpenning() {
-    return this.openning;
+  export function isOpenning() {
+    return openning;
+  }
+
+  export function init() {
+    bindKeyEvents();
+    KeyboardOnlyGraphEngine.init();
+    Settings.watch("textNodeStartEditMode", (value) => {
+      textNodeStartEditMode = value;
+    });
+    Settings.watch("textNodeSelectAllWhenStartEditByKeyboard", (value) => {
+      textNodeSelectAllWhenStartEditByKeyboard = value;
+    });
+    Settings.watch("autoLayoutWhenTreeGenerate", (value) => {
+      autoLayoutWhenTreeGenerate = value;
+    });
+  }
+
+  export function logicTick() {
+    KeyboardOnlyGraphEngine.logicTick();
   }
 
   /**
    * 开始绑定按键事件
    * 仅在最开始调用一次
    */
-  private bindKeyEvents() {
+  function bindKeyEvents() {
     const startEditNode = (event: KeyboardEvent, selectedNode: TextNode) => {
       event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
-      this.addSuccessEffect();
+      addSuccessEffect();
       // 编辑节点
-      this.project.controllerUtils.editTextNode(selectedNode, this.textNodeSelectAllWhenStartEditByKeyboard);
+      editTextNode(selectedNode, textNodeSelectAllWhenStartEditByKeyboard);
     };
 
     window.addEventListener("keydown", (event) => {
       // 防止在编辑节点时，按下其他按键导致编辑失败
-      if (!this.openning) return;
+      if (!openning) return;
 
       if (event.key === "Enter") {
         const enterKeyDetail = getEnterKey(event);
-        if (this.textNodeStartEditMode === enterKeyDetail) {
+        if (textNodeStartEditMode === enterKeyDetail) {
           // 这个还必须在down的位置上，因为在up上会导致无限触发
-          const selectedNode = this.project.stageManager.getTextNodes().find((node) => node.isSelected);
+          const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
           if (!selectedNode) return;
           startEditNode(event, selectedNode);
         } else {
           // 用户可能记错了快捷键
-          this.addFailEffect();
+          addFailEffect();
         }
       } else if (event.key === " ") {
-        if (this.textNodeStartEditMode === "space") {
-          const selectedNode = this.project.stageManager.getTextNodes().find((node) => node.isSelected);
+        if (textNodeStartEditMode === "space") {
+          const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
           if (!selectedNode) return;
           startEditNode(event, selectedNode);
         }
       } else if (event.key === "Escape") {
         // 取消全部选择
-        for (const stageObject of this.project.stageManager.getStageObjects()) {
+        for (const stageObject of StageManager.getStageObject()) {
           stageObject.isSelected = false;
         }
       } else if (event.key === "F2") {
-        const selectedNode = this.project.stageManager.getTextNodes().find((node) => node.isSelected);
+        const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
         if (!selectedNode) return;
         // 编辑节点
-        this.project.controllerUtils.editTextNode(selectedNode);
+        editTextNode(selectedNode);
       } else {
         // SelectChangeEngine.listenKeyDown(event);
       }
     });
   }
 
-  private addSuccessEffect() {
-    const textNodes = this.project.stageManager.getTextNodes().filter((textNode) => textNode.isSelected);
+  function addSuccessEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isSelected);
     for (const textNode of textNodes) {
-      this.project.effects.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
+      Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
     }
   }
 
-  private addFailEffect() {
-    const textNodes = this.project.stageManager.getTextNodes().filter((textNode) => textNode.isSelected);
+  function addFailEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isSelected);
     for (const textNode of textNodes) {
-      this.project.effects.addEffect(EntityShakeEffect.fromEntity(textNode));
+      Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
     }
-    this.project.effects.addEffect(TextRiseEffect.default("您可能记错了节点进入编辑状态的控制键设置"));
+    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了节点进入编辑状态的控制键设置"));
   }
 }

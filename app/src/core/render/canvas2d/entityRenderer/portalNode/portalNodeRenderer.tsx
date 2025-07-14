@@ -1,88 +1,90 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../../Project";
+import { Color } from "../../../../dataStruct/Color";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { MouseLocation } from "../../../../service/controlService/MouseLocation";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../stage/Camera";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EntityRenderer } from "../EntityRenderer";
 
-@service("portalNodeRenderer")
-export class PortalNodeRenderer {
-  constructor(private readonly project: Project) {}
-
+export namespace PortalNodeRenderer {
   /**
    * 主渲染
    * @param portalNode
    */
-  render(portalNode: PortalNode) {
+  export function render(portalNode: PortalNode) {
     const leftTopLocation = portalNode.location;
     const rightTopLocation = portalNode.collisionBox.getRectangle().rightTop;
     // 绘制矩形
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(new Rectangle(leftTopLocation, portalNode.size)),
+    ShapeRenderer.renderRect(
+      new Rectangle(leftTopLocation, portalNode.size).transformWorld2View(),
       portalNode.color,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     // 虚线 1
-    this.project.curveRenderer.renderDashedLine(
-      this.project.renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
-      this.project.renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      1 * this.project.camera.currentScale,
-      10 * this.project.camera.currentScale,
+    CurveRenderer.renderDashedLine(
+      Renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
+      Renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
+      StageStyleManager.currentStyle.StageObjectBorder,
+      1 * Camera.currentScale,
+      10 * Camera.currentScale,
     );
     // 绘制标题，和节点文字大小保持一致
-    this.project.textRenderer.renderOneLineText(
+    TextRenderer.renderOneLineText(
       portalNode.title,
-      this.project.renderer.transformWorld2View(leftTopLocation.add(Vector.same(Renderer.NODE_PADDING))),
-      Renderer.FONT_SIZE * this.project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      Renderer.transformWorld2View(leftTopLocation.add(Vector.same(Renderer.NODE_PADDING))),
+      Renderer.FONT_SIZE * Camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
     // 虚线 2
-    this.project.curveRenderer.renderDashedLine(
-      this.project.renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
-      this.project.renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      1 * this.project.camera.currentScale,
-      5 * this.project.camera.currentScale,
+    CurveRenderer.renderDashedLine(
+      Renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
+      Renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
+      StageStyleManager.currentStyle.StageObjectBorder,
+      1 * Camera.currentScale,
+      5 * Camera.currentScale,
     );
     // 绘制文件路径文字
-    this.project.textRenderer.renderOneLineText(
+    TextRenderer.renderOneLineText(
       `path: "${portalNode.portalFilePath}"`,
-      this.project.renderer.transformWorld2View(
+      Renderer.transformWorld2View(
         leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y)).add(Vector.same(Renderer.NODE_PADDING)),
       ),
-      Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
 
     // 选中状态
     if (portalNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        portalNode.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(portalNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 绘制实体详情
-    this.project.entityRenderer.renderEntityDetails(portalNode);
+    EntityRenderer.renderEntityDetails(portalNode);
 
     // 绘制debug信息
-    if (this.project.renderer.isShowDebug) {
-      this.project.textRenderer.renderMultiLineText(
+    if (Renderer.isShowDebug) {
+      TextRenderer.renderMultiLineText(
         `${portalNode.title}, [${portalNode.portalFilePath}]\n${portalNode.targetLocation.toString()}`,
-        this.project.renderer.transformWorld2View(portalNode.location),
-        10 * this.project.camera.currentScale,
-        1000 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.DetailsDebugText,
+        Renderer.transformWorld2View(portalNode.location),
+        10 * Camera.currentScale,
+        1000 * Camera.currentScale,
+        StageStyleManager.currentStyle.DetailsDebugText,
       );
     }
 
-    this.renderHoverState(portalNode);
+    renderHoverState(portalNode);
   }
 
-  private renderHoverState(portalNode: PortalNode) {
-    const mouseLocation = this.project.renderer.transformView2World(MouseLocation.vector());
+  function renderHoverState(portalNode: PortalNode) {
+    const mouseLocation = Renderer.transformView2World(MouseLocation.vector());
     const bodyRectangle = portalNode.collisionBox.getRectangle();
     if (bodyRectangle.isPointIn(mouseLocation)) {
       const titleRectangle = portalNode.titleRectangleArea();
@@ -90,58 +92,58 @@ export class PortalNodeRenderer {
       if (titleRectangle.isPointIn(mouseLocation)) {
         // 鼠标在标题区域
         // 绘制矩形
-        this.project.shapeRenderer.renderRect(
-          this.project.renderer.transformWorld2View(titleRectangle),
-          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-          2 * this.project.camera.currentScale,
-          Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+        ShapeRenderer.renderRect(
+          titleRectangle.transformWorld2View(),
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
+          StageStyleManager.currentStyle.CollideBoxSelected,
+          2 * Camera.currentScale,
+          Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
         );
         // 绘制悬浮提示文字
-        this.project.textRenderer.renderOneLineText(
+        TextRenderer.renderOneLineText(
           "双击编辑标题",
-          this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
-          Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-          this.project.stageStyleManager.currentStyle.DetailsDebugText,
+          Renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
+          Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
+          StageStyleManager.currentStyle.DetailsDebugText,
         );
       } else if (pathRectangle.isPointIn(mouseLocation)) {
         // 鼠标在路径区域
         // 绘制矩形
-        this.project.shapeRenderer.renderRect(
-          this.project.renderer.transformWorld2View(pathRectangle),
-          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-          2 * this.project.camera.currentScale,
-          Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+        ShapeRenderer.renderRect(
+          pathRectangle.transformWorld2View(),
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
+          StageStyleManager.currentStyle.CollideBoxSelected,
+          2 * Camera.currentScale,
+          Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
         );
         // 绘制悬浮提示文字
-        this.project.textRenderer.renderOneLineText(
+        TextRenderer.renderOneLineText(
           "双击编辑相对路径",
-          this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
-          Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-          this.project.stageStyleManager.currentStyle.DetailsDebugText,
+          Renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
+          Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
+          StageStyleManager.currentStyle.DetailsDebugText,
         );
       } else {
         // 鼠标在节点区域
         // 绘制矩形
-        this.project.textRenderer.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           "双击传送",
-          this.project.renderer.transformWorld2View(portalNode.rectangle.center),
-          Renderer.FONT_SIZE * this.project.camera.currentScale,
-          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+          Renderer.transformWorld2View(portalNode.rectangle.center),
+          Renderer.FONT_SIZE * Camera.currentScale,
+          StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         );
       }
     }
   }
 
-  renderBackground(portalNode: PortalNode) {
+  export function renderBackground(portalNode: PortalNode) {
     // 绘制背景
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(portalNode.rectangle),
-      this.project.stageStyleManager.currentStyle.Background,
+    ShapeRenderer.renderRect(
+      portalNode.rectangle.transformWorld2View(),
+      StageStyleManager.currentStyle.Background,
       Color.Transparent,
       0,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
   }
 

@@ -6,8 +6,7 @@
     "beforeDevCommand": "",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "",
-    "frontendDist": "../dist",
-    "removeUnusedCommands": true
+    "frontendDist": "../dist"
   },
   "app": {
     "windows": [
@@ -33,7 +32,13 @@
     "category": "Productivity",
     "longDescription": "A simple tool to create topology diagrams.",
     "shortDescription": "Diagram creator",
-    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
     "windows": {
       "nsis": {
         "displayLanguageSelector": true,
@@ -52,7 +57,7 @@
       }
     },
     "macOS": {
-      "minimumSystemVersion": "11.0"
+      "minimumSystemVersion": "14.0"
     },
     "fileAssociations": [
       {
@@ -83,13 +88,12 @@
     },
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyQzM3OTE1QjgwRTRCNzEKUldSeFN3NjRGWG5Ec2hVb05sWGZhVmpJdEVCR2cwNmM4UXlISEN5eHJBeFlCQkF3VjV6Z0tEY08K",
-      "endpoints": ["https://release.project-graph.top/update/{{target}}/{{arch}}/{{current_version}}"],
+      "endpoints": [
+        "https://release.project-graph.top/update/{{target}}/{{arch}}/{{current_version}}"
+      ],
       "windows": {
         "installMode": "passive"
       }
-    },
-    "fs": {
-      "requireLiteralLeadingDot": false
     }
   }
 }

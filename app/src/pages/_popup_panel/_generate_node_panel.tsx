@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import Input from "../../components/Input";
 import { DataTransferEngine } from "../../core/service/dataGenerateService/dataTransferEngine/dataTransferEngine";
+import { Settings } from "../../core/service/Settings";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 
 /**

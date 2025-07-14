@@ -1,16 +1,24 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { isMac } from "../../../../../utils/platform";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
-import { Settings } from "../../../Settings";
+import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { getClickedStageObject } from "./utilsControl";
 
 /**
  * 拖拽节点使其移动的控制器
  *
  */
-export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
+class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
   private isMovingEntity = false;
   private mouseDownViewLocation = Vector.getZero();
 
@@ -18,18 +26,18 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
     this.mouseDownViewLocation = new Vector(event.clientX, event.clientY);
 
-    const pressWorldLocation = this.project.renderer.transformView2World(this.mouseDownViewLocation);
+    const pressWorldLocation = Renderer.transformView2World(this.mouseDownViewLocation);
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    const clickedStageObject = this.project.controllerUtils.getClickedStageObject(pressWorldLocation);
+    const clickedStageObject = getClickedStageObject(pressWorldLocation);
 
     // 防止跳跃式移动的时候改变选中内容
-    if (this.project.controller.pressingKeySet.has("alt")) {
+    if (Controller.pressingKeySet.has("alt")) {
       return;
     }
 
@@ -38,41 +46,33 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       this.isMovingEntity = true;
 
       if (
-        this.project.controller.pressingKeySet.has("shift") &&
-        (isMac
-          ? this.project.controller.pressingKeySet.has("meta")
-          : this.project.controller.pressingKeySet.has("control"))
+        Controller.pressingKeySet.has("shift") &&
+        (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
       ) {
         // ctrl + shift 同时按下
         clickedStageObject.isSelected = !clickedStageObject.isSelected;
-      } else if (this.project.controller.pressingKeySet.has("shift")) {
+      } else if (Controller.pressingKeySet.has("shift")) {
         // shift 按下，只选中节点
         clickedStageObject.isSelected = true;
         // 没有实体被选中则return
-        if (this.project.stageManager.getSelectedEntities().length === 0) return;
-        const rectangles = this.project.stageManager
-          .getSelectedEntities()
-          .map((entity) => entity.collisionBox.getRectangle());
+        if (StageManager.getSelectedEntities().length === 0) return;
+        const rectangles = StageManager.getSelectedEntities().map((entity) => entity.collisionBox.getRectangle());
         const boundingRectangle = Rectangle.getBoundingRectangle(rectangles);
-        this.project.effects.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));
-        this.project.effects.addEffect(RectangleNoteEffect.fromShiftClickSelect(boundingRectangle));
-        for (const entity of this.project.stageManager.getStageObjects()) {
+        Stage.effectMachine.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));
+        Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(boundingRectangle));
+        for (const entity of StageManager.getStageObject()) {
           if (entity.collisionBox.isIntersectsWithRectangle(boundingRectangle)) {
             entity.isSelected = true;
           }
         }
-      } else if (
-        isMac
-          ? this.project.controller.pressingKeySet.has("meta")
-          : this.project.controller.pressingKeySet.has("control")
-      ) {
+      } else if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
         // ctrl 按下，只选中节点，不能模仿windows文件管理器设置成反选，否则会和直接移动节点子树冲突
         clickedStageObject.isSelected = true;
       } else {
         // 直接点击
         if (!clickedStageObject.isSelected) {
           // 清空所有其他节点的选中状态
-          this.project.stageManager.getStageObjects().forEach((stageObject) => {
+          StageManager.getStageObject().forEach((stageObject) => {
             if (stageObject === clickedStageObject) {
               return;
             }
@@ -87,47 +87,43 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 未点击到节点
     }
     // 更新选中状态
-    this.project.stageObjectSelectCounter.update();
+    StageObjectSelectCounter.update();
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (
-      this.project.controller.rectangleSelect.isUsing ||
-      this.project.controller.cutting.isUsing ||
-      this.project.controller.pressingKeySet.has("alt")
+      Stage.rectangleSelectMouseMachine.isUsing ||
+      Stage.cuttingMachine.isUsing ||
+      Controller.pressingKeySet.has("alt")
     ) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
     if (!this.isMovingEntity) {
       return;
     }
-    const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const diffLocation = worldLocation.subtract(this.lastMoveLocation);
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const diffLocation = worldLocation.subtract(ControllerEntityClickSelectAndMove.lastMoveLocation);
 
-    if (this.project.stageManager.isHaveEntitySelected()) {
+    if (StageManager.isHaveEntitySelected()) {
       // 移动节点
       this.isMovingEntity = true;
       // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
-      if (
-        isMac
-          ? this.project.controller.pressingKeySet.has("meta")
-          : this.project.controller.pressingKeySet.has("control")
-      ) {
+      if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
         // 和子节点一起移动
-        this.project.entityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
+        StageEntityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
       } else {
-        this.project.entityMoveManager.moveSelectedEntities(diffLocation);
+        StageEntityMoveManager.moveSelectedEntities(diffLocation);
       }
 
       // 预瞄反馈
-      if (Settings.sync.enableDragAutoAlign) {
-        this.project.autoAlign.preAlignAllSelected();
+      if (Stage.enableDragAutoAlign) {
+        StageAutoAlignManager.preAlignAllSelected();
       }
 
-      this.lastMoveLocation = worldLocation.clone();
+      ControllerEntityClickSelectAndMove.lastMoveLocation = worldLocation.clone();
     }
   };
 
@@ -135,7 +131,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
 
@@ -145,14 +141,14 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 判定为有效吸附的拖拽操作
       if (this.isMovingEntity) {
         // 这个时候可以触发对齐吸附事件
-        if (Settings.sync.enableDragAutoAlign) {
-          this.project.autoAlign.alignAllSelected();
+        if (Stage.enableDragAutoAlign) {
+          StageAutoAlignManager.alignAllSelected();
         }
-        if (Settings.sync.enableDragAlignToGrid) {
-          this.project.autoAlign.alignAllSelectedToGrid();
+        if (Stage.enableDragAlignToGrid) {
+          StageAutoAlignManager.alignAllSelectedToGrid();
         }
 
-        this.project.historyManager.recordStep(); // 记录一次历史
+        StageHistoryManager.recordStep(); // 记录一次历史
       }
     }
 
@@ -164,3 +160,5 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     this.isMovingEntity = false;
   }
 }
+
+export const ControllerEntityClickSelectAndMove = new ControllerEntityClickSelectAndMoveClass();

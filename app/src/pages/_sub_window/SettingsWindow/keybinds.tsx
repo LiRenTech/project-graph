@@ -1,29 +1,23 @@
-import { useAtom } from "jotai";
 import { FileQuestion, Keyboard } from "lucide-react";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Field, FieldGroup } from "../../../components/Field";
 import KeyBind from "../../../components/KeyBind";
+import { KeyBinds } from "../../../core/service/controlService/shortcutKeysEngine/KeyBinds";
 import { shortcutKeysGroups } from "../../../core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
-import { activeProjectAtom } from "../../../state";
 
 export default function KeyBindsPage() {
-  const [keyBinds, setKeyBinds] = React.useState<[string, string][]>([]);
-  const [activeProject] = useAtom(activeProjectAtom);
+  const [keyBinds, setKeyBinds] = React.useState<[id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]>([]);
 
   React.useEffect(() => {
-    activeProject?.keyBinds.entries().then((entries) => {
-      console.log(entries);
+    KeyBinds.entries().then((entries) => {
       setKeyBinds(entries);
     });
-  }, [activeProject]);
+  }, []);
 
-  const getKeybindObjectById = useCallback(
-    (id: string) => {
-      return keyBinds.find((item) => item[0] === id)?.[1];
-    },
-    [keyBinds],
-  );
+  const getKeybindObjectById = (id: string) => {
+    return keyBinds.find((item) => item[0] === id)?.[1];
+  };
 
   /**
    * 获取未加入分组的快捷键
@@ -39,6 +33,7 @@ export default function KeyBindsPage() {
   return (
     <>
       {shortcutKeysGroups.map((group, i) => {
+        console.log(group);
         return (
           <FieldGroup
             icon={group.icon}
@@ -56,10 +51,8 @@ export default function KeyBindsPage() {
                 <KeyBind
                   value={getKeybindObjectById(id)}
                   onChange={(value) => {
-                    console.log("set %s to %s", id, value);
-                    activeProject?.keyBinds.set(id, value);
+                    KeyBinds.set(id, value.key, value.modifiers);
                     setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
-                    console.log(keyBinds.map((item) => (item[0] === id ? [item[0], value] : item)));
                   }}
                 />
               </Field>
@@ -68,22 +61,29 @@ export default function KeyBindsPage() {
         );
       })}
       <FieldGroup title={t2.t(`otherKeys.title`)} description={t2.t(`otherKeys.description`)} icon={<FileQuestion />}>
-        {getUnGroupedKeys().map(([id, bind]) => (
-          <Field
-            key={id}
-            icon={<Keyboard />}
-            title={t(`${id}.title`, { defaultValue: id })}
-            description={t(`${id}.description`, { defaultValue: "" })}
-          >
-            <KeyBind
-              value={bind}
-              onChange={(value) => {
-                activeProject?.keyBinds.set(id, value);
-                setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
-              }}
-            />
-          </Field>
-        ))}
+        {getUnGroupedKeys()
+          .map(([id, bind]) => (
+            <Field
+              key={id}
+              icon={<Keyboard />}
+              title={t(`${id}.title`, { defaultValue: id })}
+              description={t(`${id}.description`, { defaultValue: "" })}
+            >
+              <KeyBind
+                value={bind}
+                onChange={(value) => {
+                  KeyBinds.set(id, value.key, value.modifiers);
+                  setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
+                }}
+              />
+            </Field>
+          ))
+          .sort((a, b) => {
+            if (a.key === null && b.key === null) return 0; // 两者均为 null，相等
+            if (a.key === null) return 1; // a.key 为 null，把它排到后面
+            if (b.key === null) return -1; // b.key 为 null，把它排到后面
+            return a.key.localeCompare(b.key); // 正常比较
+          })}
       </FieldGroup>
     </>
   );

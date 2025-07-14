@@ -1,33 +1,27 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { Vector } from "../../../dataStruct/Vector";
+import { Camera } from "../../../stage/Camera";
+import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 一些基础的渲染图形
  * 注意：这些渲染的参数都是View坐标系下的。
  */
-@service("renderUtils")
-export class RenderUtils {
-  constructor(private readonly project: Project) {}
-
+export namespace RenderUtils {
   /**
    * 绘制一个像素点
    * @param location
    * @param color
    */
-  renderPixel(location: Vector, color: Color) {
-    this.project.canvas.ctx.fillStyle = color.toString();
-    this.project.canvas.ctx.fillRect(
-      location.x,
-      location.y,
-      1 * this.project.camera.currentScale,
-      1 * this.project.camera.currentScale,
-    );
+  export function renderPixel(location: Vector, color: Color) {
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fillRect(location.x, location.y, 1 * Camera.currentScale, 1 * Camera.currentScale);
   }
 
   /**
    * 画箭头（只画头，不画线）
    */
-  renderArrow(direction: Vector, location: Vector, color: Color, size: number) {
+  export function renderArrow(direction: Vector, location: Vector, color: Color, size: number) {
     /*
     Python 代码：
     self.path = QPainterPath(point_at.to_qt())
@@ -39,19 +33,13 @@ export class RenderUtils {
     */
     const nor = direction.normalize();
     const arrow_size = size / 2;
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(location.x, location.y);
-    this.project.canvas.ctx.lineTo(
-      location.x - nor.rotate(20).x * arrow_size,
-      location.y - nor.rotate(20).y * arrow_size,
-    );
-    this.project.canvas.ctx.lineTo(location.x - nor.x * (arrow_size / 2), location.y - nor.y * (arrow_size / 2));
-    this.project.canvas.ctx.lineTo(
-      location.x - nor.rotate(-20).x * arrow_size,
-      location.y - nor.rotate(-20).y * arrow_size,
-    );
-    this.project.canvas.ctx.closePath();
-    this.project.canvas.ctx.fillStyle = color.toString();
-    this.project.canvas.ctx.fill();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(location.x, location.y);
+    Canvas.ctx.lineTo(location.x - nor.rotate(20).x * arrow_size, location.y - nor.rotate(20).y * arrow_size);
+    Canvas.ctx.lineTo(location.x - nor.x * (arrow_size / 2), location.y - nor.y * (arrow_size / 2));
+    Canvas.ctx.lineTo(location.x - nor.rotate(-20).x * arrow_size, location.y - nor.rotate(-20).y * arrow_size);
+    Canvas.ctx.closePath();
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
   }
 }

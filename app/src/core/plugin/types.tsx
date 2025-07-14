@@ -8,18 +8,18 @@ export interface PluginPackage {
 // 定义允许插件调用的 API 方法类型
 export const apiTypes = {
   hello: [[z.string()], z.void()],
-  // getCameraLocation: [[], z.tuple([z.number(), z.number()])],
-  // setCameraLocation: [[z.number(), z.number()], z.void()],
-  // getPressingKey: [[], z.array(z.string())],
-  // clearPressingKey: [[], z.void()],
-  // getPressingKeySequence: [[], z.array(z.string())],
-  // clearPressingKeySequence: [[], z.void()],
-  // openDialog: [[z.string(), z.string()], z.void()],
-  // addDebugText: [[z.string()], z.void()],
-  // getCurrentStageJson: [[], z.string()],
-  // getCurrentStageSelectedObjectsUUIDs: [[], z.array(z.string())],
-  // createTextOnLocation: [[z.number(), z.number(), z.string()], z.string()],
-  // connectEntityByTwoUUID: [[z.string(), z.string()], z.boolean()],
+  getCameraLocation: [[], z.tuple([z.number(), z.number()])],
+  setCameraLocation: [[z.number(), z.number()], z.void()],
+  getPressingKey: [[], z.array(z.string())],
+  clearPressingKey: [[], z.void()],
+  getPressingKeySequence: [[], z.array(z.string())],
+  clearPressingKeySequence: [[], z.void()],
+  openDialog: [[z.string(), z.string()], z.void()],
+  addDebugText: [[z.string()], z.void()],
+  getCurrentStageJson: [[], z.string()],
+  getCurrentStageSelectedObjectsUUIDs: [[], z.array(z.string())],
+  createTextOnLocation: [[z.number(), z.number(), z.string()], z.string()],
+  connectEntityByTwoUUID: [[z.string(), z.string()], z.boolean()],
 } as const;
 
 export function getAllAPIMethods(): (keyof typeof apiTypes)[] {

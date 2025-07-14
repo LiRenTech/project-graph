@@ -1,26 +1,29 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line, SymmetryCurve } from "@graphif/shapes";
+import { Color } from "../../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
+import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
+import { Line } from "../../../../../dataStruct/shape/Line";
+import { Vector } from "../../../../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../../stage/Camera";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 // import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
-import { Project, service } from "../../../../../Project";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { SvgUtils } from "../../../../svg/SvgUtils";
+import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
+import { WorldRenderUtils } from "../../../utilsRenderer/WorldRenderUtils";
+import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 /**
  * 贝塞尔曲线
  */
-@service("symmetryCurveEdgeRenderer")
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
-  constructor(private readonly project: Project) {
-    super();
-  }
-
-  getCuttingEffects(edge: LineEdge): Effect[] {
+  getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -42,7 +45,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       new CircleFlameEffect(new ProgressNumber(0, 15), edge.bodyLine.midPoint(), 50, new Color(255, 0, 0, 1)),
     ];
   }
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -74,7 +77,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 曲线模式先不屏蔽箭头，有点不美观，空出来一段距离
     this.renderArrowCurve(
       curve,
-      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
     this.renderText(curve, edge);
   }
@@ -104,33 +107,31 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
     this.renderArrowCurve(
       curve,
-      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
     this.renderText(curve, edge);
   }
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    this.project.shapeRenderer.renderArc(
-      this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
-      (edge.target.collisionBox.getRectangle().size.y / 2) * this.project.camera.currentScale,
+    ShapeRenderer.renderArc(
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
-      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
-      2 * this.project.camera.currentScale,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      2 * Camera.currentScale,
     );
     // 画箭头
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
       const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
-      this.project.edgeRenderer.renderArrowHead(
+      EdgeRenderer.renderArrowHead(
         endPoint,
         direction,
         size,
-        edge.color.equals(Color.Transparent)
-          ? this.project.stageStyleManager.currentStyle.StageObjectBorder
-          : edge.color,
+        edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
       );
     }
   }
@@ -138,7 +139,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -159,7 +160,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       );
     }
     // 加箭头
-    const arrowHead = this.project.edgeRenderer.generateArrowHeadSvg(
+    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
       edge.bodyLine.end.clone(),
       edge.target.collisionBox
         .getRectangle()
@@ -202,7 +203,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endDirection,
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
   }
 
@@ -220,7 +221,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endRect.getNormalVectorAt(end),
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
   }
 
@@ -247,10 +248,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     //   )
     //   lastPoint = line.end;
     // }
-    this.project.worldRenderUtils.renderSymmetryCurve(curve, color, 2);
+    WorldRenderUtils.renderSymmetryCurve(curve, color, 2);
     // 画箭头
     const endPoint = end.add(curve.endDirection.multiply(2));
-    this.project.edgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size, color);
+    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size, color);
   }
   // /**
   //  * 仅仅绘制曲线
@@ -270,18 +271,18 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       return;
     }
     // 画文本底色
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(edge.textRectangle),
-      this.project.stageStyleManager.currentStyle.Background.toNewAlpha(this.project.renderer.windowBackgroundAlpha),
+    ShapeRenderer.renderRect(
+      edge.textRectangle.transformWorld2View(),
+      StageStyleManager.currentStyle.Background.toNewAlpha(Renderer.windowBackgroundAlpha),
       Color.Transparent,
       1,
     );
 
-    this.project.textRenderer.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       edge.text,
-      this.project.renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
-      Renderer.FONT_SIZE * this.project.camera.currentScale,
-      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
+      Renderer.FONT_SIZE * Camera.currentScale,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
   }
 }

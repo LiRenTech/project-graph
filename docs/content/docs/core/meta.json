@@ -2,5 +2,6 @@
   "title": "核心",
   "description": "理解应用的核心代码",
   "root": true,
-  "icon": "Cpu"
+  "icon": "Cpu",
+  "pages": ["index"]
 }

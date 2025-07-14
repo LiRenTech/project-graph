@@ -1,12 +1,16 @@
-import { ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../../dataStruct/Vector";
+import { TextRenderer } from "../../../../render/canvas2d/basicRenderer/textRenderer";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Canvas } from "../../../../stage/Canvas";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 import { easeInOutSine } from "../mathTools/easings";
 
 /**
  * 文字上浮特效
  */
-export class TextRiseEffect extends Effect {
+export class TextRiseEffect extends EffectObject {
   getClassName(): string {
     return "TextRiseEffect";
   }
@@ -22,23 +26,23 @@ export class TextRiseEffect extends Effect {
     return new TextRiseEffect(text, new ProgressNumber(0, 100));
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
     // 在画布中心缓缓升高一段距离
     const distance = 100;
     const renderCenterLocation = new Vector(
-      project.renderer.w / 2,
-      project.renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
+      Renderer.w / 2,
+      Renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
     );
-    project.textRenderer.renderMultiLineTextFromCenter(
+    TextRenderer.renderMultiLineTextFromCenter(
       this.text,
       renderCenterLocation,
       20,
       Infinity,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
-    project.canvas.ctx.globalAlpha = 1;
+    Canvas.ctx.globalAlpha = 1;
   }
 }

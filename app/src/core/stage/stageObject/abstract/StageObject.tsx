@@ -1,4 +1,3 @@
-import { Project } from "../../../Project";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
 /**
@@ -11,8 +10,11 @@ import { CollisionBox } from "../collisionBox/collisionBox";
  * 一切舞台上的东西
  * 都具有碰撞箱，uuid
  */
-export abstract class StageObject {
-  protected abstract readonly project: Project;
+export abstract class StageObject implements Disposable {
+  // 资源释放
+  [Symbol.dispose](): void {
+    throw new Error("Method not implemented.");
+  }
 
   // 舞台对象，必定有 uuid
   public abstract uuid: string;

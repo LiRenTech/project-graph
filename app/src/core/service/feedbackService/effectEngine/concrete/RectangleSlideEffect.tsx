@@ -1,15 +1,16 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Color } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { EffectObject } from "../effectObject";
 import { LineEffect } from "./LineEffect";
+import { Random } from "../../../../algorithm/random";
+import { Vector } from "../../../../dataStruct/Vector";
 
 /**
  * 专门处理矩形水平和垂直移动效果
  * 显示渐变直线作为视觉效果
  */
-export class RectangleSlideEffect extends Effect {
+export class RectangleSlideEffect extends EffectObject {
   getClassName(): string {
     return "RectangleSlideEffect";
   }
@@ -66,11 +67,11 @@ export class RectangleSlideEffect extends Effect {
     }
   }
 
-  protected subEffects: Effect[];
+  protected subEffects: EffectObject[];
 
-  render(project: Project) {
+  render(): void {
     for (const effect of this.subEffects) {
-      effect.render(project);
+      effect.render();
     }
   }
 

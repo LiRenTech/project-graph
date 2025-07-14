@@ -1,52 +1,54 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line } from "@graphif/shapes";
-import { Project, service } from "../../../../../Project";
+import { Color } from "../../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
+import { Line } from "../../../../../dataStruct/shape/Line";
+import { Vector } from "../../../../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { EdgeCutEffect } from "../../../../../service/feedbackService/effectEngine/concrete/EdgeCutEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../../stage/Camera";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
 import { Section } from "../../../../../stage/stageObject/entity/Section";
 import { SvgUtils } from "../../../../svg/SvgUtils";
+import { CurveRenderer } from "../../../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
+import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 /**
  * 直线渲染器
  */
-@service("straightEdgeRenderer")
 export class StraightEdgeRenderer extends EdgeRendererClass {
-  constructor(private readonly project: Project) {
-    super();
-  }
-
-  getCuttingEffects(edge: LineEdge): Effect[] {
+  getCuttingEffects(edge: LineEdge): EffectObject[] {
     return [
       EdgeCutEffect.default(
         edge.bodyLine.start,
         edge.bodyLine.end,
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder,
         2,
       ),
     ];
   }
 
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
         startNode.collisionBox.getRectangle().center,
         80,
-        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
         startNode.collisionBox.getRectangle().center,
         toNode.collisionBox.getRectangle().center,
-        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
-        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
         20,
       ),
     ];
@@ -55,7 +57,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderNormalState(edge: LineEdge): void {
     // 直线绘制
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
 
     let edgeWidth = 2;
@@ -71,37 +73,37 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
     if (edge.text.trim() === "") {
       // 没有文字的边
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(straightBodyLine.start),
-        this.project.renderer.transformWorld2View(straightBodyLine.end),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(straightBodyLine.start),
+        Renderer.transformWorld2View(straightBodyLine.end),
         edgeColor,
-        edgeWidth * this.project.camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
     } else {
       // 有文字的边
       const midPoint = straightBodyLine.midPoint();
       const startHalf = new Line(straightBodyLine.start, midPoint);
       const endHalf = new Line(midPoint, straightBodyLine.end);
-      this.project.textRenderer.renderMultiLineTextFromCenter(
+      TextRenderer.renderMultiLineTextFromCenter(
         edge.text,
-        this.project.renderer.transformWorld2View(midPoint),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
+        Renderer.transformWorld2View(midPoint),
+        Renderer.FONT_SIZE * Camera.currentScale,
         Infinity,
         edgeColor,
       );
       const edgeTextRectangle = edge.textRectangle;
 
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(straightBodyLine.start),
-        this.project.renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(straightBodyLine.start),
+        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
         edgeColor,
-        edgeWidth * this.project.camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(straightBodyLine.end),
-        this.project.renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(straightBodyLine.end),
+        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
         edgeColor,
-        edgeWidth * this.project.camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
     }
     if (!(edge.target instanceof ConnectPoint)) {
@@ -119,7 +121,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -140,7 +142,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       );
     }
     // 加箭头
-    const arrowHead = this.project.edgeRenderer.generateArrowHeadSvg(
+    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
       edge.bodyLine.end.clone(),
       edge.target.collisionBox
         .getRectangle()
@@ -167,9 +169,9 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone(), size = 15) {
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
-    this.project.edgeRenderer.renderArrowHead(endPoint, direction, size, edgeColor);
+    EdgeRenderer.renderArrowHead(endPoint, direction, size, edgeColor);
   }
 
   public renderShiftingState(edge: LineEdge): void {
@@ -185,44 +187,44 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const startPoint = sourceRectangle.getLineIntersectionPoint(startLine);
     const endPoint = targetRectangle.getLineIntersectionPoint(endLine);
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(startPoint),
-        this.project.renderer.transformWorld2View(shiftingMidPoint),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(startPoint),
+        Renderer.transformWorld2View(shiftingMidPoint),
         edgeColor,
-        2 * this.project.camera.currentScale,
+        2 * Camera.currentScale,
       );
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(shiftingMidPoint),
-        this.project.renderer.transformWorld2View(endPoint),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(shiftingMidPoint),
+        Renderer.transformWorld2View(endPoint),
         edgeColor,
-        2 * this.project.camera.currentScale,
+        2 * Camera.currentScale,
       );
     } else {
       // 有文字的边
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         edge.text,
-        this.project.renderer.transformWorld2View(shiftingMidPoint),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
+        Renderer.transformWorld2View(shiftingMidPoint),
+        Renderer.FONT_SIZE * Camera.currentScale,
         edgeColor,
       );
       const edgeTextRectangle = edge.textRectangle;
       const start2MidPoint = edgeTextRectangle.getLineIntersectionPoint(startLine);
       const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(startPoint),
-        this.project.renderer.transformWorld2View(start2MidPoint),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(startPoint),
+        Renderer.transformWorld2View(start2MidPoint),
         edgeColor,
-        2 * this.project.camera.currentScale,
+        2 * Camera.currentScale,
       );
-      this.project.curveRenderer.renderSolidLine(
-        this.project.renderer.transformWorld2View(mid2EndPoint),
-        this.project.renderer.transformWorld2View(endPoint),
+      CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(mid2EndPoint),
+        Renderer.transformWorld2View(endPoint),
         edgeColor,
-        2 * this.project.camera.currentScale,
+        2 * Camera.currentScale,
       );
     }
     this.renderArrowHead(
@@ -235,15 +237,15 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: LineEdge): void {
     // 自环
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
-    this.project.shapeRenderer.renderArc(
-      this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
-      (edge.target.collisionBox.getRectangle().size.y / 2) * this.project.camera.currentScale,
+    ShapeRenderer.renderArc(
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       edgeColor,
-      2 * this.project.camera.currentScale,
+      2 * Camera.currentScale,
     );
     // 画箭头
     this.renderArrowHead(edge, new Vector(1, 0).rotateDegrees(15), edge.target.collisionBox.getRectangle().leftCenter);
@@ -252,32 +254,30 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       // 没有文字的边
       return;
     }
-    this.project.textRenderer.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       edge.text,
-      this.project.renderer.transformWorld2View(
-        edge.target.collisionBox.getRectangle().location.add(new Vector(0, -50)),
-      ),
-      Renderer.FONT_SIZE * this.project.camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location.add(new Vector(0, -50))),
+      Renderer.FONT_SIZE * Camera.currentScale,
       edgeColor,
     );
   }
 
   public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
-    this.project.curveRenderer.renderGradientLine(
-      this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
-      this.project.renderer.transformWorld2View(mouseLocation),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+    CurveRenderer.renderGradientLine(
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      Renderer.transformWorld2View(mouseLocation),
+      StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+      StageStyleManager.currentStyle.StageObjectBorder,
       2,
     );
   }
 
   public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
-    this.project.curveRenderer.renderGradientLine(
-      this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
-      this.project.renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
-      this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.5),
-      this.project.stageStyleManager.currentStyle.effects.successShadow.toSolid(),
+    CurveRenderer.renderGradientLine(
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      Renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
+      StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.5),
+      StageStyleManager.currentStyle.effects.successShadow.toSolid(),
       2,
     );
   }

@@ -1,52 +1,52 @@
-import { Vector } from "@graphif/data-structures";
 import { appScale } from "../../../../utils/platform";
 import { sleep } from "../../../../utils/sleep";
-import { Project, service } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { Camera } from "../../../stage/Camera";
+import { Canvas } from "../../../stage/Canvas";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Settings } from "../../Settings";
 
-@service("stageExportPng")
-export class StageExportPng {
-  constructor(private readonly project: Project) {}
-
+export namespace StageExportPng {
   /**
    * 系统缩放因子
    */
-  static SCALE = window.devicePixelRatio * (1 / appScale);
+  const SCALE = window.devicePixelRatio * (1 / appScale);
 
   /**
    * 导出时，相机缩放因子
    */
-  private cameraScaleWhenExport = 0.5;
+  let cameraScaleWhenExport = 0.5;
 
-  static PADDING = 100;
+  const PADDING = 100;
 
-  changeCameraScaleWhenExport(scale: number) {
-    this.cameraScaleWhenExport = scale;
+  export function changeCameraScaleWhenExport(scale: number) {
+    cameraScaleWhenExport = scale;
   }
 
   /**
    * 是否有背景
    */
-  private isHaveBackground = false;
-  setHaveBackground(have: boolean) {
-    this.isHaveBackground = have;
+  let isHaveBackground = false;
+  export function setHaveBackground(have: boolean) {
+    isHaveBackground = have;
   }
   /**
    * 将整个舞台导出为png图片
    */
-  private async exportStage_() {
+  async function exportStage_() {
     // 创建一个新的画布
-    const resultCanvas = this.generateCanvasNode();
+    const resultCanvas = generateCanvasNode();
     const resultCtx = resultCanvas.getContext("2d")!;
     // 创建完毕
 
-    const stageRect = this.project.stageManager.getBoundingRectangle();
-    const topLeft = stageRect.leftTop.subtract(new Vector(StageExportPng.PADDING, StageExportPng.PADDING));
-    const bottomRight = stageRect.rightBottom.add(new Vector(StageExportPng.PADDING, StageExportPng.PADDING));
+    const stageRect = StageManager.getBoundingRectangle();
+    const topLeft = stageRect.leftTop.subtract(new Vector(PADDING, PADDING));
+    const bottomRight = stageRect.rightBottom.add(new Vector(PADDING, PADDING));
     // 开始把画布内容渲染到新画布上
-    this.project.camera.targetScale = this.cameraScaleWhenExport;
-    this.project.camera.currentScale = this.cameraScaleWhenExport;
-    const viewRect = this.project.renderer.getCoverWorldRectangle();
+    Camera.targetScale = cameraScaleWhenExport;
+    Camera.currentScale = cameraScaleWhenExport;
+    const viewRect = Renderer.getCoverWorldRectangle();
 
     const leftTopLocList: { x: number; y: number }[] = [];
 
@@ -57,51 +57,47 @@ export class StageExportPng {
       }
     }
     let i = 0;
-    let lastFrame = this.project.renderer.frameIndex;
+    let lastFrame = Renderer.frameIndex;
     while (i < leftTopLocList.length) {
       const { x, y } = leftTopLocList[i];
       // 先移动再暂停等待
       await sleep(2);
-      this.project.camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
+      Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
       await sleep(2);
-      if (this.project.renderer.frameIndex - lastFrame < 2) {
-        console.log("等待", lastFrame, this.project.renderer.frameIndex, i);
+      if (Renderer.frameIndex - lastFrame < 2) {
+        console.log("等待", lastFrame, Renderer.frameIndex, i);
         continue;
       }
-      lastFrame = this.project.renderer.frameIndex;
-      const imageData = this.project.canvas.ctx.getImageData(
-        0,
-        0,
-        viewRect.size.x * StageExportPng.SCALE,
-        viewRect.size.y * StageExportPng.SCALE,
-      );
+      lastFrame = Renderer.frameIndex;
+      const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
       resultCtx.putImageData(
         imageData,
-        (x - topLeft.x) * StageExportPng.SCALE * this.cameraScaleWhenExport,
-        (y - topLeft.y) * StageExportPng.SCALE * this.cameraScaleWhenExport,
+        (x - topLeft.x) * SCALE * cameraScaleWhenExport,
+        (y - topLeft.y) * SCALE * cameraScaleWhenExport,
       );
-      this.tickRenderer(i, leftTopLocList.length);
+      tickRenderer(i, leftTopLocList.length);
       i++;
     }
     const imageData = resultCanvas.toDataURL("image/png");
     // 移除画布
     resultCanvas.remove();
 
-    const imageNode = this.getImageNodeByImageData(imageData);
+    const imageNode = getImageNodeByImageData(imageData);
     const imageBox = document.getElementById("export-png-image-box");
     if (imageBox) {
       imageBox.appendChild(imageNode);
     }
   }
 
-  startRender = () => {};
+  // eslint-disable-next-line prefer-const
+  export let startRender = () => {};
+  // eslint-disable-next-line prefer-const
+  export let finishRender = () => {};
+  // eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
+  export let tickRenderer = (_c: number, _t: number) => {};
 
-  finishRender = () => {};
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  tickRenderer = (_c: number, _t: number) => {};
-
-  async exportStage() {
-    this.startRender();
+  export async function exportStage() {
+    startRender();
 
     // 背景网格信息
     const showBackgroundCartesian = await Settings.get("showBackgroundCartesian");
@@ -116,20 +112,20 @@ export class StageExportPng {
     // 渲染问题
     const isPauseRenderWhenManipulateOvertime = await Settings.get("isPauseRenderWhenManipulateOvertime");
     Settings.set("isPauseRenderWhenManipulateOvertime", false);
-    if (this.isHaveBackground) {
-      this.project.renderer.isRenderBackground = true;
+    if (isHaveBackground) {
+      Renderer.isRenderBackground = true;
     }
     // 先记录摄像机信息
-    const cameraLocation = this.project.camera.location.clone();
-    const cameraTargetLocation = this.project.camera.targetLocationByScale.clone();
-    const cameraScale = this.project.camera.currentScale;
+    const cameraLocation = Camera.location.clone();
+    const cameraTargetLocation = Camera.targetLocationByScale.clone();
+    const cameraScale = Camera.currentScale;
     // 开始渲染
-    await this.exportStage_();
-    this.project.renderer.isRenderBackground = false;
+    await exportStage_();
+    Renderer.isRenderBackground = false;
     // 恢复摄像机信息
-    this.project.camera.location = cameraLocation;
-    this.project.camera.targetLocationByScale = cameraTargetLocation;
-    this.project.camera.currentScale = cameraScale;
+    Camera.location = cameraLocation;
+    Camera.targetLocationByScale = cameraTargetLocation;
+    Camera.currentScale = cameraScale;
 
     // 背景网格信息
     Settings.set("showBackgroundCartesian", showBackgroundCartesian);
@@ -138,10 +134,10 @@ export class StageExportPng {
     Settings.set("showBackgroundVerticalLines", showBackgroundVerticalLines);
     Settings.set("isPauseRenderWhenManipulateOvertime", isPauseRenderWhenManipulateOvertime);
 
-    this.finishRender();
+    finishRender();
   }
 
-  generateCanvasNode(): HTMLCanvasElement {
+  export function generateCanvasNode(): HTMLCanvasElement {
     const resultCanvas = document.createElement("canvas");
     resultCanvas.style.position = "fixed";
     resultCanvas.style.top = "50%";
@@ -150,23 +146,21 @@ export class StageExportPng {
     resultCanvas.style.zIndex = "99999";
     resultCanvas.style.pointerEvents = "none";
 
-    const stageSize = this.project.stageManager
-      .getSize()
-      .add(new Vector(StageExportPng.PADDING * 2, StageExportPng.PADDING * 2));
+    const stageSize = StageManager.getSize().add(new Vector(PADDING * 2, PADDING * 2));
     // 设置大小
-    resultCanvas.width = stageSize.x * StageExportPng.SCALE * this.cameraScaleWhenExport;
-    resultCanvas.height = stageSize.y * StageExportPng.SCALE * this.cameraScaleWhenExport;
-    resultCanvas.style.width = `${stageSize.x * (1 / appScale) * this.cameraScaleWhenExport}px`;
-    resultCanvas.style.height = `${stageSize.y * (1 / appScale) * this.cameraScaleWhenExport}px`;
+    resultCanvas.width = stageSize.x * SCALE * cameraScaleWhenExport;
+    resultCanvas.height = stageSize.y * SCALE * cameraScaleWhenExport;
+    resultCanvas.style.width = `${stageSize.x * (1 / appScale) * cameraScaleWhenExport}px`;
+    resultCanvas.style.height = `${stageSize.y * (1 / appScale) * cameraScaleWhenExport}px`;
     const ctx = resultCanvas.getContext("2d")!;
-    ctx.scale(StageExportPng.SCALE, StageExportPng.SCALE);
+    ctx.scale(SCALE, SCALE);
     // 设置大小完毕
 
     document.body.appendChild(resultCanvas);
     return resultCanvas;
   }
 
-  getImageNodeByImageData(imageData: string) {
+  export function getImageNodeByImageData(imageData: string) {
     const imageNode = new Image();
     imageNode.src = imageData;
     imageNode.style.outline = "solid 1px red";

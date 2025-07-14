@@ -4,7 +4,6 @@
   "root": true,
   "icon": "AppWindowMac",
   "pages": [
-    "v2-changelog",
     "---指南---",
     "index",
     "---特性---",

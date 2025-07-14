@@ -1,8 +1,8 @@
-import { Color } from "@graphif/data-structures";
+import { Color } from "../../../dataStruct/Color";
 import { Settings } from "../../Settings";
 import { Themes } from "../../Themes";
 
-export interface EffectColors {
+interface EffectColors {
   /** 闪光线，切割线等白光刃的白色 */
   flash: Color;
   /** 粒子效果的颜色 */

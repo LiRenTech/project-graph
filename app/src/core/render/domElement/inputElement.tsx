@@ -1,17 +1,19 @@
-import { Vector } from "@graphif/data-structures";
 import { getEnterKey } from "../../../utils/keyboardFunctions";
-import { Project, service } from "../../Project";
+import { Vector } from "../../dataStruct/Vector";
 import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
+import { Camera } from "../../stage/Camera";
+import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextRenderer } from "../canvas2d/basicRenderer/textRenderer";
 import { Renderer } from "../canvas2d/renderer";
 
 /**
  * 主要用于解决canvas上无法输入的问题，用临时生成的jsdom元素透明地贴在上面
  */
-@service("inputElement")
-export class InputElement {
+export namespace InputElement {
   /**
    * 在指定位置创建一个输入框
    * @param location 输入框的左上角位置（相对于窗口左上角的位置）
@@ -20,7 +22,7 @@ export class InputElement {
    * @param style 输入框样式
    * @returns
    */
-  input(
+  export function input(
     location: Vector,
     defaultValue: string,
     onChange: (value: string) => void = () => {},
@@ -120,7 +122,7 @@ export class InputElement {
    * @param selectAllWhenCreated 是否在创建时全选内容
    * @returns
    */
-  textarea(
+  export function textarea(
     defaultValue: string,
     onChange: (value: string, element: HTMLTextAreaElement) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
@@ -133,9 +135,9 @@ export class InputElement {
 
       textareaElement.id = "textarea-element";
       textareaElement.autocomplete = "off"; // 禁止使用自动填充内容，防止影响输入体验
-      const initSizeView = this.project.textRenderer.measureMultiLineTextSize(
+      const initSizeView = TextRenderer.measureMultiLineTextSize(
         defaultValue,
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
+        Renderer.FONT_SIZE * Camera.currentScale,
         limitWidth,
         1.5,
       );
@@ -256,16 +258,16 @@ export class InputElement {
           // 使用event.isComposing和自定义isComposing双重检查
           if (!(event.isComposing || isComposing)) {
             const enterKeyDetail = getEnterKey(event);
-            if (this.textNodeExitEditMode === enterKeyDetail) {
+            if (textNodeExitEditMode === enterKeyDetail) {
               // 用户想退出编辑
               exitEditMode();
-              this.addSuccessEffect();
-            } else if (this.textNodeContentLineBreak === enterKeyDetail) {
+              addSuccessEffect();
+            } else if (textNodeContentLineBreak === enterKeyDetail) {
               // 用户想换行
               breakLine();
             } else {
               // 用户可能记错了快捷键
-              this.addFailEffect();
+              addFailEffect();
             }
           }
         }
@@ -273,31 +275,31 @@ export class InputElement {
     });
   }
 
-  private addSuccessEffect() {
-    const textNodes = this.project.stageManager.getTextNodes().filter((textNode) => textNode.isEditing);
+  function addSuccessEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
     for (const textNode of textNodes) {
-      this.project.effects.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
+      Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
     }
   }
 
-  private addFailEffect() {
-    const textNodes = this.project.stageManager.getTextNodes().filter((textNode) => textNode.isEditing);
+  function addFailEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
     for (const textNode of textNodes) {
-      this.project.effects.addEffect(EntityShakeEffect.fromEntity(textNode));
+      Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
     }
-    this.project.effects.addEffect(TextRiseEffect.default("您可能记错了退出或换行的控制设置"));
+    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了退出或换行的控制设置"));
   }
 
-  private textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";
+  let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";
 
-  private textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] = "ctrlEnter";
+  let textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] = "ctrlEnter";
 
-  constructor(private readonly project: Project) {
+  export function init() {
     Settings.watch("textNodeContentLineBreak", (value) => {
-      this.textNodeContentLineBreak = value;
+      textNodeContentLineBreak = value;
     });
     Settings.watch("textNodeExitEditMode", (value) => {
-      this.textNodeExitEditMode = value;
+      textNodeExitEditMode = value;
     });
   }
 }

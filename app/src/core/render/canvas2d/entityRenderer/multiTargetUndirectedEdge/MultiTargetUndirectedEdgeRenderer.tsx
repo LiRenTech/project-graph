@@ -1,44 +1,46 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Line } from "@graphif/shapes";
 import { ConvexHull } from "../../../../algorithm/geometry/convexHull";
-import { Project, service } from "../../../../Project";
+import { Color } from "../../../../dataStruct/Color";
+import { Line } from "../../../../dataStruct/shape/Line";
+import { Vector } from "../../../../dataStruct/Vector";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../stage/Camera";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EdgeRenderer } from "../edge/EdgeRenderer";
 
-@service("multiTargetUndirectedEdgeRenderer")
-export class MultiTargetUndirectedEdgeRenderer {
-  constructor(private readonly project: Project) {}
-
-  render(edge: MultiTargetUndirectedEdge) {
+export namespace MultiTargetUndirectedEdgeRenderer {
+  export function render(edge: MultiTargetUndirectedEdge) {
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(
-        edge.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
-    const targetNodes = this.project.stageManager.getEntitiesByUUIDs(edge.targetUUIDs);
+    const targetNodes = StageManager.getEntitiesByUUIDs(edge.targetUUIDs);
     if (targetNodes.length < 2) {
       // 特殊情况，出问题了属于是
       if (targetNodes.length === 1) {
         // 画一个圆环
         const node = targetNodes[0];
         const center = node.collisionBox.getRectangle().center;
-        this.project.shapeRenderer.renderCircle(
-          this.project.renderer.transformWorld2View(center),
-          100 * this.project.camera.currentScale,
+        ShapeRenderer.renderCircle(
+          Renderer.transformWorld2View(center),
+          100 * Camera.currentScale,
           Color.Transparent,
-          this.project.stageStyleManager.currentStyle.StageObjectBorder,
-          2 * this.project.camera.currentScale,
+          StageStyleManager.currentStyle.StageObjectBorder,
+          2 * Camera.currentScale,
         );
       }
       if (targetNodes.length === 0) {
         // 在0 0 位置画圆
-        this.project.shapeRenderer.renderCircle(
-          this.project.renderer.transformWorld2View(Vector.getZero()),
-          100 * this.project.camera.currentScale,
+        ShapeRenderer.renderCircle(
+          Renderer.transformWorld2View(Vector.getZero()),
+          100 * Camera.currentScale,
           Color.Transparent,
-          this.project.stageStyleManager.currentStyle.StageObjectBorder,
-          2 * this.project.camera.currentScale,
+          StageStyleManager.currentStyle.StageObjectBorder,
+          2 * Camera.currentScale,
         );
       }
       return;
@@ -46,15 +48,15 @@ export class MultiTargetUndirectedEdgeRenderer {
     // 正常情况, target >= 2
     const centerLocation = edge.centerLocation;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     // 画文字
     if (edge.text !== "") {
       // 画文字
-      this.project.textRenderer.renderMultiLineTextFromCenter(
+      TextRenderer.renderMultiLineTextFromCenter(
         edge.text,
-        this.project.renderer.transformWorld2View(centerLocation),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
+        Renderer.transformWorld2View(centerLocation),
+        Renderer.FONT_SIZE * Camera.currentScale,
         Infinity,
         edgeColor,
       );
@@ -72,16 +74,16 @@ export class MultiTargetUndirectedEdgeRenderer {
           const textRectangle = edge.textRectangle;
           toCenterPoint = textRectangle.getLineIntersectionPoint(new Line(centerLocation, targetLocation));
         }
-        this.project.curveRenderer.renderSolidLine(
-          this.project.renderer.transformWorld2View(targetPoint),
-          this.project.renderer.transformWorld2View(toCenterPoint),
+        CurveRenderer.renderSolidLine(
+          Renderer.transformWorld2View(targetPoint),
+          Renderer.transformWorld2View(toCenterPoint),
           edgeColor,
-          2 * this.project.camera.currentScale,
+          2 * Camera.currentScale,
         );
         // 画箭头
         if (edge.arrow === "inner") {
           //
-          this.project.edgeRenderer.renderArrowHead(
+          EdgeRenderer.renderArrowHead(
             // Renderer.transformWorld2View(toCenterPoint),
             toCenterPoint,
             toCenterPoint.subtract(targetPoint).normalize(),
@@ -90,7 +92,7 @@ export class MultiTargetUndirectedEdgeRenderer {
           );
         } else if (edge.arrow === "outer") {
           //
-          this.project.edgeRenderer.renderArrowHead(
+          EdgeRenderer.renderArrowHead(
             // Renderer.transformWorld2View(targetPoint),
             targetPoint,
             targetPoint.subtract(toCenterPoint).normalize(),
@@ -119,10 +121,10 @@ export class MultiTargetUndirectedEdgeRenderer {
       convexPoints = ConvexHull.computeConvexHull(convexPoints);
       // 保证首尾相接
       convexPoints.push(convexPoints[0]);
-      this.project.curveRenderer.renderSolidLineMultiple(
-        convexPoints.map((point) => this.project.renderer.transformWorld2View(point)),
+      CurveRenderer.renderSolidLineMultiple(
+        convexPoints.map((point) => Renderer.transformWorld2View(point)),
         edgeColor.toNewAlpha(0.5),
-        8 * this.project.camera.currentScale,
+        8 * Camera.currentScale,
       );
     }
   }

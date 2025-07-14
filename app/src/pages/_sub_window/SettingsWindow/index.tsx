@@ -1,5 +1,3 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import {
   Bot,
   Brain,
@@ -19,11 +17,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Github from "../../../assets/github.svg?react";
 import Button from "../../../components/Button";
+import { Rectangle } from "../../../core/dataStruct/shape/Rectangle";
+import { Vector } from "../../../core/dataStruct/Vector";
 import { SubWindow } from "../../../core/service/SubWindow";
 import { cn } from "../../../utils/cn";
 import { isMac } from "../../../utils/platform";
 import About from "./about";
-import AISettings from "./ai";
+import AI from "./ai";
 import Automation from "./automation";
 import Control from "./control";
 import Effects from "./effects";
@@ -80,7 +80,7 @@ const pages = [
   {
     id: "ai",
     icon: <Brain />,
-    component: <AISettings />,
+    component: <AI />,
   },
   {
     id: "github",
@@ -104,9 +104,9 @@ const pages = [
   },
 ];
 
-export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage?: string }) {
+export default function SettingsWindow() {
   const { t } = useTranslation("settings");
-  const [currentPage, setCurrentPage] = useState(defaultPage);
+  const [currentPage, setCurrentPage] = useState("visual");
 
   return (
     <div className="flex h-full w-full flex-col p-8">
@@ -133,10 +133,11 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
   );
 }
 
-SettingsWindow.open = (page: string) => {
+SettingsWindow.open = () => {
   SubWindow.create({
     title: "设置",
-    children: <SettingsWindow defaultPage={page} />,
+
+    children: <SettingsWindow />,
     rect: Rectangle.inCenter(new Vector(window.innerWidth * 0.87, window.innerHeight * 0.88)),
   });
 };

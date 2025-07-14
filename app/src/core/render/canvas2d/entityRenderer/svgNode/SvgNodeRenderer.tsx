@@ -1,45 +1,45 @@
-import { Project, service } from "../../../../Project";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../stage/Camera";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
+import { SvgRenderer } from "../../basicRenderer/svgRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
+import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EntityRenderer } from "../EntityRenderer";
 
 /**
  * 渲染SVG节点
  */
-@service("svgNodeRenderer")
-export class SvgNodeRenderer {
-  constructor(private readonly project: Project) {}
-
+export namespace SvgNodeRenderer {
   // 渲染SVG节点
-  render(svgNode: SvgNode) {
+  export function render(svgNode: SvgNode) {
     if (svgNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        svgNode.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(svgNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     if (svgNode.state === "loading") {
       // 正在加载
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         "Loading...",
         svgNode.collisionBox.getRectangle().center,
-        16 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+        16 * Camera.currentScale,
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
       );
     } else if (svgNode.state === "loaded") {
-      this.project.svgRenderer.renderSvgFromLeftTopWithoutSize(
+      SvgRenderer.renderSvgFromLeftTopWithoutSize(
         svgNode.content,
-        this.project.renderer.transformWorld2View(svgNode.location),
+        Renderer.transformWorld2View(svgNode.location),
         svgNode.scaleNumber,
       );
     } else if (svgNode.state === "error") {
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         "Error",
         svgNode.collisionBox.getRectangle().center,
-        16 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.effects.warningShadow,
+        16 * Camera.currentScale,
+        StageStyleManager.currentStyle.effects.warningShadow,
       );
     }
 
-    this.project.entityRenderer.renderEntityDetails(svgNode);
+    EntityRenderer.renderEntityDetails(svgNode);
   }
 }

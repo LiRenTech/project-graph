@@ -1,15 +1,18 @@
-import { Color, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
+import { Color } from "../../../../dataStruct/Color";
+import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
-import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { MouseLocation } from "../../../controlService/MouseLocation";
-import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { AutoComputeUtils } from "../AutoComputeUtils";
+import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
+import { Stage } from "../../../../stage/Stage";
+import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
+import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 
 /**
  * 直接获取输入节点和下游输出节点
@@ -22,6 +25,8 @@ import { AutoComputeUtils } from "../AutoComputeUtils";
  */
 export namespace NodeLogic {
   export const delayStates: Map<string, Record<number, string>> = new Map();
+  /* eslint-disable prefer-const */
+  export let step: number = 0;
   // step 是一个计数器，每当逻辑引擎实际执行一次时，step 就会加一
   // TODO: 可以考虑把 step 放到逻辑引擎层面，甚至可以出一个节点获取当前步数，可以加一个每次只运行一步的快捷键
   /**
@@ -123,7 +128,7 @@ export namespace NodeLogic {
     const fatherNode2 = fatherNodes[1];
     const fatherNode3 = fatherNodes[2];
     if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode && fatherNode3 instanceof TextNode) {
-      const findEntity = this.project.stageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
+      const findEntity = StageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
       if (!findEntity) {
         return ["Error: cannot find entity by uuid"];
       }
@@ -149,7 +154,7 @@ export namespace NodeLogic {
   ): string[] {
     const fatherNode1 = fatherNodes[0];
     if (fatherNode1 instanceof TextNode) {
-      const findEntity = this.project.stageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
+      const findEntity = StageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
       if (!findEntity) {
         return ["Error: cannot find entity by uuid"];
       }
@@ -398,7 +403,7 @@ export namespace NodeLogic {
       const a = parseFloat(fatherNodes[3].text);
       const matchColor = new Color(r, g, b, a);
       const matchNodes: TextNode[] = [];
-      for (const node of this.project.stageManager.getTextNodes()) {
+      for (const node of StageManager.getTextNodes()) {
         // 避开与逻辑节点相连的节点
         if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
           continue;
@@ -444,7 +449,7 @@ export namespace NodeLogic {
       const a = parseFloat(fatherNodes[3].text);
       const matchColor = new Color(r, g, b, a);
       const matchNodes: TextNode[] = [];
-      for (const node of this.project.stageManager.getTextNodes()) {
+      for (const node of StageManager.getTextNodes()) {
         // 避开与逻辑节点相连的节点
         if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
           continue;
@@ -522,7 +527,7 @@ export namespace NodeLogic {
       if (b === 1) {
         const x = parseFloat(fatherNode1.text);
         const y = parseFloat(fatherNode2.text);
-        const textNode = new TextNode(this.project, {
+        const textNode = new TextNode({
           uuid: v4(),
           details: "",
           location: [x, y],
@@ -530,7 +535,7 @@ export namespace NodeLogic {
           color: [0, 0, 0, 0],
           text: fatherNode3.text,
         });
-        this.project.stageManager.addTextNode(textNode);
+        StageManager.addTextNode(textNode);
         return [textNode.uuid];
       } else {
         return ["暂停创建节点"];
@@ -559,7 +564,7 @@ export namespace NodeLogic {
       const x = parseFloat(fatherNode1.text);
       const y = parseFloat(fatherNode2.text);
       if (Number.isFinite(x) && Number.isFinite(y)) {
-        const entity = this.project.stageManager.isEntityOnLocation(new Vector(x, y));
+        const entity = StageManager.isEntityOnLocation(new Vector(x, y));
         if (entity) {
           return ["1"];
         } else {
@@ -585,7 +590,7 @@ export namespace NodeLogic {
     if (fatherNodes[0] instanceof TextNode && fatherNodes[0].text.trim() !== "" && fatherNodes[1] instanceof TextNode) {
       const content = fatherNodes[0].text;
       const newString = fatherNodes[1].text;
-      for (const node of this.project.stageManager.getTextNodes()) {
+      for (const node of StageManager.getTextNodes()) {
         // 避开与逻辑节点相连的节点
         if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
           continue;
@@ -619,7 +624,7 @@ export namespace NodeLogic {
         return ["第二个参数只能输入 0/1"];
       }
       const searchResultNodes: TextNode[] = [];
-      for (const node of this.project.stageManager.getTextNodes()) {
+      for (const node of StageManager.getTextNodes()) {
         if (isCaseSensitive) {
           if (node.text.includes(searchString)) {
             searchResultNodes.push(node);
@@ -654,14 +659,14 @@ export namespace NodeLogic {
       const b = parseInt(fatherNodes[2].text);
       const a = parseFloat(fatherNodes[3].text);
       const collectPenStrokes: PenStroke[] = [];
-      for (const penStroke of this.project.stageManager.getPenStrokes()) {
+      for (const penStroke of StageManager.getPenStrokes()) {
         if (penStroke.getColor().equals(new Color(r, g, b, a))) {
           collectPenStrokes.push(penStroke);
         }
       }
       for (const penStroke of collectPenStrokes) {
-        this.project.effects.addEffect(PenStrokeDeletedEffect.fromPenStroke(penStroke));
-        this.project.stageManager.deleteOnePenStroke(penStroke);
+        Stage.effectMachine.addEffect(PenStrokeDeletedEffect.fromPenStroke(penStroke));
+        StageManager.deleteOnePenStroke(penStroke);
       }
     }
     return [];

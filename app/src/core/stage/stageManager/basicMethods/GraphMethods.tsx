@@ -1,5 +1,6 @@
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Edge } from "../../stageObject/association/Edge";
+import { StageManager } from "../StageManager";
 
 export namespace GraphMethods {
   export function isTree(node: ConnectableEntity): boolean {
@@ -22,7 +23,7 @@ export namespace GraphMethods {
   /** 获取节点连接的子节点数组，未排除自环 */
   export function nodeChildrenArray(node: ConnectableEntity): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
-    for (const edge of this.project.stageManager.getLineEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.source.uuid === node.uuid) {
         res.push(edge.target);
       }
@@ -36,7 +37,7 @@ export namespace GraphMethods {
    */
   export function nodeParentArray(node: ConnectableEntity): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
-    for (const edge of this.project.stageManager.getLineEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.target.uuid === node.uuid && edge.target.uuid !== edge.source.uuid) {
         res.push(edge.source);
       }
@@ -50,7 +51,7 @@ export namespace GraphMethods {
    */
   function getReversedEdgeDict(): Record<string, string> {
     const res: Record<string, string> = {};
-    for (const edge of this.project.stageManager.getLineEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       res[edge.target.uuid] = edge.source.uuid;
     }
     return res;
@@ -67,14 +68,14 @@ export namespace GraphMethods {
     while (reverseEdges[rootUUID] && !visited.has(rootUUID)) {
       visited.add(rootUUID);
       const parentUUID = reverseEdges[rootUUID];
-      const parent = this.project.stageManager.getConnectableEntityByUUID(parentUUID);
+      const parent = StageManager.getConnectableEntityByUUID(parentUUID);
       if (parent) {
         rootUUID = parentUUID;
       } else {
         break;
       }
     }
-    const root = this.project.stageManager.getConnectableEntityByUUID(rootUUID);
+    const root = StageManager.getConnectableEntityByUUID(rootUUID);
     if (root) {
       return [root];
     } else {
@@ -83,7 +84,7 @@ export namespace GraphMethods {
   }
 
   export function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {
-    for (const edge of this.project.stageManager.getLineEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
       }
@@ -131,7 +132,7 @@ export namespace GraphMethods {
    */
   export function getOneStepSuccessorSet(node: ConnectableEntity): ConnectableEntity[] {
     const result: ConnectableEntity[] = []; // 存储可达节点的结果集
-    for (const edge of this.project.stageManager.getLineEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.source === node && edge.target.uuid !== edge.source.uuid) {
         result.push(edge.target);
       }
@@ -141,7 +142,7 @@ export namespace GraphMethods {
 
   export function getEdgesBetween(node1: ConnectableEntity, node2: ConnectableEntity): Edge[] {
     const result: Edge[] = []; // 存储连接两个节点的边的结果集
-    for (const edge of this.project.stageManager.getEdges()) {
+    for (const edge of StageManager.getEdges()) {
       if (edge.source === node1 && edge.target === node2) {
         result.push(edge);
       }
@@ -150,7 +151,7 @@ export namespace GraphMethods {
   }
 
   export function getEdgeFromTwoEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity): Edge | null {
-    for (const edge of this.project.stageManager.getEdges()) {
+    for (const edge of StageManager.getEdges()) {
       if (edge.source === fromNode && edge.target === toNode) {
         return edge;
       }

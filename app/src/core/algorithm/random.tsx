@@ -1,4 +1,4 @@
-import { Vector } from "@graphif/data-structures";
+import { Vector } from "../dataStruct/Vector";
 
 export namespace Random {
   export function randomInt(min: number, max: number): number {

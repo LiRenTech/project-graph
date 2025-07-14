@@ -1,7 +1,10 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../service/Settings";
+import { Camera } from "../../../stage/Camera";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
@@ -11,19 +14,29 @@ import { Section } from "../../../stage/stageObject/entity/Section";
 import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
+import { CurveRenderer } from "../basicRenderer/curveRenderer";
+import { ImageRenderer } from "../basicRenderer/ImageRenderer";
+import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../basicRenderer/textRenderer";
 import { Renderer } from "../renderer";
+import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
+import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
+import { PortalNodeRenderer } from "./portalNode/portalNodeRenderer";
+import { SectionRenderer } from "./section/SectionRenderer";
+import { SvgNodeRenderer } from "./svgNode/SvgNodeRenderer";
+import { TextNodeRenderer } from "./textNode/TextNodeRenderer";
+import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 
 /**
  * 处理节点相关的绘制
  */
-@service("entityRenderer")
-export class EntityRenderer {
-  private sectionSortedZIndex: Section[] = [];
-  sectionBitTitleRenderType: Settings.Settings["sectionBitTitleRenderType"] = "cover";
+export namespace EntityRenderer {
+  let sectionSortedZIndex: Section[] = [];
+  export let sectionBitTitleRenderType: Settings.Settings["sectionBitTitleRenderType"] = "cover";
 
-  constructor(private readonly project: Project) {
+  export function init() {
     Settings.watch("sectionBitTitleRenderType", (value) => {
-      this.sectionBitTitleRenderType = value;
+      sectionBitTitleRenderType = value;
     });
   }
 
@@ -32,60 +45,60 @@ export class EntityRenderer {
    * 为了防止每帧都调用导致排序，为了提高性能
    * 决定：每隔几秒更新一次
    */
-  sortSectionsByZIndex() {
-    const sections = this.project.stageManager.getSections();
+  export function sortSectionsByZIndex() {
+    const sections = StageManager.getSections();
     sections.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
-    this.sectionSortedZIndex = sections;
+    sectionSortedZIndex = sections;
   }
 
-  private tickNumber = 0;
+  let tickNumber = 0;
 
-  renderAllSectionsBackground(viewRectangle: Rectangle) {
-    if (this.sectionSortedZIndex.length != this.project.stageManager.getSections().length) {
-      this.sortSectionsByZIndex();
+  export function renderAllSectionsBackground(viewRectangle: Rectangle) {
+    if (sectionSortedZIndex.length != StageManager.getSections().length) {
+      sortSectionsByZIndex();
     } else {
       // 假设fps=60，则10秒更新一次
-      if (this.tickNumber % 600 === 0) {
-        this.sortSectionsByZIndex();
+      if (tickNumber % 600 === 0) {
+        sortSectionsByZIndex();
       }
     }
     // 1 遍历所有section实体，画底部颜色
-    for (const section of this.sectionSortedZIndex) {
-      if (this.project.renderer.isOverView(viewRectangle, section)) {
+    for (const section of sectionSortedZIndex) {
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
-      this.project.sectionRenderer.renderBackgroundColor(section);
+      SectionRenderer.renderBackgroundColor(section);
     }
     // 2 遍历所有传送门,渲染黑底
-    for (const portalNode of this.project.stageManager.getPortalNodes()) {
-      if (this.project.renderer.isOverView(viewRectangle, portalNode)) {
+    for (const portalNode of StageManager.getPortalNodes()) {
+      if (Renderer.isOverView(viewRectangle, portalNode)) {
         continue;
       }
-      this.project.portalNodeRenderer.renderBackground(portalNode);
+      PortalNodeRenderer.renderBackground(portalNode);
     }
     // 最后更新帧
-    this.tickNumber++;
+    tickNumber++;
   }
 
   /**
    * 统一渲染全部框的大标题
    */
-  renderAllSectionsBigTitle(viewRectangle: Rectangle) {
-    if (this.sectionBitTitleRenderType === "none") {
+  export function renderAllSectionsBigTitle(viewRectangle: Rectangle) {
+    if (sectionBitTitleRenderType === "none") {
       return;
     }
     // 从最深层的最小框开始渲染
     // 目前的层级排序是假的，是直接按y轴从上往下判定
     // 认为最靠上的才是最底下的
-    for (let z = this.sectionSortedZIndex.length - 1; z >= 0; z--) {
-      const section = this.sectionSortedZIndex[z];
-      if (this.project.renderer.isOverView(viewRectangle, section)) {
+    for (let z = sectionSortedZIndex.length - 1; z >= 0; z--) {
+      const section = sectionSortedZIndex[z];
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
-      if (this.sectionBitTitleRenderType === "cover") {
-        this.project.sectionRenderer.renderBigCoveredTitle(section);
-      } else if (this.sectionBitTitleRenderType === "top") {
-        this.project.sectionRenderer.renderTopTitle(section);
+      if (sectionBitTitleRenderType === "cover") {
+        SectionRenderer.renderBigCoveredTitle(section);
+      } else if (sectionBitTitleRenderType === "top") {
+        SectionRenderer.renderTopTitle(section);
       }
     }
   }
@@ -94,11 +107,11 @@ export class EntityRenderer {
    * 统一渲染所有实体
    * 返回实际渲染的实体数量
    */
-  renderAllEntities(viewRectangle: Rectangle) {
+  export function renderAllEntities(viewRectangle: Rectangle) {
     let renderedNodes = 0;
 
     // 2 遍历所有非section实体 / 非涂鸦实体
-    for (const entity of this.project.stageManager.getEntities()) {
+    for (const entity of StageManager.getEntities()) {
       if (entity instanceof Section) {
         continue;
       }
@@ -106,25 +119,25 @@ export class EntityRenderer {
         continue;
       }
       // 视线之外不画
-      if (this.project.renderer.isOverView(viewRectangle, entity)) {
+      if (Renderer.isOverView(viewRectangle, entity)) {
         continue;
       }
-      this.renderEntity(entity);
+      EntityRenderer.renderEntity(entity);
       renderedNodes++;
     }
     // 3 遍历所有section实体，画顶部大文字
-    for (const section of this.project.stageManager.getSections()) {
-      if (this.project.renderer.isOverView(viewRectangle, section)) {
+    for (const section of StageManager.getSections()) {
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
-      this.project.sectionRenderer.render(section);
+      SectionRenderer.render(section);
     }
     // 4 遍历所有涂鸦实体
-    for (const penStroke of this.project.stageManager.getPenStrokes()) {
-      if (this.project.renderer.isOverView(viewRectangle, penStroke)) {
+    for (const penStroke of StageManager.getPenStrokes()) {
+      if (Renderer.isOverView(viewRectangle, penStroke)) {
         continue;
       }
-      this.renderEntity(penStroke);
+      EntityRenderer.renderEntity(penStroke);
     }
     return renderedNodes;
   }
@@ -133,31 +146,31 @@ export class EntityRenderer {
    * 父渲染函数
    * @param entity
    */
-  renderEntity(entity: Entity) {
+  export function renderEntity(entity: Entity) {
     // section 折叠不画
     if (entity.isHiddenBySectionCollapse) {
       return;
     }
     if (entity instanceof Section) {
-      this.project.sectionRenderer.render(entity);
+      SectionRenderer.render(entity);
     } else if (entity instanceof TextNode) {
-      this.project.textNodeRenderer.renderTextNode(entity);
+      TextNodeRenderer.renderTextNode(entity);
     } else if (entity instanceof ConnectPoint) {
-      this.renderConnectPoint(entity);
+      renderConnectPoint(entity);
     } else if (entity instanceof ImageNode) {
-      this.renderImageNode(entity);
+      renderImageNode(entity);
     } else if (entity instanceof UrlNode) {
-      this.project.urlNodeRenderer.render(entity);
+      UrlNodeRenderer.render(entity);
     } else if (entity instanceof PenStroke) {
-      this.renderPenStroke(entity);
+      renderPenStroke(entity);
     } else if (entity instanceof PortalNode) {
-      this.project.portalNodeRenderer.render(entity);
+      PortalNodeRenderer.render(entity);
     } else if (entity instanceof SvgNode) {
-      this.project.svgNodeRenderer.render(entity);
+      SvgNodeRenderer.render(entity);
     }
     // details右上角小按钮
-    if (this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
-      this.project.entityDetailsButtonRenderer.render(entity);
+    if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
+      EntityDetailsButtonRenderer(entity);
     }
   }
 
@@ -165,130 +178,124 @@ export class EntityRenderer {
    * 渲染实体下方的注释（详细信息）
    * @param entity
    */
-  renderEntityDetails(entity: Entity) {
+  export function renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
-      if (this.project.renderer.isAlwaysShowDetails) {
-        this._renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
+      if (Renderer.isAlwaysShowDetails) {
+        _renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
       } else {
         if (entity.isMouseHover) {
-          this._renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
+          _renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
         }
       }
     }
   }
-  private _renderEntityDetails(entity: Entity, limitLiens: number) {
-    this.project.textRenderer.renderMultiLineText(
+  function _renderEntityDetails(entity: Entity, limitLiens: number) {
+    TextRenderer.renderMultiLineText(
       entity.details,
-      this.project.renderer.transformWorld2View(
+      Renderer.transformWorld2View(
         entity.collisionBox.getRectangle().location.add(new Vector(0, entity.collisionBox.getRectangle().size.y)),
       ),
-      Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
+      Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Math.max(
-        Renderer.ENTITY_DETAILS_WIDTH * this.project.camera.currentScale,
-        entity.collisionBox.getRectangle().size.x * this.project.camera.currentScale,
+        Renderer.ENTITY_DETAILS_WIDTH * Camera.currentScale,
+        entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
-      this.project.stageStyleManager.currentStyle.NodeDetailsText,
+      StageStyleManager.currentStyle.NodeDetailsText,
       1.2,
       limitLiens,
     );
   }
 
-  private renderConnectPoint(connectPoint: ConnectPoint) {
+  function renderConnectPoint(connectPoint: ConnectPoint) {
     if (connectPoint.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        connectPoint.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(connectPoint.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
-    this.project.shapeRenderer.renderCircle(
-      this.project.renderer.transformWorld2View(connectPoint.geometryCenter),
-      connectPoint.radius * this.project.camera.currentScale,
+    ShapeRenderer.renderCircle(
+      Renderer.transformWorld2View(connectPoint.geometryCenter),
+      connectPoint.radius * Camera.currentScale,
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
     );
-    this.renderEntityDetails(connectPoint);
+    renderEntityDetails(connectPoint);
   }
 
-  private renderImageNode(imageNode: ImageNode) {
+  function renderImageNode(imageNode: ImageNode) {
     if (imageNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        imageNode.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(imageNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 节点身体矩形
     // 2群群友反馈这个图片不加边框应该更好看。因为有透明logo图案，边框贴紧会很难看。
 
-    // this.project.shapeRenderer.renderRect(
+    // ShapeRenderer.renderRect(
     //   new Rectangle(
     //     Renderer.transformWorld2View(imageNode.rectangle.location),
-    //     imageNode.rectangle.size.multiply(this.project.camera.currentScale),
+    //     imageNode.rectangle.size.multiply(Camera.currentScale),
     //   ),
     //   Color.Transparent,
-    //   this.project.stageStyleManager.currentStyle.StageObjectBorder,
-    //   2 * this.project.camera.currentScale,
+    //   StageStyleManager.currentStyle.StageObjectBorder,
+    //   2 * Camera.currentScale,
     // );
     if (imageNode.state === "loading") {
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         "loading...",
-        this.project.renderer.transformWorld2View(imageNode.rectangle.center),
-        20 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     } else if (imageNode.state === "success") {
-      this.project.imageRenderer.renderImageElement(
+      ImageRenderer.renderImageElement(
         imageNode.imageElement,
-        this.project.renderer.transformWorld2View(imageNode.rectangle.location),
+        Renderer.transformWorld2View(imageNode.rectangle.location),
         imageNode.scaleNumber,
       );
     } else if (imageNode.state === "encodingError" || imageNode.state === "unknownError") {
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         imageNode.uuid,
-        this.project.renderer.transformWorld2View(imageNode.rectangle.topCenter),
-        10 * this.project.camera.currentScale,
+        Renderer.transformWorld2View(imageNode.rectangle.topCenter),
+        10 * Camera.currentScale,
         Color.Red,
       );
-      this.project.textRenderer.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         imageNode.errorDetails,
-        this.project.renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
-        10 * this.project.camera.currentScale,
+        Renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
+        10 * Camera.currentScale,
         Color.Red,
       );
       if (imageNode.state === "unknownError") {
-        this.project.textRenderer.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           "未知错误，建议反馈",
-          this.project.renderer.transformWorld2View(imageNode.rectangle.center),
-          20 * this.project.camera.currentScale,
+          Renderer.transformWorld2View(imageNode.rectangle.center),
+          20 * Camera.currentScale,
           Color.Red,
         );
       } else if (imageNode.state === "encodingError") {
-        this.project.textRenderer.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           "图片base64编码错误",
-          this.project.renderer.transformWorld2View(imageNode.rectangle.center),
-          20 * this.project.camera.currentScale,
+          Renderer.transformWorld2View(imageNode.rectangle.center),
+          20 * Camera.currentScale,
           Color.Red,
         );
       }
     }
     // 调试，缩放信息和位置信息
-    if (this.project.renderer.isShowDebug) {
-      this.project.textRenderer.renderOneLineText(
+    if (Renderer.isShowDebug) {
+      TextRenderer.renderOneLineText(
         "scale: " + imageNode.scaleNumber.toString(),
-        this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
-        3 * this.project.camera.currentScale,
+        Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
+        3 * Camera.currentScale,
         Color.Gray,
       );
-      this.project.textRenderer.renderOneLineText(
+      TextRenderer.renderOneLineText(
         "origin size: " + imageNode.originImageSize.toString(),
-        this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
-        3 * this.project.camera.currentScale,
+        Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
+        3 * Camera.currentScale,
         Color.Gray,
       );
     }
-    this.renderEntityDetails(imageNode);
+    renderEntityDetails(imageNode);
   }
 
   /**
@@ -296,47 +303,44 @@ export class EntityRenderer {
    * TODO: 绘制时的碰撞箱应该有一个合适的宽度
    * @param penStroke
    */
-  private renderPenStroke(penStroke: PenStroke) {
+  function renderPenStroke(penStroke: PenStroke) {
     let penStrokeColor = penStroke.getColor();
     if (penStrokeColor.a === 0) {
-      penStrokeColor = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
+      penStrokeColor = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     // const path = penStroke.getPath();
     // if (path.length <= 3) {
     //   CurveRenderer.renderSolidLineMultipleWithWidth(
     //     penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
     //     penStrokeColor,
-    //     penStroke.getSegmentList().map((seg) => seg.width * this.project.camera.currentScale),
+    //     penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     //   );
     // } else {
     //   CurveRenderer.renderSolidLineMultipleSmoothly(
     //     penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
     //     penStrokeColor,
-    //     penStroke.getSegmentList()[0].width * this.project.camera.currentScale,
+    //     penStroke.getSegmentList()[0].width * Camera.currentScale,
     //   );
     // }
     const segmentList = penStroke.getSegmentList();
 
     // console.log("@@", segmentList);
 
-    this.project.curveRenderer.renderPenStroke(
+    CurveRenderer.renderPenStroke(
       segmentList.map((segment) => ({
-        startLocation: this.project.renderer.transformWorld2View(segment.startLocation),
-        endLocation: this.project.renderer.transformWorld2View(segment.endLocation),
-        width: segment.width * this.project.camera.currentScale,
+        startLocation: Renderer.transformWorld2View(segment.startLocation),
+        endLocation: Renderer.transformWorld2View(segment.endLocation),
+        width: segment.width * Camera.currentScale,
       })),
       penStrokeColor,
     );
     if (penStroke.isMouseHover) {
-      this.project.collisionBoxRenderer.render(
-        penStroke.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-      );
+      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
     if (penStroke.isSelected) {
-      this.project.collisionBoxRenderer.render(
+      CollisionBoxRenderer.render(
         penStroke.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected.toNewAlpha(0.5),
+        StageStyleManager.currentStyle.CollideBoxSelected.toNewAlpha(0.5),
       );
     }
   }

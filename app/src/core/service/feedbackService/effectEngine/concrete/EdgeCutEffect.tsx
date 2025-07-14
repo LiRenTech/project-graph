@@ -1,12 +1,16 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { EffectObject } from "../effectObject";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Color } from "../../../../dataStruct/Color";
+import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Camera } from "../../../../stage/Camera";
 import { easeOutQuint } from "../mathTools/easings";
 
 /**
  * 直线连线被斩断的特效
  */
-export class EdgeCutEffect extends Effect {
+export class EdgeCutEffect extends EffectObject {
   constructor(
     timeProgress: ProgressNumber,
     delay: number,
@@ -26,7 +30,7 @@ export class EdgeCutEffect extends Effect {
     return "EdgeCutEffect";
   }
 
-  render(project: Project) {
+  render() {
     const midPoint = new Vector((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
 
     // 计算动画进度 (0-1)
@@ -44,17 +48,17 @@ export class EdgeCutEffect extends Effect {
     );
 
     // 绘制两端缩短的线条
-    project.curveRenderer.renderSolidLine(
-      project.renderer.transformWorld2View(this.start),
-      project.renderer.transformWorld2View(leftEnd),
+    CurveRenderer.renderSolidLine(
+      Renderer.transformWorld2View(this.start),
+      Renderer.transformWorld2View(leftEnd),
       this.color.toNewAlpha(1 - progress),
-      this.width * project.camera.currentScale,
+      this.width * Camera.currentScale,
     );
-    project.curveRenderer.renderSolidLine(
-      project.renderer.transformWorld2View(rightEnd),
-      project.renderer.transformWorld2View(this.end),
+    CurveRenderer.renderSolidLine(
+      Renderer.transformWorld2View(rightEnd),
+      Renderer.transformWorld2View(this.end),
       this.color.toNewAlpha(1 - progress),
-      this.width * project.camera.currentScale,
+      this.width * Camera.currentScale,
     );
   }
 }

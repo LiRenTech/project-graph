@@ -1,7 +1,7 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Project } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
 import { SvgRenderer } from "../../../render/canvas2d/basicRenderer/svgRenderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -21,17 +21,14 @@ export class SvgNode extends ConnectableEntity {
   state: "loading" | "loaded" | "error" = "loading";
   isHiddenBySectionCollapse: boolean = false;
 
-  constructor(
-    protected readonly project: Project,
-    {
-      uuid,
-      details = "",
-      content = "",
-      location = [0, 0],
-      scale = 1,
-      color = [0, 0, 0, 0],
-    }: Partial<Serialized.SvgNode> & { uuid: string },
-  ) {
+  constructor({
+    uuid,
+    details = "",
+    content = "",
+    location = [0, 0],
+    scale = 1,
+    color = [0, 0, 0, 0],
+  }: Partial<Serialized.SvgNode> & { uuid: string }) {
     super();
     this.uuid = uuid;
     this.details = details;
@@ -79,7 +76,7 @@ export class SvgNode extends ConnectableEntity {
   move(delta: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapes[0] = newRectangle;
+    this.collisionBox.shapeList[0] = newRectangle;
     this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }
@@ -87,7 +84,7 @@ export class SvgNode extends ConnectableEntity {
   moveTo(location: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapes[0] = newRectangle;
+    this.collisionBox.shapeList[0] = newRectangle;
     this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }

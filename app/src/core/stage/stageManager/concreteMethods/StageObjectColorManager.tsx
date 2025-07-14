@@ -1,47 +1,45 @@
-import { Color } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { StageHistoryManager } from "../StageHistoryManager";
+import { StageManager } from "../StageManager";
 
 /**
  * 管理所有 节点/连线 的颜色
  * 不仅包括添加颜色和去除颜色，还包括让颜色变暗和变亮等
  */
-@service("stageManagerColorManager")
-export class StageObjectColorManager {
-  constructor(private readonly project: Project) {}
-
-  setSelectedStageObjectColor(color: Color) {
-    for (const node of this.project.stageManager.getTextNodes()) {
+export namespace StageObjectColorManager {
+  export function setSelectedStageObjectColor(color: Color) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         node.color = color;
       }
     }
-    for (const node of this.project.stageManager.getSections()) {
+    for (const node of StageManager.getSections()) {
       if (node.isSelected) {
         node.color = color;
       }
     }
-    for (const entity of this.project.stageManager.getPenStrokes()) {
+    for (const entity of StageManager.getPenStrokes()) {
       if (entity.isSelected) {
         entity.setColor(color);
       }
     }
-    for (const entity of this.project.stageManager.getSvgNodes()) {
+    for (const entity of StageManager.getSvgNodes()) {
       if (entity.isSelected) {
         entity.changeColor(color);
       }
     }
-    for (const edge of this.project.stageManager.getAssociations()) {
+    for (const edge of StageManager.getAssociations()) {
       if (edge.isSelected) {
         edge.color = color;
       }
     }
     // 特性：统一取消框选
-    // this.project.stageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
-    this.project.historyManager.recordStep();
+    // StageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
+    StageHistoryManager.recordStep();
   }
 
-  darkenNodeColor() {
-    for (const node of this.project.stageManager.getTextNodes()) {
+  export function darkenNodeColor() {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const darkenedColor = node.color.clone();
         darkenedColor.r = Math.max(darkenedColor.r - 20, 0);
@@ -50,11 +48,11 @@ export class StageObjectColorManager {
         node.color = darkenedColor;
       }
     }
-    this.project.historyManager.recordStep();
+    StageHistoryManager.recordStep();
   }
 
-  lightenNodeColor() {
-    for (const node of this.project.stageManager.getTextNodes()) {
+  export function lightenNodeColor() {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const lightenedColor = node.color.clone();
         lightenedColor.r = Math.min(lightenedColor.r + 20, 255);
@@ -63,6 +61,6 @@ export class StageObjectColorManager {
         node.color = lightenedColor;
       }
     }
-    this.project.historyManager.recordStep();
+    StageHistoryManager.recordStep();
   }
 }

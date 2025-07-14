@@ -1,13 +1,11 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Project } from "../../../Project";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
 import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
+import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
-// TODO: 这里继承了ConnectableEntity的话，TextNode模块就会报错，原因未知
-// Uncaught ReferenceError: can't access lexical declaration 'ConnectableEntity' before initialization
 export class ConnectPoint extends ConnectableEntity {
   get geometryCenter(): Vector {
     return this.location;
@@ -29,7 +27,7 @@ export class ConnectPoint extends ConnectableEntity {
   }
   set radius(value: number) {
     this._radius = value;
-    const rectangle = this._collisionBox.shapes[0];
+    const rectangle = this._collisionBox.shapeList[0];
     if (rectangle instanceof Rectangle) {
       rectangle.size = new Vector(value * 2, value * 2);
       rectangle.location = this.geometryCenter.subtract(new Vector(value, value));
@@ -57,7 +55,7 @@ export class ConnectPoint extends ConnectableEntity {
     if (value) {
       // 设定选中
       this.radius = 30;
-      // this.project.effects.addEffect(
+      // Stage.effectMachine.addEffect(
       //   CircleChangeRadiusEffect.fromConnectPointExpand(
       //     this.geometryCenter.clone(),
       //     30,
@@ -66,16 +64,15 @@ export class ConnectPoint extends ConnectableEntity {
     } else {
       // 取消选中
       this.radius = 1;
-      this.project.effects.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(this.geometryCenter.clone(), 30));
+      Stage.effectMachine.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(this.geometryCenter.clone(), 30));
     }
   }
 
   constructor(
-    protected readonly project: Project,
     { uuid, location = [0, 0], details = "" }: Partial<Serialized.ConnectPoint> & { uuid: string },
     public unknown = false,
   ) {
-    // super();
+    super();
     this.uuid = uuid;
     this.location = new Vector(...location);
     this.details = details;
@@ -88,7 +85,7 @@ export class ConnectPoint extends ConnectableEntity {
   move(delta: Vector): void {
     this.location = this.location.add(delta);
 
-    const rectangle = this._collisionBox.shapes[0];
+    const rectangle = this._collisionBox.shapeList[0];
     if (rectangle instanceof Rectangle) {
       rectangle.location = rectangle.location.add(delta);
     }
@@ -98,7 +95,7 @@ export class ConnectPoint extends ConnectableEntity {
   moveTo(location: Vector): void {
     this.location = location;
 
-    const rectangle = this._collisionBox.shapes[0];
+    const rectangle = this._collisionBox.shapeList[0];
     if (rectangle instanceof Rectangle) {
       rectangle.location = location.subtract(new Vector(10, 10));
     }

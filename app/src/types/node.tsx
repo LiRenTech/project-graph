@@ -1,4 +1,4 @@
-import { Project } from "../core/Project";
+import { StageDumper } from "../core/stage/StageDumper";
 
 // version 在 StageDumper里
 export namespace Serialized {
@@ -177,7 +177,7 @@ export namespace Serialized {
   export type CoreAssociation = LineEdge | CubicCatmullRomSplineEdge | MultiTargetUndirectedEdge;
 
   export type File = {
-    version: typeof Project.latestVersion;
+    version: typeof StageDumper.latestVersion;
     entities: CoreEntity[];
     associations: CoreAssociation[];
     tags: string[];

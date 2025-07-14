@@ -1,22 +1,19 @@
-import { Project, service } from "../../../Project";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { StageManager } from "../StageManager";
 
 /**
  * 舞台管理器相关的工具函数
  *
  */
-@service("stageUtils")
-export class StageUtils {
-  constructor(private readonly project: Project) {}
-
+export namespace StageManagerUtils {
   /**
    * 替换不需要在舞台上做检测的自动生成的名称
    * @param template
    * @returns
    */
-  replaceAutoNameWithoutStage(template: string): string {
+  function replaceAutoNameWithoutStage(template: string): string {
     if (template.includes("{{date}}")) {
       const now = new Date();
       const year = now.getFullYear();
@@ -39,9 +36,9 @@ export class StageUtils {
    * @param template
    * @param targetStageObject
    */
-  replaceAutoNameTemplate(currentName: string, targetStageObject: StageObject): string {
+  export function replaceAutoNameTemplate(currentName: string, targetStageObject: StageObject): string {
     // 先替换掉不需要检测舞台上内容的部分
-    currentName = this.replaceAutoNameWithoutStage(currentName);
+    currentName = replaceAutoNameWithoutStage(currentName);
 
     if (currentName.includes("{{i}}")) {
       let i = 0;
@@ -49,9 +46,9 @@ export class StageUtils {
         const currentCmpName = currentName.replace("{{i}}", i.toString());
         let isConflict = false;
         if (targetStageObject instanceof TextNode) {
-          isConflict = this.isNameConflictWithTextNodes(currentCmpName);
+          isConflict = isNameConflictWithTextNodes(currentCmpName);
         } else if (targetStageObject instanceof Section) {
-          isConflict = this.isNameConflictWithSections(currentCmpName);
+          isConflict = isNameConflictWithSections(currentCmpName);
         }
         if (isConflict) {
           i++;
@@ -66,8 +63,8 @@ export class StageUtils {
     return currentName;
   }
 
-  isNameConflictWithTextNodes(name: string): boolean {
-    for (const node of this.project.stageManager.getTextNodes()) {
+  function isNameConflictWithTextNodes(name: string): boolean {
+    for (const node of StageManager.getTextNodes()) {
       if (node.text === name) {
         return true;
       }
@@ -75,8 +72,8 @@ export class StageUtils {
     return false;
   }
 
-  isNameConflictWithSections(name: string): boolean {
-    for (const section of this.project.stageManager.getSections()) {
+  function isNameConflictWithSections(name: string): boolean {
+    for (const section of StageManager.getSections()) {
       if (section.text === name) {
         return true;
       }

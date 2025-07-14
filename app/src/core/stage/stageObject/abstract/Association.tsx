@@ -1,4 +1,4 @@
-import { Color } from "@graphif/data-structures";
+import { Color } from "../../../dataStruct/Color";
 import { ConnectableEntity } from "./ConnectableEntity";
 import { StageObject } from "./StageObject";
 

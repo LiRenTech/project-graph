@@ -1,16 +1,22 @@
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { open } from "@tauri-apps/plugin-shell";
-import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
+import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
+import { Stage } from "../core/stage/Stage";
+import { PathString } from "./pathString";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 
-// TODO: 工具栏中的地球仪图标
+/**
+ * 工具栏中的地球仪图标
+ */
 export async function openBrowserOrFile() {
-  // for (const node of StageManager.getSelectedEntities()) {
-  //   if (node instanceof TextNode) {
-  //     openOneTextNode(node);
-  //   } else {
-  //     openOneEntity(node);
-  //   }
-  // }
+  for (const node of StageManager.getSelectedEntities()) {
+    if (node instanceof TextNode) {
+      openOneTextNode(node);
+    } else {
+      openOneEntity(node);
+    }
+  }
 }
 
 function openOneEntity(node: Entity) {
@@ -49,7 +55,7 @@ function openOneTextNode(node: TextNode) {
   //     myOpen(nodeText);
   //   } else {
   //     // 不是网址也不是文件，不做处理
-  //     this.project.effects.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
+  //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
   //   }
   // }
 }
@@ -65,13 +71,12 @@ function splitDoubleQuote(str: string) {
   return str;
 }
 
-// TODO: 打开图片节点文件路径
 export function openSelectedImageNode() {
-  // for (const entity of StageManager.getSelectedEntities()) {
-  //   if (entity instanceof ImageNode && entity.isSelected) {
-  //     myOpen(PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + entity.path);
-  //   }
-  // }
+  for (const entity of StageManager.getSelectedEntities()) {
+    if (entity instanceof ImageNode && entity.isSelected) {
+      myOpen(PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + entity.path);
+    }
+  }
 }
 /**
  * 调用tauri框架的open方法

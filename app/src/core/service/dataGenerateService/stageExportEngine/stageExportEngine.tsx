@@ -1,5 +1,4 @@
-import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { service } from "../../../Project";
+import { writeTextFile } from "../../../../utils/fs";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
@@ -9,8 +8,7 @@ import { TextNode } from "../../../stage/stageObject/entity/TextNode";
  * 专注于导出各种格式内容的引擎
  * （除了svg）
  */
-@service("stageExport")
-export class StageExport {
+export class StageExportEngine {
   /**
    *
    * @param path

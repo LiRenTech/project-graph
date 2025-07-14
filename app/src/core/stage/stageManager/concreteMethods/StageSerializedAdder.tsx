@@ -1,69 +1,66 @@
-import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
-import { Project, service } from "../../../Project";
-import { Entity } from "../../stageObject/abstract/StageEntity";
-import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
+import { Vector } from "../../../dataStruct/Vector";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { PenStroke } from "../../stageObject/entity/PenStroke";
-import { PortalNode } from "../../stageObject/entity/PortalNode";
-import { Section } from "../../stageObject/entity/Section";
-import { SvgNode } from "../../stageObject/entity/SvgNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { StageManager } from "../StageManager";
+import { Section } from "../../stageObject/entity/Section";
+import { PortalNode } from "../../stageObject/entity/PortalNode";
+import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Entity } from "../../stageObject/abstract/StageEntity";
+import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { SvgNode } from "../../stageObject/entity/SvgNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
  */
-@service("serializedDataAdder")
-export class SerializedDataAdder {
-  constructor(private readonly project: Project) {}
-
+export namespace StageSerializedAdder {
   /**
    * 将一个序列化信息加入舞台中
    * 会自动刷新新增部分的uuid
    * @param serializedData
    */
-  addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
-    const updatedSerializedData = this.refreshUUID(serializedData);
+  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
+    const updatedSerializedData = refreshUUID(serializedData);
     // TODO: 结构有待优化
     for (const entity of updatedSerializedData.entities) {
       let entityObject: Entity | null = null;
       if (Serialized.isTextNode(entity)) {
-        entityObject = new TextNode(this.project, entity);
+        entityObject = new TextNode(entity);
       } else if (Serialized.isSection(entity)) {
-        entityObject = new Section(this.project, entity);
+        entityObject = new Section(entity);
       } else if (Serialized.isConnectPoint(entity)) {
-        entityObject = new ConnectPoint(this.project, entity);
+        entityObject = new ConnectPoint(entity);
       } else if (Serialized.isPenStroke(entity)) {
-        entityObject = new PenStroke(this.project, entity);
+        entityObject = new PenStroke(entity);
       } else if (Serialized.isPortalNode(entity)) {
-        entityObject = new PortalNode(this.project, entity);
+        entityObject = new PortalNode(entity);
       } else if (Serialized.isUrlNode(entity)) {
-        entityObject = new UrlNode(this.project, entity);
+        entityObject = new UrlNode(entity);
       } else if (Serialized.isImageNode(entity)) {
-        entityObject = new ImageNode(this.project, entity);
+        entityObject = new ImageNode(entity);
       } else if (Serialized.isSvgNode(entity)) {
-        entityObject = new SvgNode(this.project, entity);
+        entityObject = new SvgNode(entity);
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
-        this.project.stageManager.addEntity(entityObject);
+        StageManager.addEntity(entityObject);
       }
     }
     for (const edge of updatedSerializedData.associations) {
       if (Serialized.isLineEdge(edge)) {
-        this.project.stageManager.addLineEdge(new LineEdge(this.project, edge));
+        StageManager.addLineEdge(new LineEdge(edge));
       } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
-        this.project.stageManager.addCrEdge(new CubicCatmullRomSplineEdge(this.project, edge));
+        StageManager.addCrEdge(new CubicCatmullRomSplineEdge(edge));
       }
     }
-    this.project.stageManager.updateReferences();
+    StageManager.updateReferences();
   }
 
-  private refreshUUID(serializedData: Serialized.File): Serialized.File {
+  function refreshUUID(serializedData: Serialized.File): Serialized.File {
     // 先深拷贝一份数据
     const result: Serialized.File = JSON.parse(JSON.stringify(serializedData));
     // 刷新实体UUID

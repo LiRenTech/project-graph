@@ -1,11 +1,13 @@
 import { open as openFile } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
 import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, Box, PartyPopper, Plug, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Button from "../../../components/Button";
 import { Field } from "../../../components/Field";
 import Switch from "../../../components/Switch";
+import { readTextFile } from "../../../utils/fs";
+// import { parsePluginCode } from "../../core/plugin/PluginCodeParseData";
+// import { Dialog } from "../../components/dialog";
 
 export default function PluginsPage() {
   const { t } = useTranslation("plugins");

@@ -1,14 +1,18 @@
-import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
 /**
  * 实体创建时粉尘凝聚特效
  */
-export class EntityCreateDashEffect extends Effect {
+export class EntityCreateDashEffect extends EffectObject {
   getClassName(): string {
     return "EntityCreateDashEffect";
   }
@@ -70,8 +74,8 @@ export class EntityCreateDashEffect extends Effect {
     return Random.randomFloat(-1, 1) * 3;
   }
 
-  override tick(project: Project) {
-    super.tick(project);
+  override tick() {
+    super.tick();
     // 更新每个边上的当前粉尘位置
     for (let i = 0; i < EntityCreateDashEffect.DASH_NUMBER_PRE_EDGE; i++) {
       this.currentLocationArrayTop[i] = new Vector(
@@ -97,51 +101,51 @@ export class EntityCreateDashEffect extends Effect {
     return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const p of this.currentLocationArrayTop) {
-      const viewLocation = project.renderer.transformWorld2View(p);
+      const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
     for (const p of this.currentLocationArrayBottom) {
-      const viewLocation = project.renderer.transformWorld2View(p);
+      const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayLeft) {
-      const viewLocation = project.renderer.transformWorld2View(p);
+      const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayRight) {
-      const viewLocation = project.renderer.transformWorld2View(p);
+      const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
   }
 }

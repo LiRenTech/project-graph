@@ -1,62 +1,54 @@
-import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
+import { Camera } from "../../../stage/Camera";
+import { Canvas } from "../../../stage/Canvas";
 
-@service("svgRenderer")
-export class SvgRenderer {
-  svgCache: { [key: string]: HTMLImageElement } = {};
+export namespace SvgRenderer {
+  const svgCache: { [key: string]: HTMLImageElement } = {};
 
-  constructor(private readonly project: Project) {}
-
-  renderSvgFromLeftTop(svg: string, location: Vector, width: number, height: number): void {
-    if (svg in this.svgCache) {
-      this.project.canvas.ctx.drawImage(this.svgCache[svg], location.x, location.y, width, height);
+  export function renderSvgFromLeftTop(svg: string, location: Vector, width: number, height: number): void {
+    if (svg in svgCache) {
+      Canvas.ctx.drawImage(svgCache[svg], location.x, location.y, width, height);
     } else {
       const img = new Image();
       img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
-        this.svgCache[svg] = img;
+        svgCache[svg] = img;
       };
     }
   }
 
-  renderSvgFromCenter(svg: string, centerLocation: Vector, width: number, height: number): void {
-    if (svg in this.svgCache) {
-      this.project.canvas.ctx.drawImage(
-        this.svgCache[svg],
-        centerLocation.x - width / 2,
-        centerLocation.y - height / 2,
-        width,
-        height,
-      );
+  export function renderSvgFromCenter(svg: string, centerLocation: Vector, width: number, height: number): void {
+    if (svg in svgCache) {
+      Canvas.ctx.drawImage(svgCache[svg], centerLocation.x - width / 2, centerLocation.y - height / 2, width, height);
     } else {
       const img = new Image();
       img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
-        this.svgCache[svg] = img;
+        svgCache[svg] = img;
       };
     }
   }
 
-  renderSvgFromLeftTopWithoutSize(svg: string, location: Vector, scaleNumber = 1): void {
-    if (svg in this.svgCache) {
-      const img = this.svgCache[svg];
-      this.project.canvas.ctx.drawImage(
-        this.svgCache[svg],
+  export function renderSvgFromLeftTopWithoutSize(svg: string, location: Vector, scaleNumber = 1): void {
+    if (svg in svgCache) {
+      const img = svgCache[svg];
+      Canvas.ctx.drawImage(
+        svgCache[svg],
         location.x,
         location.y,
-        img.naturalWidth * this.project.camera.currentScale * scaleNumber,
-        img.naturalHeight * this.project.camera.currentScale * scaleNumber,
+        img.naturalWidth * Camera.currentScale * scaleNumber,
+        img.naturalHeight * Camera.currentScale * scaleNumber,
       );
     } else {
       const img = new Image();
       img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
-        this.svgCache[svg] = img;
+        svgCache[svg] = img;
       };
     }
   }
 
-  async getSvgOriginalSize(svg: string): Promise<Vector> {
+  export async function getSvgOriginalSize(svg: string): Promise<Vector> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
@@ -72,21 +64,21 @@ export class SvgRenderer {
     });
   }
 
-  renderSvgFromCenterWithoutSize(svg: string, centerLocation: Vector): void {
-    if (svg in this.svgCache) {
-      const img = this.svgCache[svg];
-      this.project.canvas.ctx.drawImage(
-        this.svgCache[svg],
-        centerLocation.x - (img.naturalWidth / 2) * this.project.camera.currentScale,
-        centerLocation.y - (img.naturalHeight / 2) * this.project.camera.currentScale,
-        img.naturalWidth * this.project.camera.currentScale,
-        img.naturalHeight * this.project.camera.currentScale,
+  export function renderSvgFromCenterWithoutSize(svg: string, centerLocation: Vector): void {
+    if (svg in svgCache) {
+      const img = svgCache[svg];
+      Canvas.ctx.drawImage(
+        svgCache[svg],
+        centerLocation.x - (img.naturalWidth / 2) * Camera.currentScale,
+        centerLocation.y - (img.naturalHeight / 2) * Camera.currentScale,
+        img.naturalWidth * Camera.currentScale,
+        img.naturalHeight * Camera.currentScale,
       );
     } else {
       const img = new Image();
       img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
-        this.svgCache[svg] = img;
+        svgCache[svg] = img;
       };
     }
   }

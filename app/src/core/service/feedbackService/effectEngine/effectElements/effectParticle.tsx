@@ -1,4 +1,5 @@
-import { Color, Vector } from "@graphif/data-structures";
+import { Color } from "../../../../dataStruct/Color";
+import { Vector } from "../../../../dataStruct/Vector";
 
 /**
  * 粒子类

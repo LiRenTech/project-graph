@@ -1,10 +1,13 @@
-import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
 import { EntityJumpMoveEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
+import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { SectionMethods } from "../basicMethods/SectionMethods";
+import { StageManager } from "../StageManager";
+import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
 /**
  * 管理节点的位置移动
@@ -12,25 +15,22 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
  * 还要处理节点移动后，对Section大小造成的影响
  * 以后还可能有自动布局的功能
  */
-@service("entityMoveManager")
-export class EntityMoveManager {
-  constructor(private readonly project: Project) {}
-
+export namespace StageEntityMoveManager {
   /**
    * 让某一个实体移动一小段距离
    * @param entity
    * @param delta
    * @param isAutoAdjustSection 移动的时候是否触发section框的弹性调整
    */
-  moveEntityUtils(entity: Entity, delta: Vector, isAutoAdjustSection: boolean = true) {
+  export function moveEntityUtils(entity: Entity, delta: Vector, isAutoAdjustSection: boolean = true) {
     // 让自己移动
     entity.move(delta);
 
     const nodeUUID = entity.uuid;
 
-    // if (this.project.stageManager.isSectionByUUID(nodeUUID)) {
+    // if (StageManager.isSectionByUUID(nodeUUID)) {
     //   // 如果是Section，则需要带动孩子一起移动
-    //   const section = this.project.stageManager.getSectionByUUID(nodeUUID);
+    //   const section = StageManager.getSectionByUUID(nodeUUID);
     //   if (section) {
     //     for (const child of section.children) {
     //       moveEntityUtils(child, delta);
@@ -38,7 +38,7 @@ export class EntityMoveManager {
     //   }
     // }
     if (isAutoAdjustSection) {
-      for (const section of this.project.stageManager.getSections()) {
+      for (const section of StageManager.getSections()) {
         if (section.isHaveChildrenByUUID(nodeUUID)) {
           section.adjustLocationAndSize();
         }
@@ -52,26 +52,26 @@ export class EntityMoveManager {
    * @param entity
    * @param delta
    */
-  jumpMoveEntityUtils(entity: Entity, delta: Vector) {
+  export function jumpMoveEntityUtils(entity: Entity, delta: Vector) {
     const beforeMoveRect = entity.collisionBox.getRectangle().clone();
 
     // 将自己移动前加特效
-    this.project.effects.addEffect(new EntityJumpMoveEffect(15, beforeMoveRect, delta));
+    Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, beforeMoveRect, delta));
 
     // 即将跳入的sections区域
-    const targetSections = this.project.sectionMethods.getSectionsByInnerLocation(beforeMoveRect.center.add(delta));
+    const targetSections = SectionMethods.getSectionsByInnerLocation(beforeMoveRect.center.add(delta));
     // 改变层级
     if (targetSections.length === 0) {
       // 代表想要走出当前section
-      const currentFatherSections = this.project.sectionMethods.getFatherSections(entity);
+      const currentFatherSections = SectionMethods.getFatherSections(entity);
       if (currentFatherSections.length !== 0) {
-        this.project.stageManager.goOutSection([entity], currentFatherSections[0]);
+        StageManager.goOutSection([entity], currentFatherSections[0]);
       }
     } else {
-      this.project.sectionInOutManager.goInSections([entity], targetSections);
+      StageSectionInOutManager.goInSections([entity], targetSections);
       for (const section of targetSections) {
         // 特效
-        this.project.effects.addEffect(
+        Stage.effectMachine.addEffect(
           new RectanglePushInEffect(entity.collisionBox.getRectangle(), section.collisionBox.getRectangle()),
         );
       }
@@ -79,7 +79,7 @@ export class EntityMoveManager {
 
     // 让自己移动
     // entity.move(delta);
-    this.moveEntityUtils(entity, delta, false);
+    moveEntityUtils(entity, delta, false);
   }
 
   /**
@@ -87,10 +87,10 @@ export class EntityMoveManager {
    * @param entity
    * @param location
    */
-  moveEntityToUtils(entity: Entity, location: Vector) {
+  export function moveEntityToUtils(entity: Entity, location: Vector) {
     entity.moveTo(location);
     const nodeUUID = entity.uuid;
-    for (const section of this.project.stageManager.getSections()) {
+    for (const section of StageManager.getSections()) {
       if (section.isHaveChildrenByUUID(nodeUUID)) {
         section.adjustLocationAndSize();
       }
@@ -102,10 +102,10 @@ export class EntityMoveManager {
    * @param delta
    * @param isAutoAdjustSection
    */
-  moveSelectedEntities(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of this.project.stageManager.getEntities()) {
+  export function moveSelectedEntities(delta: Vector, isAutoAdjustSection: boolean = true) {
+    for (const node of StageManager.getEntities()) {
       if (node.isSelected) {
-        this.moveEntityUtils(node, delta, isAutoAdjustSection);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }
@@ -115,10 +115,10 @@ export class EntityMoveManager {
    * 会破坏框的嵌套关系
    * @param delta
    */
-  jumpMoveSelectedConnectableEntities(delta: Vector) {
-    for (const node of this.project.stageManager.getConnectableEntity()) {
+  export function jumpMoveSelectedConnectableEntities(delta: Vector) {
+    for (const node of StageManager.getConnectableEntity()) {
       if (node.isSelected) {
-        this.jumpMoveEntityUtils(node, delta);
+        jumpMoveEntityUtils(node, delta);
       }
     }
   }
@@ -127,10 +127,10 @@ export class EntityMoveManager {
    * 树型移动 所有选中的可连接实体
    * @param delta
    */
-  moveConnectableEntitiesWithChildren(delta: Vector) {
-    for (const node of this.project.stageManager.getConnectableEntity()) {
+  export function moveConnectableEntitiesWithChildren(delta: Vector) {
+    for (const node of StageManager.getConnectableEntity()) {
       if (node.isSelected) {
-        this.moveWithChildren(node, delta);
+        moveWithChildren(node, delta);
       }
     }
   }
@@ -139,10 +139,10 @@ export class EntityMoveManager {
    * @param node
    * @param delta
    */
-  moveWithChildren(node: ConnectableEntity, delta: Vector) {
+  export function moveWithChildren(node: ConnectableEntity, delta: Vector) {
     const successorSet = GraphMethods.getSuccessorSet(node);
     for (const successor of successorSet) {
-      this.moveEntityUtils(successor, delta);
+      moveEntityUtils(successor, delta);
     }
   }
 

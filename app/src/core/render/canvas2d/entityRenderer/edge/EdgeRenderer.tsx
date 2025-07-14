@@ -1,153 +1,152 @@
-import { Color } from "@graphif/data-structures";
+import { Color } from "../../../../dataStruct/Color";
 
-import { Vector } from "@graphif/data-structures";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Settings } from "../../../../service/Settings";
+import { Camera } from "../../../../stage/Camera";
 import { CubicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
-import { Project, service } from "../../../../Project";
-import { Settings } from "../../../../service/Settings";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { Edge } from "../../../../stage/stageObject/association/Edge";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";
+import { WorldRenderUtils } from "../../utilsRenderer/WorldRenderUtils";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 
 /**
  * 边的总渲染器单例
  */
-@service("edgeRenderer")
-export class EdgeRenderer {
+export namespace EdgeRenderer {
   // let currentRenderer = new StraightEdgeRenderer();
-  private currentRenderer: EdgeRendererClass;
+  let currentRenderer: EdgeRendererClass = new SymmetryCurveEdgeRenderer();
 
   /**
    * 初始化边的渲染器
    */
-  constructor(private readonly project: Project) {
-    this.currentRenderer = this.project.symmetryCurveEdgeRenderer;
-    Settings.watch("lineStyle", this.updateRenderer.bind(this));
+  export function init() {
+    Settings.watch("lineStyle", updateRenderer);
   }
 
-  checkRendererBySettings(lineStyle: Settings.Settings["lineStyle"]) {
+  export function checkRendererBySettings(lineStyle: Settings.Settings["lineStyle"]) {
     if (lineStyle === "straight") {
-      this.currentRenderer = this.project.straightEdgeRenderer;
+      currentRenderer = new StraightEdgeRenderer();
     } else if (lineStyle === "bezier") {
-      this.currentRenderer = this.project.symmetryCurveEdgeRenderer;
+      currentRenderer = new SymmetryCurveEdgeRenderer();
     }
   }
 
   /**
    * 更新渲染器
    */
-  async updateRenderer(style: Settings.Settings["lineStyle"]) {
-    if (style === "straight" && !(this.currentRenderer instanceof StraightEdgeRenderer)) {
-      this.currentRenderer = this.project.straightEdgeRenderer;
-    } else if (style === "bezier" && !(this.currentRenderer instanceof SymmetryCurveEdgeRenderer)) {
-      this.currentRenderer = this.project.symmetryCurveEdgeRenderer;
-    } else if (style === "vertical" && !(this.currentRenderer instanceof VerticalPolyEdgeRenderer)) {
-      this.currentRenderer = this.project.verticalPolyEdgeRenderer;
+  async function updateRenderer(style: Settings.Settings["lineStyle"]) {
+    if (style === "straight" && !(currentRenderer instanceof StraightEdgeRenderer)) {
+      currentRenderer = new StraightEdgeRenderer();
+    } else if (style === "bezier" && !(currentRenderer instanceof SymmetryCurveEdgeRenderer)) {
+      currentRenderer = new SymmetryCurveEdgeRenderer();
+    } else if (style === "vertical" && !(currentRenderer instanceof VerticalPolyEdgeRenderer)) {
+      currentRenderer = new VerticalPolyEdgeRenderer();
     }
   }
 
-  renderLineEdge(edge: LineEdge) {
+  export function renderLineEdge(edge: LineEdge) {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
 
-    edge = this.getEdgeView(edge);
+    edge = EdgeRenderer.getEdgeView(edge);
 
     const source = edge.source;
     const target = edge.target;
 
     if (source.uuid == target.uuid) {
-      this.currentRenderer.renderCycleState(edge);
+      currentRenderer.renderCycleState(edge);
     } else {
       if (edge.isShifting) {
-        this.currentRenderer.renderShiftingState(edge);
+        currentRenderer.renderShiftingState(edge);
       } else {
-        this.currentRenderer.renderNormalState(edge);
+        currentRenderer.renderNormalState(edge);
       }
     }
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(
-        edge.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
       // 还要标注起始点和终止点
-      this.project.shapeRenderer.renderCircle(
-        this.project.renderer.transformWorld2View(edge.sourceLocation),
-        10 * this.project.camera.currentScale,
+      ShapeRenderer.renderCircle(
+        Renderer.transformWorld2View(edge.sourceLocation),
+        10 * Camera.currentScale,
         Color.Transparent,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
       );
-      this.project.shapeRenderer.renderCircle(
-        this.project.renderer.transformWorld2View(edge.targetLocation),
-        10 * this.project.camera.currentScale,
+      ShapeRenderer.renderCircle(
+        Renderer.transformWorld2View(edge.targetLocation),
+        10 * Camera.currentScale,
         Color.Transparent,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
       );
       // 画一个虚线
-      this.project.curveRenderer.renderDashedLine(
-        this.project.renderer.transformWorld2View(edge.sourceLocation),
-        this.project.renderer.transformWorld2View(edge.targetLocation),
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
-        10 * this.project.camera.currentScale,
+      CurveRenderer.renderDashedLine(
+        Renderer.transformWorld2View(edge.sourceLocation),
+        Renderer.transformWorld2View(edge.targetLocation),
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
+        10 * Camera.currentScale,
       );
     }
   }
 
-  renderCrEdge(edge: CubicCatmullRomSplineEdge) {
+  export function renderCrEdge(edge: CubicCatmullRomSplineEdge) {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
     const crShape = edge.getShape();
-    const edgeColor = edge.color.a === 0 ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color;
+    const edgeColor = edge.color.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : edge.color;
     // 画曲线
-    this.project.worldRenderUtils.renderCubicCatmullRomSpline(crShape, edgeColor, 2);
+    WorldRenderUtils.renderCubicCatmullRomSpline(crShape, edgeColor, 2);
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(
-        edge.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 画控制点们
     for (const point of crShape.controlPoints) {
-      this.project.shapeRenderer.renderCircle(
-        this.project.renderer.transformWorld2View(point),
-        5 * this.project.camera.currentScale,
+      ShapeRenderer.renderCircle(
+        Renderer.transformWorld2View(point),
+        5 * Camera.currentScale,
         Color.Transparent,
         edgeColor,
-        2 * this.project.camera.currentScale,
+        2 * Camera.currentScale,
       );
     }
     // 画文字
     if (edge.text !== "") {
       const textRect = edge.textRectangle;
-      this.project.shapeRenderer.renderRect(
-        this.project.renderer.transformWorld2View(textRect),
-        this.project.stageStyleManager.currentStyle.Background,
+      ShapeRenderer.renderRect(
+        textRect.transformWorld2View(),
+        StageStyleManager.currentStyle.Background,
         Color.Transparent,
         0,
       );
-      this.project.textRenderer.renderMultiLineTextFromCenter(
+      TextRenderer.renderMultiLineTextFromCenter(
         edge.text,
-        this.project.renderer.transformWorld2View(textRect.center),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
+        Renderer.transformWorld2View(textRect.center),
+        Renderer.FONT_SIZE * Camera.currentScale,
         Infinity,
         edgeColor,
       );
     }
     // 画箭头
     const { location, direction } = edge.getArrowHead();
-    this.renderArrowHead(location, direction.normalize(), 15, edgeColor);
+    renderArrowHead(location, direction.normalize(), 15, edgeColor);
   }
 
   /**
@@ -156,21 +155,21 @@ export class EdgeRenderer {
    * 可以用于连线的某一端被折叠隐藏了的情况
    * @param innerEntity
    */
-  getMinNonCollapseParentSection(innerEntity: ConnectableEntity): Section {
-    const father = this.project.sectionMethods.getFatherSections(innerEntity);
+  export function getMinNonCollapseParentSection(innerEntity: ConnectableEntity): Section {
+    const father = SectionMethods.getFatherSections(innerEntity);
     if (father.length === 0) {
       // 直接抛出错误
       throw new Error("Can't find parent section");
     }
     const minSection = father[0];
     if (minSection.isHiddenBySectionCollapse) {
-      return this.getMinNonCollapseParentSection(minSection);
+      return getMinNonCollapseParentSection(minSection);
     } else {
       return minSection;
     }
   }
 
-  getEdgeView(edge: LineEdge): LineEdge {
+  export function getEdgeView(edge: LineEdge): LineEdge {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return edge;
     } else if (!edge.source.isHiddenBySectionCollapse && !edge.target.isHiddenBySectionCollapse) {
@@ -178,8 +177,8 @@ export class EdgeRenderer {
     }
 
     if (edge.source.isHiddenBySectionCollapse) {
-      return new LineEdge(this.project, {
-        source: this.getMinNonCollapseParentSection(edge.source).uuid,
+      return new LineEdge({
+        source: getMinNonCollapseParentSection(edge.source).uuid,
         target: edge.target.uuid,
         text: edge.text,
         uuid: edge.uuid,
@@ -190,9 +189,9 @@ export class EdgeRenderer {
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
-      return new LineEdge(this.project, {
+      return new LineEdge({
         source: edge.source.uuid,
-        target: this.getMinNonCollapseParentSection(edge.target).uuid,
+        target: getMinNonCollapseParentSection(edge.target).uuid,
         text: edge.text,
         uuid: edge.uuid,
         type: "core:line_edge",
@@ -204,34 +203,34 @@ export class EdgeRenderer {
     return edge;
   }
 
-  getEdgeSvg(edge: LineEdge): React.ReactNode {
+  export function getEdgeSvg(edge: LineEdge): React.ReactNode {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return <></>;
     }
 
     if (edge.source.uuid == edge.target.uuid) {
-      return this.currentRenderer.getCycleStageSvg(edge);
+      return currentRenderer.getCycleStageSvg(edge);
     } else {
       if (edge.isShifting) {
-        return this.currentRenderer.getShiftingStageSvg(edge);
+        return currentRenderer.getShiftingStageSvg(edge);
       } else {
-        return this.currentRenderer.getNormalStageSvg(edge);
+        return currentRenderer.getNormalStageSvg(edge);
       }
     }
   }
 
-  renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector) {
-    this.currentRenderer.renderVirtualEdge(startNode, mouseLocation);
+  export function renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector) {
+    currentRenderer.renderVirtualEdge(startNode, mouseLocation);
   }
-  renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity) {
-    this.currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
+  export function renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity) {
+    currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
 
-  getCuttingEffects(edge: Edge) {
-    return this.currentRenderer.getCuttingEffects(edge);
+  export function getCuttingEffects(edge: Edge) {
+    return currentRenderer.getCuttingEffects(edge);
   }
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
-    return this.currentRenderer.getConnectedEffects(startNode, toNode);
+  export function getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
+    return currentRenderer.getConnectedEffects(startNode, toNode);
   }
 
   /**
@@ -240,17 +239,17 @@ export class EdgeRenderer {
    * @param direction
    * @param size
    */
-  renderArrowHead(endPoint: Vector, direction: Vector, size: number, color: Color) {
+  export function renderArrowHead(endPoint: Vector, direction: Vector, size: number, color: Color) {
     const reDirection = direction.clone().multiply(-1);
     const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));
     const location4 = endPoint.add(reDirection.multiply(size).rotateDegrees(-15));
-    this.project.shapeRenderer.renderPolygonAndFill(
+    ShapeRenderer.renderPolygonAndFill(
       [
-        this.project.renderer.transformWorld2View(endPoint),
-        this.project.renderer.transformWorld2View(location2),
-        this.project.renderer.transformWorld2View(location3),
-        this.project.renderer.transformWorld2View(location4),
+        Renderer.transformWorld2View(endPoint),
+        Renderer.transformWorld2View(location2),
+        Renderer.transformWorld2View(location3),
+        Renderer.transformWorld2View(location4),
       ],
       color,
       color,
@@ -265,7 +264,12 @@ export class EdgeRenderer {
    * @param size
    * @returns SVG多边形字符串
    */
-  generateArrowHeadSvg(endPoint: Vector, direction: Vector, size: number, edgeColor: Color): React.ReactNode {
+  export function generateArrowHeadSvg(
+    endPoint: Vector,
+    direction: Vector,
+    size: number,
+    edgeColor: Color,
+  ): React.ReactNode {
     const reDirection = direction.clone().multiply(-1);
     const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));

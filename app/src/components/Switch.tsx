@@ -17,9 +17,9 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn("group/switch el-switch-false relative h-8 w-14 rounded-full hover:cursor-pointer", {
-        "el-switch-true": value,
-        "el-switch-disabled cursor-not-allowed": disabled,
+      className={cn("group/switch bg-switch-false-bg relative h-8 w-14 rounded-full hover:cursor-pointer", {
+        "bg-switch-true-bg": value,
+        "bg-switch-disabled-bg cursor-not-allowed": disabled,
       })}
       onClick={() => {
         const newValue = !value;
@@ -33,10 +33,10 @@ export default function Switch({
     >
       <div
         className={cn(
-          "el-switch-false-dot absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full hover:cursor-pointer group-hover/switch:scale-125 group-active/switch:scale-75",
+          "bg-switch-false-dot absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full hover:cursor-pointer group-hover/switch:scale-125 group-active/switch:scale-75",
           {
-            "el-switch-true-dot translate-x-6": value,
-            "el-switch-disabled-dot": disabled,
+            "bg-switch-true-dot translate-x-6": value,
+            "bg-switch-disabled-dot": disabled,
           },
         )}
       ></div>

@@ -2,31 +2,32 @@
 // import { Entity } from "../../../stageObject/StageEntity";
 import { v4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
-import { Project, service } from "../../../Project";
 import { Settings } from "../../../service/Settings";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { Edge } from "../../stageObject/association/Edge";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { SectionMethods } from "../basicMethods/SectionMethods";
+import { StageHistoryManager } from "../StageHistoryManager";
+import { StageManager } from "../StageManager";
+import { StageManagerUtils } from "./StageManagerUtils";
+import { StageSectionInOutManager } from "./StageSectionInOutManager";
+import { Edge } from "../../stageObject/association/Edge";
 
 /**
  * 管理所有东西进出StageSection的逻辑
  */
-@service("sectionPackManager")
-export class SectionPackManager {
-  constructor(private readonly project: Project) {}
-
+export namespace StageSectionPackManager {
   /** 折叠起来 */
-  packSection(): void {
-    for (const section of this.project.stageManager.getSections()) {
+  export function packSection(): void {
+    for (const section of StageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
-      this.modifyHiddenDfs(section, true);
+      modifyHiddenDfs(section, true);
       section.isCollapsed = true;
     }
-    this.project.stageManager.updateReferences();
+    StageManager.updateReferences();
   }
 
   /**
@@ -34,37 +35,37 @@ export class SectionPackManager {
    * @param section
    * @param isCollapsed
    */
-  private modifyHiddenDfs(section: Section, isCollapsed: boolean) {
+  function modifyHiddenDfs(section: Section, isCollapsed: boolean) {
     // section.isCollapsed = isCollapsed;
     for (const childEntity of section.children) {
       if (childEntity instanceof Section) {
-        this.modifyHiddenDfs(childEntity, isCollapsed);
+        modifyHiddenDfs(childEntity, isCollapsed);
       }
       childEntity.isHiddenBySectionCollapse = isCollapsed;
     }
   }
 
   /** 展开 */
-  unpackSection(): void {
-    for (const section of this.project.stageManager.getSections()) {
+  export function unpackSection(): void {
+    for (const section of StageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
-      this.modifyHiddenDfs(section, false);
+      modifyHiddenDfs(section, false);
       section.isCollapsed = false;
     }
-    this.project.stageManager.updateReferences();
+    StageManager.updateReferences();
   }
 
-  switchCollapse(): void {
-    for (const section of this.project.stageManager.getSections()) {
+  export function switchCollapse(): void {
+    for (const section of StageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
       if (section.isCollapsed) {
-        this.unpackSection();
+        unpackSection();
       } else {
-        this.packSection();
+        packSection();
       }
     }
   }
@@ -72,20 +73,20 @@ export class SectionPackManager {
   /**
    * 将所有选中的节点当场转换成Section
    */
-  textNodeToSection(): void {
-    for (const textNode of this.project.stageManager.getTextNodes()) {
+  export function textNodeToSection(): void {
+    for (const textNode of StageManager.getTextNodes()) {
       if (!textNode.isSelected) {
         continue;
       }
-      this.targetTextNodeToSection(textNode);
+      targetTextNodeToSection(textNode);
     }
-    this.project.historyManager.recordStep();
+    StageHistoryManager.recordStep();
   }
 
   /**
    * 将节点树转换成嵌套集合 （递归的）
    */
-  textNodeTreeToSection(rootNode: TextNode): void {
+  export function textNodeTreeToSection(rootNode: TextNode): void {
     if (!GraphMethods.isTree(rootNode)) {
       Dialog.show({
         title: "非树状结构",
@@ -105,23 +106,23 @@ export class SectionPackManager {
 
         const edges = GraphMethods.getEdgesBetween(node, childNode);
         for (const edge of edges) {
-          this.project.stageManager.deleteEdge(edge);
+          StageManager.deleteEdge(edge);
         }
       }
-      const section = this.targetTextNodeToSection(node, true);
+      const section = targetTextNodeToSection(node, true);
 
-      this.project.sectionInOutManager.goInSection(childEntityList, section);
+      StageSectionInOutManager.goInSection(childEntityList, section);
       return section;
     };
     dfs(rootNode);
-    this.project.historyManager.recordStep();
+    StageHistoryManager.recordStep();
   }
 
   /**
    * 非递归的 将节点树转换成嵌套集合
    * @param rootNode
    */
-  textNodeTreeToSectionNoDeep(rootNode: TextNode): void {
+  export function textNodeTreeToSectionNoDeep(rootNode: TextNode): void {
     if (!GraphMethods.isTree(rootNode)) {
       Dialog.show({
         title: "非树状结构",
@@ -138,16 +139,16 @@ export class SectionPackManager {
     for (const childNode of childNodes) {
       const edges = GraphMethods.getEdgesBetween(rootNode, childNode);
       for (const edge of edges) {
-        this.project.stageManager.deleteEdge(edge);
+        StageManager.deleteEdge(edge);
       }
     }
-    const section = this.targetTextNodeToSection(rootNode, true);
-    const rootNodeFatherSection = this.project.sectionMethods.getFatherSections(rootNode);
+    const section = targetTextNodeToSection(rootNode, true);
+    const rootNodeFatherSection = SectionMethods.getFatherSections(rootNode);
     for (const fatherSection of rootNodeFatherSection) {
-      this.project.sectionInOutManager.goOutSection(childSets, fatherSection);
+      StageSectionInOutManager.goOutSection(childSets, fatherSection);
     }
-    this.project.sectionInOutManager.goInSection(childSets, section);
-    this.project.historyManager.recordStep();
+    StageSectionInOutManager.goInSection(childSets, section);
+    StageHistoryManager.recordStep();
   }
 
   /**
@@ -155,11 +156,11 @@ export class SectionPackManager {
    * @param textNode 要转换的节点
    * @param ignoreEdges 是否忽略边的影响
    */
-  targetTextNodeToSection(textNode: TextNode, ignoreEdges: boolean = false): Section {
+  export function targetTextNodeToSection(textNode: TextNode, ignoreEdges: boolean = false): Section {
     // 获取这个节点的父级Section
-    const fatherSections = this.project.sectionMethods.getFatherSections(textNode);
+    const fatherSections = SectionMethods.getFatherSections(textNode);
     const rect = textNode.collisionBox.getRectangle().expandFromCenter(50);
-    const newSection = new Section(this.project, {
+    const newSection = new Section({
       uuid: v4(),
       text: textNode.text,
       location: [rect.left, rect.top],
@@ -170,13 +171,13 @@ export class SectionPackManager {
     newSection.adjustLocationAndSize();
 
     // 将新的Section加入舞台
-    this.project.stageManager.addSection(newSection);
+    StageManager.addSection(newSection);
     for (const fatherSection of fatherSections) {
-      this.project.sectionInOutManager.goInSection([newSection], fatherSection);
+      StageSectionInOutManager.goInSection([newSection], fatherSection);
     }
 
     if (!ignoreEdges) {
-      for (const edge of this.project.stageManager.getAssociations()) {
+      for (const edge of StageManager.getAssociations()) {
         if (edge instanceof Edge) {
           if (edge.target.uuid === textNode.uuid) {
             edge.target = newSection;
@@ -188,7 +189,7 @@ export class SectionPackManager {
       }
     }
     // 删除原来的textNode
-    this.project.stageManager.deleteEntities([textNode]);
+    StageManager.deleteEntities([textNode]);
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
     return newSection;
@@ -197,10 +198,10 @@ export class SectionPackManager {
   /**
    * 拆包操作
    */
-  unpackSelectedSections() {
-    const selectedSections = this.project.stageManager.getSelectedEntities();
-    this.unpackSections(selectedSections);
-    this.project.historyManager.recordStep();
+  export function unpackSelectedSections() {
+    const selectedSections = StageManager.getSelectedEntities();
+    unpackSections(selectedSections);
+    StageHistoryManager.recordStep();
   }
 
   /**
@@ -209,7 +210,7 @@ export class SectionPackManager {
    * 如果选择了section内部一层的实体，则父section脱离剥皮，变成一个textNode
    * 如果选择的是一个section，则其本身脱离剥皮，变成一个textNode，内部内容掉落出来。
    */
-  private unpackSections(entities: Entity[]) {
+  function unpackSections(entities: Entity[]) {
     if (entities.length === 0) return;
     // 目前先仅支持选中section后再进行拆包操作
     const sections = entities.filter((entity) => entity instanceof Section);
@@ -221,10 +222,10 @@ export class SectionPackManager {
       return;
     }
     for (const section of sections) {
-      const currentSectionFathers = this.project.sectionMethods.getFatherSections(section);
+      const currentSectionFathers = SectionMethods.getFatherSections(section);
       // 生成一个textnode
       const sectionLocation = section.collisionBox.getRectangle().location;
-      const textNode = new TextNode(this.project, {
+      const textNode = new TextNode({
         uuid: v4(),
         text: section.text,
         details: section.details,
@@ -233,40 +234,40 @@ export class SectionPackManager {
         color: section.color.toArray(),
       });
       // 将textNode添加到舞台
-      this.project.stageManager.addTextNode(textNode);
+      StageManager.addTextNode(textNode);
       // 将新的textnode添加到父section中
-      this.project.sectionInOutManager.goInSections([textNode], currentSectionFathers);
+      StageSectionInOutManager.goInSections([textNode], currentSectionFathers);
       // 将section的子节点添加到父section中
-      this.project.sectionInOutManager.goInSections(section.children, currentSectionFathers);
+      StageSectionInOutManager.goInSections(section.children, currentSectionFathers);
       // 将section从舞台中删除
-      this.project.stageManager.deleteEntities([section]);
+      StageManager.deleteEntities([section]);
     }
   }
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
-  async packEntityToSection(addEntities: Entity[]) {
+  export async function packEntityToSection(addEntities: Entity[]) {
     if (addEntities.length === 0) {
       return;
     }
-    addEntities = this.project.sectionMethods.shallowerNotSectionEntities(addEntities);
+    addEntities = SectionMethods.shallowerNotSectionEntities(addEntities);
     // 检测父亲section是否是等同
-    const firstParents = this.project.sectionMethods.getFatherSections(addEntities[0]);
+    const firstParents = SectionMethods.getFatherSections(addEntities[0]);
     if (addEntities.length > 1) {
       let isAllSameFather = true;
 
       for (let i = 1; i < addEntities.length; i++) {
-        const secondParents = this.project.sectionMethods.getFatherSections(addEntities[i]);
+        const secondParents = SectionMethods.getFatherSections(addEntities[i]);
         if (firstParents.length !== secondParents.length) {
           isAllSameFather = false;
           break;
         }
         // 检查父亲数组是否相同
         const firstParentsString = firstParents
-          .map((section: any) => section.uuid)
+          .map((section) => section.uuid)
           .sort()
           .join();
         const secondParentsString = secondParents
-          .map((section: any) => section.uuid)
+          .map((section) => section.uuid)
           .sort()
           .join();
         if (firstParentsString !== secondParentsString) {
@@ -285,16 +286,13 @@ export class SectionPackManager {
       }
     }
     for (const fatherSection of firstParents) {
-      this.project.stageManager.goOutSection(addEntities, fatherSection);
+      StageManager.goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
-    section.text = this.project.stageUtils.replaceAutoNameTemplate(
-      await Settings.get("autoNamerSectionTemplate"),
-      section,
-    );
-    this.project.stageManager.addSection(section);
+    section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
+    StageManager.addSection(section);
     for (const fatherSection of firstParents) {
-      this.project.stageManager.goInSection([section], fatherSection);
+      StageManager.goInSection([section], fatherSection);
     }
   }
 }

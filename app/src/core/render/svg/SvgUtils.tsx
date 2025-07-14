@@ -1,7 +1,8 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
 import { FONT, getTextSize } from "../../../utils/font";
+import { Color } from "../../dataStruct/Color";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../canvas2d/renderer";
 
 /**

@@ -1,7 +1,8 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
+import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -9,15 +10,12 @@ import { ConnectableEntity } from "../../../stage/stageObject/abstract/Connectab
  * 瞬间：一次性直接移动所有节点到合适的位置
  * 树形：此布局算法仅限于树形结构，在代码上游保证
  */
-@service("autoLayoutFastTree")
-export class AutoLayoutFastTree {
-  constructor(private readonly project: Project) {}
-
+export namespace AutoLayoutFastTree {
   /**
    * 向下树形布局
    * @param rootNode 树形节点的根节点
    */
-  autoLayoutFastTreeModeDown(rootNode: ConnectableEntity) {
+  export function autoLayoutFastTreeModeDown(rootNode: ConnectableEntity) {
     const dfs = (node: ConnectableEntity) => {
       const spaceX = 20;
       const spaceY = 150;
@@ -51,9 +49,9 @@ export class AutoLayoutFastTree {
    * @param node
    * @returns
    */
-  getTreeBoundingRectangle(node: ConnectableEntity): Rectangle {
+  export function getTreeBoundingRectangle(node: ConnectableEntity): Rectangle {
     const childList = GraphMethods.nodeChildrenArray(node);
-    const childRectangle = childList.map((child) => this.getTreeBoundingRectangle(child));
+    const childRectangle = childList.map((child) => getTreeBoundingRectangle(child));
     return Rectangle.getBoundingRectangle(childRectangle.concat([node.collisionBox.getRectangle()]));
   }
   /**
@@ -61,9 +59,9 @@ export class AutoLayoutFastTree {
    * @param treeRoot
    * @param targetLocation
    */
-  moveTreeRectTo(treeRoot: ConnectableEntity, targetLocation: Vector) {
-    const treeRect = this.getTreeBoundingRectangle(treeRoot);
-    this.project.entityMoveManager.moveWithChildren(treeRoot, targetLocation.subtract(treeRect.leftTop));
+  export function moveTreeRectTo(treeRoot: ConnectableEntity, targetLocation: Vector) {
+    const treeRect = getTreeBoundingRectangle(treeRoot);
+    StageEntityMoveManager.moveWithChildren(treeRoot, targetLocation.subtract(treeRect.leftTop));
   }
 
   /**
@@ -71,19 +69,19 @@ export class AutoLayoutFastTree {
    * @param trees
    * @returns
    */
-  alignColumnTrees(trees: ConnectableEntity[], gap = 10) {
+  export function alignColumnTrees(trees: ConnectableEntity[], gap = 10) {
     if (trees.length === 0 || trees.length === 1) {
       return;
     }
     const firstTree = trees[0];
-    const firstTreeRect = this.getTreeBoundingRectangle(firstTree);
+    const firstTreeRect = getTreeBoundingRectangle(firstTree);
     const currentLeftTop = firstTreeRect.leftBottom.add(new Vector(0, gap));
     // 将这些子树向下排列时，要保持从上到下的相对位置
     trees.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
     for (let i = 1; i < trees.length; i++) {
       const tree = trees[i];
-      this.moveTreeRectTo(tree, currentLeftTop);
-      currentLeftTop.y += this.getTreeBoundingRectangle(tree).height + gap;
+      moveTreeRectTo(tree, currentLeftTop);
+      currentLeftTop.y += getTreeBoundingRectangle(tree).height + gap;
     }
   }
 
@@ -92,7 +90,7 @@ export class AutoLayoutFastTree {
    * 然后最终返回的是 自己整个子树的外接矩形
    * @param rootNode
    */
-  adjustRootNodeLocationByChildren(rootNode: ConnectableEntity, gap = 100) {
+  export function adjustRootNodeLocationByChildren(rootNode: ConnectableEntity, gap = 100) {
     const childList = GraphMethods.nodeChildrenArray(rootNode);
     if (childList.length === 0) {
       return;
@@ -107,7 +105,7 @@ export class AutoLayoutFastTree {
    * 向右树形节点的根节点
    * @param rootNode
    */
-  autoLayoutFastTreeModeRight(rootNode: ConnectableEntity) {
+  export function autoLayoutFastTreeModeRight(rootNode: ConnectableEntity) {
     // 树形结构的根节点 左上角位置固定不动
     const initLocation = rootNode.collisionBox.getRectangle().leftTop.clone();
 
@@ -120,33 +118,33 @@ export class AutoLayoutFastTree {
         dfs(child); // 递归口
       }
       // 排列这些子节点
-      this.alignColumnTrees(childList, 20);
+      alignColumnTrees(childList, 20);
       // 将当前节点放到所有子节点的左侧
-      this.adjustRootNodeLocationByChildren(node, 150);
+      adjustRootNodeLocationByChildren(node, 150);
     };
 
     dfs(rootNode);
     // rootNode.moveTo(initLocation);
     const delta = initLocation.subtract(rootNode.collisionBox.getRectangle().leftTop);
     // 选中根节点
-    this.project.stageManager.clearSelectAll();
+    StageManager.clearSelectAll();
     rootNode.isSelected = true;
-    this.project.entityMoveManager.moveConnectableEntitiesWithChildren(delta);
+    StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta);
   }
 
   // ======================= 反转树的位置系列 ====================
 
-  treeReverseX(selectedRootEntity: ConnectableEntity) {
-    this.treeReverse(selectedRootEntity, "X");
+  export function treeReverseX(selectedRootEntity: ConnectableEntity) {
+    treeReverse(selectedRootEntity, "X");
   }
-  treeReverseY(selectedRootEntity: ConnectableEntity) {
-    this.treeReverse(selectedRootEntity, "Y");
+  export function treeReverseY(selectedRootEntity: ConnectableEntity) {
+    treeReverse(selectedRootEntity, "Y");
   }
   /**
    * 将树形结构翻转位置
    * @param selectedRootEntity
    */
-  private treeReverse(selectedRootEntity: ConnectableEntity, direction: "X" | "Y") {
+  function treeReverse(selectedRootEntity: ConnectableEntity, direction: "X" | "Y") {
     // 检测树形结构
     const nodeChildrenArray = GraphMethods.nodeChildrenArray(selectedRootEntity);
     if (nodeChildrenArray.length <= 1) {

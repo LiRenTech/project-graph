@@ -1,15 +1,15 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
+import { Color } from "../../../dataStruct/Color";
 
 export class LineEdge extends Edge {
   public uuid: string;
@@ -36,14 +36,13 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
-    protected readonly project: Project,
     { source, target, text, uuid, color, sourceRectRate, targetRectRate }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
     super();
-    this._source = new TextNode(this.project, { uuid: source }, true);
-    this._target = new TextNode(this.project, { uuid: target }, true);
+    this._source = new TextNode({ uuid: source }, true);
+    this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
     this.color = new Color(...color);
@@ -54,8 +53,8 @@ export class LineEdge extends Edge {
   }
 
   // warn: 暂时无引用
-  static fromTwoEntity(project: Project, source: ConnectableEntity, target: ConnectableEntity): LineEdge {
-    const result = new LineEdge(project, {
+  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): LineEdge {
+    const result = new LineEdge({
       source: source.uuid,
       target: target.uuid,
       text: "",

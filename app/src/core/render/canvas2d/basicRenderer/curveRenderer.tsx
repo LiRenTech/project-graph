@@ -1,16 +1,14 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { CubicBezierCurve, SymmetryCurve } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
+import { Vector } from "../../../dataStruct/Vector";
+import { Canvas } from "../../../stage/Canvas";
 import { PenStrokeSegment } from "../../../stage/stageObject/entity/PenStroke";
 
 /**
  * 关于各种曲线和直线的渲染
  * 注意：这里全都是View坐标系
  */
-@service("curveRenderer")
-export class CurveRenderer {
-  constructor(private readonly project: Project) {}
-
+export namespace CurveRenderer {
   /**
    * 绘制一条直线实线
    * @param start
@@ -18,13 +16,13 @@ export class CurveRenderer {
    * @param color
    * @param width
    */
-  renderSolidLine(start: Vector, end: Vector, color: Color, width: number): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(start.x, start.y);
-    this.project.canvas.ctx.lineTo(end.x, end.y);
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
+  export function renderSolidLine(start: Vector, end: Vector, color: Color, width: number): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
   }
 
   /**
@@ -33,43 +31,43 @@ export class CurveRenderer {
    * @param color
    * @param width
    */
-  renderSolidLineMultiple(locations: Vector[], color: Color, width: number): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(locations[0].x, locations[0].y);
+  export function renderSolidLineMultiple(locations: Vector[], color: Color, width: number): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
-      this.project.canvas.ctx.lineTo(locations[i].x, locations[i].y);
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
     }
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
   }
-  renderPenStroke(stroke: PenStrokeSegment[], color: Color): void {
-    this.project.canvas.ctx.strokeStyle = color.toString();
+  export function renderPenStroke(stroke: PenStrokeSegment[], color: Color): void {
+    Canvas.ctx.strokeStyle = color.toString();
     // 在canvas上绘制笔画
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.lineJoin = "round";
-    this.project.canvas.ctx.moveTo(stroke[0].startLocation.x, stroke[0].startLocation.y);
+    Canvas.ctx.beginPath();
+    Canvas.ctx.lineJoin = "round";
+    Canvas.ctx.moveTo(stroke[0].startLocation.x, stroke[0].startLocation.y);
     for (let i = 0; i < stroke.length; i++) {
       // console.log(stroke[i].width);
 
       /*
       // 修改循环开始从0
       if (i > 0) {
-        this.project.canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+        Canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
       }
         */
       // 上述代码这样，导致开头少了一段。如果是按住shift键画出来的直线就看不到了。
 
-      this.project.canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+      Canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
 
-      this.project.canvas.ctx.lineWidth = stroke[i].width; // 更新线宽为当前线段的宽度
-      this.project.canvas.ctx.stroke(); // 为了确保每个线段按照不同的宽度绘制，需要在这里调用stroke
+      Canvas.ctx.lineWidth = stroke[i].width; // 更新线宽为当前线段的宽度
+      Canvas.ctx.stroke(); // 为了确保每个线段按照不同的宽度绘制，需要在这里调用stroke
       if (i < stroke.length - 1) {
-        this.project.canvas.ctx.beginPath(); // 开始新的路径，以便每个线段可以有不同的宽度
-        this.project.canvas.ctx.moveTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+        Canvas.ctx.beginPath(); // 开始新的路径，以便每个线段可以有不同的宽度
+        Canvas.ctx.moveTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
       }
     }
-    // this.project.canvas.ctx.strokeStyle = color.toString();
+    // Canvas.ctx.strokeStyle = color.toString();
     // 更改颜色要在操作之前就更改，否则会出现第一笔画的颜色还是上一次的颜色这种诡异现象。
   }
 
@@ -80,21 +78,21 @@ export class CurveRenderer {
    * @param color
    * @param width
    */
-  renderSolidLineMultipleSmoothly(locations: Vector[], color: Color, width: number): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(locations[0].x, locations[0].y);
+  export function renderSolidLineMultipleSmoothly(locations: Vector[], color: Color, width: number): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
 
-    const segments = this.smoothPoints(locations, 0.25);
+    const segments = smoothPoints(locations, 0.25);
     segments.forEach((seg) => {
-      this.project.canvas.ctx.bezierCurveTo(seg.cp1.x, seg.cp1.y, seg.cp2.x, seg.cp2.y, seg.end.x, seg.end.y);
+      Canvas.ctx.bezierCurveTo(seg.cp1.x, seg.cp1.y, seg.cp2.x, seg.cp2.y, seg.end.x, seg.end.y);
     });
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.lineJoin = "round";
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.lineJoin = "round";
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
   }
 
-  private smoothPoints(points: Vector[], tension = 0.5) {
+  function smoothPoints(points: Vector[], tension = 0.5) {
     const smoothed = [];
     for (let i = 0; i < points.length - 1; i++) {
       const p0 = i > 0 ? points[i - 1] : points[i];
@@ -126,26 +124,26 @@ export class CurveRenderer {
    * @param color
    * @param widthList
    */
-  renderSolidLineMultipleWithWidth(locations: Vector[], color: Color, widthList: number[]): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.lineJoin = "round";
-    this.project.canvas.ctx.lineWidth = widthList[0];
-    this.project.canvas.ctx.moveTo(locations[0].x, locations[0].y);
+  export function renderSolidLineMultipleWithWidth(locations: Vector[], color: Color, widthList: number[]): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.lineJoin = "round";
+    Canvas.ctx.lineWidth = widthList[0];
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
-      this.project.canvas.ctx.lineTo(locations[i].x, locations[i].y);
-      // this.project.canvas.ctx.stroke();
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
+      // Canvas.ctx.stroke();
     }
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
-    // this.project.canvas.ctx.strokeStyle = color.toString();
-    // this.project.canvas.ctx.beginPath();
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+    // Canvas.ctx.strokeStyle = color.toString();
+    // Canvas.ctx.beginPath();
     // for (let i = 0; i < locations.length - 1; i++) {
     //   const start = locations[i];
     //   const end = locations[i + 1];
-    //   this.project.canvas.ctx.lineWidth = widthList[i + 1];
-    //   this.project.canvas.ctx.moveTo(start.x, start.y);
-    //   this.project.canvas.ctx.lineTo(end.x, end.y);
-    //   this.project.canvas.ctx.stroke();
+    //   Canvas.ctx.lineWidth = widthList[i + 1];
+    //   Canvas.ctx.moveTo(start.x, start.y);
+    //   Canvas.ctx.lineTo(end.x, end.y);
+    //   Canvas.ctx.stroke();
     // }
   }
 
@@ -157,24 +155,24 @@ export class CurveRenderer {
    * @param shadowColor
    * @param shadowBlur
    */
-  renderSolidLineMultipleWithShadow(
+  export function renderSolidLineMultipleWithShadow(
     locations: Vector[],
     color: Color,
     width: number,
     shadowColor: Color,
     shadowBlur: number,
   ): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(locations[0].x, locations[0].y);
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
-      this.project.canvas.ctx.lineTo(locations[i].x, locations[i].y);
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
     }
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.shadowColor = shadowColor.toString();
-    this.project.canvas.ctx.shadowBlur = shadowBlur;
-    this.project.canvas.ctx.stroke();
-    this.project.canvas.ctx.shadowBlur = 0;
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.shadowColor = shadowColor.toString();
+    Canvas.ctx.shadowBlur = shadowBlur;
+    Canvas.ctx.stroke();
+    Canvas.ctx.shadowBlur = 0;
   }
 
   /**
@@ -188,26 +186,26 @@ export class CurveRenderer {
    * @param width
    * @param dashLength 虚线的长度，效果： =2: "--  --  --  --", =1: "- - - - -"
    */
-  renderDashedLine(start: Vector, end: Vector, color: Color, width: number, dashLength: number): void {
-    this.project.canvas.ctx.setLineDash([dashLength, dashLength]);
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(start.x, start.y);
-    this.project.canvas.ctx.lineTo(end.x, end.y);
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
+  export function renderDashedLine(start: Vector, end: Vector, color: Color, width: number, dashLength: number): void {
+    Canvas.ctx.setLineDash([dashLength, dashLength]);
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
     // 重置线型
-    this.project.canvas.ctx.setLineDash([]);
+    Canvas.ctx.setLineDash([]);
   }
 
   /**
    * 绘制一条贝塞尔曲线
    * @param curve
    */
-  renderBezierCurve(curve: CubicBezierCurve, color: Color, width: number): void {
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(curve.start.x, curve.start.y);
-    this.project.canvas.ctx.bezierCurveTo(
+  export function renderBezierCurve(curve: CubicBezierCurve, color: Color, width: number): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(curve.start.x, curve.start.y);
+    Canvas.ctx.bezierCurveTo(
       curve.ctrlPt1.x,
       curve.ctrlPt1.y,
       curve.ctrlPt2.x,
@@ -215,51 +213,57 @@ export class CurveRenderer {
       curve.end.x,
       curve.end.y,
     );
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = color.toString();
-    this.project.canvas.ctx.stroke();
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
   }
 
   /**
    * 绘制一条对称曲线
    * @param curve
    */
-  renderSymmetryCurve(curve: SymmetryCurve, color: Color, width: number): void {
-    this.renderBezierCurve(curve.bezier, color, width);
+  export function renderSymmetryCurve(curve: SymmetryCurve, color: Color, width: number): void {
+    renderBezierCurve(curve.bezier, color, width);
   }
 
   /**
    * 绘制一条从颜色渐变到另一种颜色的实线
    */
-  renderGradientLine(start: Vector, end: Vector, startColor: Color, endColor: Color, width: number): void {
-    const gradient = this.project.canvas.ctx.createLinearGradient(start.x, start.y, end.x, end.y);
+  export function renderGradientLine(
+    start: Vector,
+    end: Vector,
+    startColor: Color,
+    endColor: Color,
+    width: number,
+  ): void {
+    const gradient = Canvas.ctx.createLinearGradient(start.x, start.y, end.x, end.y);
     // 添加颜色
     gradient.addColorStop(0, startColor.toString()); // 起始颜色
     gradient.addColorStop(1, endColor.toString()); // 结束颜色
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(start.x, start.y);
-    this.project.canvas.ctx.lineTo(end.x, end.y);
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = gradient;
-    this.project.canvas.ctx.stroke();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = gradient;
+    Canvas.ctx.stroke();
   }
   /**
    * 绘制一条颜色渐变的贝塞尔曲线
    * @param curve
    */
-  renderGradientBezierCurve(curve: CubicBezierCurve, startColor: Color, endColor: Color, width: number): void {
-    const gradient = this.project.canvas.ctx.createLinearGradient(
-      curve.start.x,
-      curve.start.y,
-      curve.end.x,
-      curve.end.y,
-    );
+  export function renderGradientBezierCurve(
+    curve: CubicBezierCurve,
+    startColor: Color,
+    endColor: Color,
+    width: number,
+  ): void {
+    const gradient = Canvas.ctx.createLinearGradient(curve.start.x, curve.start.y, curve.end.x, curve.end.y);
     // 添加颜色
     gradient.addColorStop(0, startColor.toString()); // 起始颜色
     gradient.addColorStop(1, endColor.toString()); // 结束颜色
-    this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.moveTo(curve.start.x, curve.start.y);
-    this.project.canvas.ctx.bezierCurveTo(
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(curve.start.x, curve.start.y);
+    Canvas.ctx.bezierCurveTo(
       curve.ctrlPt1.x,
       curve.ctrlPt1.y,
       curve.ctrlPt2.x,
@@ -267,8 +271,8 @@ export class CurveRenderer {
       curve.end.x,
       curve.end.y,
     );
-    this.project.canvas.ctx.lineWidth = width;
-    this.project.canvas.ctx.strokeStyle = gradient;
-    this.project.canvas.ctx.stroke();
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = gradient;
+    Canvas.ctx.stroke();
   }
 }

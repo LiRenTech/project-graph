@@ -1,15 +1,17 @@
-import { Color, mixColors, ProgressNumber } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { Camera } from "../../../../stage/Camera";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { Effect } from "../effectObject";
+import { EffectObject } from "../effectObject";
 
 /**
  * 用于逻辑节点执行了一次效果
  * 附着在矩形上，从中心向外扩散
  */
-export class RectangleLittleNoteEffect extends Effect {
+export class RectangleLittleNoteEffect extends EffectObject {
   getClassName(): string {
     return "RectangleLittleNoteEffect";
   }
@@ -28,21 +30,21 @@ export class RectangleLittleNoteEffect extends Effect {
     return new RectangleLittleNoteEffect(new ProgressNumber(0, 15), textNode.collisionBox.getRectangle(), Color.Green);
   }
 
-  override tick(project: Project) {
-    super.tick(project);
+  override tick(): void {
+    super.tick();
     this.currentRect = this.currentRect.expandFromCenter(Random.randomFloat(1, 2));
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
-    project.shapeRenderer.renderRect(
-      project.renderer.transformWorld2View(this.currentRect),
+    ShapeRenderer.renderRect(
+      this.currentRect.transformWorld2View(),
       Color.Transparent,
       mixColors(Color.Transparent, this.strokeColor, 1 - this.timeProgress.rate),
-      2 * project.camera.currentScale,
-      8 * project.camera.currentScale,
+      2 * Camera.currentScale,
+      8 * Camera.currentScale,
     );
   }
 }

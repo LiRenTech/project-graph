@@ -1,91 +1,92 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../../Project";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { MouseLocation } from "../../../../service/controlService/MouseLocation";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../stage/Camera";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EntityRenderer } from "../EntityRenderer";
 
-@service("urlNodeRenderer")
-export class UrlNodeRenderer {
-  constructor(private readonly project: Project) {}
-
-  render(urlNode: UrlNode): void {
+export namespace UrlNodeRenderer {
+  export function render(urlNode: UrlNode): void {
     if (urlNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        urlNode.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(urlNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 节点身体矩形
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
-        this.project.renderer.transformWorld2View(urlNode.rectangle.location),
-        urlNode.rectangle.size.multiply(this.project.camera.currentScale),
+        Renderer.transformWorld2View(urlNode.rectangle.location),
+        urlNode.rectangle.size.multiply(Camera.currentScale),
       ),
       urlNode.color,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     // 绘制标题
     if (!urlNode.isEditingTitle) {
-      this.project.textRenderer.renderOneLineText(
+      TextRenderer.renderOneLineText(
         urlNode.title,
-        this.project.renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        Renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     }
     // 绘制分界线
-    this.project.curveRenderer.renderDashedLine(
-      this.project.renderer.transformWorld2View(urlNode.rectangle.location.add(new Vector(0, UrlNode.titleHeight))),
-      this.project.renderer.transformWorld2View(
+    CurveRenderer.renderDashedLine(
+      Renderer.transformWorld2View(urlNode.rectangle.location.add(new Vector(0, UrlNode.titleHeight))),
+      Renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(urlNode.rectangle.size.x, UrlNode.titleHeight)),
       ),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      1 * this.project.camera.currentScale,
-      4 * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      1 * Camera.currentScale,
+      4 * Camera.currentScale,
     );
     // 绘制url
-    this.project.textRenderer.renderOneLineText(
+    TextRenderer.renderOneLineText(
       urlNode.url.length > 35 ? urlNode.url.slice(0, 35) + "..." : urlNode.url,
-      this.project.renderer.transformWorld2View(
+      Renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
       ),
-      Renderer.FONT_SIZE * 0.5 * this.project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
-    this.project.entityRenderer.renderEntityDetails(urlNode);
+    EntityRenderer.renderEntityDetails(urlNode);
     // 绘制特效
-    this.renderHoverState(urlNode);
+    renderHoverState(urlNode);
   }
 
-  private renderHoverState(urlNode: UrlNode): void {
-    const mouseLocation = this.project.renderer.transformView2World(MouseLocation.vector());
+  function renderHoverState(urlNode: UrlNode): void {
+    const mouseLocation = Renderer.transformView2World(MouseLocation.vector());
     if (urlNode.titleRectangle.isPointIn(mouseLocation)) {
       // 鼠标在标题上
-      this.project.shapeRenderer.renderRect(
-        this.project.renderer.transformWorld2View(urlNode.titleRectangle),
-        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+      ShapeRenderer.renderRect(
+        urlNode.titleRectangle.transformWorld2View(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
         0,
       );
     } else if (urlNode.urlRectangle.isPointIn(mouseLocation)) {
       // 鼠标在url上
-      this.project.shapeRenderer.renderRect(
-        this.project.renderer.transformWorld2View(urlNode.urlRectangle),
-        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+      ShapeRenderer.renderRect(
+        urlNode.urlRectangle.transformWorld2View(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
         0,
       );
       // 绘制提示
-      this.project.textRenderer.renderOneLineText(
+      TextRenderer.renderOneLineText(
         "双击打开链接",
-        this.project.renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
-        Renderer.FONT_SIZE * 0.5 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        Renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
+        Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     }
   }

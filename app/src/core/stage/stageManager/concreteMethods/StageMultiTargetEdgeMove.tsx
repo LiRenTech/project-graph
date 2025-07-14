@@ -1,22 +1,19 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
 import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
+import { StageManager } from "../StageManager";
 
 /**
  * 多源无向边移动中心点
  */
-@service("multiTargetEdgeMove")
-export class MultiTargetEdgeMove {
-  constructor(private readonly project: Project) {}
-
+export namespace StageMultiTargetEdgeMove {
   /**
    *
    * @param lastMoveLocation 鼠标按下的位置
    * @param diffLocation 鼠标移动向量
    */
-  moveMultiTargetEdge(diffLocation: Vector) {
-    for (const association of this.project.stageManager.getSelectedAssociations()) {
+  export function moveMultiTargetEdge(diffLocation: Vector) {
+    for (const association of StageManager.getSelectedAssociations()) {
       if (!(association instanceof MultiTargetUndirectedEdge)) {
         continue;
       }
@@ -27,7 +24,7 @@ export class MultiTargetEdgeMove {
       // const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
 
       const boundingRectangle = Rectangle.getBoundingRectangle(
-        this.project.stageManager.getEntitiesByUUIDs(association.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
+        StageManager.getEntitiesByUUIDs(association.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
       );
       // 当前的中心点
       const currentCenter = association.centerLocation;

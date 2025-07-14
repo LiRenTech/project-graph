@@ -1,20 +1,26 @@
-import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
-import { Project } from "../../../../Project";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../../dataStruct/Vector";
+import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Camera } from "../../../../stage/Camera";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { Settings } from "../../../Settings";
+import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-
 /**
  * 涂鸦功能
  */
-export class ControllerPenStrokeDrawingClass extends ControllerClass {
+class ControllerDrawingClass extends ControllerClass {
   private _isUsing: boolean = false;
 
   /** 在移动的过程中，记录这一笔画的笔迹 */
@@ -38,8 +44,8 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   /**
    * 初始化函数
    */
-  constructor(protected readonly project: Project) {
-    super(project);
+  public init(): void {
+    super.init();
     Settings.watch("autoFillPenStrokeColorEnable", (value) => {
       this.autoFillPenStrokeColorEnable = value;
     });
@@ -54,16 +60,16 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   private recordLocation: Vector[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.mouseLeftMode !== "draw") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
       return;
     }
-    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
+    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
       return;
     }
     this._isUsing = true;
 
-    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (this.project.controller.pressingKeySet.has("shift")) {
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    if (Controller.pressingKeySet.has("shift")) {
       this.isDrawingLine = true;
     }
     this.pressStartWordLocation = pressWorldLocation.clone();
@@ -71,19 +77,19 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public mousemove = (event: PointerEvent) => {
     if (!this._isUsing) return;
-    if (!this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "draw") {
+    if (!Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       return;
     }
     const events = event.getCoalescedEvents();
     for (const e of events) {
       const isPen = e.pointerType === "pen";
-      const worldLocation = this.project.renderer.transformView2World(new Vector(e.clientX, e.clientY));
-      const limitDistance = 8 / this.project.camera.currentScale;
+      const worldLocation = Renderer.transformView2World(new Vector(e.clientX, e.clientY));
+      const limitDistance = 8 / Camera.currentScale;
       // 检测：如果移动距离不超过一个距离，则不记录
       if (worldLocation.distance(this.lastMoveLocation) < limitDistance) {
         return;
@@ -100,31 +106,31 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
+    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
       return;
     }
-    const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this.recordLocation.push(releaseWorldLocation.clone());
     if (releaseWorldLocation.subtract(this.pressStartWordLocation).magnitude() < 2) {
       // 判断当前位置是否有舞台对象，如果有则更改颜色。
-      const entity = this.project.stageManager.findEntityByLocation(releaseWorldLocation);
+      const entity = StageManager.findEntityByLocation(releaseWorldLocation);
       if (entity) {
         if (entity instanceof TextNode) {
           const currentPenColor = this.getCurrentStrokeColor().clone();
-          if (this.project.controller.pressingKeySet.has("shift")) {
+          if (Controller.pressingKeySet.has("shift")) {
             // 颜色叠加
             entity.color = mixColors(entity.color, currentPenColor, 0.1);
           } else {
             entity.color = currentPenColor.clone();
           }
-          this.project.effects.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
+          Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
         }
       }
       // 如果没有，则画一个圈。
       // 增加特效
       // 只是点了一下，应该有特殊效果
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new CircleFlameEffect(
           new ProgressNumber(0, 20),
           releaseWorldLocation.clone(),
@@ -132,7 +138,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
           this.getCurrentStrokeColor().clone(),
         ),
       );
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new CircleChangeRadiusEffect(
           new ProgressNumber(0, 20),
           releaseWorldLocation.clone(),
@@ -144,16 +150,12 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
     } else {
       // 正常的划过一段距离
       // 生成笔触
-      if (this.project.controller.pressingKeySet.has("shift")) {
+      if (Controller.pressingKeySet.has("shift")) {
         // 直线
         const startLocation = this.pressStartWordLocation;
         const endLocation = releaseWorldLocation.clone();
 
-        if (
-          isMac
-            ? this.project.controller.pressingKeySet.has("meta")
-            : this.project.controller.pressingKeySet.has("control")
-        ) {
+        if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
           // 垂直于坐标轴的直线
           const dy = Math.abs(endLocation.y - startLocation.y);
           const dx = Math.abs(endLocation.x - startLocation.x);
@@ -185,7 +187,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        this.project.stageManager.addPenStroke(stroke);
+        StageManager.addPenStroke(stroke);
       } else {
         // 普通笔迹
         const strokeStringList: string[] = [];
@@ -205,7 +207,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        this.project.stageManager.addPenStroke(stroke);
+        StageManager.addPenStroke(stroke);
       }
     }
 
@@ -213,23 +215,23 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
     this.recordLocation = [];
     this.currentStroke = [];
 
-    this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
     this._isUsing = false;
     this.isDrawingLine = false;
   };
 
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
-    if (!this.project.controller.pressingKeySet.has("shift")) {
+    if (!Controller.pressingKeySet.has("shift")) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "draw") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
       // 涂鸦模式下才能看到量角器，或者转动量角器
       return;
     }
     if (event.deltaY > 0) {
-      this.project.drawingControllerRenderer.rotateUpAngle();
+      DrawingControllerRenderer.rotateUpAngle();
     } else {
-      this.project.drawingControllerRenderer.rotateDownAngle();
+      DrawingControllerRenderer.rotateDownAngle();
     }
   };
 
@@ -249,3 +251,5 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
     }
   }
 }
+
+export const ControllerDrawing = new ControllerDrawingClass();

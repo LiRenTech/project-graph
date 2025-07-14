@@ -1,4 +1,9 @@
-import { readFile } from "@tauri-apps/plugin-fs";
+// 实测发现 不可行:
+// @tauri-apps/plugin-fs 只能读取文本文件，不能强行读取流文件并强转为ArrayBuffer
+// import { readTextFile } from "@tauri-apps/plugin-fs";
+
+import { readFile } from "../../../utils/fs";
+import { StringDict } from "../../dataStruct/StringDict";
 import { Settings } from "../Settings";
 
 /**
@@ -111,11 +116,11 @@ export namespace SoundService {
     source.start(0);
   }
 
-  const pathAudioBufferMap = new Map<string, AudioBuffer>();
+  const pathAudioBufferMap = new StringDict<AudioBuffer>();
 
   async function getAudioBufferByFilePath(filePath: string) {
     // 先从缓存中获取音频数据
-    const result = pathAudioBufferMap.get(filePath);
+    const result = pathAudioBufferMap.getById(filePath);
     if (result) {
       return result;
     }
@@ -132,7 +137,7 @@ export namespace SoundService {
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
     // 加入缓存
-    pathAudioBufferMap.set(filePath, audioBuffer);
+    pathAudioBufferMap.setById(filePath, audioBuffer);
 
     return audioBuffer;
   }

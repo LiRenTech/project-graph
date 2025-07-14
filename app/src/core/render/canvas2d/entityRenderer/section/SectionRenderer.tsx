@@ -1,100 +1,97 @@
-import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures";
-import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 import { getTextSize } from "../../../../../utils/font";
-import { Project, service } from "../../../../Project";
+import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
+import { CubicBezierCurve } from "../../../../dataStruct/shape/Curve";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../../../stage/Camera";
+import { Canvas } from "../../../../stage/Canvas";
 import { Section } from "../../../../stage/stageObject/entity/Section";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EntityRenderer } from "../EntityRenderer";
 
-@service("sectionRenderer")
-export class SectionRenderer {
-  constructor(private readonly project: Project) {}
-
+export namespace SectionRenderer {
   /** 画折叠状态 */
-  private renderCollapsed(section: Section) {
+  function renderCollapsed(section: Section) {
     // 折叠状态
     const renderRectangle = new Rectangle(
-      this.project.renderer.transformWorld2View(section.rectangle.location),
-      section.rectangle.size.multiply(this.project.camera.currentScale),
+      Renderer.transformWorld2View(section.rectangle.location),
+      section.rectangle.size.multiply(Camera.currentScale),
     );
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       renderRectangle,
       section.color,
-      mixColors(this.project.stageStyleManager.currentStyle.StageObjectBorder, Color.Black, 0.5),
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      mixColors(StageStyleManager.currentStyle.StageObjectBorder, Color.Black, 0.5),
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     // 外框
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
-        this.project.renderer.transformWorld2View(section.rectangle.location.subtract(Vector.same(4))),
-        section.rectangle.size.add(Vector.same(4 * 2)).multiply(this.project.camera.currentScale),
+        Renderer.transformWorld2View(section.rectangle.location.subtract(Vector.same(4))),
+        section.rectangle.size.add(Vector.same(4 * 2)).multiply(Camera.currentScale),
       ),
       section.color,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * 1.5 * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
     );
     if (!section.isEditingTitle) {
-      this.project.textRenderer.renderOneLineText(
+      TextRenderer.renderOneLineText(
         section.text,
-        this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
+        Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
       );
     }
   }
 
   // 非折叠状态
-  private renderNoCollapse(section: Section) {
-    let borderWidth = 2 * this.project.camera.currentScale;
-    if (this.project.entityRenderer.sectionBitTitleRenderType !== "none") {
+  function renderNoCollapse(section: Section) {
+    let borderWidth = 2 * Camera.currentScale;
+    if (EntityRenderer.sectionBitTitleRenderType !== "none") {
       borderWidth =
-        this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale
-          ? 2 * this.project.camera.currentScale
-          : 2;
+        Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale ? 2 * Camera.currentScale : 2;
     }
     // 注意：这里只能画边框
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
-        this.project.renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(this.project.camera.currentScale),
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
       ),
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      StageStyleManager.currentStyle.StageObjectBorder,
       borderWidth,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
 
-    if (
-      this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale &&
-      !section.isEditingTitle
-    ) {
+    if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale && !section.isEditingTitle) {
       // 正常显示标题
-      this.project.textRenderer.renderOneLineText(
+      TextRenderer.renderOneLineText(
         section.text,
-        this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
+        Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
       );
     }
   }
 
-  renderBackgroundColor(section: Section) {
+  export function renderBackgroundColor(section: Section) {
     const color = section.color.clone();
     color.a = Math.min(color.a, 0.5);
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
-        this.project.renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(this.project.camera.currentScale),
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
       ),
       color,
       Color.Transparent,
       0,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
   }
 
@@ -103,31 +100,27 @@ export class SectionRenderer {
    * @param section
    * @returns
    */
-  renderBigCoveredTitle(section: Section) {
-    if (this.project.camera.currentScale >= Section.bigTitleCameraScale) {
+  export function renderBigCoveredTitle(section: Section) {
+    if (Camera.currentScale >= Section.bigTitleCameraScale) {
       return;
     }
-    const fontSizeVector = this.getFontSizeBySectionSize(section);
+    const fontSizeVector = getFontSizeBySectionSize(section);
     const fontHeight = fontSizeVector.y;
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
-        this.project.renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(this.project.camera.currentScale),
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
       ),
-      section.color.a === 0
-        ? this.project.stageStyleManager.currentStyle.Background.toNewAlpha(0.5)
-        : section.color.toNewAlpha(0.5),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
+      section.color.a === 0 ? StageStyleManager.currentStyle.Background.toNewAlpha(0.5) : section.color.toNewAlpha(0.5),
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
     );
     // 缩放过小了，显示巨大化文字
-    this.project.textRenderer.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       section.text,
-      this.project.renderer.transformWorld2View(section.rectangle.center),
-      fontHeight * this.project.camera.currentScale,
-      section.color.a === 1
-        ? colorInvert(section.color)
-        : colorInvert(this.project.stageStyleManager.currentStyle.Background),
+      Renderer.transformWorld2View(section.rectangle.center),
+      fontHeight * Camera.currentScale,
+      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
     );
   }
 
@@ -136,40 +129,36 @@ export class SectionRenderer {
    * @param section
    * @returns
    */
-  renderTopTitle(section: Section) {
-    if (this.project.camera.currentScale >= Section.bigTitleCameraScale) {
+  export function renderTopTitle(section: Section) {
+    if (Camera.currentScale >= Section.bigTitleCameraScale) {
       return;
     }
-    const fontSize = 20 * (0.5 * this.project.camera.currentScale + 0.5);
+    const fontSize = 20 * (0.5 * Camera.currentScale + 0.5);
     const leftTopLocation = section.collisionBox.getRectangle().leftTop;
-    const leftTopViewLocation = this.project.renderer.transformWorld2View(leftTopLocation);
+    const leftTopViewLocation = Renderer.transformWorld2View(leftTopLocation);
     const leftTopFontViewLocation = leftTopViewLocation.subtract(new Vector(0, fontSize));
     const bgColor =
-      section.color.a === 0
-        ? this.project.stageStyleManager.currentStyle.Background.toNewAlpha(0.5)
-        : section.color.toNewAlpha(0.5);
+      section.color.a === 0 ? StageStyleManager.currentStyle.Background.toNewAlpha(0.5) : section.color.toNewAlpha(0.5);
 
     const textColor =
-      section.color.a === 1
-        ? colorInvert(section.color)
-        : colorInvert(this.project.stageStyleManager.currentStyle.Background);
+      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background);
     const textSize = getTextSize(section.text, fontSize);
-    this.project.shapeRenderer.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(leftTopFontViewLocation, textSize).expandFromCenter(2),
       bgColor,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      2 * Camera.currentScale,
       2,
     );
 
-    this.project.textRenderer.renderOneLineText(section.text, leftTopFontViewLocation, fontSize, textColor);
+    TextRenderer.renderOneLineText(section.text, leftTopFontViewLocation, fontSize, textColor);
   }
 
-  private getFontSizeBySectionSize(section: Section): Vector {
+  function getFontSizeBySectionSize(section: Section): Vector {
     // 缩放过小了，显示巨大化文字
-    this.project.textRenderer.renderOneLineText("", Vector.getZero(), 100);
+    TextRenderer.renderOneLineText("", Vector.getZero(), 100);
 
-    const textSize = this.project.canvas.ctx.measureText(section.text);
+    const textSize = Canvas.ctx.measureText(section.text);
     const width = textSize.width;
     const height = 100;
     // 计算文字宽高比
@@ -186,46 +175,43 @@ export class SectionRenderer {
     return new Vector(ratio * fontHeight, fontHeight);
   }
 
-  render(section: Section): void {
+  export function render(section: Section): void {
     if (section.isHiddenBySectionCollapse) {
       return;
     }
 
     if (section.isCollapsed) {
       // 折叠状态
-      this.renderCollapsed(section);
+      renderCollapsed(section);
     } else {
       // 非折叠状态
-      this.renderNoCollapse(section);
+      renderNoCollapse(section);
     }
 
     if (section.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(
-        section.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
+      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // debug: 绿色虚线 观察父子关系
-    if (this.project.renderer.isShowDebug) {
+    if (Renderer.isShowDebug) {
       for (const child of section.children) {
         const start = section.rectangle.topCenter;
         const end = child.collisionBox.getRectangle().leftTop;
         const DIS = 100;
         // const rate = (end.y - start.y) / section.rectangle.height;
-        this.project.curveRenderer.renderGradientBezierCurve(
+        CurveRenderer.renderGradientBezierCurve(
           new CubicBezierCurve(
-            this.project.renderer.transformWorld2View(start),
-            this.project.renderer.transformWorld2View(start.add(new Vector(0, -DIS))),
-            this.project.renderer.transformWorld2View(end.add(new Vector(0, -DIS))),
-            this.project.renderer.transformWorld2View(end),
+            Renderer.transformWorld2View(start),
+            Renderer.transformWorld2View(start.add(new Vector(0, -DIS))),
+            Renderer.transformWorld2View(end.add(new Vector(0, -DIS))),
+            Renderer.transformWorld2View(end),
           ),
           Color.Green,
           Color.Red,
-          2 * this.project.camera.currentScale,
+          2 * Camera.currentScale,
         );
       }
     }
-    this.project.entityRenderer.renderEntityDetails(section);
+    EntityRenderer.renderEntityDetails(section);
   }
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { KeyBinds } from "../core/service/controlService/shortcutKeysEngine/KeyBinds";
 import { cn } from "../utils/cn";
-import { formatEmacsKey, parseEmacsKey } from "../utils/emacs";
 import { isLinux, isMac, isWindows } from "../utils/platform";
 import Button from "./Button";
 
@@ -11,11 +11,11 @@ import Button from "./Button";
  * @returns
  */
 export default function KeyBind({
-  value = "",
+  value = { key: "", modifiers: { control: false, alt: false, shift: false, meta: false } },
   onChange = () => {},
 }: {
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: { key: string; modifiers: KeyBinds.KeyModifiers };
+  onChange?: (value: { key: string; modifiers: KeyBinds.KeyModifiers }) => void;
 }) {
   const [choosing, setChoosing] = useState(false);
   const { t } = useTranslation("keys");
@@ -38,14 +38,29 @@ export default function KeyBind({
         end();
         return;
       }
-      onChange(formatEmacsKey(event));
+      const modifiers = {
+        control: event.ctrlKey,
+        alt: event.altKey,
+        shift: event.shiftKey,
+        meta: event.metaKey,
+      };
+      onChange({ key: event.key, modifiers });
       end();
     };
     const handleMouseDown = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
+      const modifiers = {
+        control: event.ctrlKey,
+        alt: event.altKey,
+        shift: event.shiftKey,
+        meta: event.metaKey,
+      };
       if (event.button !== 0) {
-        onChange(formatEmacsKey(event));
+        onChange({
+          key: `mouse${event.button}`,
+          modifiers,
+        });
         end();
       }
     };
@@ -56,7 +71,17 @@ export default function KeyBind({
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      onChange(formatEmacsKey(event));
+      const modifiers = {
+        control: event.ctrlKey,
+        alt: event.altKey,
+        shift: event.shiftKey,
+        meta: event.metaKey,
+      };
+      if (event.deltaY < 0) {
+        onChange({ key: "wheelup", modifiers });
+      } else {
+        onChange({ key: "wheeldown", modifiers });
+      }
       end();
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -65,7 +90,73 @@ export default function KeyBind({
     document.addEventListener("wheel", handleWheel);
 
     setChoosing(true);
-    onChange("");
+    onChange({
+      key: "",
+      modifiers: { control: false, alt: false, shift: false, meta: false },
+    });
+  };
+
+  const getModifiersName = () => {
+    // 如果什么控制键都没有，就什么也不加
+    if (!value.modifiers.control && !value.modifiers.alt && !value.modifiers.shift && !value.modifiers.meta) {
+      return <></>;
+    }
+
+    const modifiers = [];
+
+    if (value.modifiers.control) {
+      if (isMac) {
+        modifiers.push("⌃control");
+      } else if (isWindows) {
+        modifiers.push("Ctrl");
+      } else if (isLinux) {
+        modifiers.push("Ctrl");
+      } else {
+        modifiers.push("control");
+      }
+    }
+    if (value.modifiers.alt) {
+      if (isMac) {
+        modifiers.push("⌥option");
+      } else if (isWindows) {
+        modifiers.push("Alt");
+      } else if (isLinux) {
+        modifiers.push("Alt");
+      } else {
+        modifiers.push("alt");
+      }
+    }
+    if (value.modifiers.shift) {
+      if (isMac) {
+        modifiers.push("⇧shift");
+      } else if (isWindows) {
+        modifiers.push("Shift");
+      } else if (isLinux) {
+        modifiers.push("Shift");
+      } else {
+        modifiers.push("shift");
+      }
+    }
+    if (value.modifiers.meta) {
+      if (isMac) {
+        modifiers.push("⌘command");
+      } else if (isWindows) {
+        modifiers.push("❖Win");
+      } else if (isLinux) {
+        modifiers.push("Meta");
+      } else {
+        modifiers.push("meta");
+      }
+    }
+    return (
+      <>
+        {modifiers.map((modifier, index) => (
+          <span className="bg-keybind-modifiers-bg text-keybind-modifiers-text rounded px-1" key={index}>
+            {modifier}
+          </span>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -75,77 +166,17 @@ export default function KeyBind({
         "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
       })}
     >
-      <Modifiers value={value} />
+      {getModifiersName()}
 
-      {value ? (
+      {value.key ? (
         <span className="text-keybind-text">
-          {parseEmacsKey(value).key}
-          {value.length === 0 && choosing && "..."}
-          {value.length === 0 && !choosing && t("none")}
+          {t(value.key, { defaultValue: value.key.toUpperCase() })}
+          {value.key.length === 0 && choosing && "..."}
+          {value.key.length === 0 && !choosing && t("none")}
         </span>
       ) : (
         <span className="text-keybind-text">{t("none")}</span>
       )}
     </Button>
-  );
-}
-
-function Modifiers({ value }: { value: string }) {
-  const modifiers = parseEmacsKey(value);
-
-  const mods = [];
-
-  if (modifiers.control) {
-    if (isMac) {
-      mods.push("⌃control");
-    } else if (isWindows) {
-      mods.push("Ctrl");
-    } else if (isLinux) {
-      mods.push("Ctrl");
-    } else {
-      mods.push("control");
-    }
-  }
-  if (modifiers.alt) {
-    if (isMac) {
-      mods.push("⌥option");
-    } else if (isWindows) {
-      mods.push("Alt");
-    } else if (isLinux) {
-      mods.push("Alt");
-    } else {
-      mods.push("alt");
-    }
-  }
-  if (modifiers.shift) {
-    if (isMac) {
-      mods.push("⇧shift");
-    } else if (isWindows) {
-      mods.push("Shift");
-    } else if (isLinux) {
-      mods.push("Shift");
-    } else {
-      mods.push("shift");
-    }
-  }
-  if (modifiers.meta) {
-    if (isMac) {
-      mods.push("⌘command");
-    } else if (isWindows) {
-      mods.push("❖Win");
-    } else if (isLinux) {
-      mods.push("Super");
-    } else {
-      mods.push("meta");
-    }
-  }
-  return (
-    <>
-      {mods.map((modifier, index) => (
-        <span className="bg-keybind-modifiers-bg text-keybind-modifiers-text rounded px-1" key={index}>
-          {modifier}
-        </span>
-      ))}
-    </>
   );
 }

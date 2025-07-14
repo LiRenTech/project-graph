@@ -1,36 +1,60 @@
-import { Vector } from "@graphif/data-structures";
 import { Store } from "@tauri-apps/plugin-store";
-import { matchEmacsKey } from "../../../../utils/emacs";
 import { createStore } from "../../../../utils/store";
-import { Project, service } from "../../../Project";
+import { Vector } from "../../../dataStruct/Vector";
+import { isMac } from "../../../../utils/platform";
 
 /**
  * 用于管理快捷键绑定
+ * @example
+ * (await KeyBinds.create("move", "w", { control: true, shift: true }))
+ *   .down(() => println("move up"))
  */
-@service("keyBinds")
-export class KeyBinds {
-  private store: Store | null = null;
+export namespace KeyBinds {
+  /** 修饰键 */
+  export type KeyModifiers = {
+    /** 是否按下了Ctrl键 */
+    control: boolean;
+    /** 是否按下了Alt键 */
+    alt: boolean;
+    /** 是否按下了Shift键 */
+    shift: boolean;
+    /** 是否按下了Meta键 macOs 里的command键 */
+    meta?: boolean;
+  };
 
-  constructor(private readonly project: Project) {
-    createStore("keybinds.json").then((store) => {
-      this.store = store;
-    });
+  let store: Store | null = null;
+
+  export async function init() {
+    store = await createStore("keybinds.json");
   }
 
-  async set(id: string, key: string) {
-    if (!this.store) {
+  export async function set(id: string, key: string, modifiers: KeyModifiers) {
+    if (!store) {
       throw new Error("Store not initialized.");
     }
-    await this.store.set(id, key);
+    await store.set(id, { key, modifiers });
+    if (callbacks[id]) {
+      callbacks[id].forEach((cb) => cb(key, modifiers));
+    }
   }
 
-  async get(id: string): Promise<string | null> {
-    if (!this.store) {
+  export async function get(id: string): Promise<{ key: string; modifiers: KeyModifiers } | null> {
+    if (!store) {
       throw new Error("Store not initialized.");
     }
-    const data = await this.store.get<string>(id);
+    const data = await store.get<{ key: string; modifiers: KeyModifiers }>(id);
     return data || null;
   }
+
+  /**
+   * 一个记录全部快捷键绑定对象的类
+   * @param id 快捷键的英文字段名
+   * @param key 按下的字母
+   * @param modifiers 配合字母的修饰键
+   */
+  const callbacks: {
+    [key: string]: Array<(key: string, modifiers: KeyModifiers) => void>;
+  } = {};
 
   /**
    * 让某一个快捷键开始监听
@@ -38,135 +62,220 @@ export class KeyBinds {
    * @param callback
    * @returns
    */
-  async watch(id: string, callback: (key: string) => void) {
-    if (!this.store) {
+  export async function watch(id: string, callback: (key: string, modifiers: KeyModifiers) => void) {
+    if (!store) {
       throw new Error("Store not initialized.");
     }
-    const data = await this.store.get<string>(id);
+    const data = await store.get<{ key: string; modifiers: KeyModifiers }>(id);
     if (data) {
-      callback(data);
-      return this.store.onChange<string>((changedId, data) => {
-        if (changedId !== id) return;
-        if (!data) return;
-        callback(data);
-      });
+      callbacks[id] = callbacks[id] || [];
+      callbacks[id].push(callback);
+      callback(data.key, data.modifiers);
     } else {
       throw new Error(`Keybind ${id} not found.`);
     }
+    return () => {
+      callbacks[id] = callbacks[id].filter((cb) => cb !== callback);
+    };
   }
 
   /**
    * 获取所有快捷键绑定
    * @returns
    */
-  async entries() {
-    if (!this.store) {
+  export async function entries() {
+    if (!store) {
       throw new Error("Keybind Store not initialized.");
     }
-    return await this.store.entries<string>();
+    return await store.entries<{ key: string; modifiers: KeyModifiers }>();
   }
 
   // 仅用于初始化软件时注册快捷键
-  registered: Set<string> = new Set();
+  const registered: Set<string> = new Set();
 
-  async create(id: string, defaultKey: string, onPress?: () => void): Promise<_Bind> {
-    if (this.registered.has(id)) {
+  /**
+   * 仅限在最开始的时候注册快捷键
+   * @param id 快捷键的英文字段名
+   * @param defaultKey 默认按下的字母
+   * @param defaultModifiers_ 配合字母的修饰键，比如{control: true, shift: true}
+   * @returns
+   */
+  export async function create(
+    id: string,
+    defaultKey: string,
+    defaultModifiers_: Partial<KeyModifiers> = {
+      control: false,
+      alt: false,
+      shift: false,
+      meta: false,
+    },
+  ): Promise<_Bind> {
+    const defaultModifiers = {
+      control: defaultModifiers_.control || false,
+      alt: defaultModifiers_.alt || false,
+      shift: defaultModifiers_.shift || false,
+      meta: defaultModifiers_.meta || false,
+    };
+    if (registered.has(id)) {
       throw new Error(`Keybind ${id} 已经注册过了`);
     }
-    this.registered.add(id);
-    let userSetKey = await this.get(id);
-    if (!userSetKey) {
+    registered.add(id);
+    let data = await get(id);
+    if (!data) {
       // 注册新的快捷键
-      await this.set(id, defaultKey);
-      userSetKey = defaultKey;
+      await set(id, defaultKey, defaultModifiers);
+      data = { key: defaultKey, modifiers: defaultModifiers };
     }
-    const obj = new _Bind(this.project, id, userSetKey);
-    if (onPress) {
-      obj.down(onPress);
-    }
+    const obj = new _Bind(id, data.key, data.modifiers);
     // 监听快捷键变化
-    await this.watch(id, (key) => {
+    await watch(id, (key, modifiers) => {
       obj.key = key;
+      obj.modifiers = modifiers;
     });
     return obj;
   }
-}
 
-class _Bind {
-  public button: number = -1;
-  private start: Vector | null = null;
-  // @ts-expect-error // TODO: dblclick
-  private lastMatch: number = 0;
+  class _Bind {
+    public button: number = -1;
+    private start: Vector | null = null;
+    // @ts-expect-error todo:dblclick
+    private lastMatch: number = 0;
 
-  constructor(
-    private readonly project: Project,
-    public id: string,
-    public key: string,
-  ) {
-    this.project.canvas.element.addEventListener("mousedown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        this.start = new Vector(event.clientX, event.clientY);
+    constructor(
+      public id: string,
+      public key: string,
+      public modifiers: KeyModifiers,
+    ) {
+      if (key.startsWith("mouse")) {
+        this.button = +key.slice(5);
       }
-    });
-    this.project.canvas.element.addEventListener("mouseup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        this.start = null;
-      }
-    });
-  }
+      window.addEventListener("mousedown", (event) => {
+        if (this.matches(event)) {
+          this.start = new Vector(event.clientX, event.clientY);
+        }
+      });
+      window.addEventListener("mouseup", (event) => {
+        if (this.matches(event)) {
+          this.start = null;
+        }
+      });
+    }
 
-  /**
-   * 快捷键按下的时候触发的函数
-   * @param handler
-   */
-  public down(handler: () => void) {
-    this.project.canvas.element.addEventListener("keydown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    this.project.canvas.element.addEventListener("mousedown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    this.project.canvas.element.addEventListener("wheel", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    return this;
-  }
-  /**
-   * 快捷键按下并抬起的时候触发的函数
-   * @param handler
-   */
-  public up(handler: () => void) {
-    this.project.canvas.element.addEventListener("keyup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    this.project.canvas.element.addEventListener("mouseup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    return this;
-  }
+    /**
+     * 检查这个《快捷键绑定对象》本身是否和一个事件匹配
+     * @param event
+     * @returns
+     */
+    private matches(event: KeyboardEvent | MouseEvent | WheelEvent): boolean {
+      // 先检查 修饰键 是否匹配
+      let matchModifiers =
+        this.modifiers.control === event.ctrlKey &&
+        this.modifiers.alt === event.altKey &&
+        this.modifiers.shift === event.shiftKey;
 
-  /**
-   * 快捷键鼠标拖动的时候触发的函数
-   * @param handler
-   */
-  public drag(handler: (start: Vector) => void) {
-    this.project.canvas.element.addEventListener("mousemove", (event) => {
-      if (this.start && matchEmacsKey(this.key, event)) {
-        const end = new Vector(event.clientX, event.clientY);
-        handler(this.start);
-        this.start = end;
+      if (this.modifiers.meta) {
+        matchModifiers = matchModifiers && this.modifiers.meta === event.metaKey;
+      } else {
+        // 1.4.23 之前的老版本，没有metaKey，默认为false
+        matchModifiers = matchModifiers && !event.metaKey;
       }
-    });
-    return this;
+
+      // 再检查 按键 是否匹配
+      let matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
+      // 处理macbook特殊中文按键符号问题
+      if (isMac && event instanceof KeyboardEvent) {
+        const currentKey = event.key.toLowerCase();
+        const transedKeyDict: { [key: string]: string } = {
+          "【": "[",
+          "】": "]",
+          "；": ";",
+          "‘": "'",
+          "’": "'",
+          "“": '"',
+          "”": '"',
+          "，": ",",
+          "。": ".",
+          "、": "\\",
+          "《": "<",
+          "》": ">",
+          "？": "?",
+          "！": "!",
+          "：": ":",
+          "·": "`",
+          "¥": "$",
+          "～": "~",
+          "……": "^",
+          "｜": "|",
+        };
+        const transedKey = transedKeyDict[currentKey];
+        if (currentKey === transedKey) {
+          matchKey = true;
+        }
+      }
+      const matchButton = event instanceof MouseEvent && event.button === this.button;
+      const matchWheel =
+        event instanceof WheelEvent &&
+        ((event.deltaY < 0 && this.key === "wheelup") || (event.deltaY > 0 && this.key === "wheeldown"));
+      const match = matchModifiers && (matchKey || matchButton || matchWheel);
+      if (match) {
+        this.lastMatch = Date.now();
+      }
+      return match;
+    }
+
+    /**
+     * 快捷键按下的时候触发的函数
+     * @param handler
+     */
+    public down(handler: () => void) {
+      window.addEventListener("keydown", (event) => {
+        if (this.matches(event)) {
+          handler();
+        }
+      });
+      window.addEventListener("mousedown", (event) => {
+        if (this.matches(event)) {
+          handler();
+        }
+      });
+      window.addEventListener("wheel", (event) => {
+        if (this.matches(event)) {
+          handler();
+        }
+      });
+      return this;
+    }
+    /**
+     * 快捷键按下并抬起的时候触发的函数
+     * @param handler
+     */
+    public up(handler: () => void) {
+      window.addEventListener("keyup", (event) => {
+        if (this.matches(event)) {
+          handler();
+        }
+      });
+      window.addEventListener("mouseup", (event) => {
+        if (this.matches(event)) {
+          handler();
+        }
+      });
+      return this;
+    }
+
+    /**
+     * 快捷键鼠标拖动的时候触发的函数
+     * @param handler
+     */
+    public drag(handler: (start: Vector) => void) {
+      window.addEventListener("mousemove", (event) => {
+        if (this.start && this.matches(event)) {
+          const end = new Vector(event.clientX, event.clientY);
+          handler(this.start);
+          this.start = end;
+        }
+      });
+      return this;
+    }
   }
 }

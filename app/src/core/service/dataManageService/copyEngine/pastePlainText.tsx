@@ -1,12 +1,15 @@
-import { Vector } from "@graphif/data-structures";
-import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { PathString } from "../../../../utils/pathString";
+import { Vector } from "../../../dataStruct/Vector";
+import { Stage } from "../../../stage/Stage";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectanglePushInEffect } from "../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * 复制粘贴引擎 粘贴各种各样的纯文本 处理函数
@@ -21,7 +24,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
 
   if (isSvgString(clipboardText)) {
     // 是SVG类型
-    entity = new SvgNode(this.project, {
+    entity = new SvgNode({
       uuid: uuidv4(),
       content: clipboardText,
       location: [mouseLocation.x, mouseLocation.y],
@@ -30,7 +33,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     });
   } else if (PathString.isValidURL(clipboardText)) {
     // 是URL类型
-    entity = new UrlNode(this.project, {
+    entity = new UrlNode({
       title: "链接",
       uuid: uuidv4(),
       url: clipboardText,
@@ -38,7 +41,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     });
   } else if (isMermaidGraphString(clipboardText)) {
     // 是Mermaid图表类型
-    entity = new TextNode(this.project, {
+    entity = new TextNode({
       text: "mermaid图表",
       details: "```mermaid\n" + clipboardText + "\n```",
       uuid: uuidv4(),
@@ -48,7 +51,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     const { valid, text, url } = PathString.isMarkdownUrl(clipboardText);
     if (valid) {
       // 是Markdown链接类型
-      entity = new UrlNode(this.project, {
+      entity = new UrlNode({
         title: text,
         uuid: uuidv4(),
         url: url,
@@ -57,7 +60,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     } else {
       // 只是普通的文本
       if (clipboardText.length > 3000) {
-        entity = new TextNode(this.project, {
+        entity = new TextNode({
           uuid: uuidv4(),
           text: "粘贴板文字过长",
           location: [mouseLocation.x, mouseLocation.y],
@@ -67,7 +70,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
           details: clipboardText,
         });
       } else {
-        entity = new TextNode(this.project, {
+        entity = new TextNode({
           uuid: uuidv4(),
           text: clipboardText,
           location: [mouseLocation.x, mouseLocation.y],
@@ -83,12 +86,12 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
   }
 
   if (entity !== null) {
-    this.project.stageManager.addEntity(entity);
+    StageManager.addEntity(entity);
     // 添加到section
-    const mouseSections = this.project.sectionMethods.getSectionsByInnerLocation(mouseLocation);
+    const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
     if (mouseSections.length > 0) {
-      this.project.stageManager.goInSection([entity], mouseSections[0]);
-      this.project.effects.addEffect(
+      StageManager.goInSection([entity], mouseSections[0]);
+      Stage.effectMachine.addEffect(
         RectanglePushInEffect.sectionGoInGoOut(
           entity.collisionBox.getRectangle(),
           mouseSections[0].collisionBox.getRectangle(),

@@ -2,6 +2,7 @@ import { Check, Stars, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ButtonField, Field } from "../../../components/Field";
 import Switch from "../../../components/Switch";
+import { Settings } from "../../../core/service/Settings";
 
 const effects = Object.keys(
   import.meta.glob("../../core/service/feedbackService/effectEngine/concrete/*.tsx", {

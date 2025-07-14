@@ -1,28 +1,28 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
 import { isMac } from "../../../../utils/platform";
-import { Project, service } from "../../../Project";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { StageDumper } from "../../../stage/StageDumper";
-import { SerializedDataAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
+import { StageSerializedAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { Controller } from "../../controlService/controller/Controller";
+import { MouseLocation } from "../../controlService/MouseLocation";
 import { copyEnginePasteImage } from "./pasteImage";
 import { copyEnginePastePlainText } from "./pastePlainText";
 
 /**
  * 专门用来管理节点复制的引擎
  */
-@service("copyEngine")
-export class CopyEngine {
-  constructor(private readonly project: Project) {}
-
+export namespace CopyEngine {
   /**
    * 虚拟粘贴板数据
    * 注意：这个不是系统粘贴板
    */
-  copyBoardData: Serialized.File = {
+  export let copyBoardData: Serialized.File = {
     version: StageDumper.latestVersion,
     entities: [],
     associations: [],
@@ -33,25 +33,25 @@ export class CopyEngine {
    * 当他为null时，表示没有粘贴板数据
    */
 
-  copyBoardDataRectangle: Rectangle | null = null;
+  export let copyBoardDataRectangle: Rectangle | null = null;
   /**
    * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
    * 用于计算即将粘贴的位置
    */
-
-  copyBoardMouseVector: Vector = Vector.getZero();
+  // eslint-disable-next-line prefer-const
+  export let copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
    * 清空虚拟粘贴板
    */
-  clearVirtualCopyBoardData() {
-    this.copyBoardData = {
+  export function clearVirtualCopyBoardData() {
+    copyBoardData = {
       version: StageDumper.latestVersion,
       entities: [],
       associations: [],
       tags: [],
     };
-    this.copyBoardDataRectangle = null;
+    copyBoardDataRectangle = null;
   }
 
   /**
@@ -59,19 +59,19 @@ export class CopyEngine {
    * 将当前选中的节点复制到虚拟粘贴板
    * 也要将选中的部分复制到系统粘贴板
    */
-  copy() {
+  export function copy() {
     // 获取所有选中的实体
-    const entities: Entity[] = this.project.stageManager.getSelectedEntities();
+    const entities: Entity[] = StageManager.getSelectedEntities();
     if (entities.length === 0) {
       // 如果没有选中东西，就是清空虚拟粘贴板
-      this.clearVirtualCopyBoardData();
+      clearVirtualCopyBoardData();
       return;
     }
     // 更新虚拟剪贴板
-    this.copyBoardData = StageDumper.dumpSelected(entities);
+    copyBoardData = StageDumper.dumpSelected(entities);
 
     // 更新虚拟粘贴板形状
-    this.updateRectangle();
+    updateRectangle();
 
     // 更新系统剪贴板
     const clipboardItems = [];
@@ -91,9 +91,9 @@ export class CopyEngine {
     const systemClipboardItems = [];
     for (const entity of entities) {
       if (entity instanceof ImageNode) {
-        systemClipboardItems.push(this.getImageClipboardItem(entity));
+        systemClipboardItems.push(getImageClipboardItem(entity));
       } else if (entity instanceof TextNode) {
-        systemClipboardItems.push(this.getTextNodeClipboardItem(entity));
+        systemClipboardItems.push(getTextNodeClipboardItem(entity));
       }
     }
     if (systemClipboardItems.length > 0) {
@@ -101,7 +101,7 @@ export class CopyEngine {
     }
   }
 
-  private getTextNodeClipboardItem(textNode: TextNode) {
+  function getTextNodeClipboardItem(textNode: TextNode) {
     try {
       let clipboardText = textNode.text;
       if (textNode.details.trim() !== "") {
@@ -115,7 +115,7 @@ export class CopyEngine {
     }
   }
 
-  private getImageClipboardItem(entityImage: ImageNode) {
+  function getImageClipboardItem(entityImage: ImageNode) {
     const base64String = "data:image/png;base64," + entityImage.base64String;
     try {
       // 将 Base64 字符串转换为 Blob 对象
@@ -137,37 +137,37 @@ export class CopyEngine {
     }
   }
 
-  isVirtualClipboardEmpty() {
-    return this.copyBoardData.entities.length === 0;
+  export function isVirtualClipboardEmpty() {
+    return copyBoardData.entities.length === 0;
   }
 
   /**
    * 用户按下了ctrl+v，将粘贴板数据粘贴到画布上
    */
-  paste() {
+  export function paste() {
     // 如果有虚拟粘贴板数据，则优先粘贴虚拟粘贴板上的东西
-    if (this.isVirtualClipboardEmpty()) {
-      readClipboardItems(this.project.renderer.transformView2World(MouseLocation.vector()));
+    if (isVirtualClipboardEmpty()) {
+      readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
     } else {
-      SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
+      StageSerializedAdder.addSerializedData(copyBoardData, copyBoardMouseVector);
     }
     if (isMac) {
       // mac下无法直接粘贴，还要点一个按钮，但这导致
       // 按下按钮后，程序中依然显示 meta v 仍然在按下状态
       // 因此需要主动删除
       setTimeout(() => {
-        this.project.controller.pressingKeySet.clear();
+        Controller.pressingKeySet.clear();
       }, 500);
     }
   }
 
-  pasteWithOriginLocation() {
-    SerializedDataAdder.addSerializedData(this.copyBoardData);
+  export function pasteWithOriginLocation() {
+    StageSerializedAdder.addSerializedData(copyBoardData);
   }
 
-  private updateRectangle() {
+  function updateRectangle() {
     const rectangles = [];
-    for (const node of this.copyBoardData.entities) {
+    for (const node of copyBoardData.entities) {
       if (node.type === "core:connect_point") {
         rectangles.push(new Rectangle(new Vector(...node.location), new Vector(1, 1)));
       } else if (node.type === "core:pen_stroke") {
@@ -179,7 +179,7 @@ export class CopyEngine {
     }
 
     const clipboardRect = Rectangle.getBoundingRectangle(rectangles);
-    this.copyBoardDataRectangle = clipboardRect;
+    copyBoardDataRectangle = clipboardRect;
   }
 }
 

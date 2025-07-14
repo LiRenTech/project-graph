@@ -1,10 +1,13 @@
-import { Color, mixColors, ProgressNumber } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Effect } from "../effectObject";
+import { Camera } from "../../../../stage/Camera";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
-export class RectangleRenderEffect extends Effect {
+export class RectangleRenderEffect extends EffectObject {
   getClassName(): string {
     return "RectangleRenderEffect";
   }
@@ -18,13 +21,13 @@ export class RectangleRenderEffect extends Effect {
     super(timeProgress);
   }
 
-  render(project: Project) {
-    project.shapeRenderer.renderRect(
-      project.renderer.transformWorld2View(this.rectangle),
+  render() {
+    ShapeRenderer.renderRect(
+      this.rectangle.transformWorld2View(),
       this.fillColor,
       mixColors(this.strokeColor, this.strokeColor.toTransparent(), this.timeProgress.rate),
-      this.strokeWidth * project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
+      this.strokeWidth * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
   }
 
@@ -33,7 +36,7 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 10),
       rectangle,
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+      StageStyleManager.currentStyle.CollideBoxPreSelected,
       4,
     );
   }
@@ -43,7 +46,7 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 100),
       rectangle,
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
       4,
     );
   }

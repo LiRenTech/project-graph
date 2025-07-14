@@ -580,16 +580,6 @@ settings:
       如果您启用此项，我们会收集您的使用数据，帮助我们改进软件
       发送的数据仅用于统计，不会包含您的个人隐私信息
       您的数据会在中国香港的云服务器上存储，不会发送到国外
-  aiApiBaseUrl:
-    title: AI API 地址
-    description: |
-      目前仅支持 OpenAI 格式的 API
-  aiApiKey:
-    title: AI API 密钥
-    description: |
-      密钥将会明文存储在本地
-  aiModel:
-    title: AI 模型
 
 plugins:
   welcome:

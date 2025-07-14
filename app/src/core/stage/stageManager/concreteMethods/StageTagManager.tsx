@@ -1,8 +1,13 @@
-import { Color, ProgressNumber } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { MouseLocation } from "../../../service/controlService/MouseLocation";
 import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { RectangleNoteEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Camera } from "../../Camera";
+import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
@@ -13,23 +18,21 @@ import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { StageManager } from "../StageManager";
 
-@service("tagManager")
-export class TagManager {
-  constructor(private readonly project: Project) {}
-
+export namespace StageTagManager {
   /**
    * 将所有选择的实体添加或移除标签
    *
    * 目前先仅支持TextNode
    */
-  changeTagBySelected() {
-    for (const selectedEntities of this.project.stageManager.getSelectedStageObjects()) {
+  export function changeTagBySelected() {
+    for (const selectedEntities of StageManager.getSelectedStageObjects()) {
       // 若有则删，若无则加
-      if (this.project.stageManager.TagOptions.hasTag(selectedEntities.uuid)) {
-        this.project.stageManager.TagOptions.removeTag(selectedEntities.uuid);
+      if (StageManager.TagOptions.hasTag(selectedEntities.uuid)) {
+        StageManager.TagOptions.removeTag(selectedEntities.uuid);
       } else {
-        this.project.stageManager.TagOptions.addTag(selectedEntities.uuid);
+        StageManager.TagOptions.addTag(selectedEntities.uuid);
       }
     }
   }
@@ -38,12 +41,12 @@ export class TagManager {
    * 用于ui渲染
    * @returns 所有标签对应的名字
    */
-  refreshTagNamesUI() {
+  export function refreshTagNamesUI() {
     const res: { tagName: string; uuid: string; color: [number, number, number, number] }[] = [];
-    const tagUUIDs = this.project.stageManager.TagOptions.getTagUUIDs();
+    const tagUUIDs = StageManager.TagOptions.getTagUUIDs();
     const tagObjectList: StageObject[] = [];
     for (const tagUUID of tagUUIDs) {
-      const stageObject = this.project.stageManager.get(tagUUID);
+      const stageObject = StageManager.getStageObjectByUUID(tagUUID);
       if (stageObject) {
         tagObjectList.push(stageObject);
       }
@@ -96,8 +99,8 @@ export class TagManager {
    * @param tagUUID
    * @returns
    */
-  moveCameraToTag(tagUUID: string) {
-    const tagObject = this.project.stageManager.get(tagUUID);
+  export function moveCameraToTag(tagUUID: string) {
+    const tagObject = StageManager.getStageObjectByUUID(tagUUID);
     if (!tagObject) {
       return;
     }
@@ -106,30 +109,30 @@ export class TagManager {
       const boundingRect = Rectangle.getBoundingRectangle(
         childNodes.map((childNode) => childNode.collisionBox.getRectangle()),
       );
-      this.project.camera.resetByRectangle(boundingRect);
-      this.project.effects.addEffect(
+      Camera.resetByRectangle(boundingRect);
+      Stage.effectMachine.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          this.project.renderer.transformView2World(MouseLocation.vector()),
+          Renderer.transformView2World(MouseLocation.vector()),
           tagObject.collisionBox.getRectangle().center,
           Color.Green,
           Color.Green,
         ),
       );
-      this.project.effects.addEffect(
+      Stage.effectMachine.addEffect(
         new RectangleNoteEffect(
           new ProgressNumber(0, 30),
           boundingRect,
-          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
         ),
       );
     } else {
       const location = tagObject.collisionBox.getRectangle().center;
-      this.project.camera.location = location;
-      this.project.effects.addEffect(
+      Camera.location = location;
+      Stage.effectMachine.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          this.project.renderer.transformView2World(MouseLocation.vector()),
+          Renderer.transformView2World(MouseLocation.vector()),
           location,
           Color.Green,
           Color.Green,

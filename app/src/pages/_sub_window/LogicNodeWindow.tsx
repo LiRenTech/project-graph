@@ -1,7 +1,7 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
 import Button from "../../components/Button";
+import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
+import { Vector } from "../../core/dataStruct/Vector";
 import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,
@@ -26,7 +26,7 @@ export default function LogicNodeWindow() {
             tooltip={LogicNodeNameToArgsTipsMap[name]}
             onClick={() => {
               StageManager.addTextNode(
-                new TextNode(this.project, {
+                new TextNode({
                   uuid: v4(),
                   location: [Camera.location.x, Camera.location.y],
                   text: name,

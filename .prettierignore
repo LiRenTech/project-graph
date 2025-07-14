@@ -1,4 +1,4 @@
-#app/src-tauri
+app/src-tauri
 
 # 防止翻译总是被格式化
 app/src/locales/*.yml

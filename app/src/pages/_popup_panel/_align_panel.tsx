@@ -25,18 +25,20 @@ import {
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/dialog";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import { Settings } from "../../core/service/Settings";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
-import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
-import { LayoutManualAlign } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
-import { AutoAlign } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 import { cn } from "../../utils/cn";
 import { ToolbarItem } from "../_toolbar";
+import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 
 /**
  * 对齐面板
@@ -93,7 +95,7 @@ export default function AlignNodePanel() {
           description="顶对齐 (88)"
           icon={<AlignStartHorizontal />}
           handleFunction={() => {
-            LayoutManualAlign.alignTop();
+            LayoutManualAlignManager.alignTop();
           }}
         />
         <div />
@@ -101,7 +103,7 @@ export default function AlignNodePanel() {
           description="左对齐 (44)"
           icon={<AlignStartVertical />}
           handleFunction={() => {
-            LayoutManualAlign.alignLeft();
+            LayoutManualAlignManager.alignLeft();
           }}
         />
         <div />
@@ -109,7 +111,7 @@ export default function AlignNodePanel() {
           description="右对齐 (66)"
           icon={<AlignEndVertical />}
           handleFunction={() => {
-            LayoutManualAlign.alignRight();
+            LayoutManualAlignManager.alignRight();
           }}
         />
         <div />
@@ -117,7 +119,7 @@ export default function AlignNodePanel() {
           description="底对齐 (22)"
           icon={<AlignEndHorizontal />}
           handleFunction={() => {
-            LayoutManualAlign.alignBottom();
+            LayoutManualAlignManager.alignBottom();
           }}
         />
         <div />
@@ -128,7 +130,7 @@ export default function AlignNodePanel() {
           description="相等间距垂直对齐 (8282)"
           icon={<AlignVerticalSpaceBetween />}
           handleFunction={() => {
-            LayoutManualAlign.alignVerticalSpaceBetween();
+            LayoutManualAlignManager.alignVerticalSpaceBetween();
           }}
         />
         <div />
@@ -136,14 +138,14 @@ export default function AlignNodePanel() {
           description="相等间距水平对齐 (4646)"
           icon={<AlignHorizontalSpaceBetween />}
           handleFunction={() => {
-            LayoutManualAlign.alignHorizontalSpaceBetween();
+            LayoutManualAlignManager.alignHorizontalSpaceBetween();
           }}
         />
         <ToolbarItem
           description="中心垂直对齐 (582)"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
-            LayoutManualAlign.alignCenterVertical();
+            LayoutManualAlignManager.alignCenterVertical();
           }}
         />
         <div />
@@ -151,14 +153,14 @@ export default function AlignNodePanel() {
           description="中心水平对齐 (546)"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
-            LayoutManualAlign.alignCenterHorizontal();
+            LayoutManualAlignManager.alignCenterHorizontal();
           }}
         />
         <ToolbarItem
           description="向下紧密堆积 (852)"
           icon={<AlignVerticalJustifyStart />}
           handleFunction={() => {
-            LayoutManualAlign.alignTopToBottomNoSpace();
+            LayoutManualAlignManager.alignTopToBottomNoSpace();
           }}
         />
         <div />
@@ -166,7 +168,7 @@ export default function AlignNodePanel() {
           description="向右紧密堆积 (456)"
           icon={<AlignHorizontalJustifyStart />}
           handleFunction={() => {
-            LayoutManualAlign.alignLeftToRightNoSpace();
+            LayoutManualAlignManager.alignLeftToRightNoSpace();
           }}
         />
       </div>
@@ -187,13 +189,13 @@ export default function AlignNodePanel() {
         <ToolbarItem
           description="向右自动树形布局"
           icon={<Network className="-rotate-90" />}
-          handleFunction={isSelectedIsTreeRoot(AutoAlign.autoLayoutSelectedFastTreeModeRight)}
+          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight)}
         />
         <div />
         <ToolbarItem
           description="向下自动树形布局（点击一次布局一层）"
           icon={<Network />}
-          handleFunction={isSelectedIsTreeRoot(AutoAlign.autoLayoutSelectedFastTreeModeDown)}
+          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown)}
         />
         <div />
       </div>
@@ -229,7 +231,7 @@ export default function AlignNodePanel() {
               });
               return;
             }
-            this.project.sectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
+            StageSectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
           }}
         />
         <ToolbarItem
@@ -273,7 +275,7 @@ export default function AlignNodePanel() {
               });
               return;
             }
-            this.project.sectionPackManager.textNodeTreeToSection(selectedNodes[0]);
+            StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
           }}
         />
       </div>

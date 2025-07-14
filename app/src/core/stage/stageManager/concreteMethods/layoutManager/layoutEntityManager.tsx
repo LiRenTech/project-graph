@@ -1,5 +1,7 @@
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { Section } from "../../../stageObject/entity/Section";
+import { StageHistoryManager } from "../../StageHistoryManager";
+import { StageManager } from "../../StageManager";
 
 export namespace LayoutEntityManager {
   /**
@@ -8,7 +10,7 @@ export namespace LayoutEntityManager {
    * @param isDeep 是否递归
    */
   export function layoutBySelected(layoutFunction: (entities: Entity[]) => void, isDeep: boolean) {
-    const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
+    const entities = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
     if (isDeep) {
       // 递归
       const dfs = (entityList: Entity[]) => {
@@ -27,6 +29,6 @@ export namespace LayoutEntityManager {
     } else {
       layoutFunction(entities);
     }
-    this.project.historyManager.recordStep();
+    StageHistoryManager.recordStep();
   }
 }

@@ -1,7 +1,8 @@
-import { Vector } from "@graphif/data-structures";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import tipsJson from "../../../assets/projectGraphTips.json";
-import { Serialized } from "../../../types/node";
 import { Camera } from "../../stage/Camera";
+import { Vector } from "../../dataStruct/Vector";
+import { Serialized } from "../../../types/node";
 // import { getRectangleFromSerializedEntities } from "../dataManageService/copyEngine/copyEngine";
 import { Dialog } from "../../../components/dialog";
 
@@ -18,7 +19,7 @@ export namespace HelpService {
     const diffLocation = new Vector(0, 0);
     // 必须反序列化一下，否则会IDE报错
     const tipsJsonObject: Serialized.File = JSON.parse(JSON.stringify(tipsJson));
-    if (!this.project.stageManager.isEmpty()) {
+    if (!StageManager.isEmpty()) {
       Dialog.show({
         title: "请新建草稿",
         content: "当前舞台不为空，请新建草稿，或清空舞台内容后再加载引导文件\n\n注：以后会更新多标签页来解决这个问题",
@@ -26,14 +27,14 @@ export namespace HelpService {
       });
       return;
       // // 计算当前舞台的外接矩形
-      // const stageRectangle = this.project.stageManager.getBoundingRectangle();
+      // const stageRectangle = StageManager.getBoundingRectangle();
 
       // const tipsRectangle = getRectangleFromSerializedEntities(tipsJsonObject.entities);
       // // 让tips矩形的右上角，顶住，stageRectangle的左上角
       // diffLocation = stageRectangle.leftCenter.subtract(tipsRectangle.rightTop);
     }
 
-    this.project.stageManager.addSerializedData(tipsJsonObject, diffLocation);
+    StageManager.addSerializedData(tipsJsonObject, diffLocation);
 
     Camera.location = new Vector(100, -2100).add(diffLocation);
     Camera.targetScale = 1;

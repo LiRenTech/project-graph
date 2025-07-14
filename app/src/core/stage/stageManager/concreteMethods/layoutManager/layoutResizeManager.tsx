@@ -1,4 +1,5 @@
 import { TextNode } from "../../../stageObject/entity/TextNode";
+import { StageManager } from "../../StageManager";
 
 /**
  * 统一修改大小的布局管理器
@@ -8,9 +9,7 @@ export namespace LayoutResizeManager {
    * 统一调整选中文本节点的宽度
    */
   export function adjustSelectedTextNodeWidth(mode: "maxWidth" | "minWidth" | "average") {
-    const selectedTextNode = this.project.stageManager
-      .getSelectedEntities()
-      .filter((entity) => entity instanceof TextNode);
+    const selectedTextNode = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     const maxWidth = selectedTextNode.reduce((acc, cur) => Math.max(acc, cur.collisionBox.getRectangle().width), 0);
     const minWidth = selectedTextNode.reduce(
       (acc, cur) => Math.min(acc, cur.collisionBox.getRectangle().width),

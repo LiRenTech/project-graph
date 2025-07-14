@@ -1,13 +1,13 @@
-import { Color } from "@graphif/data-structures";
-import { CaseSensitive, CaseUpper, Search } from "lucide-react";
 import React, { useEffect } from "react";
 import Box from "../../components/Box";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
-import IconButton from "../../components/IconButton";
-import Input from "../../components/Input";
-import { ViewOutlineFlashEffect } from "../../core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { Stage } from "../../core/stage/Stage";
+import Input from "../../components/Input";
+import IconButton from "../../components/IconButton";
+import { CaseSensitive, CaseUpper, Search } from "lucide-react";
+import { ViewOutlineFlashEffect } from "../../core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { Color } from "../../core/dataStruct/Color";
 
 export default function SearchingNodePanel() {
   // region 搜索相关
@@ -31,7 +31,7 @@ export default function SearchingNodePanel() {
 
   const search = () => {
     if (searchString == "") {
-      this.project.effects.addEffect(ViewOutlineFlashEffect.normal(Color.Red));
+      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Red));
       return;
     }
     const isHaveResult = Stage.contentSearchEngine.startSearch(searchString);

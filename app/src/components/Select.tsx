@@ -47,7 +47,7 @@ export default function Select({
     <>
       <Box
         className={cn(
-          "group/select el-select flex appearance-none items-center justify-between gap-1 px-3 py-2 pl-4 hover:cursor-pointer hover:opacity-80",
+          "group/select bg-select-bg text-select-text border-select-border flex appearance-none items-center justify-between gap-1 px-3 py-2 pl-4 hover:cursor-pointer hover:opacity-80",
           className,
         )}
         ref={ref}
@@ -65,7 +65,7 @@ export default function Select({
       <div
         className={cn(
           // w-max: 防止下拉框在页面右侧时，宽度不够而缩小
-          "el-select-popup fixed z-[104] flex w-max origin-top -translate-x-1/2 scale-0 flex-col rounded-lg border p-2 opacity-0 shadow-lg",
+          "border-select-popup-border bg-select-popup-bg shadow-select-popup-shadow fixed z-[104] flex w-max origin-top -translate-x-1/2 scale-0 flex-col rounded-lg border p-2 opacity-0 shadow-lg",
           {
             "scale-100 opacity-100": showDropdown,
           },
@@ -79,10 +79,14 @@ export default function Select({
         {options.map((option) => (
           <button
             key={option.value}
-            className={cn("el-select-option rounded-lg border px-3 py-2 hover:cursor-pointer", {
-              "el-select-option-selected": option.value === value,
-              "active:scale-90": option.value !== value,
-            })}
+            className={cn(
+              "hover:bg-select-option-hover-bg hover:border-select-option-hover-border hover:text-select-option-hover-text bg-select-option-bg text-select-option-text border-select-option-border rounded-lg border px-3 py-2 hover:cursor-pointer",
+              {
+                "bg-select-option-selected-bg text-select-option-selected-text border-select-option-selected-border hover:bg-select-option-selected-hover-bg hover:text-select-option-selected-hover-text hover:border-select-option-selected-hover-border":
+                  option.value === value,
+                "active:scale-90": option.value !== value,
+              },
+            )}
             onClick={() => {
               onChange(option.value);
               setShowDropdown(false);

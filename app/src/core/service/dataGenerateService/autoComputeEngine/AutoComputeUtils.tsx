@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -10,16 +10,13 @@ import { ProgramFunctions } from "./functions/programLogic";
  * 一些在自动计算引擎中
  * 常用的工具函数
  */
-@service("autoComputeUtils")
-export class AutoComputeUtils {
-  constructor(private readonly project: Project) {}
-
+export namespace AutoComputeUtils {
   /**
    * 获取一个节点的所有直接父节点，按x坐标排序
    * @param node
    * @returns
    */
-  getParentTextNodes(node: TextNode): TextNode[] {
+  export function getParentTextNodes(node: TextNode): TextNode[] {
     const parents = GraphMethods.nodeParentArray(node).filter((node) => node instanceof TextNode);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
@@ -28,7 +25,7 @@ export class AutoComputeUtils {
     return parents;
   }
 
-  getParentEntities(node: TextNode): ConnectableEntity[] {
+  export function getParentEntities(node: TextNode): ConnectableEntity[] {
     const parents = GraphMethods.nodeParentArray(node);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
@@ -42,7 +39,7 @@ export class AutoComputeUtils {
    * @param node
    * @returns
    */
-  getChildTextNodes(node: TextNode): TextNode[] {
+  export function getChildTextNodes(node: TextNode): TextNode[] {
     return GraphMethods.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
@@ -53,7 +50,7 @@ export class AutoComputeUtils {
    * @param node
    * @param resultText
    */
-  getNodeOneResult(node: TextNode, resultText: string) {
+  export function getNodeOneResult(node: TextNode, resultText: string) {
     const childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
@@ -61,15 +58,15 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
-      const newNode = new TextNode(this.project, {
+      const newNode = new TextNode({
         uuid: uuidv4(),
         text: resultText,
         location: [node.collisionBox.getRectangle().location.x, node.collisionBox.getRectangle().location.y + 100],
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      this.project.stageManager.addTextNode(newNode);
-      this.project.stageManager.connectEntity(node, newNode);
+      StageManager.addTextNode(newNode);
+      StageManager.connectEntity(node, newNode);
     }
   }
 
@@ -78,7 +75,7 @@ export class AutoComputeUtils {
    * @param section
    * @param resultText
    */
-  getSectionOneResult(section: Section, resultText: string) {
+  export function getSectionOneResult(section: Section, resultText: string) {
     const childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
@@ -86,25 +83,25 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
-      const newNode = new TextNode(this.project, {
+      const newNode = new TextNode({
         uuid: uuidv4(),
         text: resultText,
         location: [section.collisionBox.getRectangle().location.x, section.collisionBox.getRectangle().bottom + 100],
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      this.project.stageManager.addTextNode(newNode);
-      this.project.stageManager.connectEntity(section, newNode);
+      StageManager.addTextNode(newNode);
+      StageManager.connectEntity(section, newNode);
     }
   }
 
-  getSectionMultiResult(section: Section, resultTextList: string[]) {
+  export function getSectionMultiResult(section: Section, resultTextList: string[]) {
     let childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
-        const newNode = new TextNode(this.project, {
+        const newNode = new TextNode({
           uuid: uuidv4(),
           text: "",
           location: [
@@ -114,8 +111,8 @@ export class AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        this.project.stageManager.addTextNode(newNode);
-        this.project.stageManager.connectEntity(section, newNode);
+        StageManager.addTextNode(newNode);
+        StageManager.connectEntity(section, newNode);
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
@@ -137,7 +134,7 @@ export class AutoComputeUtils {
    * @param node
    * @param resultTextList
    */
-  generateMultiResult(node: TextNode, resultTextList: string[]) {
+  export function generateMultiResult(node: TextNode, resultTextList: string[]) {
     if (resultTextList.length === 0) {
       return;
     }
@@ -147,7 +144,7 @@ export class AutoComputeUtils {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
-        const newNode = new TextNode(this.project, {
+        const newNode = new TextNode({
           uuid: uuidv4(),
           text: "",
           location: [
@@ -157,8 +154,8 @@ export class AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        this.project.stageManager.addTextNode(newNode);
-        this.project.stageManager.connectEntity(node, newNode);
+        StageManager.addTextNode(newNode);
+        StageManager.connectEntity(node, newNode);
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
@@ -178,7 +175,7 @@ export class AutoComputeUtils {
    * @param str
    * @returns
    */
-  stringToNumber(str: string) {
+  export function stringToNumber(str: string) {
     if (ProgramFunctions.isHaveVar(str)) {
       return parseFloat(ProgramFunctions.getVarInCore(str));
     }
@@ -190,14 +187,14 @@ export class AutoComputeUtils {
    * 同时判断是否有逻辑节点的父节点或子节点
    * @param node
    */
-  isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
+  export function isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
     for (const fatherNode of GraphMethods.nodeParentArray(node)) {
-      if (fatherNode instanceof TextNode && this.isNameIsLogicNode(fatherNode.text)) {
+      if (fatherNode instanceof TextNode && isNameIsLogicNode(fatherNode.text)) {
         return true;
       }
     }
     for (const childNode of GraphMethods.nodeChildrenArray(node)) {
-      if (childNode instanceof TextNode && this.isNameIsLogicNode(childNode.text)) {
+      if (childNode instanceof TextNode && isNameIsLogicNode(childNode.text)) {
         return true;
       }
     }
@@ -210,7 +207,7 @@ export class AutoComputeUtils {
    * 2：中间只有数字、大写字母、下划线
    * @param name
    */
-  isNameIsLogicNode(name: string): boolean {
+  export function isNameIsLogicNode(name: string): boolean {
     const reg = /^#[a-zA-Z0-9_]+#$/;
     return reg.test(name);
   }

@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
+import { AIEngine } from "../core/service/dataManageService/aiEngine/AIEngine";
+import { Settings } from "../core/service/Settings";
 import { SubWindow } from "../core/service/SubWindow";
 import { router } from "../main";
 import { DateChecker } from "../utils/dateChecker";
@@ -10,9 +13,27 @@ import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/
  * @returns
  */
 export default function TestPage() {
+  useEffect(() => {
+    // InputElement.textarea(new Vector(300, 300), "hello world");
+  });
+
+  const [theme, setTheme] = useState("light");
+  // const [vd, setVd] = useState<Vditor>();
+  useEffect(() => {
+    Settings.watch("theme", (value) => {
+      setTheme(value);
+    });
+
+    return () => {
+      // vd?.destroy();
+      // setVd(undefined);
+    };
+  }, []);
+
   return (
     <>
       <div className="px-4 pt-20">
+        <p>当前主题: {theme.toString()}</p>
         <p>
           isWeb: {isWeb.toString()}, isMobile: {isMobile.toString()}, isDesktop: {isDesktop.toString()}
         </p>

@@ -1,5 +1,5 @@
-import { Vector } from "@graphif/data-structures";
 import { Direction } from "../../../../types/directions";
+import { Vector } from "../../../dataStruct/Vector";
 
 /**
  * 方向键的通用引擎

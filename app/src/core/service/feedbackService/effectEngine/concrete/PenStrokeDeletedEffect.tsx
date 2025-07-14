@@ -1,9 +1,14 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
+import { Color } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../../dataStruct/Vector";
+import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Camera } from "../../../../stage/Camera";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
-import { Effect } from "../effectObject";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
-export class PenStrokeDeletedEffect extends Effect {
+export class PenStrokeDeletedEffect extends EffectObject {
   getClassName(): string {
     return "PenStrokeDeletedEffect";
   }
@@ -21,7 +26,7 @@ export class PenStrokeDeletedEffect extends Effect {
     this.pathList = penStroke.getPath();
     this.color = penStroke.getColor();
     if (this.color.a === 0) {
-      this.color = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
+      this.color = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     this.width = segmentList[0].width;
   }
@@ -31,8 +36,8 @@ export class PenStrokeDeletedEffect extends Effect {
     return new PenStrokeDeletedEffect(new ProgressNumber(0, len), penStroke);
   }
 
-  override tick(project: Project) {
-    super.tick(project);
+  tick(): void {
+    super.tick();
     const currentSep = Math.floor(this.pathList.length * this.timeProgress.rate);
     this.currentPartList = [];
     for (let i = currentSep; i < this.pathList.length; i++) {
@@ -40,7 +45,7 @@ export class PenStrokeDeletedEffect extends Effect {
     }
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
@@ -48,10 +53,10 @@ export class PenStrokeDeletedEffect extends Effect {
       return;
     }
 
-    project.curveRenderer.renderSolidLineMultiple(
-      this.currentPartList.map((v) => project.renderer.transformWorld2View(v)),
+    CurveRenderer.renderSolidLineMultiple(
+      this.currentPartList.map((v) => Renderer.transformWorld2View(v)),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      this.width * project.camera.currentScale,
+      this.width * Camera.currentScale,
     );
   }
 }

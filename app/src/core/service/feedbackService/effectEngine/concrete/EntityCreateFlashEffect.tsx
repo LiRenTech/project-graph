@@ -1,15 +1,17 @@
-import { ProgressNumber } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
+import { Color } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { WorldRenderUtils } from "../../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
+import { Camera } from "../../../../stage/Camera";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { EffectColors } from "../../stageStyle/stageStyle";
-import { Effect } from "../effectObject";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
 /**
  * 实体创建时闪光特效
  */
-export class EntityCreateFlashEffect extends Effect {
+export class EntityCreateFlashEffect extends EffectObject {
   getClassName(): string {
     return "EntityCreateFlashEffect";
   }
@@ -20,10 +22,14 @@ export class EntityCreateFlashEffect extends Effect {
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
     public radius: number,
-    public color: keyof EffectColors = "flash",
+    public color: Color = Color.White,
     public startBlurSize = 50,
   ) {
     super(timeProgress);
+  }
+
+  override tick() {
+    super.tick();
   }
 
   /**
@@ -32,7 +38,12 @@ export class EntityCreateFlashEffect extends Effect {
    * @returns
    */
   static fromRectangle(rectangle: Rectangle) {
-    return new EntityCreateFlashEffect(new ProgressNumber(0, 50), rectangle, Renderer.NODE_ROUNDED_RADIUS, "flash");
+    return new EntityCreateFlashEffect(
+      new ProgressNumber(0, 50),
+      rectangle,
+      Renderer.NODE_ROUNDED_RADIUS,
+      StageStyleManager.currentStyle.effects.flash,
+    );
   }
 
   static fromCreateEntity(entity: Entity) {
@@ -40,7 +51,7 @@ export class EntityCreateFlashEffect extends Effect {
       new ProgressNumber(0, 15),
       entity.collisionBox.getRectangle(),
       Renderer.NODE_ROUNDED_RADIUS,
-      "flash",
+      StageStyleManager.currentStyle.effects.flash,
       100,
     );
     result.subEffects = [
@@ -48,32 +59,32 @@ export class EntityCreateFlashEffect extends Effect {
         new ProgressNumber(0, 30),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
-        "successShadow",
+        StageStyleManager.currentStyle.effects.successShadow,
         50,
       ),
       new EntityCreateFlashEffect(
         new ProgressNumber(0, 45),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
-        "successShadow",
+        StageStyleManager.currentStyle.effects.successShadow,
         25,
       ),
     ];
     return result;
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
-    project.worldRenderUtils.renderRectangleFlash(
-      project.renderer.transformWorld2View(this.rectangle),
-      project.stageStyleManager.currentStyle.effects[this.color],
-      this.startBlurSize * project.camera.currentScale * (1 - this.timeProgress.rate),
-      this.radius * project.camera.currentScale,
+    WorldRenderUtils.renderRectangleFlash(
+      this.rectangle.transformWorld2View(),
+      this.color,
+      this.startBlurSize * Camera.currentScale * (1 - this.timeProgress.rate),
+      this.radius * Camera.currentScale,
     );
     for (const subEffect of this.subEffects) {
-      subEffect.render(project);
+      subEffect.render();
     }
   }
 }

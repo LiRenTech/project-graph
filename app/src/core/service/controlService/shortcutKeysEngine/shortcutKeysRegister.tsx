@@ -1,5 +1,5 @@
-import { Color, Vector } from "@graphif/data-structures";
 import { Dialog } from "../../../../components/dialog";
+import { onNewDraft, onOpen, onSave } from "../../../../pages/_sub_window/AppMenuWindow";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
 import FindWindow from "../../../../pages/_sub_window/FindWindow";
 import RecentFilesWindow from "../../../../pages/_sub_window/RecentFilesWindow";
@@ -9,28 +9,53 @@ import { Direction } from "../../../../types/directions";
 import { openBrowserOrFile } from "../../../../utils/externalOpen";
 import { openDevtools, writeStdout } from "../../../../utils/otherApi";
 import { isMac } from "../../../../utils/platform";
-import { Project, service } from "../../../Project";
+import { Color } from "../../../dataStruct/Color";
+import { Vector } from "../../../dataStruct/Vector";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { Camera } from "../../../stage/Camera";
+import { LeftMouseModeEnum, Stage } from "../../../stage/Stage";
 import { PenStrokeMethods } from "../../../stage/stageManager/basicMethods/PenStrokeMethods";
+import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
+import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { CopyEngine } from "../../dataManageService/copyEngine/copyEngine";
 import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../Settings";
+import {
+  addTextNodeByLocation,
+  addTextNodeFromCurrentSelectedNode,
+  editNodeDetailsByKeyboard,
+} from "../controller/concrete/utilsControl";
+import { Controller } from "../controller/Controller";
+import { KeyboardOnlyEngine } from "../keyboardOnlyEngine/keyboardOnlyEngine";
+import { KeyboardOnlyGraphEngine } from "../keyboardOnlyEngine/keyboardOnlyGraphEngine";
+import { KeyboardOnlyTreeEngine } from "../keyboardOnlyEngine/keyboardOnlyTreeEngine";
+import { SelectChangeEngine } from "../keyboardOnlyEngine/selectChangeEngine";
+import { MouseLocation } from "../MouseLocation";
+import { KeyBinds } from "./KeyBinds";
 
 /**
- * 快捷键注册函数
+ * 快捷键注册函数，仅在软件启动的时候调用一次
  */
-@service("keyBindsRegistrar")
-export class KeyBindsRegistrar {
-  constructor(private readonly project: Project) {}
-
+export namespace ShortcutKeysRegister {
   /**
    * 注册所有快捷键
    */
-  async registerKeyBinds() {
+  export async function registerKeyBinds() {
     // 开始注册快捷键
-    await this.project.keyBinds.create("test", "C-A-S-t", () =>
+    (
+      await KeyBinds.create("test", "t", {
+        control: true,
+        alt: true,
+        shift: true,
+      })
+    ).down(() =>
       Dialog.show({
         title: "自定义快捷键测试",
         content: "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
@@ -54,18 +79,39 @@ export class KeyBindsRegistrar {
       }),
     );
 
-    await this.project.keyBinds.create("undo", "C-z", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.historyManager.undo();
+    (
+      await KeyBinds.create("undo", "z", {
+        control: isMac ? false : true,
+        alt: false,
+        shift: false,
+        meta: isMac,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageHistoryManager.undo();
     });
 
-    await this.project.keyBinds.create("redo", "C-y", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.historyManager.redo();
+    (
+      await KeyBinds.create("redo", "y", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageHistoryManager.redo();
     });
 
     // 危险操作，配置一个不容易触发的快捷键
-    await this.project.keyBinds.create("reload", "C-f5", () => {
+    (
+      await KeyBinds.create("reload", "F5", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: true,
+      })
+    ).down(() => {
       Dialog.show({
         title: "重新加载应用",
         type: "warning",
@@ -85,298 +131,620 @@ export class KeyBindsRegistrar {
         ],
       });
     });
-
-    await this.project.keyBinds.create("checkoutClassroomMode", "F5", async () => {
+    (
+      await KeyBinds.create("checkoutClassroomMode", "F5", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).up(async () => {
       // F5 是PPT的播放快捷键
-      await Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
+      Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
     });
 
-    await this.project.keyBinds.create("resetView", "F", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.camera.resetBySelected();
+    (
+      await KeyBinds.create("resetView", "F", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      Camera.resetBySelected();
     });
 
-    await this.project.keyBinds.create("resetCameraScale", "C-A-r", () => {
-      this.project.camera.resetScale();
+    (
+      await KeyBinds.create("resetCameraScale", "r", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      Camera.resetScale();
     });
 
-    await this.project.keyBinds.create("CameraScaleZoomIn", "[", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.camera.zoomInByKeyboard();
+    (
+      await KeyBinds.create("CameraScaleZoomIn", "[", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      Camera.zoomInByKeyboard();
     });
 
-    await this.project.keyBinds.create("CameraScaleZoomOut", "]", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.camera.zoomOutByKeyboard();
+    (
+      await KeyBinds.create("CameraScaleZoomOut", "]", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      Camera.zoomOutByKeyboard();
     });
-
     if (isMac) {
-      await this.project.keyBinds.create("CameraPageMoveUp", "S-i", () => {
-        this.project.camera.pageMove(Direction.Up);
+      (
+        await KeyBinds.create("CameraPageMoveUp", "i", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Up);
       });
-      await this.project.keyBinds.create("CameraPageMoveDown", "S-k", () => {
-        this.project.camera.pageMove(Direction.Down);
+      (
+        await KeyBinds.create("CameraPageMoveDown", "k", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Down);
       });
-      await this.project.keyBinds.create("CameraPageMoveLeft", "S-j", () => {
-        this.project.camera.pageMove(Direction.Left);
+      (
+        await KeyBinds.create("CameraPageMoveLeft", "j", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Left);
       });
-      await this.project.keyBinds.create("CameraPageMoveRight", "S-l", () => {
-        this.project.camera.pageMove(Direction.Right);
+      (
+        await KeyBinds.create("CameraPageMoveRight", "l", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Right);
       });
     } else {
-      await this.project.keyBinds.create("CameraPageMoveUp", "pageup", () => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        this.project.camera.pageMove(Direction.Up);
+      (
+        await KeyBinds.create("CameraPageMoveUp", "pageup", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        Camera.pageMove(Direction.Up);
       });
-      await this.project.keyBinds.create("CameraPageMoveDown", "pagedown", () => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        this.project.camera.pageMove(Direction.Down);
+      (
+        await KeyBinds.create("CameraPageMoveDown", "pagedown", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        Camera.pageMove(Direction.Down);
       });
-      await this.project.keyBinds.create("CameraPageMoveLeft", "home", () => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        this.project.camera.pageMove(Direction.Left);
+      (
+        await KeyBinds.create("CameraPageMoveLeft", "home", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        Camera.pageMove(Direction.Left);
       });
-      await this.project.keyBinds.create("CameraPageMoveRight", "end", () => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        this.project.camera.pageMove(Direction.Right);
+      (
+        await KeyBinds.create("CameraPageMoveRight", "end", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        Camera.pageMove(Direction.Right);
       });
     }
 
-    await this.project.keyBinds.create("folderSection", "C-t", () => {
-      this.project.stageManager.sectionSwitchCollapse();
+    (
+      await KeyBinds.create("folderSection", "t", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      StageManager.sectionSwitchCollapse();
     });
 
-    await this.project.keyBinds.create("reverseEdges", "C-t", () => {
-      this.project.stageManager.reverseSelectedEdges();
+    (
+      await KeyBinds.create("reverseEdges", "t", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      StageManager.reverseSelectedEdges();
     });
-    await this.project.keyBinds.create("reverseSelectedNodeEdge", "C-t", () => {
-      this.project.stageManager.reverseSelectedNodeEdge();
+    (
+      await KeyBinds.create("reverseSelectedNodeEdge", "t", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      StageManager.reverseSelectedNodeEdge();
     });
 
-    await this.project.keyBinds.create("packEntityToSection", "C-g", () => {
-      this.project.stageManager.packEntityToSectionBySelected();
+    (
+      await KeyBinds.create("packEntityToSection", "g", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      StageManager.packEntityToSectionBySelected();
     });
-    await this.project.keyBinds.create("createUndirectedEdgeFromEntities", "S-g", () => {
+    (
+      await KeyBinds.create("createUndirectedEdgeFromEntities", "g", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
       // 构建无向边
-      const selectedNodes = this.project.stageManager
-        .getSelectedEntities()
-        .filter((node) => node instanceof ConnectableEntity);
+      const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
       if (selectedNodes.length <= 1) {
-        this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+        Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
         return;
       }
       const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
-      this.project.stageManager.addAssociation(multiTargetUndirectedEdge);
+      StageManager.addAssociation(multiTargetUndirectedEdge);
     });
 
-    await this.project.keyBinds.create("deleteSelectedStageObjects", isMac ? "backspace" : "delete", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.stageManager.deleteSelectedStageObjects();
+    (
+      await KeyBinds.create("deleteSelectedStageObjects", isMac ? "backspace" : "delete", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageManager.deleteSelectedStageObjects();
     });
 
-    await this.project.keyBinds.create("createTextNodeFromCameraLocation", "insert", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.camera.clearMoveCommander();
-      this.project.camera.speed = Vector.getZero();
-      this.project.controllerUtils.addTextNodeByLocation(this.project.camera.location, true);
+    (
+      await KeyBinds.create("createTextNodeFromCameraLocation", "insert", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      Camera.clearMoveCommander();
+      Camera.speed = Vector.getZero();
+      addTextNodeByLocation(Camera.location, true);
     });
-    await this.project.keyBinds.create("createTextNodeFromMouseLocation", "S-insert", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.camera.clearMoveCommander();
-      this.project.camera.speed = Vector.getZero();
-      this.project.controllerUtils.addTextNodeByLocation(
-        this.project.renderer.transformView2World(MouseLocation.vector()),
-        true,
-      );
-    });
-
-    await this.project.keyBinds.create("createTextNodeFromSelectedTop", "A-arrowup", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.controllerUtils.addTextNodeFromCurrentSelectedNode(Direction.Up, true);
-    });
-
-    await this.project.keyBinds.create("createTextNodeFromSelectedRight", "A-arrowright", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.controllerUtils.addTextNodeFromCurrentSelectedNode(Direction.Right, true);
-    });
-
-    await this.project.keyBinds.create("createTextNodeFromSelectedLeft", "A-arrowleft", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.controllerUtils.addTextNodeFromCurrentSelectedNode(Direction.Left, true);
+    (
+      await KeyBinds.create("createTextNodeFromMouseLocation", "insert", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      Camera.clearMoveCommander();
+      Camera.speed = Vector.getZero();
+      addTextNodeByLocation(Renderer.transformView2World(MouseLocation.vector()), true);
     });
 
-    await this.project.keyBinds.create("createTextNodeFromSelectedDown", "A-arrowdown", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.controllerUtils.addTextNodeFromCurrentSelectedNode(Direction.Down, true);
+    (
+      await KeyBinds.create("createTextNodeFromSelectedTop", "arrowup", {
+        control: false,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      addTextNodeFromCurrentSelectedNode(Direction.Up, true);
     });
 
-    await this.project.keyBinds.create("selectUp", "arrowup", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectUp();
-    });
-    await this.project.keyBinds.create("selectDown", "arrowdown", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectDown();
-    });
-    await this.project.keyBinds.create("selectLeft", "arrowleft", () => {
-      this.project.selectChangeEngine.selectLeft();
-    });
-    await this.project.keyBinds.create("selectRight", "arrowright", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectRight();
-    });
-    await this.project.keyBinds.create("selectAdditionalUp", "S-arrowup", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectUp(true);
-    });
-    await this.project.keyBinds.create("selectAdditionalDown", "S-arrowdown", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectDown(true);
-    });
-    await this.project.keyBinds.create("selectAdditionalLeft", "S-arrowleft", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectLeft(true);
-    });
-    await this.project.keyBinds.create("selectAdditionalRight", "S-arrowright", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.selectRight(true);
+    (
+      await KeyBinds.create("createTextNodeFromSelectedRight", "arrowright", {
+        control: false,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      addTextNodeFromCurrentSelectedNode(Direction.Right, true);
     });
 
-    await this.project.keyBinds.create("moveUpSelectedEntities", "C-arowup", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
+    (
+      await KeyBinds.create("createTextNodeFromSelectedLeft", "arrowleft", {
+        control: false,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      addTextNodeFromCurrentSelectedNode(Direction.Left, true);
+    });
+
+    (
+      await KeyBinds.create("createTextNodeFromSelectedDown", "arrowdown", {
+        control: false,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      addTextNodeFromCurrentSelectedNode(Direction.Down, true);
+    });
+
+    (
+      await KeyBinds.create("selectUp", "arrowup", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectUp();
+    });
+    (
+      await KeyBinds.create("selectDown", "arrowdown", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectDown();
+    });
+    (
+      await KeyBinds.create("selectLeft", "arrowleft", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectLeft();
+    });
+    (
+      await KeyBinds.create("selectRight", "arrowright", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectRight();
+    });
+    (
+      await KeyBinds.create("selectAdditionalUp", "arrowup", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectUp(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalDown", "arrowdown", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectDown(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalLeft", "arrowleft", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectLeft(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalRight", "arrowright", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.selectRight(true);
+    });
+
+    (
+      await KeyBinds.create("moveUpSelectedEntities", "arrowup", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y -= 100;
-        this.project.effects.addEffect(
-          RectangleSlideEffect.verticalSlide(
-            rect,
-            newRect,
-            this.project.stageStyleManager.currentStyle.effects.successShadow,
-          ),
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
-      this.project.entityMoveManager.moveSelectedEntities(new Vector(0, -100));
+      StageEntityMoveManager.moveSelectedEntities(new Vector(0, -100));
     });
 
-    await this.project.keyBinds.create("moveDownSelectedEntities", "C-arrowdown", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
+    (
+      await KeyBinds.create("moveDownSelectedEntities", "arrowdown", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y += 100;
-        this.project.effects.addEffect(
-          RectangleSlideEffect.verticalSlide(
-            rect,
-            newRect,
-            this.project.stageStyleManager.currentStyle.effects.successShadow,
-          ),
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
-      this.project.entityMoveManager.moveSelectedEntities(new Vector(0, 100));
+      StageEntityMoveManager.moveSelectedEntities(new Vector(0, 100));
     });
 
-    await this.project.keyBinds.create("moveLeftSelectedEntities", "C-arrowleft", () => {
-      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
+    (
+      await KeyBinds.create("moveLeftSelectedEntities", "arrowleft", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x -= 100;
-        this.project.effects.addEffect(
-          RectangleSlideEffect.horizontalSlide(
-            rect,
-            newRect,
-            this.project.stageStyleManager.currentStyle.effects.successShadow,
-          ),
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
-      this.project.entityMoveManager.moveSelectedEntities(new Vector(-100, 0));
+      StageEntityMoveManager.moveSelectedEntities(new Vector(-100, 0));
     });
 
-    await this.project.keyBinds.create("moveRightSelectedEntities", "C-arrowright", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
+    (
+      await KeyBinds.create("moveRightSelectedEntities", "arrowright", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x += 100;
-        this.project.effects.addEffect(
-          RectangleSlideEffect.horizontalSlide(
-            rect,
-            newRect,
-            this.project.stageStyleManager.currentStyle.effects.successShadow,
-          ),
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
-      this.project.entityMoveManager.moveSelectedEntities(new Vector(100, 0));
+      StageEntityMoveManager.moveSelectedEntities(new Vector(100, 0));
     });
-    await this.project.keyBinds.create("jumpMoveUpSelectedEntities", "C-A-arrowup", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.entityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
-    });
-
-    await this.project.keyBinds.create("jumpMoveDownSelectedEntities", "C-A-arrowdown", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.entityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
-    });
-
-    await this.project.keyBinds.create("jumpMoveLeftSelectedEntities", "C-A-arrowleft", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.entityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
+    (
+      await KeyBinds.create("jumpMoveUpSelectedEntities", "arrowup", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
     });
 
-    await this.project.keyBinds.create("jumpMoveRightSelectedEntities", "C-A-arrowright", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.entityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
+    (
+      await KeyBinds.create("jumpMoveDownSelectedEntities", "arrowdown", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
     });
 
-    await this.project.keyBinds.create("editEntityDetails", "C-enter", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.controllerUtils.editNodeDetailsByKeyboard();
+    (
+      await KeyBinds.create("jumpMoveLeftSelectedEntities", "arrowleft", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
     });
 
-    await this.project.keyBinds.create("openColorPanel", "F6", () => {
+    (
+      await KeyBinds.create("jumpMoveRightSelectedEntities", "arrowright", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
+    });
+
+    (
+      await KeyBinds.create("editEntityDetails", "enter", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      editNodeDetailsByKeyboard();
+    });
+
+    (
+      await KeyBinds.create("openColorPanel", "F6", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
       ColorWindow.open();
     });
-    await this.project.keyBinds.create("switchDebugShow", "F3", () => {
-      const currentValue = this.project.renderer.isShowDebug;
+    (
+      await KeyBinds.create("switchDebugShow", "F3", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      const currentValue = Renderer.isShowDebug;
       Settings.set("showDebug", !currentValue);
     });
 
-    await this.project.keyBinds.create("selectAll", "C-a", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.stageManager.selectAll();
-      this.project.effects.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
+    (
+      await KeyBinds.create("selectAll", "a", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      StageManager.selectAll();
+      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
     });
-    await this.project.keyBinds.create("textNodeToSection", "C-g", () => {
-      this.project.sectionPackManager.textNodeToSection();
+    (
+      await KeyBinds.create("textNodeToSection", "g", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      StageSectionPackManager.textNodeToSection();
     });
-    await this.project.keyBinds.create("unpackEntityFromSection", "C-g", () => {
-      this.project.sectionPackManager.unpackSelectedSections();
+    (
+      await KeyBinds.create("unpackEntityFromSection", "g", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      StageSectionPackManager.unpackSelectedSections();
     });
-    await this.project.keyBinds.create("checkoutProtectPrivacy", "C-2", () => {
-      Settings.set("protectingPrivacy", !this.project.renderer.protectingPrivacy);
+    (
+      await KeyBinds.create("checkoutProtectPrivacy", "2", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      Settings.set("protectingPrivacy", !Renderer.protectingPrivacy);
     });
-    await this.project.keyBinds.create("searchText", "C-f", () => {
+    (
+      await KeyBinds.create("searchText", "f", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
       FindWindow.open();
     });
-    await this.project.keyBinds.create("openTextNodeByContentExternal", "C-e", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("openTextNodeByContentExternal", "e", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       openBrowserOrFile();
     });
 
-    await this.project.keyBinds.create("clickAppMenuSettingsButton", "S-!", () => {
+    (
+      await KeyBinds.create("clickAppMenuSettingsButton", "!", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
       SettingsWindow.open();
     });
-    await this.project.keyBinds.create("clickTagPanelButton", "S-@", () => {
+    (
+      await KeyBinds.create("clickTagPanelButton", "@", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
       TagWindow.open();
     });
-    await this.project.keyBinds.create("clickAppMenuRecentFileButton", "S-#", () => {
+    (
+      await KeyBinds.create("clickAppMenuRecentFileButton", "#", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
       RecentFilesWindow.open();
     });
-    await this.project.keyBinds.create("clickStartFilePanelButton", "S-$", () => {
+    (
+      await KeyBinds.create("clickStartFilePanelButton", "$", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
       const button = document.getElementById("app-start-file-btn");
       const event = new MouseEvent("click", {
         bubbles: true,
@@ -385,20 +753,48 @@ export class KeyBindsRegistrar {
       });
       button?.dispatchEvent(event);
       setTimeout(() => {
-        this.project.controller.pressingKeySet.clear();
+        Controller.pressingKeySet.clear();
       }, 200);
     });
-    await this.project.keyBinds.create("saveFile", "C-s", () => {
+    (
+      await KeyBinds.create("saveFile", "s", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
       onSave();
     });
-    await this.project.keyBinds.create("newDraft", "C-n", () => {
+    (
+      await KeyBinds.create("newDraft", "n", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
       onNewDraft();
     });
-    await this.project.keyBinds.create("openFile", "C-o", () => {
+    (
+      await KeyBinds.create("openFile", "o", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
       onOpen();
     });
 
-    await this.project.keyBinds.create("checkoutWindowOpacityMode", "C-0", async () => {
+    (
+      await KeyBinds.create("checkoutWindowOpacityMode", "0", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
       // 切换窗口透明度模式
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 0) {
@@ -407,155 +803,297 @@ export class KeyBindsRegistrar {
         Settings.set("windowBackgroundAlpha", 0);
       }
     });
-    await this.project.keyBinds.create("windowOpacityAlphaIncrease", "C-A-S-+", async () => {
+    (
+      await KeyBinds.create("windowOpacityAlphaIncrease", "+", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: true,
+      })
+    ).down(async () => {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 1) {
         // 已经不能再大了
-        this.project.effects.addEffect(
-          ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
-        );
+        Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
       } else {
         Settings.set("windowBackgroundAlpha", Math.min(1, currentValue + 0.2));
       }
     });
-    await this.project.keyBinds.create("windowOpacityAlphaDecrease", "C-A-S--", async () => {
+    (
+      await KeyBinds.create("windowOpacityAlphaDecrease", "-", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: true,
+      })
+    ).down(async () => {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 0) {
         // 已经不能再小了
-        this.project.effects.addEffect(
-          ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
-        );
+        Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
       } else {
         Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
       }
     });
 
-    await this.project.keyBinds.create("penStrokeWidthIncrease", "=", async () => {
-      if (Settings.sync.mouseLeftMode === "draw") {
-        const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth + 4;
-        this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+    (
+      await KeyBinds.create("penStrokeWidthIncrease", "=", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+        const newWidth = Stage.drawingMachine.currentStrokeWidth + 4;
+        Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
       }
     });
-    await this.project.keyBinds.create("penStrokeWidthDecrease", "-", async () => {
-      if (Settings.sync.mouseLeftMode === "draw") {
-        const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth - 4;
-        this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+    (
+      await KeyBinds.create("penStrokeWidthDecrease", "-", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+        const newWidth = Stage.drawingMachine.currentStrokeWidth - 4;
+        Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
       }
     });
 
-    await this.project.keyBinds.create("copy", "C-c", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.copyEngine.copy();
+    (
+      await KeyBinds.create("copy", "c", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      CopyEngine.copy();
     });
-    await this.project.keyBinds.create("paste", "C-v", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.copyEngine.paste();
+    (
+      await KeyBinds.create("paste", "v", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      CopyEngine.paste();
     });
 
-    await this.project.keyBinds.create("pasteWithOriginLocation", "C-v", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.copyEngine.pasteWithOriginLocation();
+    (
+      await KeyBinds.create("pasteWithOriginLocation", "v", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      CopyEngine.pasteWithOriginLocation();
     });
 
-    await this.project.keyBinds.create("checkoutLeftMouseToSelectAndMove", "v", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("checkoutLeftMouseToSelectAndMove", "v", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutSelectAndMoveHook();
     });
-    await this.project.keyBinds.create("checkoutLeftMouseToDrawing", "p", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("checkoutLeftMouseToDrawing", "p", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutDrawingHook();
     });
 
     // 鼠标左键切换为连接模式
-    // let lastMouseMode = "selectAndMove";
-    await this.project.keyBinds.create("checkoutLeftMouseToConnectAndCutting", "c", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    // let lastMouseMode = LeftMouseModeEnum.selectAndMove;
+    (
+      await KeyBinds.create("checkoutLeftMouseToConnectAndCutting", "c", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutConnectAndCuttingHook();
     });
 
     (
-      await this.project.keyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", async () => {
-        // lastMouseMode = Settings.sync.mouseLeftMode;
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+      await KeyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    )
+      .down(async () => {
+        // lastMouseMode = Stage.leftMouseMode;
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Stage.MouseModeManager.checkoutConnectAndCuttingHook();
       })
-    ).up(async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      Stage.MouseModeManager.checkoutSelectAndMoveHook();
-    });
+      .up(async () => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        Stage.MouseModeManager.checkoutSelectAndMoveHook();
+      });
 
-    await this.project.keyBinds.create("selectEntityByPenStroke", "C-w", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("selectEntityByPenStroke", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       PenStrokeMethods.selectEntityByPenStroke();
     });
-    await this.project.keyBinds.create("expandSelectEntity", "C-w", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.expandSelect(false, false);
+    (
+      await KeyBinds.create("expandSelectEntity", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(false, false);
     });
-    await this.project.keyBinds.create("expandSelectEntityReversed", "C-w", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.expandSelect(false, true);
+    (
+      await KeyBinds.create("expandSelectEntityReversed", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(false, true);
     });
-    await this.project.keyBinds.create("expandSelectEntityKeepLastSelected", "C-A-w", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.expandSelect(true, false);
+    (
+      await KeyBinds.create("expandSelectEntityKeepLastSelected", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(true, false);
     });
-    await this.project.keyBinds.create("expandSelectEntityReversedKeepLastSelected", "C-A-S-w", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.selectChangeEngine.expandSelect(true, true);
+    (
+      await KeyBinds.create("expandSelectEntityReversedKeepLastSelected", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: true,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(true, true);
     });
 
-    await this.project.keyBinds.create("generateNodeTreeWithDeepMode", "tab", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.keyboardOnlyTreeEngine.onDeepGenerateNode();
+    (
+      await KeyBinds.create("generateNodeTreeWithDeepMode", "tab", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      KeyboardOnlyTreeEngine.onDeepGenerateNode();
     });
 
-    await this.project.keyBinds.create("masterBrakeControl", "pause", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("masterBrakeControl", "pause", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       // 按下一次就清空动力
-      this.project.camera.clearMoveCommander();
-      this.project.camera.speed = Vector.getZero();
+      Camera.clearMoveCommander();
+      Camera.speed = Vector.getZero();
     });
 
-    await this.project.keyBinds.create("masterBrakeCheckout", "space", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    (
+      await KeyBinds.create("masterBrakeCheckout", "space", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       // 看成汽车的手刹，按下一次就切换是否允许移动
-      this.project.camera.clearMoveCommander();
-      this.project.camera.speed = Vector.getZero();
+      Camera.clearMoveCommander();
+      Camera.speed = Vector.getZero();
       Settings.set("allowMoveCameraByWSAD", !(await Settings.get("allowMoveCameraByWSAD")));
     });
 
-    await this.project.keyBinds.create("generateNodeTreeWithBroadMode", "\\", async () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.keyboardOnlyTreeEngine.onBroadGenerateNode();
+    (
+      await KeyBinds.create("generateNodeTreeWithBroadMode", "\\", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      KeyboardOnlyTreeEngine.onBroadGenerateNode();
     });
 
-    (await this.project.keyBinds.create("generateNodeGraph", "`"))
+    (
+      await KeyBinds.create("generateNodeGraph", "`", {
+        control: false,
+        alt: false,
+        meta: false,
+        shift: false,
+      })
+    )
       .down(() => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        if (this.project.keyboardOnlyGraphEngine.isEnableVirtualCreate()) {
-          this.project.keyboardOnlyGraphEngine.createStart();
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        if (KeyboardOnlyGraphEngine.isEnableVirtualCreate()) {
+          KeyboardOnlyGraphEngine.createStart();
         }
       })
       .up(() => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        if (this.project.keyboardOnlyGraphEngine.isCreating()) {
-          this.project.keyboardOnlyGraphEngine.createFinished();
+        if (!KeyboardOnlyEngine.isOpenning()) return;
+        if (KeyboardOnlyGraphEngine.isCreating()) {
+          KeyboardOnlyGraphEngine.createFinished();
         }
       });
-    await this.project.keyBinds.create("treeGraphAdjust", "f", () => {
-      if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      const entities = this.project.stageManager
-        .getSelectedEntities()
-        .filter((entity) => entity instanceof ConnectableEntity);
+    (
+      await KeyBinds.create("treeGraphAdjust", "f", {
+        control: false,
+        alt: true,
+        meta: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
       for (const entity of entities) {
-        this.project.keyboardOnlyTreeEngine.adjustTreeNode(entity);
+        KeyboardOnlyTreeEngine.adjustTreeNode(entity);
       }
     });
   }

@@ -1,13 +1,17 @@
-import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Renderer } from "../../../../render/canvas2d/renderer";
+import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectObject } from "../effectObject";
 
 /**
  *
  */
-export class NodeMoveShadowEffect extends Effect {
+export class NodeMoveShadowEffect extends EffectObject {
   getClassName(): string {
     return "NodeMoveShadowEffect";
   }
@@ -51,8 +55,8 @@ export class NodeMoveShadowEffect extends Effect {
     }
   }
 
-  override tick(project: Project) {
-    super.tick(project);
+  override tick() {
+    super.tick();
     // 移动点
     for (let i = 0; i < this.pointList.length; i++) {
       this.pointList[i] = this.pointList[i].add(this.pointInitSpeedList[i].multiply(1 - this.timeProgress.rate));
@@ -82,19 +86,19 @@ export class NodeMoveShadowEffect extends Effect {
     return "top";
   }
 
-  render(project: Project) {
+  render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const point of this.pointList) {
-      const viewLocation = project.renderer.transformWorld2View(point);
+      const viewLocation = Renderer.transformWorld2View(point);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.effects.flash,
-        this.project.stageStyleManager.currentStyle.effects.flash.toTransparent(),
+        StageStyleManager.currentStyle.effects.flash,
+        StageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 
-      project.renderUtils.renderPixel(viewLocation, color);
+      RenderUtils.renderPixel(viewLocation, color);
     }
   }
 }
