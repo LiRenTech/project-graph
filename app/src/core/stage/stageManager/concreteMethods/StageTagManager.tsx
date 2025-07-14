@@ -43,7 +43,7 @@ export class TagManager {
     const tagUUIDs = this.project.stageManager.TagOptions.getTagUUIDs();
     const tagObjectList: StageObject[] = [];
     for (const tagUUID of tagUUIDs) {
-      const stageObject = this.project.stageManager.getStageObjectByUUID(tagUUID);
+      const stageObject = this.project.stageManager.get(tagUUID);
       if (stageObject) {
         tagObjectList.push(stageObject);
       }
@@ -97,7 +97,7 @@ export class TagManager {
    * @returns
    */
   moveCameraToTag(tagUUID: string) {
-    const tagObject = this.project.stageManager.getStageObjectByUUID(tagUUID);
+    const tagObject = this.project.stageManager.get(tagUUID);
     if (!tagObject) {
       return;
     }

@@ -10,4 +10,6 @@ export abstract class ConnectableEntity extends Entity {
    * 用于联动旋转等算法
    */
   abstract geometryCenter: Vector;
+
+  public unknown = false;
 }

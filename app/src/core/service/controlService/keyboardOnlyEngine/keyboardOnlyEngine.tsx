@@ -74,7 +74,7 @@ export class KeyboardOnlyEngine {
         }
       } else if (event.key === "Escape") {
         // 取消全部选择
-        for (const stageObject of this.project.stageManager.getStageObject()) {
+        for (const stageObject of this.project.stageManager.getStageObjects()) {
           stageObject.isSelected = false;
         }
       } else if (event.key === "F2") {

@@ -58,7 +58,7 @@ export class ContentSearch {
     if (searchString === "") {
       return false;
     }
-    for (const node of this.project.stageManager.getStageObject()) {
+    for (const node of this.project.stageManager.getStageObjects()) {
       const text = this.getStageObjectText(node);
       if (this.isCaseSensitive) {
         if (text.includes(searchString)) {
