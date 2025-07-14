@@ -1,6 +1,6 @@
 {
-  "name": "@graphif/serializer",
-  "description": "Serialize instances to objects",
+  "name": "@graphif/shapes",
+  "description": "Serializable shapes",
   "version": "1.0.0",
   "type": "module",
   "files": [
@@ -23,7 +23,7 @@
     "typescript": "~5.8.3"
   },
   "dependencies": {
-    "@graphif/vite-plugin-original-class-name": "workspace:*",
-    "reflect-metadata": "^0.2.2"
+    "@graphif/data-structures": "workspace:*",
+    "@graphif/serializer": "workspace:*"
   }
 }

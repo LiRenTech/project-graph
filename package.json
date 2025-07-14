@@ -14,7 +14,8 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
     "test": "pnpm --filter @graphif/app test",
-    "tauri": "pnpm --filter @graphif/app tauri"
+    "tauri": "pnpm --filter @graphif/app tauri",
+    "prepublish": "pnpm run build"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

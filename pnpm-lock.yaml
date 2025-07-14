@@ -344,14 +344,43 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
+  packages/data-structures:
+    dependencies:
+      "@graphif/serializer":
+        specifier: workspace:*
+        version: link:../serializer
+    devDependencies:
+      tsdown:
+        specifier: ^0.12.9
+        version: 0.12.9(typescript@5.8.3)
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+
   packages/serializer:
     dependencies:
       "@graphif/vite-plugin-original-class-name":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../vite-plugin-original-class-name
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
+    devDependencies:
+      tsdown:
+        specifier: ^0.12.9
+        version: 0.12.9(typescript@5.8.3)
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+
+  packages/shapes:
+    dependencies:
+      "@graphif/data-structures":
+        specifier: workspace:*
+        version: link:../data-structures
+      "@graphif/serializer":
+        specifier: workspace:*
+        version: link:../serializer
     devDependencies:
       tsdown:
         specifier: ^0.12.9
