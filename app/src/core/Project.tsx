@@ -1,10 +1,7 @@
 import { Decoder, Encoder } from "@msgpack/msgpack";
-import { appLocalDataDir, join } from "@tauri-apps/api/path";
-import { exists, mkdir, readFile, writeFile } from "@tauri-apps/plugin-fs";
+import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader } from "@zip.js/zip.js";
 import { URI } from "vscode-uri";
-import { Serialized } from "../types/node";
-import { Base64 } from "../utils/base64";
-import { Service } from "./interfaces/Service";
+import { FileSystemProvider, Service } from "./interfaces/Service";
 import type { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
 import type { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
 import type { ShapeRenderer } from "./render/canvas2d/basicRenderer/shapeRenderer";
@@ -30,6 +27,7 @@ import type { RenderUtils } from "./render/canvas2d/utilsRenderer/RenderUtils";
 import type { SearchContentHighlightRenderer } from "./render/canvas2d/utilsRenderer/searchContentHighlightRenderer";
 import type { WorldRenderUtils } from "./render/canvas2d/utilsRenderer/WorldRenderUtils";
 import type { InputElement } from "./render/domElement/inputElement";
+import { Serializer } from "./Serializer";
 import type { AutoLayoutFastTree } from "./service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import type { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
 import type { ControllerUtils } from "./service/controlService/controller/concrete/utilsControl";
@@ -57,7 +55,6 @@ import type { Effects } from "./service/feedbackService/effectEngine/effectMachi
 import { StageStyleManager } from "./service/feedbackService/stageStyle/StageStyleManager";
 import type { Camera } from "./stage/Camera";
 import type { Canvas } from "./stage/Canvas";
-import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
 import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import type { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import type { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
@@ -76,6 +73,7 @@ import type { SerializedDataAdder } from "./stage/stageManager/concreteMethods/S
 import type { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
 import { HistoryManager } from "./stage/stageManager/StageHistoryManager";
 import type { StageManager } from "./stage/stageManager/StageManager";
+import { StageObject } from "./stage/stageObject/abstract/StageObject";
 
 if (import.meta.hot) {
   import.meta.hot.accept();
@@ -87,7 +85,7 @@ if (import.meta.hot) {
  * 一个工程可以加载不同的服务，类似vscode的扩展（Extensions）机制
  */
 export class Project {
-  static readonly latestVersion = 17;
+  static readonly latestVersion = 18;
   /**
    * 仅开发环境有效，用于热重载服务
    */
@@ -115,15 +113,11 @@ export class Project {
 
   private readonly services = new Map<string, Service>();
   private readonly tickableServices = new Set<Service>();
+  private readonly fileSystemProviders = new Map<string, FileSystemProvider>();
   private rafHandle = -1;
   private _uri: URI;
   private _state: ProjectState = ProjectState.Unsaved;
-  private _data: Serialized.File = {
-    version: Project.latestVersion,
-    entities: [],
-    associations: [],
-    tags: [],
-  };
+  public stage: StageObject[] = [];
   /**
    * 创建Encoder对象比直接用encode()快
    * @see https://github.com/msgpack/msgpack-javascript#reusing-encoder-and-decoder-instances
@@ -143,39 +137,19 @@ export class Project {
   ) {
     this._uri = uri;
     (async () => {
-      switch (this.uri.scheme) {
-        case "file": {
-          // 先检测之前有没有暂存
-          const stashPath = await join(await appLocalDataDir(), "stash");
-          if (!(await exists(stashPath))) {
-            await mkdir(stashPath);
-          }
-          const stashFilePath = await join(stashPath, Base64.encode(uri.toString()));
-          if (await exists(stashFilePath)) {
-            // 加载暂存的文件
-            const decoded = this.decoder.decode(await readFile(stashFilePath)) as Record<string, any>;
-            const upgraded = ProjectFormatUpgrader.upgrade(decoded);
-            this._data = upgraded;
-            this._state = ProjectState.Stashed;
-          } else {
-            // 加载原始文件
-            const filePath = this.uri.fsPath;
-            if (await exists(filePath)) {
-              const decoded = this.decoder.decode(await readFile(filePath)) as Record<string, any>;
-              const upgraded = ProjectFormatUpgrader.upgrade(decoded);
-              this._data = upgraded;
-              this._state = ProjectState.Saved;
-            } else {
-              // 这下真废了，新建一个空工程
+      if (await this.fs.exists(this.uri)) {
+        const fileContent = await this.fs.read(this.uri);
+        const reader = new ZipReader(new Uint8ArrayReader(fileContent));
+        const entries = await reader.getEntries();
+        for (const entry of entries) {
+          if (entry.filename === "stage.msgpack") {
+            const stageRawData = await entry.getData!(new Uint8ArrayWriter());
+            const decoded = this.decoder.decode(stageRawData) as any[];
+            for (const serializedStageObject of decoded) {
+              const stageObject = Serializer.deserialize(this, serializedStageObject);
+              this.stage.push(stageObject);
             }
           }
-          break;
-        }
-        case "draft": {
-          break;
-        }
-        default: {
-          break;
         }
       }
       this.loop();
@@ -297,9 +271,6 @@ export class Project {
   get state() {
     return this._state;
   }
-  get data() {
-    return this._data;
-  }
 
   /**
    * 将文件暂存到数据目录中（通常为~/.local/share）
@@ -313,26 +284,20 @@ export class Project {
    * @see https://github.com/msgpack/msgpack-javascript#benchmark
    */
   async stash() {
-    const stashFilePath = await join(await appLocalDataDir(), "stash", Base64.encode(this.uri.toString()));
-    const encoded = this.encoder.encodeSharedRef(this.data);
-    await writeFile(stashFilePath, encoded);
+    // TODO: stash
+    // const stashFilePath = await join(await appLocalDataDir(), "stash", Base64.encode(this.uri.toString()));
+    // const encoded = this.encoder.encodeSharedRef(this.data);
+    // await writeFile(stashFilePath, encoded);
   }
   async save() {
-    const encoded = this.encoder.encodeSharedRef(this.data);
-    switch (this.uri.scheme) {
-      case "file": {
-        const filePath = this.uri.fsPath;
-        await writeFile(filePath, encoded);
-        this._state = ProjectState.Saved;
-        break;
-      }
-      case "draft": {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    // TODO: save
+  }
+
+  registerFileSystemProvider(scheme: string, provider: FileSystemProvider) {
+    this.fileSystemProviders.set(scheme, provider);
+  }
+  get fs(): FileSystemProvider {
+    return this.fileSystemProviders.get(this.uri.scheme)!;
   }
 }
 

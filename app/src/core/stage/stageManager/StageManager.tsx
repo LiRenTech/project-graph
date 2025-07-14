@@ -64,12 +64,6 @@ export type ChildCameraData = {
  */
 @service("stageManager")
 export class StageManager {
-  private readonly stageContent: StageContent = {
-    entities: StringDict.create(),
-    associations: StringDict.create(),
-    tags: [],
-  };
-
   getStageContentDebug() {
     return this.stageContent.entities.length;
   }

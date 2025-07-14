@@ -1,3 +1,4 @@
+import { FileSystemProviderFile } from "./fileSystemProvider/FileSystemProviderFile";
 import { Project } from "./Project";
 import { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
 import { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
@@ -72,6 +73,7 @@ import { HistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { StageManager } from "./stage/stageManager/StageManager";
 
 export function loadAllServices(project: Project): void {
+  project.registerFileSystemProvider("file", new FileSystemProviderFile());
   project.loadService(Canvas);
   project.loadService(InputElement);
   project.loadService(StageStyleManager);

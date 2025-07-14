@@ -109,6 +109,9 @@ importers:
       "@tauri-apps/plugin-window-state":
         specifier: ^2.3.0
         version: 2.3.0
+      "@zip.js/zip.js":
+        specifier: ^2.7.63
+        version: 2.7.63
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -3038,6 +3041,11 @@ packages:
   "@vitest/utils@3.2.4":
     resolution:
       { integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA== }
+
+  "@zip.js/zip.js@2.7.63":
+    resolution:
+      { integrity: sha512-B02i6QDMUQ4c+5F9LmliBGA+jFsiEHIlF0eLQ6rWLaQOD3YwI6vyWwGkVCNJnVVguE2xYyr9fAwSD/3valm1/Q== }
+    engines: { bun: ">=0.7.0", deno: ">=1.0.0", node: ">=16.5.0" }
 
   acorn-jsx@5.3.2:
     resolution:
@@ -8831,6 +8839,8 @@ snapshots:
       "@vitest/pretty-format": 3.2.4
       loupe: 3.1.4
       tinyrainbow: 2.0.0
+
+  "@zip.js/zip.js@2.7.63": {}
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
