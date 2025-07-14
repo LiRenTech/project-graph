@@ -59,32 +59,47 @@ importers:
         specifier: ^1.20.0
         version: 1.20.0(react-router@7.6.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
       "@graphif/data-structures":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/data-structures
       "@graphif/serializer":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/serializer
       "@graphif/shapes":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/shapes
       "@graphif/vite-plugin-original-class-name":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/vite-plugin-original-class-name
+      "@graphif/vite-plugin-pg-theme":
+        specifier: workspace:*
+        version: link:../packages/vite-plugin-pg-theme
       "@headlessui/react":
         specifier: ^2.2.4
         version: 2.2.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       "@marsidev/react-turnstile":
         specifier: ^1.1.0
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      "@modyfi/vite-plugin-yaml":
+        specifier: ^1.1.1
+        version: 1.1.1(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))(rollup@4.44.2)
       "@msgpack/msgpack":
         specifier: ^3.1.2
         version: 3.1.2
       "@octokit/rest":
         specifier: ^22.0.0
         version: 22.0.0
+      "@swc-jotai/react-refresh":
+        specifier: ^0.3.0
+        version: 0.3.0
+      "@tailwindcss/vite":
+        specifier: ^4.1.11
+        version: 4.1.11(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
       "@tauri-apps/api":
         specifier: ^2.6.0
         version: 2.6.0
+      "@tauri-apps/cli":
+        specifier: ^2.6.2
+        version: 2.6.2
       "@tauri-apps/plugin-cli":
         specifier: ~2.4.0
         version: 2.4.0
@@ -118,12 +133,36 @@ importers:
       "@tauri-apps/plugin-window-state":
         specifier: ^2.3.0
         version: 2.3.0
+      "@types/lodash":
+        specifier: ^4.17.20
+        version: 4.17.20
+      "@types/markdown-it":
+        specifier: ^14.1.2
+        version: 14.1.2
+      "@types/react":
+        specifier: ^19.1.8
+        version: 19.1.8
+      "@types/react-dom":
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
+      "@types/uuid":
+        specifier: ^10.0.0
+        version: 10.0.0
+      "@vitejs/plugin-react-oxc":
+        specifier: ^0.2.2
+        version: 0.2.2(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
+      "@vitest/runner":
+        specifier: ^3.2.4
+        version: 3.2.4
       "@zip.js/zip.js":
         specifier: ^2.7.63
         version: 2.7.63
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       decimal.js:
         specifier: ^10.5.0
         version: 10.5.0
@@ -136,6 +175,12 @@ importers:
       i18next:
         specifier: ^25.3.1
         version: 25.3.1(typescript@5.8.3)
+      jotai:
+        specifier: ^2.12.5
+        version: 2.12.5(@types/react@19.1.8)(react@19.1.0)
+      jsdom:
+        specifier: ^26.1.0
+        version: 26.1.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -166,79 +211,24 @@ importers:
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
-      tauri-plugin-gamepad-api:
-        specifier: ^0.0.5
-        version: 0.0.5
-      vditor:
-        specifier: ^3.11.1
-        version: 3.11.1
-      vscode-uri:
-        specifier: ^3.1.0
-        version: 3.1.0
-      yaml:
-        specifier: ^2.8.0
-        version: 2.8.0
-      zod:
-        specifier: ^3.25.74
-        version: 3.25.74
-    devDependencies:
-      "@graphif/vite-plugin-pg-theme":
-        specifier: workspace:*
-        version: link:../packages/vite-plugin-pg-theme
-      "@modyfi/vite-plugin-yaml":
-        specifier: ^1.1.1
-        version: 1.1.1(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))(rollup@4.44.2)
-      "@swc-jotai/react-refresh":
-        specifier: ^0.3.0
-        version: 0.3.0
-      "@tailwindcss/vite":
-        specifier: ^4.1.11
-        version: 4.1.11(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
-      "@tauri-apps/cli":
-        specifier: ^2.6.2
-        version: 2.6.2
-      "@types/lodash":
-        specifier: ^4.17.20
-        version: 4.17.20
-      "@types/markdown-it":
-        specifier: ^14.1.2
-        version: 14.1.2
-      "@types/react":
-        specifier: ^19.1.8
-        version: 19.1.8
-      "@types/react-dom":
-        specifier: ^19.1.6
-        version: 19.1.6(@types/react@19.1.8)
-      "@types/uuid":
-        specifier: ^10.0.0
-        version: 10.0.0
-      "@vitejs/plugin-react-oxc":
-        specifier: ^0.2.2
-        version: 0.2.2(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
-      "@vitest/runner":
-        specifier: ^3.2.4
-        version: 3.2.4
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      jotai:
-        specifier: ^2.12.5
-        version: 2.12.5(@types/react@19.1.8)(react@19.1.0)
-      jsdom:
-        specifier: ^26.1.0
-        version: 26.1.0
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
       tailwindcss:
         specifier: ^4.1.11
         version: 4.1.11
+      tauri-plugin-gamepad-api:
+        specifier: ^0.0.5
+        version: 0.0.5
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
+      vditor:
+        specifier: ^3.11.1
+        version: 3.11.1
       vite:
         specifier: npm:rolldown-vite@latest
         version: rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0)
@@ -248,6 +238,15 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(jsdom@26.1.0)(less@4.2.2)(msw@2.7.3(@types/node@24.0.4)(typescript@5.8.3))(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0)
+      vscode-uri:
+        specifier: ^3.1.0
+        version: 3.1.0
+      yaml:
+        specifier: ^2.8.0
+        version: 2.8.0
+      zod:
+        specifier: ^3.25.74
+        version: 3.25.74
 
   docs:
     dependencies:

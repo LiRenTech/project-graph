@@ -1,5 +1,6 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
+import { Color, Vector } from "@graphif/data-structures";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import {
   BrainCircuit,
@@ -36,8 +37,6 @@ import { useTranslation } from "react-i18next";
 import Box from "../components/Box";
 import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
-import { Color } from "../core/dataStruct/Color";
-import { Vector } from "../core/dataStruct/Vector";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { LeftMouseModeEnum, Stage } from "../core/stage/Stage";

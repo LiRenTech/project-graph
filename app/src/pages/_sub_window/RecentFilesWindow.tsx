@@ -1,3 +1,5 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { CircleHelp, Delete, DoorOpen, File, FolderInput, LoaderPinwheel, Radiation, Star } from "lucide-react";
 import React, { useEffect } from "react";
@@ -5,8 +7,6 @@ import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
-import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../core/dataStruct/Vector";
 import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "../../core/service/dataFileService/StartFilesManager";
 import { SubWindow } from "../../core/service/SubWindow";

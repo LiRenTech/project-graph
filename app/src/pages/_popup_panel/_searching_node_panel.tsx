@@ -1,3 +1,4 @@
+import { Color } from "@graphif/data-structures";
 import { CaseSensitive, CaseUpper, Search } from "lucide-react";
 import React, { useEffect } from "react";
 import Box from "../../components/Box";
@@ -5,7 +6,6 @@ import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
-import { Color } from "../../core/dataStruct/Color";
 import { ViewOutlineFlashEffect } from "../../core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { Stage } from "../../core/stage/Stage";
 

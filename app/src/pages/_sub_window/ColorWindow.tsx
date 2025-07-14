@@ -1,7 +1,6 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { useEffect, useState } from "react";
-import { Color } from "../../core/dataStruct/Color";
-import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../core/dataStruct/Vector";
 import { MouseLocation } from "../../core/service/controlService/MouseLocation";
 import { ColorManager } from "../../core/service/feedbackService/ColorManager";
 import { SubWindow } from "../../core/service/SubWindow";
@@ -12,6 +11,7 @@ import { SubWindow } from "../../core/service/SubWindow";
  * @returns
  */
 export default function ColorWindow() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentColors, setCurrentColors] = useState<Color[]>([]);
 
   useEffect(() => {

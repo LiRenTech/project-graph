@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
-import { Rectangle } from "../core/dataStruct/shape/Rectangle";
-import { Vector } from "../core/dataStruct/Vector";
 import { SubWindow } from "../core/service/SubWindow";
 import { cn } from "../utils/cn";
 

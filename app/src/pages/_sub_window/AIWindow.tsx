@@ -1,10 +1,10 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { useAtom } from "jotai";
 import { Bot, FolderOpen, Loader2, Send, SettingsIcon, User } from "lucide-react";
 import OpenAI from "openai";
 import { useRef, useState } from "react";
 import Markdown from "../../components/Markdown";
-import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../core/dataStruct/Vector";
 import { Settings } from "../../core/service/Settings";
 import { SubWindow } from "../../core/service/SubWindow";
 import { activeProjectAtom } from "../../state";

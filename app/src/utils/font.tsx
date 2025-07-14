@@ -1,5 +1,4 @@
-import { MaxSizeCache } from "../core/dataStruct/Cache";
-import { Vector } from "../core/dataStruct/Vector";
+import { MaxSizeCache, Vector } from "@graphif/data-structures";
 import { isMac } from "./platform";
 
 const _canvas = document.createElement("canvas");

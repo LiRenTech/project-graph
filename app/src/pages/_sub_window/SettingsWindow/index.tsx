@@ -1,3 +1,5 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import {
   Bot,
   Brain,
@@ -17,8 +19,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Github from "../../../assets/github.svg?react";
 import Button from "../../../components/Button";
-import { Rectangle } from "../../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../../core/dataStruct/Vector";
 import { SubWindow } from "../../../core/service/SubWindow";
 import { cn } from "../../../utils/cn";
 import { isMac } from "../../../utils/platform";

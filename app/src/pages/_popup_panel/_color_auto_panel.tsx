@@ -1,6 +1,6 @@
+import { Color } from "@graphif/data-structures";
 import { ToggleLeft, ToggleRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Color } from "../../core/dataStruct/Color";
 import { cn } from "../../utils/cn";
 
 /**

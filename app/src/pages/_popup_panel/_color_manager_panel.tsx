@@ -1,8 +1,8 @@
+import { Color } from "@graphif/data-structures";
 import { ArrowRightLeft, Pipette } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
-import { Color } from "../../core/dataStruct/Color";
 import { ColorManager } from "../../core/service/feedbackService/ColorManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { LineEdge } from "../../core/stage/stageObject/association/LineEdge";
