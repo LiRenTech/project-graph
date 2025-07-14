@@ -1,3 +1,4 @@
+import { Project, service } from "../../../Project";
 import { Association } from "../../stageObject/abstract/Association";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
@@ -6,74 +7,76 @@ import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTar
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageManager } from "../StageManager";
 
 /**
  * 实时记录选中的各种类型的对象的数量
  * 用于工具栏实时切换按钮的显示
  */
-export namespace StageObjectSelectCounter {
-  // 用于UI层监测
-  export let selectedStageObjectCount = 0;
-  export let selectedEntityCount = 0;
-  export let selectedAssociationCount = 0;
-  export let selectedEdgeCount = 0;
-  export let selectedCREdgeCount = 0;
-  export let selectedImageNodeCount = 0;
-  export let selectedTextNodeCount = 0;
-  export let selectedSectionCount = 0;
-  export let selectedMultiTargetUndirectedEdgeCount = 0;
+@service("stageObjectSelectCounter")
+export class StageObjectSelectCounter {
+  constructor(private readonly project: Project) {}
 
-  export function toDebugString(): string {
-    return `entity: ${selectedEntityCount}, edge: ${selectedEdgeCount}, cr-edge: ${selectedCREdgeCount}, imageNode: ${selectedImageNodeCount}, textNode: ${selectedTextNodeCount}, section: ${selectedSectionCount}`;
+  // 用于UI层监测
+  selectedStageObjectCount = 0;
+  selectedEntityCount = 0;
+  selectedAssociationCount = 0;
+  selectedEdgeCount = 0;
+  selectedCREdgeCount = 0;
+  selectedImageNodeCount = 0;
+  selectedTextNodeCount = 0;
+  selectedSectionCount = 0;
+  selectedMultiTargetUndirectedEdgeCount = 0;
+
+  toDebugString(): string {
+    return `entity: ${this.selectedEntityCount}, edge: ${this.selectedEdgeCount}, cr-edge: ${this.selectedCREdgeCount}, imageNode: ${this.selectedImageNodeCount}, textNode: ${this.selectedTextNodeCount}, section: ${this.selectedSectionCount}`;
   }
 
   /**
    * 上次更新时间
    * 防止频繁更新，影响性能
    */
-  let lastUpdateTimestamp = 0;
+  private lastUpdateTimestamp = 0;
 
-  export function update() {
-    if (Date.now() - lastUpdateTimestamp < 10) {
+  update() {
+    if (Date.now() - this.lastUpdateTimestamp < 10) {
       return;
     }
-    lastUpdateTimestamp = Date.now();
+    this.lastUpdateTimestamp = Date.now();
 
     // 刷新UI层的选中数量
-    selectedStageObjectCount = 0;
-    selectedEntityCount = 0;
-    selectedEdgeCount = 0;
-    selectedCREdgeCount = 0;
-    selectedImageNodeCount = 0;
-    selectedTextNodeCount = 0;
-    selectedSectionCount = 0;
-    selectedAssociationCount = 0;
-    selectedMultiTargetUndirectedEdgeCount = 0;
+    this.selectedStageObjectCount = 0;
+    this.selectedEntityCount = 0;
+    this.selectedEdgeCount = 0;
+    this.selectedCREdgeCount = 0;
+    this.selectedImageNodeCount = 0;
+    this.selectedTextNodeCount = 0;
+    this.selectedSectionCount = 0;
+    this.selectedAssociationCount = 0;
+    this.selectedMultiTargetUndirectedEdgeCount = 0;
 
-    for (const stageObject of StageManager.getStageObject()) {
+    for (const stageObject of this.project.stageManager.getStageObjects()) {
       if (!stageObject.isSelected) {
         continue;
       }
-      selectedStageObjectCount++;
+      this.selectedStageObjectCount++;
       if (stageObject instanceof Entity) {
-        selectedEntityCount++;
+        this.selectedEntityCount++;
         if (stageObject instanceof ImageNode) {
-          selectedImageNodeCount++;
+          this.selectedImageNodeCount++;
         } else if (stageObject instanceof TextNode) {
-          selectedTextNodeCount++;
+          this.selectedTextNodeCount++;
         } else if (stageObject instanceof Section) {
-          selectedSectionCount++;
+          this.selectedSectionCount++;
         }
       } else if (stageObject instanceof Association) {
-        selectedAssociationCount++;
+        this.selectedAssociationCount++;
         if (stageObject instanceof MultiTargetUndirectedEdge) {
-          selectedMultiTargetUndirectedEdgeCount++;
+          this.selectedMultiTargetUndirectedEdgeCount++;
         }
         if (stageObject instanceof Edge) {
-          selectedEdgeCount++;
+          this.selectedEdgeCount++;
           if (stageObject instanceof CubicCatmullRomSplineEdge) {
-            selectedCREdgeCount++;
+            this.selectedCREdgeCount++;
           }
         }
       }

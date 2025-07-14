@@ -1,6 +1,6 @@
-import { Renderable, Tickable } from "../../../interfaces/interfaces";
+import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
-import { EffectObject } from "./effectObject";
+import { Effect } from "./effectObject";
 
 /**
  * 特效机器
@@ -8,22 +8,19 @@ import { EffectObject } from "./effectObject";
  * 它将产生一个机器对象，并唯一附着在舞台上。
  * 如果有多页签多页面，则每个页面都有自己的唯一特效机器。
  */
-export class EffectMachine implements Tickable, Renderable {
+@service("effects")
+export class Effects {
   private effectsPerferences: Record<string, boolean> = {};
 
-  private constructor() {
+  constructor(private readonly project: Project) {
     Settings.watch("effectsPerferences", (value) => {
       this.effectsPerferences = value;
     });
   }
 
-  static default(): EffectMachine {
-    return new EffectMachine();
-  }
+  private effects: Effect[] = [];
 
-  private effects: EffectObject[] = [];
-
-  public addEffect(effect: EffectObject) {
+  public addEffect(effect: Effect) {
     if (!(this.effectsPerferences[effect.getClassName()] ?? true)) {
       return;
     }
@@ -34,25 +31,18 @@ export class EffectMachine implements Tickable, Renderable {
     return this.effects.length;
   }
 
-  public addEffects(effects: EffectObject[]) {
+  public addEffects(effects: Effect[]) {
     this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.getClassName()] ?? true));
   }
 
-  /**
-   * 此函数放在舞台的逻辑循环中，每帧都会被调用。
-   */
-  public logicTick() {
+  tick() {
     for (const effect of this.effects) {
-      effect.tick();
+      effect.tick(this.project);
     }
     // 清理过时特效
     this.effects = this.effects.filter((effect) => !effect.timeProgress.isFull);
-  }
-
-  /** 渲染所有特效 */
-  public renderTick() {
     for (const effect of this.effects) {
-      effect.render();
+      effect.render(this.project);
     }
   }
 }

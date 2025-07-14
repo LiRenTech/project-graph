@@ -1,15 +1,12 @@
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
 import { getTextSize } from "../../../../utils/font";
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { UrlNodeRenderer } from "../../../render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
 
 /**
  * 网页链接节点
@@ -40,7 +37,7 @@ export class UrlNode extends ConnectableEntity {
   }
   public set isEditingTitle(value: boolean) {
     this._isEditingTitle = value;
-    UrlNodeRenderer.render(this);
+    this.project.urlNodeRenderer.render(this);
   }
   get geometryCenter(): Vector {
     return this.collisionBox.getRectangle().center;
@@ -64,15 +61,15 @@ export class UrlNode extends ConnectableEntity {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    return this.collisionBox.shapeList[0] as Rectangle;
+    return this.collisionBox.shapes[0] as Rectangle;
   }
   move(delta: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
+    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
@@ -84,20 +81,23 @@ export class UrlNode extends ConnectableEntity {
   moveTo(location: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
   }
   isHiddenBySectionCollapse: boolean = false;
 
-  constructor({
-    uuid,
-    title = "",
-    details = "",
-    url = "",
-    location = [0, 0],
-    size = [UrlNode.width, UrlNode.height],
-    color = [0, 0, 0, 0],
-  }: Partial<Serialized.UrlNode> & { uuid: string }) {
+  constructor(
+    protected readonly project: Project,
+    {
+      uuid,
+      title = "",
+      details = "",
+      url = "",
+      location = [0, 0],
+      size = [UrlNode.width, UrlNode.height],
+      color = [0, 0, 0, 0],
+    }: Partial<Serialized.UrlNode> & { uuid: string },
+  ) {
     super();
     this.uuid = uuid;
     this.details = details;
@@ -116,6 +116,6 @@ export class UrlNode extends ConnectableEntity {
     const newSize = getTextSize(this.title, Renderer.FONT_SIZE).add(Vector.same(Renderer.NODE_PADDING).multiply(2));
     newSize.x = Math.max(newSize.x, UrlNode.width);
     newSize.y = Math.max(newSize.y, UrlNode.height);
-    this.collisionBox.shapeList[0] = new Rectangle(this.rectangle.location.clone(), newSize);
+    this.collisionBox.shapes[0] = new Rectangle(this.rectangle.location.clone(), newSize);
   }
 }

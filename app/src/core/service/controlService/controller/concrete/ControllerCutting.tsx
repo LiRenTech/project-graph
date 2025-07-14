@@ -1,13 +1,9 @@
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../dataStruct/Vector";
-import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { isMac } from "../../../../../utils/platform";
+import { Project } from "../../../../Project";
 import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Association } from "../../../../stage/stageObject/abstract/Association";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
@@ -21,20 +17,18 @@ import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concret
 import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
-import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
-import { Controller } from "../Controller";
-import { ControllerClass } from "../ControllerClass";
-import { isMac } from "../../../../../utils/platform";
+import { Settings } from "../../../Settings";
 import { MouseLocation } from "../../MouseLocation";
+import { ControllerClass } from "../ControllerClass";
 
-class CuttingControllerClass extends ControllerClass {
+export class ControllerCuttingClass extends ControllerClass {
   private _controlKeyEventRegistered = false;
   private _isControlKeyDown = false;
   // mac 特性功能
   private onControlKeyDown = (event: KeyboardEvent) => {
     if (isMac && event.key === "Control" && !this._isControlKeyDown) {
       this._isControlKeyDown = true;
-      Controller.isMouseDown[2] = true;
+      this.project.controller.isMouseDown[2] = true;
       // 模拟鼠标按下事件
       const fakeMouseEvent = new MouseEvent("mousedown", {
         button: 2,
@@ -49,7 +43,7 @@ class CuttingControllerClass extends ControllerClass {
   private onControlKeyUp = (event: KeyboardEvent) => {
     if (isMac && event.key === "Control" && this._isControlKeyDown) {
       this._isControlKeyDown = false;
-      Controller.isMouseDown[2] = false;
+      this.project.controller.isMouseDown[2] = false;
       // 模拟鼠标松开事件
       const fakeMouseEvent = new MouseEvent("mouseup", {
         button: 2,
@@ -75,13 +69,13 @@ class CuttingControllerClass extends ControllerClass {
       this._controlKeyEventRegistered = false;
     }
   }
-  constructor() {
-    super();
+  constructor(protected readonly project: Project) {
+    super(project);
     this.registerControlKeyEvents();
   }
 
-  destroy() {
-    super.destroy();
+  dispose() {
+    super.dispose();
     this.unregisterControlKeyEvents();
   }
 
@@ -109,28 +103,28 @@ class CuttingControllerClass extends ControllerClass {
     }
 
     // 左键按下的
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
       this.mouseDownEvent(event);
       return;
     }
     // 右键按下的
-    if (event.button === 2 && Stage.mouseRightDragBackground === "cut") {
+    if (event.button === 2 && Settings.sync.mouseRightDragBackground === "cut") {
       this.mouseDownEvent(event);
       return;
     }
     // 中键按下的
-    if (event.button === 1 && Stage.mouseRightDragBackground === "moveCamera") {
+    if (event.button === 1 && Settings.sync.mouseRightDragBackground === "moveCamera") {
       this.mouseDownEvent(event);
       return;
     }
   };
 
   private mouseDownEvent(event: MouseEvent) {
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
-    const isClickedAssociation = StageManager.isAssociationOnLocation(pressWorldLocation);
+    const isClickedEntity = this.project.stageManager.isEntityOnLocation(pressWorldLocation);
+    const isClickedAssociation = this.project.stageManager.isAssociationOnLocation(pressWorldLocation);
 
     if (!isClickedEntity && !isClickedAssociation) {
       // 开始绘制切断线
@@ -140,7 +134,7 @@ class CuttingControllerClass extends ControllerClass {
       // 添加音效提示
       SoundService.play.cuttingLineStart();
       // 鼠标提示
-      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+      this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
     } else {
       this.isUsing = false;
     }
@@ -150,7 +144,7 @@ class CuttingControllerClass extends ControllerClass {
     if (!this.isUsing) {
       return;
     }
-    if (Stage.drawingControlMachine.isAdjusting) {
+    if (this.project.controller.penStrokeControl.isAdjusting) {
       this.isUsing = false;
       return;
     }
@@ -158,11 +152,11 @@ class CuttingControllerClass extends ControllerClass {
     this.cuttingLine = new Line(this.cuttingStartLocation, this.lastMoveLocation);
 
     this.updateWarningObjectByCuttingLine();
-    this.lastMoveLocation = Renderer.transformView2World(
+    this.lastMoveLocation = this.project.renderer.transformView2World(
       new Vector(event.clientX, event.clientY), // 鼠标位置
     );
     // 渲染器需要
-    Controller.lastMoveLocation = this.lastMoveLocation.clone();
+    this.project.controller.lastMoveLocation = this.lastMoveLocation.clone();
   };
 
   // 删除孤立质点
@@ -189,30 +183,29 @@ class CuttingControllerClass extends ControllerClass {
       }
     }
     // 开始删除孤立质点
-    StageManager.deleteEntities(prepareDeleteConnectPoints);
+    this.project.stageManager.deleteEntities(prepareDeleteConnectPoints);
   }
 
   public mouseUpFunction(mouseUpWindowLocation: Vector) {
     this.isUsing = false;
     // 最后再更新一下鼠标位置
-    this.lastMoveLocation = Renderer.transformView2World(
+    this.lastMoveLocation = this.project.renderer.transformView2World(
       mouseUpWindowLocation, // 鼠标位置
     );
     this.updateWarningObjectByCuttingLine();
     // 鼠标提示解除
-    Controller.setCursorNameHook(CursorNameEnum.Default);
-
+    this.project.controller.setCursorNameHook(CursorNameEnum.Default);
     // 删除连线
     for (const edge of this.warningAssociations) {
-      StageManager.deleteAssociation(edge);
+      this.project.stageManager.deleteAssociation(edge);
       if (edge instanceof Edge) {
         if (edge instanceof LineEdge) {
-          Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
+          this.project.effects.addEffects(this.project.edgeRenderer.getCuttingEffects(edge));
         }
       }
     }
     // 删除实体
-    StageManager.deleteEntities(this.warningEntity);
+    this.project.stageManager.deleteEntities(this.warningEntity);
     // 删除产生的孤立质点
     this.clearIsolationPoint();
     // 特效
@@ -221,17 +214,17 @@ class CuttingControllerClass extends ControllerClass {
     this.warningEntity = [];
     this.warningSections = [];
 
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
 
     this.warningAssociations = [];
 
-    Stage.effectMachine.addEffect(
+    this.project.effects.addEffect(
       new LineCuttingEffect(
         new ProgressNumber(0, 15),
         this.cuttingStartLocation,
         this.lastMoveLocation,
-        StageStyleManager.currentStyle.effects.warningShadow,
-        StageStyleManager.currentStyle.effects.warningShadow,
+        this.project.stageStyleManager.currentStyle.effects.warningShadow,
+        this.project.stageStyleManager.currentStyle.effects.warningShadow,
         this.cuttingStartLocation.distance(this.lastMoveLocation) / 10,
       ),
     );
@@ -252,7 +245,7 @@ class CuttingControllerClass extends ControllerClass {
 
   public mouseMoveOutWindowForcedShutdown(outsideLocation: Vector) {
     super.mouseMoveOutWindowForcedShutdown(outsideLocation);
-    Stage.cuttingMachine.mouseUpFunction(outsideLocation);
+    this.project.controller.cutting.mouseUpFunction(outsideLocation);
   }
 
   // private clearWarningObject() {
@@ -272,7 +265,7 @@ class CuttingControllerClass extends ControllerClass {
 
     this.twoPointsMap = {};
 
-    for (const entity of StageManager.getEntities()) {
+    for (const entity of this.project.stageManager.getEntities()) {
       // if (entity instanceof Section) {
       //   continue; // Section的碰撞箱比较特殊
       // }
@@ -292,13 +285,13 @@ class CuttingControllerClass extends ControllerClass {
 
       // 增加两点特效
       for (const collidePoint of collidePoints) {
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           new CircleFlameEffect(new ProgressNumber(0, 5), collidePoint, 10, new Color(255, 255, 255, 1)),
         );
       }
     }
     this.warningSections = [];
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (section.isHiddenBySectionCollapse) {
         continue; // 隐藏的节点不参与碰撞检测
       }
@@ -308,7 +301,7 @@ class CuttingControllerClass extends ControllerClass {
     }
 
     this.warningAssociations = [];
-    for (const edge of StageManager.getAssociations()) {
+    for (const edge of this.project.stageManager.getAssociations()) {
       if (edge instanceof Edge && edge.isHiddenBySectionCollapse) {
         continue; // 连线被隐藏了
       }
@@ -334,15 +327,15 @@ class CuttingControllerClass extends ControllerClass {
         }
 
         if (entity instanceof PenStroke) {
-          Stage.effectMachine.addEffect(PenStrokeDeletedEffect.fromPenStroke(entity));
+          this.project.effects.addEffect(PenStrokeDeletedEffect.fromPenStroke(entity));
         } else {
-          Stage.effectMachine.addEffect(
+          this.project.effects.addEffect(
             new RectangleSplitTwoPartEffect(
               entity.collisionBox.getRectangle(),
               collidePoints,
               50,
               fillColor,
-              StageStyleManager.currentStyle.StageObjectBorder,
+              this.project.stageStyleManager.currentStyle.StageObjectBorder,
               2,
             ),
           );
@@ -351,9 +344,3 @@ class CuttingControllerClass extends ControllerClass {
     }
   }
 }
-
-/**
- * 关于斩断线的控制器
- * 可以删除节点 也可以切断边
- */
-export const ControllerCutting = new CuttingControllerClass();

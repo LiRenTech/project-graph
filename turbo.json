@@ -1,50 +1,49 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "envMode": "loose",
+  "ui": "tui",
   "remoteCache": {
     "timeout": 60,
     "uploadTimeout": 120
   },
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "type-check"]
+      "dependsOn": ["^build"]
     },
-    "@pg/app#build": {
+    "@graphif/project-graph#build": {
       "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
       "outputs": ["dist/**"]
     },
-    "@pg/docs#build": {
+    "@graphif/docs#build": {
       "inputs": ["**/*"],
       "outputs": ["out"]
     },
-    "@pg/ui#build": {
+    "@graphif/ui#build": {
       "outputs": ["dist/**"]
     },
-    "@pg/app#tauri:build": {
+    "@graphif/project-graph#tauri:build": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/release/**"]
     },
-    "@pg/app#tauri:build:android": {
+    "@graphif/project-graph#tauri:build:android": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/*-android/release/**"]
     },
     "dev": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
-    "@pg/app#tauri:dev": {
-      "with": ["dev", "@pg/docs#dev"],
+    "@graphif/project-graph#tauri:dev": {
+      "with": ["dev", "@graphif/docs#dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
       "cache": false,
       "persistent": true
     },
     "type-check": {
       "inputs": ["app/src/**/*.tsx"]
-    },
-    "@pg/ui#build-storybook": {
-      "outputs": ["packages/ui/storybook-static/**"]
     }
   }
 }

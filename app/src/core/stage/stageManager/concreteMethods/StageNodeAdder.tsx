@@ -1,21 +1,14 @@
+import { Color, MonoStack, ProgressNumber, Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { MarkdownNode, parseMarkdownToJSON } from "../../../../utils/markdownParse";
-import { Color } from "../../../dataStruct/Color";
-import { MonoStack } from "../../../dataStruct/MonoStack";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Settings } from "../../../service/Settings";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { SectionMethods } from "../basicMethods/SectionMethods";
-import { StageHistoryManager } from "../StageHistoryManager";
-import { StageManager } from "../StageManager";
-import { StageManagerUtils } from "./StageManagerUtils";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
@@ -23,41 +16,44 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
  * 有可能是用鼠标增加，涉及自动命名器
  * 也有可能是用键盘增加，涉及快捷键和自动寻找空地
  */
-export namespace StageNodeAdder {
+@service("nodeAdder")
+export class NodeAdder {
+  constructor(private readonly project: Project) {}
+
   /**
    * 通过点击位置增加节点
    * @param clickWorldLocation
    * @returns
    */
-  export async function addTextNodeByClick(
+  async addTextNodeByClick(
     clickWorldLocation: Vector,
     addToSections: Section[],
     selectCurrent = false,
   ): Promise<string> {
     const newUUID = uuidv4();
-    const node = new TextNode({
+    const node = new TextNode(this.project, {
       uuid: newUUID,
-      text: await getAutoName(),
+      text: await this.getAutoName(),
       details: "",
       location: [clickWorldLocation.x, clickWorldLocation.y],
       size: [100, 100],
     });
-    node.color = await getAutoColor();
+    node.color = await this.getAutoColor();
     // 将node本身向左上角移动，使其居中
     node.moveTo(node.rectangle.location.subtract(node.rectangle.size.divide(2)));
-    StageManager.addTextNode(node);
+    this.project.stageManager.addTextNode(node);
 
     for (const section of addToSections) {
       section.children.push(node);
       section.childrenUUIDs.push(node.uuid); // 修复
       section.adjustLocationAndSize();
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new RectanglePushInEffect(node.rectangle.clone(), section.rectangle.clone(), new ProgressNumber(0, 100)),
       );
     }
     // 处理选中问题
     if (selectCurrent) {
-      for (const otherNode of StageManager.getTextNodes()) {
+      for (const otherNode of this.project.stageManager.getTextNodes()) {
         if (otherNode.isSelected) {
           otherNode.isSelected = false;
         }
@@ -65,7 +61,7 @@ export namespace StageNodeAdder {
       node.isSelected = true;
     }
 
-    StageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return newUUID;
   }
 
@@ -76,13 +72,15 @@ export namespace StageNodeAdder {
    * @param selectCurrent
    * @returns 返回的是创建节点的uuid，如果当前没有选中节点，则返回空字符串
    */
-  export async function addTextNodeFromCurrentSelectedNode(
+  async addTextNodeFromCurrentSelectedNode(
     direction: Direction,
     addToSections: Section[],
     selectCurrent = false,
   ): Promise<string> {
     // 先检查当前是否有选中的唯一实体
-    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+    const selectedEntities = this.project.stageManager
+      .getSelectedEntities()
+      .filter((entity) => entity instanceof ConnectableEntity);
     if (selectedEntities.length !== 1) {
       // 未选中或选中多个
       return "";
@@ -103,9 +101,9 @@ export namespace StageNodeAdder {
     } else if (direction === Direction.Right) {
       createLocation = entityRectangle.rightCenter.add(new Vector(distanceLength, 0));
     }
-    addToSections = SectionMethods.getFatherSections(selectedEntity);
-    const uuid = await addTextNodeByClick(createLocation, addToSections, selectCurrent);
-    const newNode = StageManager.getTextNodeByUUID(uuid);
+    addToSections = this.project.sectionMethods.getFatherSections(selectedEntity);
+    const uuid = await this.addTextNodeByClick(createLocation, addToSections, selectCurrent);
+    const newNode = this.project.stageManager.getTextNodeByUUID(uuid);
     if (!newNode) {
       throw new Error("Failed to add node");
     }
@@ -132,17 +130,17 @@ export namespace StageNodeAdder {
       const targetLocation = entityRectangle.leftBottom;
       newNode.moveTo(targetLocation);
     }
-    StageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return uuid;
   }
 
-  async function getAutoName(): Promise<string> {
+  private async getAutoName(): Promise<string> {
     let template = await Settings.get("autoNamerTemplate");
-    template = StageManagerUtils.replaceAutoNameTemplate(template, StageManager.getTextNodes()[0]);
+    template = this.project.stageUtils.replaceAutoNameTemplate(template, this.project.stageManager.getTextNodes()[0]);
     return template;
   }
 
-  async function getAutoColor(): Promise<Color> {
+  private async getAutoColor(): Promise<Color> {
     const isEnable = await Settings.get("autoFillNodeColorEnable");
     if (isEnable) {
       const colorData = await Settings.get("autoFillNodeColor");
@@ -152,18 +150,18 @@ export namespace StageNodeAdder {
     }
   }
 
-  export function addConnectPoint(clickWorldLocation: Vector, addToSections: Section[]): string {
+  public addConnectPoint(clickWorldLocation: Vector, addToSections: Section[]): string {
     const newUUID = uuidv4();
-    const connectPoint = new ConnectPoint({
+    const connectPoint = new ConnectPoint(this.project, {
       uuid: newUUID,
       location: [clickWorldLocation.x, clickWorldLocation.y],
     });
-    StageManager.addConnectPoint(connectPoint);
+    this.project.stageManager.addConnectPoint(connectPoint);
     for (const section of addToSections) {
       section.children.push(connectPoint);
       section.childrenUUIDs.push(connectPoint.uuid);
       section.adjustLocationAndSize();
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new RectanglePushInEffect(
           connectPoint.collisionBox.getRectangle(),
           section.rectangle.clone(),
@@ -171,7 +169,7 @@ export namespace StageNodeAdder {
         ),
       );
     }
-    StageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return newUUID;
   }
   /**
@@ -180,7 +178,7 @@ export namespace StageNodeAdder {
    * @param text 网状结构的格式文本
    * @param diffLocation
    */
-  export function addNodeGraphByText(text: string, diffLocation: Vector = Vector.getZero()) {
+  public addNodeGraphByText(text: string, diffLocation: Vector = Vector.getZero()) {
     const lines = text.split("\n");
 
     if (lines.length === 0) {
@@ -193,14 +191,14 @@ export namespace StageNodeAdder {
 
     const createNodeByName = (name: string) => {
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: name,
         details: "",
         location: [diffLocation.x + randomRadius * Math.random(), diffLocation.y + randomRadius * Math.random()],
         size: [100, 100],
       });
-      StageManager.addTextNode(node);
+      this.project.stageManager.addTextNode(node);
       nodeDict.set(name, node);
       return node;
     };
@@ -231,7 +229,7 @@ export namespace StageNodeAdder {
           if (!endNode) {
             endNode = createNodeByName(endName);
           }
-          StageManager.connectEntity(startNode, endNode);
+          this.project.stageManager.connectEntity(startNode, endNode);
         } else {
           // 连线上有文字
           // 解析
@@ -264,7 +262,7 @@ export namespace StageNodeAdder {
             // 临时创建一下
             startNode = createNodeByName(startName);
           }
-          StageManager.connectEntity(startNode, endNode);
+          this.project.stageManager.connectEntity(startNode, endNode);
           // 在线上填写文字
           const edge = GraphMethods.getEdgeFromTwoEntity(startNode, endNode);
           if (edge === null) {
@@ -283,14 +281,14 @@ export namespace StageNodeAdder {
   /**
    * 通过带有缩进格式的文本来增加节点
    */
-  export function addNodeTreeByText(text: string, indention: number, diffLocation: Vector = Vector.getZero()) {
+  public addNodeTreeByText(text: string, indention: number, diffLocation: Vector = Vector.getZero()) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
 
     const rootUUID = uuidv4();
 
     // 准备好栈和根节点
-    const rootNode = new TextNode({
+    const rootNode = new TextNode(this.project, {
       uuid: rootUUID,
       text: "root",
       details: "",
@@ -299,7 +297,7 @@ export namespace StageNodeAdder {
     });
     const nodeStack = new MonoStack<TextNode>();
     nodeStack.push(rootNode, -1);
-    StageManager.addTextNode(rootNode);
+    this.project.stageManager.addTextNode(rootNode);
     // 遍历每一行
     for (let yIndex = 0; yIndex < lines.length; yIndex++) {
       const line = lines[yIndex];
@@ -308,26 +306,26 @@ export namespace StageNodeAdder {
         continue;
       }
       // 解析缩进格式
-      const indent = getIndentLevel(line, indention);
+      const indent = this.getIndentLevel(line, indention);
       // 解析文本内容
       const textContent = line.trim();
 
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: textContent,
         details: "",
         location: [indent * 50 + diffLocation.x, yIndex * 100 + diffLocation.y],
         size: [100, 100],
       });
-      StageManager.addTextNode(node);
+      this.project.stageManager.addTextNode(node);
 
       // 检查栈
       // 保持一个严格单调栈
       if (nodeStack.peek()) {
         nodeStack.push(node, indent);
         const fatherNode = nodeStack.unsafeGet(nodeStack.length - 2);
-        StageManager.connectEntity(fatherNode, node);
+        this.project.stageManager.connectEntity(fatherNode, node);
       }
     }
   }
@@ -337,7 +335,7 @@ export namespace StageNodeAdder {
    * '    a' -> 1
    * '\t\ta' -> 2
    */
-  function getIndentLevel(line: string, indention: number): number {
+  private getIndentLevel(line: string, indention: number): number {
     let indent = 0;
     for (let i = 0; i < line.length; i++) {
       if (line[i] === " ") {
@@ -351,7 +349,7 @@ export namespace StageNodeAdder {
     return Math.floor(indent / indention);
   }
 
-  export function addNodeByMarkdown(markdownText: string, diffLocation: Vector = Vector.getZero()) {
+  public addNodeByMarkdown(markdownText: string, diffLocation: Vector = Vector.getZero()) {
     const markdownJson = parseMarkdownToJSON(markdownText);
     // 遍历markdownJson
     const dfsMarkdownNode = (markdownNode: MarkdownNode, deepLevel: number) => {
@@ -364,7 +362,7 @@ export namespace StageNodeAdder {
     };
     const monoStack = new MonoStack<TextNode>();
     monoStack.push(
-      new TextNode({
+      new TextNode(this.project, {
         uuid: uuidv4(),
         text: "root",
         details: "",
@@ -379,18 +377,18 @@ export namespace StageNodeAdder {
     const visitFunction = (markdownNode: MarkdownNode, deepLevel: number) => {
       visitedCount++;
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: markdownNode.title,
         details: markdownNode.content,
         location: [diffLocation.x + deepLevel * 50, diffLocation.y + visitedCount * 100],
         size: [100, 100],
       });
-      StageManager.addTextNode(node);
+      this.project.stageManager.addTextNode(node);
       monoStack.push(node, deepLevel);
       // 连接父节点
       const fatherNode = monoStack.unsafeGet(monoStack.length - 2);
-      StageManager.connectEntity(fatherNode, node);
+      this.project.stageManager.connectEntity(fatherNode, node);
     };
 
     dfsMarkdownNode(markdownJson[0], 0);

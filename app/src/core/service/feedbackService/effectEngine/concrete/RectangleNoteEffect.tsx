@@ -1,11 +1,7 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";
 import { easeOutQuint } from "../mathTools/easings";
 
@@ -18,7 +14,7 @@ import { easeOutQuint } from "../mathTools/easings";
  *
  * 目标矩形大小是世界坐标系
  */
-export class RectangleNoteEffect extends EffectObject {
+export class RectangleNoteEffect extends Effect {
   getClassName(): string {
     return "RectangleNoteEffect";
   }
@@ -34,15 +30,15 @@ export class RectangleNoteEffect extends EffectObject {
     return new RectangleNoteEffect(
       new ProgressNumber(0, 50),
       rectangle,
-      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
     );
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    const startRect = Renderer.getCoverWorldRectangle();
+    const startRect = project.renderer.getCoverWorldRectangle();
     const currentRect = new Rectangle(
       startRect.location.add(
         this.targetRectangle.location.subtract(startRect.location).multiply(easeOutQuint(this.timeProgress.rate)),
@@ -52,8 +48,8 @@ export class RectangleNoteEffect extends EffectObject {
         startRect.size.y + (this.targetRectangle.size.y - startRect.size.y) * easeOutQuint(this.timeProgress.rate),
       ),
     );
-    ShapeRenderer.renderRect(
-      currentRect.transformWorld2View(),
+    project.shapeRenderer.renderRect(
+      project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
       mixColors(Color.Transparent, this.strokeColor, reverseAnimate(this.timeProgress.rate)),
       2,

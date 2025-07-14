@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
-import { Rectangle } from "../core/dataStruct/shape/Rectangle";
-import { Vector } from "../core/dataStruct/Vector";
 import { SubWindow } from "../core/service/SubWindow";
 import { cn } from "../utils/cn";
 
@@ -13,6 +13,7 @@ export default function RenderSubWindows() {
       {subWindows.map((win) => (
         <Transition key={win.id} appear={true} show={!win.closing}>
           <div
+            data-pg-window-id={win.id}
             style={{
               top: win.rect.top + "px",
               left: win.rect.left + "px",
@@ -21,8 +22,8 @@ export default function RenderSubWindows() {
               height: win.rect.height + "px",
             }}
             className={cn(
-              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border opacity-75 shadow-xl hover:opacity-100",
-              "data-closed:scale-75 data-closed:opacity-0",
+              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border shadow-xl",
+              "data-closed:scale-90 data-closed:opacity-0",
             )}
             onClick={() => {
               if (win.closeWhenClickInside) {
@@ -53,12 +54,14 @@ export default function RenderSubWindows() {
               <div className="flex-1 px-1" data-pg-drag-region={win.titleBarOverlay ? undefined : ""}>
                 {win.title}
               </div>
-              <X
-                className="pointer-events-auto"
-                onClick={() => {
-                  SubWindow.close(win.id);
-                }}
-              />
+              {win.closable && (
+                <X
+                  className="pointer-events-auto"
+                  onClick={() => {
+                    SubWindow.close(win.id);
+                  }}
+                />
+              )}
             </div>
             <div className="flex-1 overflow-auto">
               {win.children && win.children instanceof Object && "props" in win.children

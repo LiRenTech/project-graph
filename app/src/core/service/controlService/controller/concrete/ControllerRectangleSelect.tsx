@@ -1,13 +1,9 @@
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { Controller } from "../Controller";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
-import { getClickedStageObject, isClickedResizeRect } from "./utilsControl";
 
-class ControllerRectangleSelectClass extends ControllerClass {
+export class ControllerRectangleSelectClass extends ControllerClass {
   private _isUsing: boolean = false;
   /**
    * 框选框
@@ -22,7 +18,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
   }
 
   public shutDown() {
-    Stage.rectangleSelectEngine.shutDown();
+    this.project.rectangleSelect.shutDown();
     this._isUsing = false;
   }
 
@@ -32,55 +28,55 @@ class ControllerRectangleSelectClass extends ControllerClass {
   }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    if (Controller.pressingKeySet.has("alt")) {
+    if (this.project.controller.pressingKeySet.has("alt")) {
       // layer moving mode
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     const button = event.button;
     if (button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    if (getClickedStageObject(pressWorldLocation) !== null) {
+    if (this.project.controllerUtils.getClickedStageObject(pressWorldLocation) !== null) {
       // 不是点击在空白处
       return;
     }
-    if (isClickedResizeRect(pressWorldLocation)) {
+    if (this.project.controllerUtils.isClickedResizeRect(pressWorldLocation)) {
       return;
     }
 
     this._isUsing = true;
 
-    Stage.rectangleSelectEngine.startSelecting(pressWorldLocation);
+    this.project.rectangleSelect.startSelecting(pressWorldLocation);
 
-    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    const clickedAssociation = this.project.stageManager.findAssociationByLocation(pressWorldLocation);
     if (clickedAssociation !== null) {
       // 在连线身上按下
       this._isUsing = false;
     }
-    ControllerRectangleSelect.lastMoveLocation = pressWorldLocation.clone();
+    this.project.controller.rectangleSelect.lastMoveLocation = pressWorldLocation.clone();
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (!this._isUsing) {
       return;
     }
 
-    if (!Controller.isMouseDown[0]) {
+    if (!this.project.controller.isMouseDown[0]) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    Stage.rectangleSelectEngine.moveSelecting(worldLocation);
+    this.project.rectangleSelect.moveSelecting(worldLocation);
 
-    ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
+    this.project.controller.rectangleSelect.lastMoveLocation = worldLocation.clone();
   };
 
   /**
@@ -90,9 +86,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Stage.rectangleSelectWhenRight;
+      return Settings.sync.rectangleSelectWhenLeft;
     } else {
-      return Stage.rectangleSelectWhenLeft;
+      return Settings.sync.rectangleSelectWhenLeft;
     }
   }
 
@@ -100,18 +96,13 @@ class ControllerRectangleSelectClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     // 左键松开
     this._isUsing = false;
 
     // 代替
-    Stage.rectangleSelectEngine.endSelecting();
+    this.project.rectangleSelect.endSelecting();
   };
 }
-
-/**
- * 框选控制器
- */
-export const ControllerRectangleSelect = new ControllerRectangleSelectClass();

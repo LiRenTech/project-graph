@@ -1,7 +1,5 @@
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
-import { StageManager } from "../../stageManager/StageManager";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { StageObject } from "./StageObject";
 /**
  * 一切独立存在、能被移动的东西，且放在框里能被连带移动的东西
@@ -47,7 +45,7 @@ export abstract class Entity extends StageObject {
    * 由于自身位置的移动，递归的更新所有父级Section的位置和大小
    */
   protected updateFatherSectionByMove() {
-    const fatherSections = SectionMethods.getFatherSections(this);
+    const fatherSections = this.project.sectionMethods.getFatherSections(this);
     for (const section of fatherSections) {
       section.adjustLocationAndSize();
       section.updateFatherSectionByMove();
@@ -58,10 +56,10 @@ export abstract class Entity extends StageObject {
    * 此函数在move函数中被调用，更新
    */
   protected updateOtherEntityLocationByMove() {
-    if (!StageManager.isEnableEntityCollision) {
+    if (!this.project.stageManager.isEnableEntityCollision) {
       return;
     }
-    for (const entity of StageManager.getEntities()) {
+    for (const entity of this.project.stageManager.getEntities()) {
       if (entity === this) {
         continue;
       }
@@ -74,7 +72,7 @@ export abstract class Entity extends StageObject {
    * @param other 其他实体
    */
   protected collideWithOtherEntity(other: Entity) {
-    if (!StageManager.isEnableEntityCollision) {
+    if (!this.project.stageManager.isEnableEntityCollision) {
       return;
     }
     const selfRectangle = this.collisionBox.getRectangle();

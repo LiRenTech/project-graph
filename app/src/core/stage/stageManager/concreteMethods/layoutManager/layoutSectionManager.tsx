@@ -1,9 +1,7 @@
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { ConnectableEntity } from "../../../stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stageObject/entity/Section";
 import { GraphMethods } from "../../basicMethods/GraphMethods";
-import { StageManager } from "../../StageManager";
-import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 /**
  * 关于框嵌套结构的自动布局工具
@@ -13,7 +11,7 @@ export namespace LayoutSectionManager {
    * 默认化布局所有选中的内容
    */
   export function defaultLayout() {
-    const entities = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     // ======= 编写以下代码
 
     for (const entity of entities) {
@@ -21,8 +19,8 @@ export namespace LayoutSectionManager {
       const rect = entity.collisionBox.getRectangle();
       console.log(rect);
       // 移动，和移动到
-      StageEntityMoveManager.moveEntityUtils(entity, new Vector(10, 10), false); // 向右下移动 10 10
-      StageEntityMoveManager.moveEntityToUtils(entity, new Vector(10, 10)); // 移动到 10 10
+      this.project.entityMoveManager.moveEntityUtils(entity, new Vector(10, 10), false); // 向右下移动 10 10
+      this.project.entityMoveManager.moveEntityToUtils(entity, new Vector(10, 10)); // 移动到 10 10
 
       if (entity instanceof Section) {
         // 是一个框
@@ -33,7 +31,7 @@ export namespace LayoutSectionManager {
         }
 
         // 和上面的写法是等效的
-        for (const child of StageManager.getEntitiesByUUIDs(entity.childrenUUIDs)) {
+        for (const child of this.project.stageManager.getEntitiesByUUIDs(entity.childrenUUIDs)) {
           console.log(child);
         }
       } else {

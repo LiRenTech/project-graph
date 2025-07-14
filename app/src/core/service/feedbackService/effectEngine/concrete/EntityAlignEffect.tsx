@@ -1,18 +1,12 @@
-import { mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, Rectangle } from "@graphif/shapes";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 实体对齐特效
  */
-export class EntityAlignEffect extends EffectObject {
+export class EntityAlignEffect extends Effect {
   getClassName(): string {
     return "EntityAlignEffect";
   }
@@ -95,18 +89,18 @@ export class EntityAlignEffect extends EffectObject {
     }
   }
 
-  render(): void {
+  render(project: Project) {
     for (const line of this.lines) {
-      CurveRenderer.renderDashedLine(
-        Renderer.transformWorld2View(line.start),
-        Renderer.transformWorld2View(line.end),
+      project.curveRenderer.renderDashedLine(
+        project.renderer.transformWorld2View(line.start),
+        project.renderer.transformWorld2View(line.end),
         mixColors(
-          StageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
-          StageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
-        0.5 * Camera.currentScale,
-        8 * Camera.currentScale,
+        0.5 * project.camera.currentScale,
+        8 * project.camera.currentScale,
       );
     }
   }

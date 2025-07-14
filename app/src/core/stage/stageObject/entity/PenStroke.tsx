@@ -1,7 +1,7 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Color } from "../../../dataStruct/Color";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -41,9 +41,9 @@ export class PenStroke extends Entity {
   }
 
   private updateCollisionBoxBySegmentList() {
-    this.collisionBox.shapeList = [];
+    this.collisionBox.shapes = [];
     for (const segment of this.segmentList) {
-      this.collisionBox.shapeList.push(new Line(segment.startLocation, segment.endLocation));
+      this.collisionBox.shapes.push(new Line(segment.startLocation, segment.endLocation));
     }
   }
 
@@ -74,7 +74,10 @@ export class PenStroke extends Entity {
    *
    * @param path str格式："x1,y1,w1 x2,y2,w2 x3,y3,w3..."
    */
-  constructor({ uuid, content, color }: Serialized.PenStroke) {
+  constructor(
+    protected readonly project: Project,
+    { uuid, content, color }: Serialized.PenStroke,
+  ) {
     super();
     // 开始解析字符串
     this.checkType(content);
@@ -121,7 +124,7 @@ export class PenStroke extends Entity {
   getCollisionBoxFromSegmentList(segmentList: PenStrokeSegment[]): CollisionBox {
     const result = new CollisionBox([]);
     for (const segment of segmentList) {
-      result.shapeList.push(new Line(segment.startLocation, segment.endLocation));
+      result.shapes.push(new Line(segment.startLocation, segment.endLocation));
     }
     return result;
   }

@@ -9,121 +9,153 @@ name:
   en: Dark
   zh_CN: 黑夜
 ---
-panel:
-  bg: "oklch(0.269 0 0)"
-  text: "#fff"
-  details-text: "#aaa"
-  success-text: "#70ca70"
-  warning-text: "#f2b468"
-  error-text: "#ea4848"
+colors:
+  text: &text "#fff"
+  surface1: &surface1 oklch(12% 0 0)
+  surface2: &surface2 oklch(26% 0 0)
+  surface3: &surface3 oklch(37% 0 0)
+  surface4: &surface4 oklch(55% 0 0)
+  primary: &primary oklch(65.7% 0.165 254.624)
+
+titlebar:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  control:
+    hover:
+      bg: *surface2
+  menu:
+    hover:
+      bg: *surface2
+
+tab:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  active:
+    bg: *surface2
+
+menu:
+  item:
+    hover:
+      bg: *surface2
+  separator:
+    bg: *surface3
 
 tooltip:
-  bg: "oklch(0.269 0 0)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
+  bg: *surface2
+  text: *text
+  border: *surface3
 
 button:
-  bg: "rgba(60, 63, 65, 0.5)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
+  bg: *surface2
+  text: *text
+  border: *surface3
 
-icon-button:
-  bg: "rgb(49, 51, 53)"
-  text: "#fff"
-  border: "rgb(60, 63, 65)"
-
-table:
-  header-bg: "oklch(0.1 0 0)"
-  header-text: "#fff"
-  row-bg: "oklch(0.269 0 0)"
-  row-text: "#fff"
-  row-hover-bg: "oklch(0.371 0 0)"
-  row-hover-text: "#fff"
+dialog:
+  info:
+    bg: oklch(28.2% 0.091 267.935)
+  success:
+    bg: oklch(26.6% 0.065 152.934)
+  warning:
+    bg: oklch(28.6% 0.066 53.813)
+  error:
+    bg: oklch(25.8% 0.092 26.042)
 
 input:
-  bg: "oklch(0.269 0 0)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
-  placeholder: "oklch(0.556 0 0)"
+  bg: *surface2
+  text: *text
+  border: *surface3
+  placeholder:
+    text: *surface4
 
 keybind:
-  bg: "oklch(0.269 0 0)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
-  active-outline: "oklch(0.623 0.214 259.815)"
+  bg: *surface2
+  text: *text
+  border: *surface3
+  active-outline: *primary
   modifiers-bg: "#ddd"
   modifiers-text: "#000"
 
 select:
-  bg: "oklch(0.269 0 0)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
+  bg: *surface2
+  text: *text
+  border: *surface3
   popup:
-    bg: "oklch(0.205 0 0)"
-    border: "oklch(0.371 0 0)"
-    shadow: "oklch(0.129 0.042 264.695)"
+    bg: *surface2
+    border: *surface3
+    shadow: *surface1
   option:
-    bg: "transparent"
-    text: "#fff"
-    border: "transparent"
+    bg: transparent
+    text: *text
+    border: transparent
     hover:
-      bg: "oklch(0.269 0 0)"
-      text: "#fff"
-      border: "transparent"
+      bg: *surface2
+      text: *text
+      border: transparent
     selected:
-      bg: "oklch(0.439 0 0)"
-      text: "#fff"
-      border: "transparent"
+      bg: *surface3
+      text: *text
+      border: transparent
       hover:
-        bg: "oklch(0.556 0 0)"
-        text: "#fff"
-        border: "transparent"
+        bg: *surface4
+        text: *text
+        border: transparent
 
 slider:
-  line: "oklch(0.371 0 0)"
-  handle: "oklch(0.707 0.165 254.624)"
+  line: *surface3
+  handle: *primary
 
 switch:
   false:
-    bg: "oklch(0.2 0 0)"
-    dot: "#999"
+    bg: *surface3
+    dot:
+      bg: *text
   true:
-    bg: "oklch(0.623 0.214 259.815)"
-    dot: "#fff"
+    bg: *primary
+    dot:
+      bg: *text
   disabled:
-    bg: "oklch(0.439 0 0)"
-    dot: "#fff"
-
-appmenu:
-  border: "oklch(0.371 0 0)"
-  category:
-    title: "oklch(0.708 0 0)"
-    separator: "oklch(0.371 0 0)"
-  item:
-    text: "#fff"
-  hover-bg: "oklch(0.371 0 0)"
+    bg: *surface3
+    dot:
+      bg: *surface4
 
 toolbar:
-  bg: "rgb(49, 51, 53)"
-  icon: "#fff"
-  icon-hover-bg: "rgb(255 255 255 / 0.2)"
-  border: "rgb(110, 110, 110)"
+  bg: *surface1
+  icon:
+    hover:
+      bg: *surface2
+  border: *surface3
   tooltip:
-    bg: "oklch(0.269 0 0)"
-    text: "#fff"
-    border: "oklch(0.371 0 0)"
-  collapsed-bg: "#fff"
-  selected-item-bg: "#000"
+    bg: *surface2
+    text: *text
+    border: *surface3
+  collapsed-bg: *text
+  selected-item-bg: *surface4
 
 field-group:
-  bg: "oklch(0.269 0 0)"
-  hover-bg: "oklch(0.269 0 0)"
+  bg: *surface2
+  hover-bg: *surface2
 
 sub-window:
-  bg: "oklch(0.145 0 0)"
-  text: "#fff"
-  border: "oklch(0.371 0 0)"
-  shadow: "rgba(0, 0, 0, 0.5)"
+  bg: *surface1
+  text: *text
+  border: *surface3
+  shadow: *surface1
+
+ai:
+  input:
+    border: *surface3
+    placeholder:
+      text: *surface4
+    button:
+      hover:
+        bg: *surface2
+    focus-within:
+      border: *primary
+  message:
+    user:
+      bg: *surface2
 
 stage:
   Background: "#181818"
@@ -139,8 +171,8 @@ stage:
   CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
-  flash: "#fff"
-  dash: "#fff"
-  windowFlash: "#fff"
+  flash: *text
+  dash: *text
+  windowFlash: *text
   warningShadow: "#f00"
   successShadow: "#0f0"

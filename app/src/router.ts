@@ -8,8 +8,6 @@ export type Path =
   | `/secret`
   | `/test`
   | `/ui_test`
-  | `/user/login`
-  | `/user/register`
   | `/welcome`
 
 export type Params = {

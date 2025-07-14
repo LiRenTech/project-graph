@@ -1,6 +1,5 @@
+import { exists } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
-// import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
-import { exists } from "../../../utils/fs";
 import { createStore } from "../../../utils/store";
 
 /**
@@ -21,15 +20,11 @@ export namespace RecentFileManager {
   /**
    * 仅在软件启动时调用一次
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export function openFileByPathWhenAppStart(autoOpenPath: string) {
     isThisOpenByPathFlag = true;
-    startHookFunction(autoOpenPath);
+    // TODO: startHookFunction(autoOpenPath);
   }
-  /**
-   * 软件启动时，注册一个回调函数，在回调函数中触发打开用户自定义的工程文件事件
-   */
-  // eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
-  export let startHookFunction = (_: string) => {};
 
   export type RecentFile = {
     /**

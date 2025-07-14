@@ -34,10 +34,22 @@
     {
       "identifier": "http:default",
       "allow": [
-        {"url": "*://*.project-graph.top/*"},
-        {"url": "http://localhost:*"},
-        {"url": "http://127.0.0.1:*"}
+        {
+          "url": "*://**:*/**"
+        }
       ]
+    },
+    "fs:default",
+    "fs:read-all",
+    "fs:write-all",
+    "fs:allow-rename",
+    "fs:allow-mkdir",
+    "fs:allow-exists",
+    "fs:allow-watch",
+    "fs:read-dirs",
+    {
+      "identifier": "fs:scope",
+      "allow": ["**/*"]
     }
   ]
 }

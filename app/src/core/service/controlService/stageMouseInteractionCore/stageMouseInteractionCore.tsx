@@ -1,10 +1,13 @@
-import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../../../stage/stageManager/StageManager";
+import { Vector } from "@graphif/data-structures";
+import { Project, service } from "../../../Project";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
 
-export class StageMouseInteractionCore {
+@service("mouseInteraction")
+export class MouseInteraction {
+  constructor(private readonly project: Project) {}
+
   /**
    * 鼠标悬浮的边
    */
@@ -58,7 +61,7 @@ export class StageMouseInteractionCore {
   public updateByMouseMove(mouseWorldLocation: Vector): void {
     // 更新 Edge状态
     this._hoverEdges = [];
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of this.project.stageManager.getEdges()) {
       if (edge.isHiddenBySectionCollapse) {
         continue;
       }
@@ -68,16 +71,16 @@ export class StageMouseInteractionCore {
     }
     // 更新 MultiTargetUndirectedEdge状态
     this._hoverMultiTargetEdges = [];
-    for (const edge of StageManager.getAssociations().filter(
-      (association) => association instanceof MultiTargetUndirectedEdge,
-    )) {
+    for (const edge of this.project.stageManager
+      .getAssociations()
+      .filter((association) => association instanceof MultiTargetUndirectedEdge)) {
       if (edge.collisionBox.isContainsPoint(mouseWorldLocation)) {
         this._hoverMultiTargetEdges.push(edge);
       }
     }
     // 更新 Section状态
     this._hoverSections = [];
-    const sections = StageManager.getSections();
+    const sections = this.project.stageManager.getSections();
 
     for (const section of sections) {
       if (section.collisionBox.isContainsPoint(mouseWorldLocation)) {

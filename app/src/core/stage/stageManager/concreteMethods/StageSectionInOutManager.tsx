@@ -1,13 +1,16 @@
+import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Section } from "../../stageObject/entity/Section";
-import { StageManager } from "../StageManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑
  */
-export namespace StageSectionInOutManager {
+@service("sectionInOutManager")
+export class SectionInOutManager {
+  constructor(private readonly project: Project) {}
+
   // 可能存在bug
-  export function goInSection(entities: Entity[], section: Section) {
+  goInSection(entities: Entity[], section: Section) {
     for (const entity of entities) {
       if (section.children.includes(entity)) {
         // 已经在section里面了，不用再次进入
@@ -20,7 +23,7 @@ export namespace StageSectionInOutManager {
       section.childrenUUIDs.push(entity.uuid);
       section.children.push(entity);
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   /**
@@ -29,28 +32,28 @@ export namespace StageSectionInOutManager {
    * @param entities
    * @param sections
    */
-  export function goInSections(entities: Entity[], sections: Section[]) {
+  goInSections(entities: Entity[], sections: Section[]) {
     // 先解除所有实体与Section的关联
     for (const entity of entities) {
-      entityDropParent(entity);
+      this.entityDropParent(entity);
     }
     // 再重新关联
     for (const section of sections) {
-      goInSection(entities, section);
+      this.goInSection(entities, section);
     }
   }
 
-  export function goOutSection(entities: Entity[], section: Section) {
+  goOutSection(entities: Entity[], section: Section) {
     for (const entity of entities) {
-      sectionDropChild(section, entity);
+      this.sectionDropChild(section, entity);
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
-  function entityDropParent(entity: Entity) {
-    for (const section of StageManager.getSections()) {
+  private entityDropParent(entity: Entity) {
+    for (const section of this.project.stageManager.getSections()) {
       if (section.childrenUUIDs.includes(entity.uuid)) {
-        sectionDropChild(section, entity);
+        this.sectionDropChild(section, entity);
       }
     }
   }
@@ -60,7 +63,7 @@ export namespace StageSectionInOutManager {
    * @param section
    * @param entity
    */
-  function sectionDropChild(section: Section, entity: Entity) {
+  private sectionDropChild(section: Section, entity: Entity) {
     const newChildrenUUID: string[] = [];
     const newChildren: Entity[] = [];
     for (const child of section.children) {

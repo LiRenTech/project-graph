@@ -1,0 +1,29 @@
+{
+  "name": "@graphif/serializer",
+  "description": "Serialize instances to objects",
+  "version": "1.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "type-check": "tsc"
+  },
+  "devDependencies": {
+    "tsdown": "^0.12.9",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "@graphif/vite-plugin-original-class-name": "workspace:*",
+    "reflect-metadata": "^0.2.2"
+  }
+}

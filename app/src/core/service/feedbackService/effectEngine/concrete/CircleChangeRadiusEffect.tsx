@@ -1,20 +1,16 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
-import { EffectObject } from "../effectObject";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 圆形光圈缩放特效
  */
-export class CircleChangeRadiusEffect extends EffectObject {
+export class CircleChangeRadiusEffect extends Effect {
   constructor(
     /**
      * 一开始为0，每tick + 1
      */
-    public override timeProgress: ProgressNumber,
+    public timeProgress: ProgressNumber,
     public location: Vector,
     public radiusStart: number,
     public radiusEnd: number,
@@ -29,10 +25,6 @@ export class CircleChangeRadiusEffect extends EffectObject {
 
   get radius() {
     return this.radiusStart + (this.radiusEnd - this.radiusStart) * this.timeProgress.rate;
-  }
-
-  override tick() {
-    super.tick();
   }
 
   static fromConnectPointExpand(location: Vector, expandRadius: number) {
@@ -54,17 +46,17 @@ export class CircleChangeRadiusEffect extends EffectObject {
     );
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     this.color.a = 1 - this.timeProgress.rate;
-    ShapeRenderer.renderCircle(
-      Renderer.transformWorld2View(this.location),
-      this.radius * Camera.currentScale,
+    project.shapeRenderer.renderCircle(
+      project.renderer.transformWorld2View(this.location),
+      this.radius * project.camera.currentScale,
       Color.Transparent,
       this.color,
-      2 * Camera.currentScale,
+      2 * project.camera.currentScale,
     );
   }
 }

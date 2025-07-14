@@ -1,22 +1,20 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { isMac } from "../../../../utils/platform";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
-import { Stage } from "../../../stage/Stage";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
-import { StageManager } from "../../../stage/stageManager/StageManager";
+import { Project, service } from "../../../Project";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { Section } from "../../../stage/stageObject/entity/Section";
-import { Controller } from "../controller/Controller";
+import { Settings } from "../../Settings";
 
 /**
  * 框选引擎
  * 因为不止鼠标会用到框选，mac下的空格+双指移动可能也用到框选功能
  * 所以框选功能单独抽离成一个引擎，提供API被其他地方调用
  */
-export class RectangleSelectEngine {
-  constructor() {}
+@service("rectangleSelect")
+export class RectangleSelect {
+  constructor(private readonly project: Project) {}
   // 开始点
   private selectStartLocation = Vector.getZero();
   // 结束点
@@ -41,10 +39,12 @@ export class RectangleSelectEngine {
   }
 
   startSelecting(worldLocation: Vector) {
-    const isHaveEdgeSelected = StageManager.getAssociations().some((association) => association.isSelected);
-    const isHaveEntitySelected = StageManager.getEntities().some((entity) => entity.isSelected);
+    const isHaveEdgeSelected = this.project.stageManager
+      .getAssociations()
+      .some((association) => association.isSelected);
+    const isHaveEntitySelected = this.project.stageManager.getEntities().some((entity) => entity.isSelected);
 
-    const sections = SectionMethods.getSectionsByInnerLocation(worldLocation);
+    const sections = this.project.sectionMethods.getSectionsByInnerLocation(worldLocation);
     if (sections.length === 0) {
       // 没有在任何section里按下
       this.limitSection = null;
@@ -55,13 +55,15 @@ export class RectangleSelectEngine {
     if (isHaveEntitySelected || isHaveEdgeSelected) {
       // A
       if (
-        Controller.pressingKeySet.has("shift") ||
-        (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+        this.project.controller.pressingKeySet.has("shift") ||
+        (isMac
+          ? this.project.controller.pressingKeySet.has("meta")
+          : this.project.controller.pressingKeySet.has("control"))
       ) {
         // 不取消选择
       } else {
         // 取消选择所
-        StageManager.getStageObject().forEach((stageObject) => {
+        this.project.stageManager.getStageObjects().forEach((stageObject) => {
           stageObject.isSelected = false;
         });
       }
@@ -72,7 +74,7 @@ export class RectangleSelectEngine {
     this.selectEndLocation = worldLocation.clone();
 
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   moveSelecting(newEndLocation: Vector) {
@@ -95,9 +97,9 @@ export class RectangleSelectEngine {
     }
 
     this.updateStageObjectByMove();
-    Controller.isMovingEdge = false;
+    this.project.controller.isMovingEdge = false;
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   /**
@@ -105,54 +107,58 @@ export class RectangleSelectEngine {
    */
   endSelecting() {
     // 将所有选择到的增加到上次选择的节点中
-    Controller.lastSelectedEntityUUID.clear();
-    for (const node of StageManager.getEntities()) {
+    this.project.controller.lastSelectedEntityUUID.clear();
+    for (const node of this.project.stageManager.getEntities()) {
       if (node.isSelected) {
-        Controller.lastSelectedEntityUUID.add(node.uuid);
+        this.project.controller.lastSelectedEntityUUID.add(node.uuid);
       }
     }
 
-    Controller.lastSelectedEdgeUUID.clear();
-    for (const edge of StageManager.getLineEdges()) {
+    this.project.controller.lastSelectedEdgeUUID.clear();
+    for (const edge of this.project.stageManager.getLineEdges()) {
       if (edge.isSelected) {
-        Controller.lastSelectedEdgeUUID.add(edge.uuid);
+        this.project.controller.lastSelectedEdgeUUID.add(edge.uuid);
       }
     }
     // 更新选中数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
     this.selectingRectangle = null;
   }
 
   private updateStageObjectByMove() {
     if (
-      Controller.pressingKeySet.has("shift") ||
-      (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+      this.project.controller.pressingKeySet.has("shift") ||
+      (isMac
+        ? this.project.controller.pressingKeySet.has("meta")
+        : this.project.controller.pressingKeySet.has("control"))
     ) {
       // 移动过程中不先暴力清除
     } else {
       // 先清空所有已经选择了的
-      StageManager.getStageObject().forEach((stageObject) => {
+      this.project.stageManager.getStageObjects().forEach((stageObject) => {
         stageObject.isSelected = false;
       });
     }
 
-    if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
+    if (
+      isMac ? this.project.controller.pressingKeySet.has("meta") : this.project.controller.pressingKeySet.has("control")
+    ) {
       // 交叉选择，没的变有，有的变没
-      for (const entity of StageManager.getEntities()) {
+      for (const entity of this.project.stageManager.getEntities()) {
         if (entity.isHiddenBySectionCollapse) {
           continue;
         }
         if (this.isSelectWithEntity(entity)) {
-          if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
+          if (this.project.controller.lastSelectedEntityUUID.has(entity.uuid)) {
             entity.isSelected = false;
           } else {
             entity.isSelected = true;
           }
         }
       }
-      for (const association of StageManager.getAssociations()) {
+      for (const association of this.project.stageManager.getAssociations()) {
         if (this.isSelectWithEntity(association)) {
-          if (Controller.lastSelectedEdgeUUID.has(association.uuid)) {
+          if (this.project.controller.lastSelectedEdgeUUID.has(association.uuid)) {
             association.isSelected = false;
           } else {
             association.isSelected = true;
@@ -166,7 +172,7 @@ export class RectangleSelectEngine {
 
       // Entity
       if (!isHaveEntity) {
-        for (const otherEntities of StageManager.getEntities()) {
+        for (const otherEntities of this.project.stageManager.getEntities()) {
           // if (otherEntities instanceof Section) {
           //   continue;
           // }
@@ -184,7 +190,7 @@ export class RectangleSelectEngine {
       // Edge
       if (!isHaveEntity) {
         // 如果已经有节点被选择了，则不能再选择边了
-        for (const edge of StageManager.getAssociations()) {
+        for (const edge of this.project.stageManager.getAssociations()) {
           if (edge instanceof Edge && edge.isHiddenBySectionCollapse) {
             continue;
           }
@@ -194,7 +200,7 @@ export class RectangleSelectEngine {
         }
       }
     }
-    selectedEntityNormalizing();
+    this.selectedEntityNormalizing();
   }
 
   /**
@@ -216,29 +222,27 @@ export class RectangleSelectEngine {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Stage.rectangleSelectWhenRight;
+      return Settings.sync.rectangleSelectWhenRight;
     } else {
-      return Stage.rectangleSelectWhenLeft;
+      return Settings.sync.rectangleSelectWhenLeft;
     }
   }
-}
 
-/**
- * 规范化选择的实体
- *  法则：永远不能同时框选一个东西和它包含在内部的东西。
- */
-function selectedEntityNormalizing() {
-  const entities = StageManager.getSelectedEntities();
-  const shallowerSections = SectionMethods.shallowerSection(entities.filter((entity) => entity instanceof Section));
-  const shallowerEntities = SectionMethods.shallowerNotSectionEntities(entities);
-  for (const entity of entities) {
-    if (entity instanceof Section) {
-      if (!shallowerSections.includes(entity)) {
-        entity.isSelected = false;
-      }
-    } else {
-      if (!shallowerEntities.includes(entity)) {
-        entity.isSelected = false;
+  selectedEntityNormalizing() {
+    const entities = this.project.stageManager.getSelectedEntities();
+    const shallowerSections = this.project.sectionMethods.shallowerSection(
+      entities.filter((entity) => entity instanceof Section),
+    );
+    const shallowerEntities = this.project.sectionMethods.shallowerNotSectionEntities(entities);
+    for (const entity of entities) {
+      if (entity instanceof Section) {
+        if (!shallowerSections.includes(entity)) {
+          entity.isSelected = false;
+        }
+      } else {
+        if (!shallowerEntities.includes(entity)) {
+          entity.isSelected = false;
+        }
       }
     }
   }

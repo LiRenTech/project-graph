@@ -1,25 +1,21 @@
+import { Vector } from "@graphif/data-structures";
 import { isMac } from "../../../../../../utils/platform";
-import { Vector } from "../../../../../dataStruct/Vector";
-import { Renderer } from "../../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../../stage/Camera";
-import { Stage } from "../../../../../stage/Stage";
-import { StageEntityMoveManager } from "../../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { Project } from "../../../../../Project";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";
-import { Controller } from "../../Controller";
 
-export namespace ControllerCameraMac {
-  let macTrackpadScaleSensitivity = 0.5;
-  export function init() {
+export class ControllerCameraMac {
+  private macTrackpadScaleSensitivity = 0.5;
+  constructor(protected readonly project: Project) {
     Settings.watch("macTrackpadScaleSensitivity", (value) => {
-      macTrackpadScaleSensitivity = value;
+      this.macTrackpadScaleSensitivity = value;
     });
   }
   /**
    * 在mac系统下，判断是否是鼠标滚轮事件
    * @param event 事件对象
    */
-  export function isMouseWheel(event: WheelEvent) {
+  isMouseWheel(event: WheelEvent) {
     // 这里mac暂不考虑侧边横向滚轮。
     if (event.deltaX !== 0 && event.deltaY !== 0) {
       // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
@@ -39,7 +35,7 @@ export namespace ControllerCameraMac {
       // M4 mackbook实测：
       // 鼠标滚动一格，会显示一格数字 4.63535543
       // 反而是触摸版，会显示 (1, 4), (0, 3) .... 很多小整数向量
-      if (Stage.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
+      if (Settings.sync.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
         if (Number.isInteger(distance)) {
           // 整数距离，是鼠标滚轮
           return true;
@@ -47,7 +43,7 @@ export namespace ControllerCameraMac {
           // 小数距离，是触摸板
           return false;
         }
-      } else if (Stage.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
+      } else if (Settings.sync.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
         if (Number.isInteger(distance)) {
           return false;
         }
@@ -58,15 +54,15 @@ export namespace ControllerCameraMac {
     }
   }
 
-  const FINGER_SCALE_MIN_DETECT_TIME = 2; // s
+  private readonly FINGER_SCALE_MIN_DETECT_TIME = 2; // s
   // 上次检测时间
-  let lastDetectTime = Date.now();
-  let currentWheelMode: "fingerScale" | "mouseWheel" = "fingerScale";
+  private lastDetectTime = Date.now();
+  private currentWheelMode: "fingerScale" | "mouseWheel" = "fingerScale";
   /**
    * 检测识别双指缩放
    * @param event
    */
-  export function isTouchPadTwoFingerScale(event: WheelEvent): boolean {
+  isTouchPadTwoFingerScale(event: WheelEvent): boolean {
     // 上游已经筛选出了斜向移动，现在只需要区分 上下滚动是双指缩放触发的，还是滚轮触发的
     /**
      * 区分逻辑：
@@ -78,22 +74,22 @@ export namespace ControllerCameraMac {
     const y = event.deltaY;
     if (Math.abs(y) < 4) {
       // 一定是双指缩放！
-      currentWheelMode = "fingerScale";
-      lastDetectTime = Date.now();
+      this.currentWheelMode = "fingerScale";
+      this.lastDetectTime = Date.now();
       return true;
     } else {
       // 可能是滚轮，也可能是双指缩放的中间过程
       const currentTime = Date.now();
-      const diffTime = currentTime - lastDetectTime;
-      if (diffTime > FINGER_SCALE_MIN_DETECT_TIME * 1000) {
+      const diffTime = currentTime - this.lastDetectTime;
+      if (diffTime > this.FINGER_SCALE_MIN_DETECT_TIME * 1000) {
         // 间隔过大，认为是滚轮
-        currentWheelMode = "mouseWheel";
-        lastDetectTime = currentTime;
+        this.currentWheelMode = "mouseWheel";
+        this.lastDetectTime = currentTime;
         return false;
       } else {
-        lastDetectTime = currentTime;
+        this.lastDetectTime = currentTime;
         // 间隔时间太短，按照上一次的模式判断
-        if (currentWheelMode === "fingerScale") {
+        if (this.currentWheelMode === "fingerScale") {
           return true;
         } else {
           return false;
@@ -106,73 +102,75 @@ export namespace ControllerCameraMac {
    * mac 触发在触摸板上双指缩放的事件
    * @param event
    */
-  export function handleTwoFingerScale(event: WheelEvent) {
+  handleTwoFingerScale(event: WheelEvent) {
     // 获取触发滚轮的鼠标位置
     const mouseLocation = new Vector(event.clientX, event.clientY);
     // 计算鼠标位置在视野中的位置
-    const worldLocation = Renderer.transformView2World(mouseLocation);
-    Camera.targetLocationByScale = worldLocation;
+    const worldLocation = this.project.renderer.transformView2World(mouseLocation);
+    this.project.camera.targetLocationByScale = worldLocation;
 
     // 构建幂函数 y = a ^ x
     // const power = 1.02; // 1.05 有点敏感，1.01 有点迟钝
-    const power = macTrackpadScaleSensitivity * 0.14 + 1.01;
+    const power = this.macTrackpadScaleSensitivity * 0.14 + 1.01;
     // y 是 camera 的currentScale
     // 通过y反解x
-    const currnetCameraScale = Camera.currentScale;
+    const currnetCameraScale = this.project.camera.currentScale;
     const x = Math.log(currnetCameraScale) / Math.log(power);
     // x 根据滚轮事件来变化
     const diffX = event.deltaY * -1;
     const newX = x + diffX;
     // 求解新的 camera scale
     const newCameraScale = Math.pow(power, newX);
-    // Camera.currentScale = newCameraScale;
-    Camera.targetScale = newCameraScale;
-    // Camera.setAllowScaleFollowMouseLocationTicks(2 * 60);
+    // this.project.camera.currentScale = newCameraScale;
+    this.project.camera.targetScale = newCameraScale;
+    // this.project.camera.setAllowScaleFollowMouseLocationTicks(2 * 60);
   }
 
-  export function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
+  moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
     // 过滤 -0
     if (Math.abs(event.deltaX) < 0.01 && Math.abs(event.deltaY) < 0.01) {
       return;
     }
-    if (Controller.pressingKeySet.has(" ")) {
+    if (this.project.controller.pressingKeySet.has(" ")) {
       console.log("space pressed, ignore touch pad move");
-      handleRectangleSelectByTwoFingerMove(event);
+      this.handleRectangleSelectByTwoFingerMove(event);
       return;
-    } else if (Controller.pressingKeySet.has("meta") && isMac) {
-      handleDrageMoveEntityByTwoFingerMove(event);
+    } else if (this.project.controller.pressingKeySet.has("meta") && isMac) {
+      this.handleDrageMoveEntityByTwoFingerMove(event);
       return;
     }
     const dx = event.deltaX / 400;
     const dy = event.deltaY / 400;
-    const diffLocation = new Vector(dx, dy).multiply((Camera.moveAmplitude * 50) / Camera.currentScale);
-    Camera.location = Camera.location.add(diffLocation);
-    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
+    const diffLocation = new Vector(dx, dy).multiply(
+      (this.project.camera.moveAmplitude * 50) / this.project.camera.currentScale,
+    );
+    this.project.camera.location = this.project.camera.location.add(diffLocation);
+    this.project.effects.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
   }
 
-  function handleRectangleSelectByTwoFingerMove(event: WheelEvent) {
+  private handleRectangleSelectByTwoFingerMove(event: WheelEvent) {
     const dx = event.deltaX;
     const dy = event.deltaY;
     // TODO: 调用矩形框选
-    const rectangle = Stage.rectangleSelectEngine.getRectangle();
+    const rectangle = this.project.rectangleSelect.getRectangle();
     if (rectangle) {
       // 正在框选中
-      const selectEndLocation = Stage.rectangleSelectEngine.getSelectEndLocation();
-      Stage.rectangleSelectEngine.moveSelecting(
-        selectEndLocation.add(new Vector(-dx, -dy).divide(Camera.currentScale)),
+      const selectEndLocation = this.project.rectangleSelect.getSelectEndLocation();
+      this.project.rectangleSelect.moveSelecting(
+        selectEndLocation.add(new Vector(-dx, -dy).divide(this.project.camera.currentScale)),
       );
     } else {
       // 开始框选
       const mouseLocation = new Vector(event.clientX, event.clientY);
-      const worldLocation = Renderer.transformView2World(mouseLocation);
-      Stage.rectangleSelectEngine.startSelecting(worldLocation);
+      const worldLocation = this.project.renderer.transformView2World(mouseLocation);
+      this.project.rectangleSelect.startSelecting(worldLocation);
     }
   }
 
-  function handleDrageMoveEntityByTwoFingerMove(event: WheelEvent) {
+  private handleDrageMoveEntityByTwoFingerMove(event: WheelEvent) {
     const dx = event.deltaX;
     const dy = event.deltaY;
-    const diffLocation = new Vector(-dx, -dy).divide(Camera.currentScale);
-    StageEntityMoveManager.moveSelectedEntities(diffLocation);
+    const diffLocation = new Vector(-dx, -dy).divide(this.project.camera.currentScale);
+    this.project.entityMoveManager.moveSelectedEntities(diffLocation);
   }
 }

@@ -1,13 +1,13 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { EffectObject } from "../effectObject";
+import { Color, ProgressNumber } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 import { LineCuttingEffect } from "./LineCuttingEffect";
 
 /**
  * 用于某个节点进入了某个Section内部，四个角连向了父Section矩形的四个角
  */
-export class RectanglePushInEffect extends EffectObject {
+export class RectanglePushInEffect extends Effect {
   getClassName(): string {
     return "RectanglePushInEffect";
   }
@@ -52,11 +52,11 @@ export class RectanglePushInEffect extends EffectObject {
     return new RectanglePushInEffect(entityRectangle, sectionRectangle, timeProgress, isGoOut);
   }
 
-  protected subEffects: EffectObject[];
+  protected subEffects: Effect[];
 
-  render(): void {
+  render(project: Project) {
     for (const effect of this.subEffects) {
-      effect.render();
+      effect.render(project);
     }
   }
 }

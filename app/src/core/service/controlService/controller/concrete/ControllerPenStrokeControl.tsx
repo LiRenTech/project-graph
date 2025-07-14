@@ -1,14 +1,11 @@
-import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { Controller } from "../Controller";
+import { Vector } from "@graphif/data-structures";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
  * 所有和笔迹控制特定的逻辑都在这里
  */
-export class ControllerPenStrokeControl extends ControllerClass {
+export class ControllerPenStrokeControlClass extends ControllerClass {
   public isAdjusting = false;
   /**
    * Alt键右键按下时的位置
@@ -20,11 +17,11 @@ export class ControllerPenStrokeControl extends ControllerClass {
   public lastAdjustWidthLocation: Vector = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    if (!(event.button === 2 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
+    if (!(event.button === 2 && Settings.sync.mouseLeftMode === "draw")) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (event.button === 2 && Controller.pressingKeySet.has("alt")) {
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    if (event.button === 2 && this.project.controller.pressingKeySet.has("alt")) {
       // 右键按下时，开始调整笔刷粗细
       this.startAdjustWidthLocation = pressWorldLocation.clone();
       this.isAdjusting = true;
@@ -33,18 +30,18 @@ export class ControllerPenStrokeControl extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Stage.leftMouseMode === LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode === "selectAndMove") {
       // 检查鼠标是否悬浮在笔迹上
-      const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-      for (const node of StageManager.getPenStrokes()) {
+      const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+      for (const node of this.project.stageManager.getPenStrokes()) {
         node.isMouseHover = false;
         if (node.collisionBox.isContainsPoint(location)) {
           node.isMouseHover = true;
         }
       }
     }
-    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
-      if (Controller.pressingKeySet.has("alt") && Controller.isMouseDown[2]) {
+    if (Settings.sync.mouseLeftMode === "draw") {
+      if (this.project.controller.pressingKeySet.has("alt") && this.project.controller.isMouseDown[2]) {
         this.onMouseMoveWhenAdjusting(event);
         return;
       }
@@ -53,7 +50,7 @@ export class ControllerPenStrokeControl extends ControllerClass {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public mouseup: (event: MouseEvent) => void = (_event) => {
-    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+    if (Settings.sync.mouseLeftMode === "draw") {
       if (this.isAdjusting) {
         this.isAdjusting = false;
       }
@@ -61,10 +58,10 @@ export class ControllerPenStrokeControl extends ControllerClass {
   };
 
   // public mousewheel: (event: WheelEvent) => void = (event) => {
-  //   if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+  //   if (Settings.sync.mouseLeftMode !== "draw") {
   //     return;
   //   }
-  //   if (Controller.pressingKeySet.has("control")) {
+  //   if (this.project.controller.pressingKeySet.has("control")) {
   //     // 控制放大缩小
   //     if (isMac) {
   //       // mac暂不支持滚轮缩放大小
@@ -83,7 +80,7 @@ export class ControllerPenStrokeControl extends ControllerClass {
 
   private onMouseMoveWhenAdjusting = (event: MouseEvent) => {
     // 更改宽度，检测鼠标上下移动的距离（模仿PS的笔刷粗细调整）
-    const currentWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const currentWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     // const delta = this.startAdjustWidthLocation.distance(currentWorldLocation);
     let change = 1;
@@ -95,16 +92,14 @@ export class ControllerPenStrokeControl extends ControllerClass {
     // if (currentWorldLocation.y > this.lastAdjustWidthLocation.y) {
     //   delta = -delta;
     // }
-    const lastWidth = Stage.drawingMachine.currentStrokeWidth;
-    // Stage.effectMachine.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
+    const lastWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth;
+    // this.project.effects.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
     const newWidth = Math.round(lastWidth + change);
 
     // 限制宽度范围
-    Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+    this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
 
     // 记录上一次位置
     this.lastAdjustWidthLocation = currentWorldLocation.clone();
   };
 }
-
-export const controllerPenStrokeControl = new ControllerPenStrokeControl();

@@ -1,7 +1,6 @@
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
-import { StageManager } from "../StageManager";
 
 /**
  * 一切和涂鸦算法相关的内容
@@ -44,14 +43,14 @@ export namespace PenStrokeMethods {
     for (const entity of entities) {
       result.delete(entity.uuid);
     }
-    return StageManager.getEntitiesByUUIDs(Array.from(result));
+    return this.project.stageManager.getEntitiesByUUIDs(Array.from(result));
   }
 
   /**
    * 此函数最终由快捷键调用
    */
   export function selectEntityByPenStroke() {
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = this.project.stageManager.getSelectedEntities();
     for (const entity of selectedEntities) {
       if (entity instanceof ConnectableEntity) {
         const penStrokes = getTouchingPenStrokes(entity);
@@ -74,7 +73,7 @@ export namespace PenStrokeMethods {
    */
   export function getTouchingPenStrokes(entity: ConnectableEntity): PenStroke[] {
     const touchingPenStrokes: PenStroke[] = [];
-    for (const penStroke of StageManager.getPenStrokes()) {
+    for (const penStroke of this.project.stageManager.getPenStrokes()) {
       if (isConnectableEntityCollideWithPenStroke(entity, penStroke)) {
         touchingPenStrokes.push(penStroke);
       }
@@ -88,7 +87,7 @@ export namespace PenStrokeMethods {
    */
   export function getConnectableEntitiesByPenStroke(penStroke: PenStroke): ConnectableEntity[] {
     const touchingEntities: ConnectableEntity[] = [];
-    for (const entity of StageManager.getConnectableEntity()) {
+    for (const entity of this.project.stageManager.getConnectableEntity()) {
       if (isConnectableEntityCollideWithPenStroke(entity, penStroke)) {
         touchingEntities.push(entity);
       }

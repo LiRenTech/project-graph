@@ -1,6 +1,4 @@
-import { Circle } from "../../../dataStruct/shape/Circle";
-import { SymmetryCurve } from "../../../dataStruct/shape/Curve";
-import { Line } from "../../../dataStruct/shape/Line";
+import { Circle, Line, SymmetryCurve } from "@graphif/shapes";
 import { Settings } from "../../../service/Settings";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { LineEdge } from "./LineEdge";

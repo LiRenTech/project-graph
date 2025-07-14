@@ -1,5 +1,5 @@
-import { Vector } from "../../../../dataStruct/Vector";
-import { EffectObject } from "../../../../service/feedbackService/effectEngine/effectObject";
+import { Vector } from "@graphif/data-structures";
+import { Effect } from "../../../../service/feedbackService/effectEngine/effectObject";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
@@ -71,10 +71,10 @@ export abstract class EdgeRendererClass {
    * 获取这个线在切断时的特效
    * 外层将在切断时根据此函数来获取特效并自动加入到渲染器中
    */
-  abstract getCuttingEffects(edge: Edge): EffectObject[];
+  abstract getCuttingEffects(edge: Edge): Effect[];
 
   /**
    * 获取这个线在连接成功时的特效
    */
-  abstract getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[];
+  abstract getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[];
 }

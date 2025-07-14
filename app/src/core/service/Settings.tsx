@@ -1,8 +1,5 @@
-import { appCacheDir } from "@tauri-apps/api/path";
 import { Store } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
-import { PathString } from "../../utils/pathString";
-import { isWeb } from "../../utils/platform";
 import { createStore } from "../../utils/store";
 
 /**
@@ -103,6 +100,8 @@ export namespace Settings {
     textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter" | "space";
     textNodeSelectAllWhenStartEditByKeyboard: boolean;
     textNodeSelectAllWhenStartEditByMouseClick: boolean;
+    // TODO: 把这个加进设置页面
+    mouseLeftMode: "selectAndMove" | "draw" | "connectAndCut";
     mouseWheelMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
@@ -138,6 +137,11 @@ export namespace Settings {
     // 用户协议
     agreeTerms: boolean;
     allowTelemetry: boolean;
+    // AI
+    aiApiBaseUrl: string;
+    aiApiKey: string;
+    aiModel: string;
+    aiShowTokenCount: boolean;
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
@@ -225,6 +229,7 @@ export namespace Settings {
     textNodeStartEditMode: "enter",
     textNodeSelectAllWhenStartEditByKeyboard: false,
     textNodeSelectAllWhenStartEditByMouseClick: true,
+    mouseLeftMode: "selectAndMove",
     mouseWheelMode: "zoom",
     mouseWheelWithShiftMode: "moveX",
     mouseWheelWithCtrlMode: "move",
@@ -251,21 +256,18 @@ export namespace Settings {
     // 用户协议
     agreeTerms: false,
     allowTelemetry: false,
+    // AI
+    aiApiBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
+    aiApiKey: "",
+    aiModel: "gemini-2.5-flash",
+    aiShowTokenCount: false,
   };
 
-  /**
-   * 获取默认的草稿备份路径
-   * @returns
-   */
-  async function getDefaultDraftBackupPath() {
-    if (isWeb) {
-      return "web-drafts-backup"; // 随便设置一个非空字符串
-    }
-    return (await appCacheDir()) + PathString.getSep() + "drafts-backup";
-  }
+  export const sync = defaultSettings;
 
   export async function init() {
     store = await createStore("settings.json");
+    Object.assign(sync, Object.fromEntries(await store.entries()));
     // 调用所有watcher
     Object.entries(callbacks).forEach(([key, callbacks]) => {
       callbacks.forEach((callback) => {
@@ -278,14 +280,6 @@ export namespace Settings {
     if (await has("uiTheme")) {
       set("theme", "dark");
       remove("uiTheme");
-    }
-
-    // 1.7.4 之前的草稿默认备份路径都是空，现在自动改成appCacheDir默认路径
-    if (!isWeb) {
-      if ((await get("autoBackupDraftPath")) === "") {
-        set("autoBackupDraftPath", await getDefaultDraftBackupPath());
-      }
-      defaultSettings.autoBackupDraftPath = await getDefaultDraftBackupPath();
     }
   }
 
@@ -314,6 +308,7 @@ export namespace Settings {
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
     store.set(key, value);
     store.save();
+    sync[key] = value;
 
     // 调用所有监听该键的回调函数
     if (callbacks[key]) {
@@ -336,6 +331,9 @@ export namespace Settings {
         callback(value);
       });
     }
+    return () => {
+      callbacks[key] = callbacks[key].filter((cb) => cb !== callback);
+    };
   }
 
   /**
@@ -349,6 +347,12 @@ export namespace Settings {
       get(key)
         .then(setValue)
         .then(() => setInited(true));
+      const unwatch = watch(key, (newValue) => {
+        setValue(newValue);
+      });
+      return () => {
+        unwatch();
+      };
     }, []);
 
     useEffect(() => {

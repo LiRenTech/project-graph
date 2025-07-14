@@ -1,7 +1,5 @@
-import { Renderer } from "../../render/canvas2d/renderer";
+import { Project, service } from "../../Project";
 import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
-import { SectionMethods } from "../../stage/stageManager/basicMethods/SectionMethods";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
@@ -54,15 +52,18 @@ export interface CountResultObject {
 /**
  * 舞台场景复杂度检测器
  */
-export namespace ComplexityDetector {
+@service("complexityDetector")
+export class ComplexityDetector {
+  constructor(private readonly project: Project) {}
+
   /**
    * 检测当前舞台
    */
-  export function detectorCurrentStage(): CountResultObject {
+  detectorCurrentStage(): CountResultObject {
     // 统计字数
     // 统计各种类型节点数量
-    const entities = StageManager.getEntities();
-    const associations = StageManager.getAssociations();
+    const entities = this.project.stageManager.getEntities();
+    const associations = this.project.stageManager.getAssociations();
 
     const countResultObject: CountResultObject = {
       // 小白统计
@@ -154,7 +155,7 @@ export namespace ComplexityDetector {
     countResultObject.averageWordCountPreTextNode /= countResultObject.textNodeCount;
     countResultObject.averageWordCountPreTextNode = Math.round(countResultObject.averageWordCountPreTextNode);
 
-    const worldViewRectangle = Renderer.getCoverWorldRectangle();
+    const worldViewRectangle = this.project.renderer.getCoverWorldRectangle();
     countResultObject.stageWidth = worldViewRectangle.width;
     countResultObject.stageHeight = worldViewRectangle.height;
     countResultObject.stageArea = worldViewRectangle.width * worldViewRectangle.height;
@@ -175,7 +176,7 @@ export namespace ComplexityDetector {
       }
     }
 
-    const connectableEntities = StageManager.getConnectableEntity();
+    const connectableEntities = this.project.stageManager.getConnectableEntity();
 
     // 孤立节点数量
     for (const entity of connectableEntities) {
@@ -216,7 +217,7 @@ export namespace ComplexityDetector {
     countResultObject.entityColorTypeCount = entityColorStringSet.size;
 
     const edgeColorStringSet = new Set();
-    for (const lineEdge of StageManager.getLineEdges()) {
+    for (const lineEdge of this.project.stageManager.getLineEdges()) {
       if (lineEdge.color.a === 0) {
         countResultObject.transparentEdgeColorCount++;
       } else {
@@ -227,16 +228,16 @@ export namespace ComplexityDetector {
     countResultObject.edgeColorTypeCount = edgeColorStringSet.size;
     // 集合论相关
     for (const entity of entities) {
-      const fatherSections = SectionMethods.getFatherSections(entity);
+      const fatherSections = this.project.sectionMethods.getFatherSections(entity);
       if (fatherSections.length > 1) {
         countResultObject.crossEntityCount++;
       }
     }
-    for (const section of StageManager.getSections()) {
-      // SectionMethods.isTreePack(section);
+    for (const section of this.project.stageManager.getSections()) {
+      // this.project.sectionMethods.isTreePack(section);
       countResultObject.maxSectionDepth = Math.max(
         countResultObject.maxSectionDepth,
-        SectionMethods.getSectionMaxDeep(section),
+        this.project.sectionMethods.getSectionMaxDeep(section),
       );
       if (section.childrenUUIDs.length === 0) {
         countResultObject.emptySetCount++;

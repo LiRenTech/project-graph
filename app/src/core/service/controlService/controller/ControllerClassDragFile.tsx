@@ -1,10 +1,11 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Project } from "../../../Project";
 
 /**
  * 专门用来处理文件拖拽的类
  */
 export class ControllerClassDragFile {
-  constructor() {}
+  constructor(protected readonly project: Project) {}
   /**
    * 当前是否是拖拽文件入窗口的状态
    */
@@ -31,7 +32,7 @@ export class ControllerClassDragFile {
     window.addEventListener("dragleave", this.dragLeave, false);
     window.addEventListener("drop", this.drop, false);
   }
-  public destroy() {
+  public dispose() {
     window.removeEventListener("dragenter", this.dragEnter);
     window.removeEventListener("dragover", this.dragOver);
     window.removeEventListener("dragleave", this.dragLeave);

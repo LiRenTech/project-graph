@@ -1,34 +1,41 @@
 /// <reference types="vitest/config" />
 
 import generouted from "@generouted/react-router/plugin";
+import originalClassName from "@graphif/vite-plugin-original-class-name";
+import pgTheme from "@graphif/vite-plugin-pg-theme";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-oxc";
+import { createLogger, defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
 const host = process.env.TAURI_DEV_HOST;
+export const viteLogger = createLogger("info", { prefix: "[project-graph]" });
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
   plugins: [
     tailwindcss(),
+    pgTheme({
+      glob: "src/themes/*.pg-theme",
+      out: "src/css/theme.pcss",
+      defaultTheme: "dark",
+    }),
+    originalClassName({
+      staticMethodName: "className",
+    }),
     // 将svg文件作为react组件导入
     // import Icon from "./icon.svg?react"
     svgr(),
     // 解析yaml文件，作为js对象导入
     // import config from "./config.yaml"
     ViteYaml(),
-    // 使用swc的react插件
-    react({
-      tsDecorators: true,
-      // plugins: [["@swc-jotai/react-refresh", {}]],
-    }),
+    // react插件
+    react(),
     // 自动生成路由文件
     generouted(),
   ],
 
-  // region Tauri
   // 不清屏，方便看rust报错
   clearScreen: false,
   // tauri需要固定的端口
@@ -45,11 +52,9 @@ export default defineConfig(async () => ({
         }
       : undefined,
     watch: {
-      // 不监控src-tauri目录的更改
       ignored: ["**/src-tauri/**"],
     },
   },
-  // endregion
 
   // 2024年10月3日发现 pnpm build 会报错，
   // Top-level await is not available in the configured target environment
@@ -71,4 +76,4 @@ export default defineConfig(async () => ({
       LR_VITEST: "true",
     },
   },
-}));
+});

@@ -1,15 +1,12 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { EffectObject } from "../effectObject";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 屏幕边缘闪颜色效果
  */
-export class ViewOutlineFlashEffect extends EffectObject {
+export class ViewOutlineFlashEffect extends Effect {
   getClassName(): string {
     return "ViewOutlineFlashEffect";
   }
@@ -28,17 +25,17 @@ export class ViewOutlineFlashEffect extends EffectObject {
     return new ViewOutlineFlashEffect(color, new ProgressNumber(0, 5));
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    const viewRect = Renderer.getCoverWorldRectangle();
+    const viewRect = project.renderer.getCoverWorldRectangle();
 
     const currentColor = mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate);
     // 左侧边缘
 
-    ShapeRenderer.renderRectWithShadow(
-      new Rectangle(viewRect.leftTop, new Vector(20, viewRect.size.y)).transformWorld2View(),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(new Rectangle(viewRect.leftTop, new Vector(20, viewRect.size.y))),
       currentColor,
       Color.Transparent,
       0,
@@ -46,11 +43,10 @@ export class ViewOutlineFlashEffect extends EffectObject {
       200,
     );
     // 右侧边缘
-    ShapeRenderer.renderRectWithShadow(
-      new Rectangle(
-        new Vector(viewRect.left + viewRect.size.x - 20, viewRect.top),
-        new Vector(20, viewRect.size.y),
-      ).transformWorld2View(),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(
+        new Rectangle(new Vector(viewRect.left + viewRect.size.x - 20, viewRect.top), new Vector(20, viewRect.size.y)),
+      ),
       currentColor,
       Color.Transparent,
       0,
@@ -58,8 +54,8 @@ export class ViewOutlineFlashEffect extends EffectObject {
       50,
     );
     // 上侧边缘
-    ShapeRenderer.renderRectWithShadow(
-      new Rectangle(viewRect.leftTop, new Vector(viewRect.size.x, 20)).transformWorld2View(),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(new Rectangle(viewRect.leftTop, new Vector(viewRect.size.x, 20))),
       currentColor,
       Color.Transparent,
       0,
@@ -67,11 +63,10 @@ export class ViewOutlineFlashEffect extends EffectObject {
       50,
     );
     // 下侧边缘
-    ShapeRenderer.renderRectWithShadow(
-      new Rectangle(
-        new Vector(viewRect.left, viewRect.top + viewRect.size.y - 20),
-        new Vector(viewRect.size.x, 20),
-      ).transformWorld2View(),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(
+        new Rectangle(new Vector(viewRect.left, viewRect.top + viewRect.size.y - 20), new Vector(viewRect.size.x, 20)),
+      ),
       currentColor,
       Color.Transparent,
       0,

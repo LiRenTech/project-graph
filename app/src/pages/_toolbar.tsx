@@ -1,5 +1,7 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
+import { Color, Vector } from "@graphif/data-structures";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import {
   BrainCircuit,
   ChevronsLeftRightEllipsis,
@@ -35,25 +37,17 @@ import { useTranslation } from "react-i18next";
 import Box from "../components/Box";
 import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
-import { Color } from "../core/dataStruct/Color";
-import { Vector } from "../core/dataStruct/Vector";
-import { Settings } from "../core/service/Settings";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { LeftMouseModeEnum, Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
-import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
-import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { cn } from "../utils/cn";
 import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
-import { writeTextFile } from "../utils/fs";
 import { isMac } from "../utils/platform";
 import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
@@ -150,9 +144,9 @@ export function PenItem({ color }: PenItemProps) {
       <div
         className="group relative mx-0.5 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-xs outline-1 transition-all hover:scale-125"
         style={{
-          backgroundColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
-          color: StageStyleManager.currentStyle.Background.toString(),
-          outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
+          color: this.project.stageStyleManager.currentStyle.Background.toString(),
+          outlineColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
         }}
         onClick={() => {
           Settings.set("autoFillPenStrokeColorEnable", true);
@@ -171,7 +165,7 @@ export function PenItem({ color }: PenItemProps) {
       className="mx-0.5 h-4 w-4 cursor-pointer rounded-full outline-1 transition-all hover:scale-125"
       style={{
         backgroundColor: color.toString(),
-        outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+        outlineColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
       }}
       onClick={async () => {
         //
@@ -207,14 +201,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [nodeFillColor, setNodeFillColor] = useState(Color.Transparent);
 
   const update = () => {
-    setIsHaveSelectedEntity(StageObjectSelectCounter.selectedEntityCount > 0);
-    setIsHaveSelectedEdge(StageObjectSelectCounter.selectedEdgeCount > 0);
-    setIsHaveSelectedCREdge(StageObjectSelectCounter.selectedCREdgeCount > 0);
-    setIsHaveSelectedStageObject(StageObjectSelectCounter.selectedStageObjectCount > 0);
-    setIsHaveSelectedImageNode(StageObjectSelectCounter.selectedImageNodeCount > 0);
-    setIsHaveSelectedTextNode(StageObjectSelectCounter.selectedTextNodeCount > 0);
-    setIsHaveSelectedSection(StageObjectSelectCounter.selectedSectionCount > 0);
-    setIsHaveSelectedMultiTargetEdge(StageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
+    setIsHaveSelectedEntity(this.project.stageObjectSelectCounter.selectedEntityCount > 0);
+    setIsHaveSelectedEdge(this.project.stageObjectSelectCounter.selectedEdgeCount > 0);
+    setIsHaveSelectedCREdge(this.project.stageObjectSelectCounter.selectedCREdgeCount > 0);
+    setIsHaveSelectedStageObject(this.project.stageObjectSelectCounter.selectedStageObjectCount > 0);
+    setIsHaveSelectedImageNode(this.project.stageObjectSelectCounter.selectedImageNodeCount > 0);
+    setIsHaveSelectedTextNode(this.project.stageObjectSelectCounter.selectedTextNodeCount > 0);
+    setIsHaveSelectedSection(this.project.stageObjectSelectCounter.selectedSectionCount > 0);
+    setIsHaveSelectedMultiTargetEdge(this.project.stageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
   };
 
   const [currentMouseModeIndex, setCurrentMouseModeIndex] = useState(0);
@@ -320,7 +314,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<MoveUpRight />}
             handleFunction={() => {
               StageManager.switchUndirectedEdgeToEdge();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -333,7 +327,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "outer";
               }
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -346,7 +340,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "inner";
               }
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -359,7 +353,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "none";
               }
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -376,7 +370,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                   multi_target_undirected_edge.renderType = "line";
                 }
               }
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
         </ToolbarGroup>
@@ -390,8 +384,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Repeat />}
             handleFunction={() => {
               const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
-              StageNodeConnector.reverseEdges(selectedEdges);
-              StageHistoryManager.recordStep();
+              this.project.nodeConnector.reverseEdges(selectedEdges);
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -399,7 +393,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -407,7 +401,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.switchEdgeToUndirectedEdge();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
 
@@ -427,7 +421,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<GitBranchPlus />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeControlPoint();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -435,7 +429,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsRightLeft />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeTension();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -443,7 +437,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.reduceSelectedCREdgeTension();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
         </ToolbarGroup>
@@ -480,7 +474,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                 (node) => node instanceof ConnectableEntity,
               );
               if (selectedNodes.length <= 1) {
-                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
                 return;
               }
               const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -497,7 +491,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                 (node) => node instanceof ConnectableEntity,
               );
               if (selectedNodes.length <= 1) {
-                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
                 return;
               }
               const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -559,7 +553,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<BrainCircuit />}
             handleFunction={() => {
               StageGeneratorAI.generateNewTextNodeBySelected();
-              StageHistoryManager.recordStep();
+              this.project.historyManager.recordStep();
             }}
           />
         </ToolbarGroup>
@@ -650,12 +644,12 @@ const onSaveSelectedNew = async () => {
     writeTextFile(path, JSON.stringify(data))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
-        Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Black));
+        this.project.effects.addEffect(new ViewFlashEffect(Color.Black));
       })
       .catch((err) => {
-        Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + err));
+        this.project.effects.addEffect(new TextRiseEffect("保存失败" + err));
       });
   } catch (e) {
-    Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + e));
+    this.project.effects.addEffect(new TextRiseEffect("保存失败" + e));
   }
 };

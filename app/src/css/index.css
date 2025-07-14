@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import "./theme.pcss";
+
+@custom-variant page (&.active);
+@theme {
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@layer base {
+  body,
+  #root {
+    @apply h-screen bg-transparent;
+  }
+  * {
+    @apply ease-out-expo box-border cursor-default select-none transition duration-500 [-webkit-user-drag:none] [color-scheme:dark];
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, "MiSans", "Noto Sans CJK SC", sans-serif;
+    font-antialiasing: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .cursor-pointer > svg.lucide,
+  .cursor-pointer > svg.lucide *,
+  .\*\:cursor-pointer > * > svg.lucide,
+  .\*\:cursor-pointer > * > svg.lucide * {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  /* Class assigned to popover wrapper */
+  .driver-popover {
+    @apply rounded-3xl bg-blue-950 p-6 text-white;
+  }
+
+  /* Arrow pointing towards the highlighted element */
+  .driver-popover-arrow {
+    @apply hidden;
+  }
+
+  /* Title and description */
+  .driver-popover-title {
+    @apply text-xl font-normal;
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
+  }
+  .driver-popover-description {
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
+  }
+
+  /* Close button displayed on the top right corner */
+  .driver-popover-close-btn {
+    @apply right-4 top-4 transition hover:scale-125 hover:text-white;
+  }
+
+  /* Footer of the popover displaying progress and navigation buttons */
+  .driver-popover-footer {
+  }
+  .driver-popover-progress-text {
+  }
+  .driver-popover-prev-btn,
+  .driver-popover-next-btn {
+    @apply rounded-full! border-none! bg-blue-900! px-3! py-2! text-white! transition! hover:scale-125! active:scale-90!;
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
+    text-shadow: none !important;
+  }
+}

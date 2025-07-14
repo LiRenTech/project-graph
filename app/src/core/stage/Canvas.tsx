@@ -1,12 +1,28 @@
+import { Project, service } from "../Project";
+
 /**
  * 将Canvas标签和里面的ctx捏在一起封装成一个类
  */
-export namespace Canvas {
-  export let element: HTMLCanvasElement;
-  export let ctx: CanvasRenderingContext2D;
+@service("canvas")
+export class Canvas {
+  ctx: CanvasRenderingContext2D;
 
-  export function init(el_: HTMLCanvasElement) {
-    element = el_;
-    ctx = el_.getContext("2d")!;
+  constructor(
+    private readonly project: Project,
+    public element: HTMLCanvasElement = document.createElement("canvas"),
+  ) {
+    element.tabIndex = 0;
+    element.addEventListener("mousemove", () => element.focus());
+    this.ctx = element.getContext("2d")!;
+  }
+
+  mount(wrapper: HTMLDivElement) {
+    wrapper.innerHTML = "";
+    wrapper.appendChild(this.element);
+    // 监听画布大小变化
+    const resizeObserver = new ResizeObserver(() => {
+      this.project.renderer.resizeWindow(wrapper.clientWidth, wrapper.clientHeight);
+    });
+    resizeObserver.observe(wrapper);
   }
 }

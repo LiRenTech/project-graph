@@ -1,9 +1,9 @@
 import React from "react";
-import { cn } from "../utils/cn";
-import { SoundService } from "../core/service/feedbackService/SoundService";
 import { NavLink, useMatch } from "react-router-dom";
+import { SoundService } from "../core/service/feedbackService/SoundService";
+import { cn } from "../utils/cn";
 
-export default function NavLinkButton({
+export default function NavLink({
   children,
   className = "",
   to = "",
@@ -18,7 +18,7 @@ export default function NavLinkButton({
   return (
     <NavLink
       to={to}
-      className={cn(className, isActive && "border-icon-button-border border-1")}
+      className={cn(className, isActive && "el-nav-link border-1")}
       onMouseEnter={() => {
         // console.log("mouse enter");
         SoundService.play.mouseEnterButton();

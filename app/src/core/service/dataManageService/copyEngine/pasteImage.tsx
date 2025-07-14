@@ -1,11 +1,8 @@
-import { Dialog } from "../../../../components/dialog";
-import { writeFileBase64 } from "../../../../utils/fs";
-import { PathString } from "../../../../utils/pathString";
-import { Vector } from "../../../dataStruct/Vector";
-import { Stage } from "../../../stage/Stage";
-import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
+import { Dialog } from "../../../../components/dialog";
+import { PathString } from "../../../../utils/pathString";
+import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Settings } from "../../Settings";
 
 /**
@@ -41,12 +38,12 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
 
   // 要延迟一下，等待保存完毕
   setTimeout(() => {
-    const imageNode = new ImageNode({
+    const imageNode = new ImageNode(this.project, {
       uuid: imageUUID,
       location: [mouseLocation.x, mouseLocation.y],
       path: `${imageFileName}.png`,
     });
-    StageManager.addImageNode(imageNode);
+    this.project.stageManager.addImageNode(imageNode);
   }, 100);
 }
 

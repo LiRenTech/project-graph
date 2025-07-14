@@ -1,34 +1,30 @@
+import { Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
-import { Vector } from "../../../dataStruct/Vector";
-import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { Camera } from "../../../stage/Camera";
-import { Stage } from "../../../stage/Stage";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageAutoAlignManager } from "../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
-import { StageManager } from "../../../stage/stageManager/StageManager";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { editTextNode } from "../controller/concrete/utilsControl";
 import { Direction } from "../../../../types/directions";
-import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { Project, service } from "../../../Project";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
  */
-export namespace KeyboardOnlyTreeEngine {
+@service("keyboardOnlyTreeEngine")
+export class KeyboardOnlyTreeEngine {
+  constructor(private readonly project: Project) {}
+
   /**
    * 树形深度生长节点
    * @returns
    */
-  export function onDeepGenerateNode() {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  onDeepGenerateNode() {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const rootNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
+    const rootNode = this.project.stageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!rootNode) return;
-    Camera.clearMoveCommander();
-    Camera.speed = Vector.getZero();
+    this.project.camera.clearMoveCommander();
+    this.project.camera.speed = Vector.getZero();
     // 在自己的右下方创建一个节点
     // 先找到自己所有的第一层后继节点，如果没有则在正右方创建节点。
     const childSet = GraphMethods.getOneStepSuccessorSet(rootNode);
@@ -45,7 +41,7 @@ export namespace KeyboardOnlyTreeEngine {
       createLocation = lastChild.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 10));
     }
     // 创建位置寻找完毕
-    const newNode = new TextNode({
+    const newNode = new TextNode(this.project, {
       text: "新节点",
       details: "",
       uuid: v4(),
@@ -53,20 +49,20 @@ export namespace KeyboardOnlyTreeEngine {
       size: [rootNode instanceof TextNode ? rootNode.collisionBox.getRectangle().width : 100, 100],
       sizeAdjust: rootNode instanceof TextNode ? rootNode.sizeAdjust : "auto",
     });
-    StageManager.addTextNode(newNode);
+    this.project.stageManager.addTextNode(newNode);
 
     // 如果是在框里，则把新生长的节点也纳入到框里
-    const fatherSections = SectionMethods.getFatherSections(rootNode);
+    const fatherSections = this.project.sectionMethods.getFatherSections(rootNode);
     for (const section of fatherSections) {
       section.childrenUUIDs.push(newNode.uuid);
       section.children.push(newNode);
     }
 
     // 连接节点
-    StageManager.connectEntity(rootNode, newNode);
+    this.project.stageManager.connectEntity(rootNode, newNode);
     const newEdges = GraphMethods.getEdgesBetween(rootNode, newNode);
-    StageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
-    StageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
+    this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
+    this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
     // 继承父节点颜色
     if (rootNode instanceof TextNode) {
       newNode.color = rootNode.color.clone();
@@ -76,8 +72,8 @@ export namespace KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
-        if (KeyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+          this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态
         rootNodeParent.isSelected = false;
@@ -87,30 +83,30 @@ export namespace KeyboardOnlyTreeEngine {
     }
 
     // 特效
-    Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
+    this.project.effects.addEffects(this.project.edgeRenderer.getConnectedEffects(rootNode, newNode));
     setTimeout(
       () => {
         // 防止把反引号给输入进去
-        editTextNode(newNode);
+        this.project.controllerUtils.editTextNode(newNode);
       },
       (1000 / 60) * 6,
     );
     // 重置视野
-    Camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
+    this.project.camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
   }
 
   /**
    * 树形广度生长节点
    * @returns
    */
-  export function onBroadGenerateNode() {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  onBroadGenerateNode() {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const currentSelectNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
+    const currentSelectNode = this.project.stageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!currentSelectNode) return;
-    Camera.clearMoveCommander();
-    Camera.speed = Vector.getZero();
+    this.project.camera.clearMoveCommander();
+    this.project.camera.speed = Vector.getZero();
     // 找到自己的父节点
     const parents = GraphMethods.nodeParentArray(currentSelectNode);
     if (parents.length === 0) return;
@@ -119,7 +115,7 @@ export namespace KeyboardOnlyTreeEngine {
     // 当前选择的节点的正下方创建一个节点
     // 找到创建点
     const newLocation = currentSelectNode.collisionBox.getRectangle().leftBottom.add(new Vector(0, 1));
-    const newNode = new TextNode({
+    const newNode = new TextNode(this.project, {
       text: "新节点",
       details: "",
       uuid: v4(),
@@ -127,19 +123,19 @@ export namespace KeyboardOnlyTreeEngine {
       size: [parent instanceof TextNode ? parent.collisionBox.getRectangle().width : 100, 100],
       sizeAdjust: parent instanceof TextNode ? parent.sizeAdjust : "auto",
     });
-    StageManager.addTextNode(newNode);
+    this.project.stageManager.addTextNode(newNode);
     // 如果是在框里，则把新生长的节点也纳入到框里
-    const fatherSections = SectionMethods.getFatherSections(parent);
+    const fatherSections = this.project.sectionMethods.getFatherSections(parent);
     for (const section of fatherSections) {
       section.childrenUUIDs.push(newNode.uuid);
       section.children.push(newNode);
     }
     // 连接节点
-    StageManager.connectEntity(parent, newNode);
+    this.project.stageManager.connectEntity(parent, newNode);
 
     const newEdges = GraphMethods.getEdgesBetween(parent, newNode);
-    StageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
-    StageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
+    this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
+    this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
 
     // 继承父节点颜色
     if (parent instanceof TextNode) {
@@ -150,8 +146,8 @@ export namespace KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
-        if (KeyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+          this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态
         rootNodeParent.isSelected = false;
@@ -159,24 +155,24 @@ export namespace KeyboardOnlyTreeEngine {
         currentSelectNode.isSelected = false;
       }
     }
-    Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
+    this.project.effects.addEffects(this.project.edgeRenderer.getConnectedEffects(parent, newNode));
     setTimeout(
       () => {
         // 防止把反引号给输入进去
-        editTextNode(newNode);
+        this.project.controllerUtils.editTextNode(newNode);
       },
       (1000 / 60) * 6,
     );
     // 重置视野
-    Camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
+    this.project.camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
   }
 
   /**
    * 根据某个已经选中的节点，调整其所在树的结构
    * @param entity
    */
-  export function adjustTreeNode(entity: ConnectableEntity) {
+  adjustTreeNode(entity: ConnectableEntity) {
     const rootNodeParents = GraphMethods.getRoots(entity);
-    StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
+    this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
   }
 }

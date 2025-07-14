@@ -1,12 +1,7 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { PathString } from "../../../../utils/pathString";
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
-import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
-import { StageManager } from "../../stageManager/StageManager";
+import { Project } from "../../../Project";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -50,6 +45,7 @@ export class PortalNode extends ConnectableEntity {
   public cameraScale: number;
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       title = "",
@@ -81,16 +77,16 @@ export class PortalNode extends ConnectableEntity {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    return this.collisionBox.shapeList[0] as Rectangle;
+    return this.collisionBox.shapes[0] as Rectangle;
   }
 
   move(delta: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
+    // this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
@@ -99,21 +95,22 @@ export class PortalNode extends ConnectableEntity {
   moveTo(location: Vector): void {
     const newRectangle = this.collisionBox.getRectangle();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
     this.updateChildStageCameraData();
   }
 
   private updateChildStageCameraData() {
-    StageManager.updateChildStageCameraData(
-      PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
-      {
-        location: this.location,
-        targetLocation: this.targetLocation,
-        size: this.size,
-        zoom: this.cameraScale,
-      },
-    );
+    // TODO: updateChildStageCameraData
+    // this.project.stageManager.updateChildStageCameraData(
+    //   PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
+    //   {
+    //     location: this.location,
+    //     targetLocation: this.targetLocation,
+    //     size: this.size,
+    //     zoom: this.cameraScale,
+    //   },
+    // );
   }
 
   public moveTargetLocation(delta: Vector): void {
@@ -130,7 +127,7 @@ export class PortalNode extends ConnectableEntity {
    * 扩大窗口
    */
   public expand() {
-    const rect = this.collisionBox.shapeList[0] as Rectangle;
+    const rect = this.collisionBox.shapes[0] as Rectangle;
     rect.size = rect.size.add(new Vector(100, 100));
     this.size = rect.size;
     this.updateChildStageCameraData();
@@ -141,7 +138,7 @@ export class PortalNode extends ConnectableEntity {
    * @returns
    */
   public shrink() {
-    const rect = this.collisionBox.shapeList[0] as Rectangle;
+    const rect = this.collisionBox.shapes[0] as Rectangle;
     if (rect.size.x <= 100 || rect.size.y <= 100) {
       return;
     }

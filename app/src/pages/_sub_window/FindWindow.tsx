@@ -1,13 +1,12 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer, Telescope } from "lucide-react";
 import { useState } from "react";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
-import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../core/dataStruct/Vector";
 import { TextRiseEffect } from "../../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
-import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { cn } from "../../utils/cn";
 
@@ -28,7 +27,7 @@ export default function FindWindow() {
         node.isSelected = true;
       }
     }
-    Stage.effectMachine.addEffect(TextRiseEffect.default(`${searchResults.length}个结果已全部选中`));
+    this.project.effects.addEffect(TextRiseEffect.default(`${searchResults.length}个结果已全部选中`));
   };
 
   return (
@@ -103,7 +102,7 @@ export default function FindWindow() {
           <div
             key={result.uuid}
             className={cn("hover:text-panel-success-text cursor-pointer truncate", {
-              "bg-panel-bg-active": index === Stage.contentSearchEngine.currentSearchResultIndex,
+              "font-bold": index === Stage.contentSearchEngine.currentSearchResultIndex,
             })}
             onMouseEnter={() => {
               if (isMouseEnterMoveCameraAble) {

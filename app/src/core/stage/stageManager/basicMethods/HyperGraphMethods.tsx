@@ -1,6 +1,5 @@
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
-import { StageManager } from "../StageManager";
 
 /**
  * 超图方法集合
@@ -13,9 +12,9 @@ export namespace HyperGraphMethods {
    */
   export function getHyperEdgesByNode(node: ConnectableEntity): MultiTargetUndirectedEdge[] {
     const edges: MultiTargetUndirectedEdge[] = [];
-    const hyperEdges = StageManager.getAssociations().filter(
-      (association) => association instanceof MultiTargetUndirectedEdge,
-    );
+    const hyperEdges = this.project.stageManager
+      .getAssociations()
+      .filter((association) => association instanceof MultiTargetUndirectedEdge);
     for (const hyperEdge of hyperEdges) {
       if (hyperEdge.targetUUIDs.includes(node.uuid)) {
         edges.push(hyperEdge);

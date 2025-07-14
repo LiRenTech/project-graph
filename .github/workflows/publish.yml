@@ -121,9 +121,10 @@ jobs:
         env:
           tag: ${{ inputs.release_tag }}
           name: ${{ inputs.release_name }}
+          branch: ${{ github.ref_name }}
         run: |
           notes=$(node ./.github/scripts/generate-changelog.mjs)
-          gh release create "$tag" --title "$name" --notes "$notes" ${{ inputs.prerelease == true && '--prerelease' || '' }}
+          gh release create "$tag" --target "$branch" --title "$name" --notes "$notes" ${{ inputs.prerelease == true && '--prerelease' || '' }}
 
   build-frontend:
     runs-on: ubuntu-latest

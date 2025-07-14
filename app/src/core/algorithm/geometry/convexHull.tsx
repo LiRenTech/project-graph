@@ -1,4 +1,4 @@
-import { Vector } from "../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 凸包算法合集

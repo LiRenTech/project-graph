@@ -1,48 +1,46 @@
-import { Vector } from "../../../dataStruct/Vector";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { Camera } from "../../../stage/Camera";
-import { Canvas } from "../../../stage/Canvas";
-import { ControllerCamera } from "./concrete/ControllerCamera";
-import { ControllerCopy } from "./concrete/ControllerCopy";
-import { ControllerCutting } from "./concrete/ControllerCutting";
-import { ControllerDragFile } from "./concrete/ControllerDragFile";
-import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
-import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
-import { ControllerLayerMoving } from "./concrete/ControllerEntityLayerMoving";
-import { ControllerImageScale } from "./concrete/ControllerImageScale";
-import { ControllerDrawing } from "./concrete/ControllerPenStrokeDrawing";
+import { Vector } from "@graphif/data-structures";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
-import { ControllerAssociationReshape } from "./concrete/ControllerAssociationReshape";
-import { ControllerEntityClickSelectAndMove } from "./concrete/ControllerEntityClickSelectAndMove";
-import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
-import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
-import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 // ...
 import { CursorNameEnum } from "../../../../types/cursors";
-import { controllerChildCamera } from "./concrete/ControllerChildCamera";
-import { ControllerEntityResize } from "./concrete/ControllerEntityResize";
-import { controllerPenStrokeControl } from "./concrete/ControllerPenStrokeControl";
 import { isMac } from "../../../../utils/platform";
-import { Stage } from "../../../stage/Stage";
+import { Project, service } from "../../../Project";
+import { ControllerAssociationReshapeClass } from "./concrete/ControllerAssociationReshape";
+import { ControllerCameraClass } from "./concrete/ControllerCamera";
+import { ControllerChildCamera } from "./concrete/ControllerChildCamera";
+import { ControllerCopy } from "./concrete/ControllerCopy";
+import { ControllerCuttingClass } from "./concrete/ControllerCutting";
+import { ControllerDragFileClass } from "./concrete/ControllerDragFile";
+import { ControllerEdgeEditClass } from "./concrete/ControllerEdgeEdit";
+import { ControllerEntityClickSelectAndMoveClass } from "./concrete/ControllerEntityClickSelectAndMove";
+import { ControllerEntityCreateClass } from "./concrete/ControllerEntityCreate";
+import { ControllerLayerMovingClass } from "./concrete/ControllerEntityLayerMoving";
+import { ControllerEntityResizeClass } from "./concrete/ControllerEntityResize";
+import { ControllerImageScale } from "./concrete/ControllerImageScale";
+import { ControllerNodeConnectionClass } from "./concrete/ControllerNodeConnection";
+import { ControllerNodeEditClass } from "./concrete/ControllerNodeEdit";
+import { ControllerPenStrokeControlClass } from "./concrete/ControllerPenStrokeControl";
+import { ControllerPenStrokeDrawingClass } from "./concrete/ControllerPenStrokeDrawing";
+import { ControllerRectangleSelectClass } from "./concrete/ControllerRectangleSelect";
+import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
  *
  * 所有具体的控制功能逻辑都封装在控制器对象中
  */
-export namespace Controller {
+@service("controller")
+export class Controller {
   /**
    * 在上层接收React提供的state修改函数
    */
-  // eslint-disable-next-line prefer-const
-  export let setCursorNameHook: (_: CursorNameEnum) => void = () => {};
+
+  setCursorNameHook: (_: CursorNameEnum) => void = () => {};
 
   // 检测正在按下的键
-  export const pressingKeySet: Set<string> = new Set();
-  export function pressingKeysString(): string {
+  readonly pressingKeySet: Set<string> = new Set();
+  pressingKeysString(): string {
     let res = "";
-    for (const key of pressingKeySet) {
+    for (const key of this.pressingKeySet) {
       res += `[${key}]` + " ";
     }
     return res;
@@ -51,124 +49,130 @@ export namespace Controller {
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
-  // eslint-disable-next-line prefer-const
-  export let isMovingEdge = false;
+
+  isMovingEdge = false;
   /**
    * 为移动节点做准备，移动时，记录每上一帧移动的位置
    */
-  // eslint-disable-next-line prefer-const
-  export let lastMoveLocation = Vector.getZero();
+
+  lastMoveLocation = Vector.getZero();
   /**
    * 当前的鼠标的位置
    */
-  // eslint-disable-next-line prefer-const
-  export let mouseLocation = Vector.getZero();
+
+  mouseLocation = Vector.getZero();
 
   /**
    * 有时需要锁定相机，比如 编辑节点时
    */
-  // eslint-disable-next-line prefer-const
-  export let isCameraLocked = false;
+
+  isCameraLocked = false;
 
   /**
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */
-  export const lastSelectedEntityUUID: Set<string> = new Set();
-  export const lastSelectedEdgeUUID: Set<string> = new Set();
+  readonly lastSelectedEntityUUID: Set<string> = new Set();
+  readonly lastSelectedEdgeUUID: Set<string> = new Set();
 
-  export let touchStartLocation = Vector.getZero();
-  export let touchStartDistance = 0;
-  export let touchDelta = Vector.getZero();
+  touchStartLocation = Vector.getZero();
+  touchStartDistance = 0;
+  touchDelta = Vector.getZero();
 
-  export let lastClickTime = 0;
-  export let lastClickLocation = Vector.getZero();
+  lastClickTime = 0;
+  lastClickLocation = Vector.getZero();
 
-  export const isMouseDown: boolean[] = [false, false, false];
+  readonly isMouseDown: boolean[] = [false, false, false];
 
-  let lastManipulateTime = performance.now();
+  private lastManipulateTime = performance.now();
 
   /**
    * 触发了一次操作，记录时间
    */
-  export function recordManipulate() {
-    lastManipulateTime = performance.now();
+  recordManipulate() {
+    this.lastManipulateTime = performance.now();
   }
 
   /**
    * 检测是否已经有挺长一段时间没有操作了
    * 进而决定不刷新屏幕
    */
-  export function isManipulateOverTime() {
-    return performance.now() - lastManipulateTime > Renderer.renderOverTimeWhenNoManipulateTime * 1000;
+  isManipulateOverTime() {
+    return (
+      performance.now() - this.lastManipulateTime > this.project.renderer.renderOverTimeWhenNoManipulateTime * 1000
+    );
   }
 
   /**
    * 悬浮提示的边缘距离
    */
-  export const edgeHoverTolerance = 10;
+  readonly edgeHoverTolerance = 10;
 
   /**
    * 初始化函数在页面挂在的时候调用，将事件绑定到Canvas上
-   * @param Canvas.element
+   * @param this.project.canvas.element
    */
-  export function init() {
+  constructor(private readonly project: Project) {
     // 绑定事件
-    window.addEventListener("keydown", keydown);
-    window.addEventListener("keyup", keyup);
-    Canvas.element.addEventListener("mousedown", mousedown);
-    Canvas.element.addEventListener("mouseup", mouseup);
-    Canvas.element.addEventListener("touchstart", touchstart, false);
-    Canvas.element.addEventListener("touchmove", touchmove, false);
-    Canvas.element.addEventListener("touchend", touchend, false);
-    Canvas.element.addEventListener("wheel", mousewheel, false);
+    this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.addEventListener("mousedown", this.mousedown.bind(this));
+    this.project.canvas.element.addEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.addEventListener("touchstart", this.touchstart.bind(this), false);
+    this.project.canvas.element.addEventListener("touchmove", this.touchmove.bind(this), false);
+    this.project.canvas.element.addEventListener("touchend", this.touchend.bind(this), false);
+    this.project.canvas.element.addEventListener("wheel", this.mousewheel.bind(this), false);
     // 所有的具体的功能逻辑封装成控制器对象
     // 当有新功能时新建控制器对象，并在这里初始化
-    ControllerCamera.init();
-    ControllerAssociationReshape.init();
-    ControllerNodeConnection.init();
-    ControllerCutting.init();
-    ControllerEntityClickSelectAndMove.init();
-    ControllerRectangleSelect.init();
-    ControllerNodeEdit.init();
-    ControllerEntityCreate.init();
-    ControllerEdgeEdit.init();
-    ControllerDrawing.init();
-    ControllerDragFile.init();
-    // ControllerKeyboardOnly.init();
-    ControllerCopy.init();
-    ControllerSectionEdit.init();
-    ControllerLayerMoving.init();
-    ControllerImageScale.init();
-    controllerChildCamera.init();
-    controllerPenStrokeControl.init();
-    ControllerEntityResize.init();
-    //
+    Object.values(import.meta.glob("./concrete/*.tsx", { eager: true }))
+      .map((module) => Object.entries(module as any).find(([k]) => k.includes("Class"))!)
+      .filter(Boolean)
+      .map(([k, v]) => {
+        const inst = new (v as any)(this.project);
+        let id = k.replace("Controller", "").replace("Class", "");
+        id = id[0].toLowerCase() + id.slice(1);
+        this[id as keyof this] = inst;
+      });
+  }
+  dispose() {
+    Object.values(this).forEach((v) => {
+      if (v instanceof Controller) {
+        v.dispose();
+      }
+    });
+    this.project.canvas.element.removeEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.removeEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.removeEventListener("mousedown", this.mousedown.bind(this));
+    this.project.canvas.element.removeEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.removeEventListener("touchstart", this.touchstart.bind(this), false);
+    this.project.canvas.element.removeEventListener("touchmove", this.touchmove.bind(this), false);
+    this.project.canvas.element.removeEventListener("touchend", this.touchend.bind(this), false);
+    this.project.canvas.element.removeEventListener("wheel", this.mousewheel.bind(this), false);
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
 
-  function mousedown(event: MouseEvent) {
+  private mousedown(event: MouseEvent) {
     event.preventDefault();
-    handleMousedown(event.button, event.clientX, event.clientY);
-    recordManipulate();
+    this.handleMousedown(event.button, event.clientX, event.clientY);
+    this.recordManipulate();
   }
 
-  function mouseup(event: MouseEvent) {
+  private mouseup(event: MouseEvent) {
     event.preventDefault();
-    handleMouseup(event.button, event.clientX, event.clientY);
-    recordManipulate();
+    this.handleMouseup(event.button, event.clientX, event.clientY);
+    this.recordManipulate();
   }
 
-  function mousewheel(event: WheelEvent) {
+  private mousewheel(event: WheelEvent) {
     event.preventDefault();
     // 禁用鼠标滚轮缩放
-    recordManipulate();
+    this.recordManipulate();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleMousedown(button: number, _x: number, _y: number) {
-    isMouseDown[button] = true;
+  private handleMousedown(button: number, _x: number, _y: number) {
+    this.isMouseDown[button] = true;
 
     // 左右键按下时移除所有input焦点
     if (button === 0 || button === 2) {
@@ -179,16 +183,16 @@ export namespace Controller {
     }
   }
 
-  function handleMouseup(button: number, x: number, y: number) {
-    isMouseDown[button] = false;
-    if (Date.now() - lastClickTime < 200 && lastClickLocation.distance(new Vector(x, y)) < 10) {
+  private handleMouseup(button: number, x: number, y: number) {
+    this.isMouseDown[button] = false;
+    if (Date.now() - this.lastClickTime < 200 && this.lastClickLocation.distance(new Vector(x, y)) < 10) {
       //
     }
-    lastClickTime = Date.now();
-    lastClickLocation = new Vector(x, y);
+    this.lastClickTime = Date.now();
+    this.lastClickLocation = new Vector(x, y);
   }
 
-  function keydown(event: KeyboardEvent) {
+  private keydown(event: KeyboardEvent) {
     // 2025年2月1日
     // 必须要禁止ctrl f 和ctrl+g的浏览器默认行为，否则会弹出一个框
     // ctrl r 会刷新页面
@@ -218,43 +222,43 @@ export namespace Controller {
       event.preventDefault();
     }
     const key = event.key.toLowerCase();
-    pressingKeySet.add(key);
-    recordManipulate();
+    this.pressingKeySet.add(key);
+    this.recordManipulate();
   }
 
-  function keyup(event: KeyboardEvent) {
+  private keyup(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-    if (pressingKeySet.has(key)) {
-      pressingKeySet.delete(key);
+    if (this.pressingKeySet.has(key)) {
+      this.pressingKeySet.delete(key);
     }
     if (event.key === " " && isMac) {
       // 停止框选
-      Stage.rectangleSelectEngine.shutDown();
+      this.project.rectangleSelect.shutDown();
     }
-    recordManipulate();
+    this.recordManipulate();
   }
 
   // touch相关的事件有待重构到具体的功能逻辑中
 
-  function touchstart(e: TouchEvent) {
+  private touchstart(e: TouchEvent) {
     e.preventDefault();
 
     if (e.touches.length === 1) {
-      handleMousedown(0, e.touches[0].clientX, e.touches[0].clientY);
+      this.handleMousedown(0, e.touches[0].clientX, e.touches[0].clientY);
     }
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
       const center = Vector.average(touch1, touch2);
-      touchStartLocation = center;
+      this.touchStartLocation = center;
 
       // 计算初始两指间距离
-      touchStartDistance = touch1.distance(touch2);
+      this.touchStartDistance = touch1.distance(touch2);
     }
-    recordManipulate();
+    this.recordManipulate();
   }
 
-  function touchmove(e: TouchEvent) {
+  private touchmove(e: TouchEvent) {
     e.preventDefault();
 
     if (e.touches.length === 1) {
@@ -264,67 +268,66 @@ export namespace Controller {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
       const center = Vector.average(touch1, touch2);
-      touchDelta = center.subtract(touchStartLocation);
+      this.touchDelta = center.subtract(this.touchStartLocation);
 
       // 计算当前两指间的距离
       const currentDistance = touch1.distance(touch2);
-      const scaleRatio = currentDistance / touchStartDistance;
+      const scaleRatio = currentDistance / this.touchStartDistance;
 
       // 缩放画面
-      Camera.targetScale *= scaleRatio;
-      touchStartDistance = currentDistance; // 更新距离
+      this.project.camera.targetScale *= scaleRatio;
+      this.touchStartDistance = currentDistance; // 更新距离
 
       // 更新中心点位置
-      touchStartLocation = center;
+      this.touchStartLocation = center;
 
       // 移动画面
-      Camera.location = Camera.location.subtract(touchDelta.multiply(1 / Camera.currentScale));
+      this.project.camera.location = this.project.camera.location.subtract(
+        this.touchDelta.multiply(1 / this.project.camera.currentScale),
+      );
     }
-    recordManipulate();
+    this.recordManipulate();
   }
 
-  function touchend(e: TouchEvent) {
+  private touchend(e: TouchEvent) {
     e.preventDefault();
     if (e.changedTouches.length === 1) {
       // HACK: 重构后touch方法就有问题了
-      handleMouseup(0, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      this.handleMouseup(0, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     }
     // 移动画面
-    Camera.accelerateCommander = touchDelta.multiply(-1).multiply(Camera.currentScale).limitX(-1, 1).limitY(-1, 1);
-    touchDelta = Vector.getZero();
+    this.project.camera.accelerateCommander = this.touchDelta
+      .multiply(-1)
+      .multiply(this.project.camera.currentScale)
+      .limitX(-1, 1)
+      .limitY(-1, 1);
+    this.touchDelta = Vector.getZero();
     setTimeout(() => {
-      Camera.accelerateCommander = Vector.getZero();
+      this.project.camera.accelerateCommander = Vector.getZero();
     }, 100);
-    recordManipulate();
+    this.recordManipulate();
   }
+}
 
-  export function destroy() {
-    window.removeEventListener("keydown", keydown);
-    window.removeEventListener("keyup", keyup);
-    Canvas.element.removeEventListener("mousedown", mousedown);
-    Canvas.element.removeEventListener("mouseup", mouseup);
-    Canvas.element.removeEventListener("wheel", mousewheel);
-    Canvas.element.removeEventListener("touchstart", touchstart);
-    Canvas.element.removeEventListener("touchmove", touchmove);
-    Canvas.element.removeEventListener("touchend", touchend);
-    ControllerCamera.destroy();
-    ControllerAssociationReshape.destroy();
-    ControllerNodeConnection.destroy();
-    ControllerCutting.destroy();
-    ControllerEntityClickSelectAndMove.destroy();
-    ControllerRectangleSelect.destroy();
-    ControllerNodeEdit.destroy();
-    ControllerEntityCreate.destroy();
-    ControllerEdgeEdit.destroy();
-    ControllerDrawing.destroy();
-    ControllerDragFile.destroy();
-    // ControllerKeyboardOnly.destroy();
-    ControllerCopy.destroy();
-    ControllerSectionEdit.destroy();
-    ControllerLayerMoving.destroy();
-    ControllerImageScale.destroy();
-    controllerChildCamera.destroy();
-    controllerPenStrokeControl.destroy();
-    ControllerEntityResize.destroy();
+declare module "./Controller" {
+  interface Controller {
+    associationReshape: ControllerAssociationReshapeClass;
+    camera: ControllerCameraClass;
+    childCamera: ControllerChildCamera;
+    copy: ControllerCopy;
+    cutting: ControllerCuttingClass;
+    dragFile: ControllerDragFileClass;
+    edgeEdit: ControllerEdgeEditClass;
+    entityClickSelectAndMove: ControllerEntityClickSelectAndMoveClass;
+    entityCreate: ControllerEntityCreateClass;
+    layerMoving: ControllerLayerMovingClass;
+    entityResize: ControllerEntityResizeClass;
+    imageScale: ControllerImageScale;
+    nodeConnection: ControllerNodeConnectionClass;
+    nodeEdit: ControllerNodeEditClass;
+    penStrokeControl: ControllerPenStrokeControlClass;
+    penStrokeDrawing: ControllerPenStrokeDrawingClass;
+    rectangleSelect: ControllerRectangleSelectClass;
+    sectionEdit: ControllerSectionEdit;
   }
 }

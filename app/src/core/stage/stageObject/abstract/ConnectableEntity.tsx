@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Entity } from "./StageEntity";
 
 /**
@@ -11,8 +11,5 @@ export abstract class ConnectableEntity extends Entity {
    */
   abstract geometryCenter: Vector;
 
-  /**
-   * 当该实体被连线识别时，会改成false
-   */
-  public unknown = true;
+  public unknown = false;
 }

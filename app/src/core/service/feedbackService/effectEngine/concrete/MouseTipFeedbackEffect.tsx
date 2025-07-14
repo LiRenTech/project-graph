@@ -1,13 +1,7 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Project } from "../../../../Project";
 import { MouseLocation } from "../../../controlService/MouseLocation";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 type MouseTipType =
   | "shrink"
@@ -24,7 +18,7 @@ type MouseTipType =
 /**
  * 在鼠标上释放一个小特效，用于提示
  */
-export class MouseTipFeedbackEffect extends EffectObject {
+export class MouseTipFeedbackEffect extends Effect {
   constructor(
     public override timeProgress: ProgressNumber,
     public type: MouseTipType,
@@ -46,98 +40,98 @@ export class MouseTipFeedbackEffect extends EffectObject {
     return new MouseTipFeedbackEffect(new ProgressNumber(0, 15), "move", direction);
   }
 
-  render(): void {
+  render(project: Project) {
     for (const effect of this.subEffects) {
-      effect.render();
+      effect.render(project);
     }
 
     if (this.type === "shrink") {
       const hintCenter = MouseLocation.vector().add(new Vector(30, 25));
-      CurveRenderer.renderSolidLine(
+      project.curveRenderer.renderSolidLine(
         hintCenter.add(new Vector(-5, 0)),
         hintCenter.add(new Vector(5, 0)),
-        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         2,
       );
     } else if (this.type === "expand") {
       const hintCenter = MouseLocation.vector().add(new Vector(30, 25));
-      CurveRenderer.renderSolidLine(
+      project.curveRenderer.renderSolidLine(
         hintCenter.add(new Vector(-5, 0)),
         hintCenter.add(new Vector(5, 0)),
-        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         2,
       );
-      CurveRenderer.renderSolidLine(
+      project.curveRenderer.renderSolidLine(
         hintCenter.add(new Vector(0, -5)),
         hintCenter.add(new Vector(0, 5)),
-        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         2,
       );
     } else if (this.type === "moveLeft") {
       // 鼠标向左移动，右边应该出现幻影
-      CurveRenderer.renderGradientLine(
+      project.curveRenderer.renderGradientLine(
         MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(100 * (1 - this.timeProgress.rate), 0)),
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
-        StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toTransparent(),
         10 * (1 - this.timeProgress.rate),
       );
     } else if (this.type === "moveRight") {
-      CurveRenderer.renderGradientLine(
+      project.curveRenderer.renderGradientLine(
         MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(-100 * (1 - this.timeProgress.rate), 0)),
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
-        StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toTransparent(),
         10 * (1 - this.timeProgress.rate),
       );
     } else if (this.type === "moveUp") {
-      CurveRenderer.renderGradientLine(
+      project.curveRenderer.renderGradientLine(
         MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(0, 100 * (1 - this.timeProgress.rate))),
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
-        StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toTransparent(),
         10 * (1 - this.timeProgress.rate),
       );
     } else if (this.type === "moveDown") {
-      CurveRenderer.renderGradientLine(
+      project.curveRenderer.renderGradientLine(
         MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(0, -100 * (1 - this.timeProgress.rate))),
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
-        StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toTransparent(),
         10 * (1 - this.timeProgress.rate),
       );
     } else if (this.type === "move") {
-      CurveRenderer.renderGradientLine(
+      project.curveRenderer.renderGradientLine(
         MouseLocation.vector().clone(),
         MouseLocation.vector().add(this.direction.multiply(-5 * (1 - this.timeProgress.rate))),
-        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         2 * (1 - this.timeProgress.rate),
       );
     } else if (this.type === "drag") {
-      ShapeRenderer.renderCircle(
+      project.shapeRenderer.renderCircle(
         MouseLocation.vector().clone(),
         6 * (1 - this.timeProgress.rate),
         Color.Transparent,
-        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         1,
       );
     } else if (this.type === "cameraMoveToMouse") {
-      CurveRenderer.renderDashedLine(
-        Renderer.transformWorld2View(Camera.location),
+      project.curveRenderer.renderDashedLine(
+        project.renderer.transformWorld2View(project.camera.location),
         MouseLocation.vector().clone(),
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         1,
         8,
       );
     } else if (this.type === "cameraBackToMouse") {
       const mouseBackLocation = MouseLocation.vector().add(
-        Renderer.transformWorld2View(Camera.location).subtract(MouseLocation.vector()).multiply(2),
+        project.renderer.transformWorld2View(project.camera.location).subtract(MouseLocation.vector()).multiply(2),
       );
-      CurveRenderer.renderDashedLine(
-        Renderer.transformWorld2View(Camera.location),
+      project.curveRenderer.renderDashedLine(
+        project.renderer.transformWorld2View(project.camera.location),
         mouseBackLocation,
-        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         1,
         8,
       );

@@ -1,16 +1,12 @@
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
-import { TextRenderer } from "../../../../render/canvas2d/basicRenderer/textRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { ProgressNumber, Vector } from "@graphif/data-structures";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 在特定的世界坐标系下渲染一个文字
  * 用途之一：给逻辑引擎渲染编号
  */
-export class TextRaiseEffectLocated extends EffectObject {
+export class TextRaiseEffectLocated extends Effect {
   getClassName(): string {
     return "TextRaiseEffectLocated";
   }
@@ -24,15 +20,17 @@ export class TextRaiseEffectLocated extends EffectObject {
     super(timeProgress);
   }
 
-  render() {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    TextRenderer.renderTextFromCenter(
+    project.textRenderer.renderTextFromCenter(
       this.text,
-      Renderer.transformWorld2View(this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance))),
-      this.textSize * Camera.currentScale,
-      StageStyleManager.currentStyle.CollideBoxPreSelected,
+      project.renderer.transformWorld2View(
+        this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance)),
+      ),
+      this.textSize * project.camera.currentScale,
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
     );
   }
 

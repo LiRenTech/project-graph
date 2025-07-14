@@ -1,8 +1,6 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
-import { WorldRenderUtils } from "../../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
-import { EffectObject } from "../effectObject";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 线段特效
@@ -15,7 +13,7 @@ import { EffectObject } from "../effectObject";
  * 100%
  *                   ->
  */
-export class LineCuttingEffect extends EffectObject {
+export class LineCuttingEffect extends Effect {
   getClassName(): string {
     return "LineCuttingEffect";
   }
@@ -30,7 +28,7 @@ export class LineCuttingEffect extends EffectObject {
     super(timeProgress);
   }
 
-  render() {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
@@ -39,7 +37,7 @@ export class LineCuttingEffect extends EffectObject {
     );
 
     const toLocation = this.toLocation;
-    WorldRenderUtils.renderCuttingFlash(
+    project.worldRenderUtils.renderCuttingFlash(
       fromLocation,
       toLocation,
       this.lineWidth * (1 - this.timeProgress.rate),

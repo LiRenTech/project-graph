@@ -1,3 +1,4 @@
+import { downloadDir } from "@tauri-apps/api/path";
 import { useAtom } from "jotai";
 import { Download, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -5,12 +6,10 @@ import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import { StageExportPng } from "../../core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { Camera } from "../../core/stage/Camera";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { isExportPNGPanelOpenAtom } from "../../state";
 import { cn } from "../../utils/cn";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { isMac } from "../../utils/platform";
-import { writeFileBase64 } from "../../utils/fs";
-import { downloadDir } from "@tauri-apps/api/path";
 
 /**
  * 导出png的面板

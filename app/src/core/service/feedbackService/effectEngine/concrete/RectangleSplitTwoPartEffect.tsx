@@ -1,17 +1,13 @@
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
-import { EffectObject } from "../effectObject";
+import { Project } from "../../../../Project";
+import { Effect } from "../effectObject";
 
 /**
  * 一个矩形被一刀切成两半，两个多边形的的特效
  */
-export class RectangleSplitTwoPartEffect extends EffectObject {
+export class RectangleSplitTwoPartEffect extends Effect {
   getClassName(): string {
     return "RectangleSplitTwoPartEffect";
   }
@@ -135,13 +131,13 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
     this.splitedRectangles[0].accleration = new Vector(0, 0.5);
     this.splitedRectangles[1].accleration = new Vector(0, 0.5);
   }
-  render() {
+  render(project: Project) {
     for (const rect of this.splitedRectangles) {
-      rect.render();
+      rect.render(project);
     }
   }
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (const rect of this.splitedRectangles) {
       rect.tick();
       rect.fillColor = mixColors(this.initFillColor, this.endFillColor, this.timeProgress.rate);
@@ -201,12 +197,12 @@ class SplitedRectangle {
     this.move(offset);
   }
 
-  render() {
-    ShapeRenderer.renderPolygonAndFill(
-      this.polygon.map((v) => Renderer.transformWorld2View(v)),
+  render(project: Project) {
+    project.shapeRenderer.renderPolygonAndFill(
+      this.polygon.map((v) => project.renderer.transformWorld2View(v)),
       this.fillColor,
       this.strokeColor,
-      this.strokeWidth * Camera.currentScale,
+      this.strokeWidth * project.camera.currentScale,
       "round",
     );
   }

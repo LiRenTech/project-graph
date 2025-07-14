@@ -1,5 +1,5 @@
-import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
-import { Vector } from "../../core/dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { SubWindow } from "../../core/service/SubWindow";
 
 export default function AutoCompleteWindow({

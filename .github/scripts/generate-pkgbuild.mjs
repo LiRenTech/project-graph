@@ -24,7 +24,7 @@ const source =
 
 const PKGBUILD = `# Maintainer: zty012 <me@zty012.de>
 pkgname=${pkgname}
-pkgver=${pkgver}
+pkgver=${pkgver.replaceAll("-", ".")}
 pkgrel=1
 pkgdesc="A simple tool to create topology diagrams."
 arch=('x86_64')
@@ -49,7 +49,7 @@ writeFileSync("./PKGBUILD", PKGBUILD);
 
 const SRCINFO = `pkgbase = ${pkgname}
 \tpkgdesc = A simple tool to create topology diagrams.
-\tpkgver = ${pkgver}
+\tpkgver = ${pkgver.replaceAll("-", ".")}
 \tpkgrel = 1
 \turl = https://github.com/LiRenTech/project-graph
 \tinstall = ${pkgname}.install

@@ -1,17 +1,12 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Project } from "../../../../Project";
 import { EffectParticle } from "../effectElements/effectParticle";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 在一个点迸发一些粒子效果
  */
-export class PointDashEffect extends EffectObject {
+export class PointDashEffect extends Effect {
   getClassName(): string {
     return "PointDashEffect";
   }
@@ -30,22 +25,22 @@ export class PointDashEffect extends EffectObject {
           this.location.clone(),
           Vector.fromDegrees(Math.random() * 360).multiply(Math.random() * 1),
           Vector.getZero(),
-          StageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
           1,
         ),
       );
     }
   }
 
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (const particle of this.particleList) {
       // 让粒子的加速度为一些节点
       let acceleration = Vector.getZero();
 
       let isCollideWithEntity = false;
 
-      for (const connectEntity of StageManager.getConnectableEntity()) {
+      for (const connectEntity of project.stageManager.getConnectableEntity()) {
         const connectEntityCenter = connectEntity.collisionBox.getRectangle().center;
         const distance = connectEntityCenter.subtract(particle.location);
         const normalizedDistance = distance.normalize().multiply(20 / distance.magnitude() ** 1.2);
@@ -60,8 +55,8 @@ export class PointDashEffect extends EffectObject {
         particle.color = Color.Green;
       } else {
         particle.color = mixColors(
-          StageStyleManager.currentStyle.StageObjectBorder,
-          StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
           this.timeProgress.rate,
         );
       }
@@ -75,19 +70,19 @@ export class PointDashEffect extends EffectObject {
     return new PointDashEffect(new ProgressNumber(0, 50), mouseWorldLocation, count);
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const p of this.particleList) {
-      const viewLocation = Renderer.transformWorld2View(p.location);
+      const viewLocation = project.renderer.transformWorld2View(p.location);
       // const color = mixColors(
       //   p.color,
       //   p.color.toTransparent(),
       //   this.timeProgress.rate,
       // );
 
-      RenderUtils.renderPixel(viewLocation, p.color);
+      project.renderUtils.renderPixel(viewLocation, p.color);
     }
   }
 }

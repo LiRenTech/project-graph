@@ -1,15 +1,8 @@
+import { Vector } from "@graphif/data-structures";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { isMac } from "../../../../../utils/platform";
-import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
-import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
-import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/StageNodeRotate";
-import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { Controller } from "../Controller";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -21,17 +14,19 @@ import { ControllerClass } from "../ControllerClass";
  *
  * 有向边的嫁接
  */
-class ControllerAssociationReshapeClass extends ControllerClass {
+export class ControllerAssociationReshapeClass extends ControllerClass {
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
-    if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
-      const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-      const hoverNode = StageManager.findTextNodeByLocation(location);
+    if (
+      isMac ? this.project.controller.pressingKeySet.has("meta") : this.project.controller.pressingKeySet.has("control")
+    ) {
+      const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+      const hoverNode = this.project.stageManager.findTextNodeByLocation(location);
       if (hoverNode !== null) {
         // 旋转节点
         if (event.deltaY > 0) {
-          StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, 10, []);
+          this.project.stageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, 10, []);
         } else {
-          StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, -10, []);
+          this.project.stageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, -10, []);
         }
       }
     }
@@ -40,36 +35,36 @@ class ControllerAssociationReshapeClass extends ControllerClass {
   public lastMoveLocation: Vector = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 点击
-    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    const clickedAssociation = this.project.stageManager.findAssociationByLocation(pressWorldLocation);
     if (clickedAssociation === null) {
       return;
     }
-    const isHaveLineEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
-    const isHaveMultiTargetEdgeSelected = StageManager.getSelectedAssociations().some(
-      (association) => association instanceof MultiTargetUndirectedEdge,
-    );
+    const isHaveLineEdgeSelected = this.project.stageManager.getLineEdges().some((edge) => edge.isSelected);
+    const isHaveMultiTargetEdgeSelected = this.project.stageManager
+      .getSelectedAssociations()
+      .some((association) => association instanceof MultiTargetUndirectedEdge);
 
     this.lastMoveLocation = pressWorldLocation.clone();
 
     if (isHaveLineEdgeSelected) {
-      Controller.isMovingEdge = true;
+      this.project.controller.isMovingEdge = true;
 
       if (clickedAssociation.isSelected) {
         // E1
-        StageManager.getLineEdges().forEach((edge) => {
+        this.project.stageManager.getLineEdges().forEach((edge) => {
           edge.isSelected = false;
         });
       } else {
         // E2
-        StageManager.getLineEdges().forEach((edge) => {
+        this.project.stageManager.getLineEdges().forEach((edge) => {
           edge.isSelected = false;
         });
       }
@@ -81,53 +76,55 @@ class ControllerAssociationReshapeClass extends ControllerClass {
       // F
       clickedAssociation.isSelected = true;
     }
-    Controller.setCursorNameHook(CursorNameEnum.Move);
+    this.project.controller.setCursorNameHook(CursorNameEnum.Move);
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
-    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
+    if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (Controller.isMouseDown[0]) {
-      if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
+    const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    if (this.project.controller.isMouseDown[0]) {
+      if (
+        isMac
+          ? this.project.controller.pressingKeySet.has("meta")
+          : this.project.controller.pressingKeySet.has("control")
+      ) {
         // 更改Edge的目标
-        const entity = StageManager.findConnectableEntityByLocation(worldLocation);
+        const entity = this.project.stageManager.findConnectableEntityByLocation(worldLocation);
         if (entity !== null) {
           // 找到目标，更改目标
-          StageNodeConnector.changeSelectedEdgeTarget(entity);
+          this.project.nodeConnector.changeSelectedEdgeTarget(entity);
         }
       } else {
         const diffLocation = worldLocation.subtract(this.lastMoveLocation);
         // 拖拽Edge
-        Controller.isMovingEdge = true;
-        StageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
-        StageMultiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
+        this.project.controller.isMovingEdge = true;
+        this.project.stageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
+        this.project.multiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
       }
       this.lastMoveLocation = worldLocation.clone();
     } else {
       // 什么都没有按下的情况
       // 看看鼠标当前的位置是否和线接近
-      Stage.mouseInteractionCore.updateByMouseMove(worldLocation);
+      this.project.mouseInteraction.updateByMouseMove(worldLocation);
     }
   };
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {
       return;
     }
-    if (Controller.isMovingEdge) {
-      StageHistoryManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
-      Controller.isMovingEdge = false;
+    if (this.project.controller.isMovingEdge) {
+      this.project.historyManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
+      this.project.controller.isMovingEdge = false;
     }
-    Controller.setCursorNameHook(CursorNameEnum.Default);
+    this.project.controller.setCursorNameHook(CursorNameEnum.Default);
   };
 }
-
-export const ControllerAssociationReshape = new ControllerAssociationReshapeClass();

@@ -28,10 +28,7 @@ export default function Input<T extends boolean = false>({
   return (
     <Box<"input">
       as={multiline ? "textarea" : "input"}
-      className={cn(
-        "bg-input-bg border-input-border text-input-text placeholder:text-input-placeholder px-3 py-2 outline-none hover:cursor-text",
-        className,
-      )}
+      className={cn("el-input px-3 py-2 outline-none hover:cursor-text", className)}
       value={value}
       onChange={(e) => {
         // 根据 number 的值决定传递的参数类型

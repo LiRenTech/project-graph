@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Stage } from "../core/stage/Stage";
 
 export default function SecretPage() {
   const [conflictKeys, setConflictKeys] = useState<string[]>([]);

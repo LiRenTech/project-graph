@@ -1,21 +1,15 @@
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, Rectangle, Shape } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getTextSize } from "../../../../utils/font";
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Shape } from "../../../dataStruct/shape/Shape";
-import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
+import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
-import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
-import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 
 export class Section extends ConnectableEntity {
   /**
@@ -78,6 +72,7 @@ export class Section extends ConnectableEntity {
   isHiddenBySectionCollapse = false;
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       text = "",
@@ -96,11 +91,11 @@ export class Section extends ConnectableEntity {
 
     this._collisionBoxWhenCollapsed = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
 
-    const shapeList: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
-    // shapeList.push(
+    const shapes: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
+    // shapes.push(
     //   new Rectangle(new Vector(...location), new Vector(size[0], 50)),
     // );
-    this._collisionBoxNormal = new CollisionBox(shapeList);
+    this._collisionBoxNormal = new CollisionBox(shapes);
 
     this.color = new Color(...color);
     this.text = text;
@@ -108,7 +103,7 @@ export class Section extends ConnectableEntity {
     this.isCollapsed = isCollapsed;
     this.details = details;
     this.childrenUUIDs = children;
-    this.children = StageManager.getEntitiesByUUIDs(children);
+    this.children = this.project.stageManager.getEntitiesByUUIDs(children);
     // 一定要放在最后
     this.adjustLocationAndSize();
   }
@@ -163,10 +158,10 @@ export class Section extends ConnectableEntity {
       rectangle.size = rectangle.size.add(new Vector(0, 50));
     }
 
-    this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
+    this._collisionBoxNormal.shapes = rectangle.getBoundingLines();
     // 群友需求：希望Section框扩大交互范围，标题也能拖动
     const newRect = new Rectangle(rectangle.location.clone(), new Vector(rectangle.size.x, 50));
-    this._collisionBoxNormal.shapeList.push(newRect);
+    this._collisionBoxNormal.shapes.push(newRect);
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }
@@ -203,10 +198,10 @@ export class Section extends ConnectableEntity {
     if (this.isCollapsed) {
       return this._collisionBoxWhenCollapsed.getRectangle();
     } else {
-      const topLine: Line = this._collisionBoxNormal.shapeList[0] as Line;
-      const rightLine: Line = this._collisionBoxNormal.shapeList[1] as Line;
-      const bottomLine: Line = this._collisionBoxNormal.shapeList[2] as Line;
-      const leftLine: Line = this._collisionBoxNormal.shapeList[3] as Line;
+      const topLine: Line = this._collisionBoxNormal.shapes[0] as Line;
+      const rightLine: Line = this._collisionBoxNormal.shapes[1] as Line;
+      const bottomLine: Line = this._collisionBoxNormal.shapes[2] as Line;
+      const leftLine: Line = this._collisionBoxNormal.shapes[3] as Line;
       return new Rectangle(
         new Vector(leftLine.start.x, topLine.start.y),
         new Vector(rightLine.end.x - leftLine.start.x, bottomLine.end.y - topLine.start.y),
@@ -220,7 +215,7 @@ export class Section extends ConnectableEntity {
 
   move(delta: Vector): void {
     // 让自己移动
-    for (const shape of this.collisionBox.shapeList) {
+    for (const shape of this.collisionBox.shapes) {
       if (shape instanceof Line) {
         shape.start = shape.start.add(delta);
         shape.end = shape.end.add(delta);
@@ -234,21 +229,21 @@ export class Section extends ConnectableEntity {
     }
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
+    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
   }
   protected override collideWithOtherEntity(other: Entity): void {
-    if (!StageManager.isEnableEntityCollision) {
+    if (!this.project.stageManager.isEnableEntityCollision) {
       return;
     }
     if (other instanceof Section) {
-      if (SectionMethods.isEntityInSection(this, other)) {
+      if (this.project.sectionMethods.isEntityInSection(this, other)) {
         return;
       }
     }
-    if (SectionMethods.isEntityInSection(other, this)) {
+    if (this.project.sectionMethods.isEntityInSection(other, this)) {
       return;
     }
     super.collideWithOtherEntity(other);
