@@ -19,8 +19,8 @@ export class FileSystemProviderDraft implements FileSystemProvider {
     const fileContent = await uwriter.getData();
     return fileContent;
   }
-  async readDir(): Promise<[]> {
-    throw new Error("Method not implemented.");
+  async readDir() {
+    return [];
   }
   async write(_uri: URI, content: Uint8Array) {
     // 先弹窗让用户选择路径
@@ -35,16 +35,10 @@ export class FileSystemProviderDraft implements FileSystemProvider {
     await writeFile(newUri.fsPath, content);
     this.project.uri = newUri;
   }
-  async remove() {
-    throw new Error("Method not implemented.");
+  async remove() {}
+  async exists() {
+    return false;
   }
-  async exists(): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
-  async mkdir() {
-    throw new Error("Method not implemented.");
-  }
-  async rename() {
-    throw new Error("Method not implemented.");
-  }
+  async mkdir() {}
+  async rename() {}
 }

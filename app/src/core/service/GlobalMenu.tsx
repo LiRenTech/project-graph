@@ -69,6 +69,7 @@ export namespace GlobalMenu {
       new MenuItem("新建", <FilePlus />, () => {
         const project = Project.newDraft();
         loadAllServices(project);
+        project.init();
         store.set(projectsAtom, [...store.get(projectsAtom), project]);
       }),
       new MenuItem("打开", <FolderOpen />, async () => {

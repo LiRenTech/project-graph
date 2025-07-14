@@ -203,40 +203,6 @@ export class Renderer {
   private renderMainStageElements(viewRectangle: Rectangle) {
     // 先渲染主场景
     this.renderStageElementsWithoutReactions(viewRectangle);
-    this.isRenderingChildStage = true;
-    const cameraOldScale = this.project.camera.currentScale;
-    // 再渲染所有子场景
-    for (const key of this.project.stageManager.getAllChildStageKeys()) {
-      // key就是绝对路径
-      const cameraData = this.project.stageManager.getChildStageCameraData(key);
-      let diffLocation = Vector.getZero();
-      const cameraOldLocation = this.project.camera.location.clone();
-      if (cameraData) {
-        diffLocation = cameraData.targetLocation.subtract(cameraData.location);
-        this.project.camera.currentScale *= cameraData.zoom;
-        this.project.camera.location = this.project.camera.location.add(diffLocation);
-      } else {
-        console.warn(key, "没有camera数据");
-      }
-
-      // 加载子场景
-      this.project.stageManager.storeMainStage(); // 先保存主场景
-      this.project.stageManager.destroy();
-      this.project.stageManager.storeChildStageToMainStage(key); // 把子场景加到主场景位置上
-      const viewChildRectangleLocation = this.project.camera.location
-        .clone()
-        .add(cameraData.location.subtract(cameraOldLocation));
-      const childStageViewRectangle = new Rectangle(
-        viewChildRectangleLocation,
-        cameraData.size.multiply(cameraData.zoom),
-      );
-      this.renderStageElementsWithoutReactions(childStageViewRectangle); // 再渲染主场景
-      this.project.stageManager.destroy();
-      this.project.stageManager.restoreMainStage(); // 还原主场景位置
-      this.project.camera.location = this.project.camera.location.subtract(diffLocation);
-      this.project.camera.currentScale = cameraOldScale;
-    }
-    this.isRenderingChildStage = false;
     // 交互相关的
     this.project.drawingControllerRenderer.renderTempDrawing();
     this.renderWarningStageObjects();
@@ -263,26 +229,11 @@ export class Renderer {
     // debugRender();
   }
 
-  /**
-   * 是否正在渲染子场景
-   * 如果是,则超出视野检测使用完全包含
-   */
-  private isRenderingChildStage = false;
-
   // 是否超出了视野之外
   isOverView(viewRectangle: Rectangle, entity: StageObject): boolean {
     if (!this.project.camera.limitCameraInCycleSpace) {
       // 如果没有开循环空间，就要看看是否超出了视野
-      if (this.isRenderingChildStage) {
-        if (!entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle)) {
-          return true;
-        }
-      } else {
-        if (!viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
-          return true;
-        }
-      }
-      return false;
+      return !viewRectangle.isCollideWith(entity.collisionBox.getRectangle());
     }
     // 如果开了循环空间，就永远不算超出视野
     return false;
@@ -636,23 +587,24 @@ export class Renderer {
 
   /** 画所有被标签了的节点的特殊装饰物和缩小视野时的直观显示 */
   private renderTags() {
-    for (const tagString of this.project.stageManager.TagOptions.getTagUUIDs()) {
-      const tagObject = this.project.stageManager.get(tagString);
-      if (!tagObject) {
-        continue;
-      }
-      const rect = tagObject.collisionBox.getRectangle();
-      this.project.shapeRenderer.renderPolygonAndFill(
-        [
-          this.transformWorld2View(rect.leftTop.add(new Vector(0, 8))),
-          this.transformWorld2View(rect.leftCenter.add(new Vector(-15, 0))),
-          this.transformWorld2View(rect.leftBottom.add(new Vector(0, -8))),
-        ],
-        new Color(255, 0, 0, 0.5),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
-        2 * this.project.camera.currentScale,
-      );
-    }
+    // TODO: renderTags
+    // for (const tagString of this.project.stageManager.TagOptions.getTagUUIDs()) {
+    //   const tagObject = this.project.stageManager.get(tagString);
+    //   if (!tagObject) {
+    //     continue;
+    //   }
+    //   const rect = tagObject.collisionBox.getRectangle();
+    //   this.project.shapeRenderer.renderPolygonAndFill(
+    //     [
+    //       this.transformWorld2View(rect.leftTop.add(new Vector(0, 8))),
+    //       this.transformWorld2View(rect.leftCenter.add(new Vector(-15, 0))),
+    //       this.transformWorld2View(rect.leftBottom.add(new Vector(0, -8))),
+    //     ],
+    //     new Color(255, 0, 0, 0.5),
+    //     this.project.stageStyleManager.currentStyle.StageObjectBorder,
+    //     2 * this.project.camera.currentScale,
+    //   );
+    // }
   }
   private renderEntities(viewRectangle: Rectangle) {
     this.renderedNodes = this.project.entityRenderer.renderAllEntities(viewRectangle);

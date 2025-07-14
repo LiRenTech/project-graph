@@ -136,24 +136,6 @@ export class Project {
     uri: URI,
   ) {
     this._uri = uri;
-    (async () => {
-      if (await this.fs.exists(this.uri)) {
-        const fileContent = await this.fs.read(this.uri);
-        const reader = new ZipReader(new Uint8ArrayReader(fileContent));
-        const entries = await reader.getEntries();
-        for (const entry of entries) {
-          if (entry.filename === "stage.msgpack") {
-            const stageRawData = await entry.getData!(new Uint8ArrayWriter());
-            const decoded = this.decoder.decode(stageRawData) as any[];
-            for (const serializedStageObject of decoded) {
-              const stageObject = deserialize(this, serializedStageObject);
-              this.stage.push(stageObject);
-            }
-          }
-        }
-      }
-      this.loop();
-    })();
   }
   /**
    * 创建一个草稿工程
@@ -215,6 +197,28 @@ export class Project {
       this.services.delete(serviceId);
       this.tickableServices.delete(service);
     }
+  }
+
+  /**
+   * 服务加载完成后再调用
+   */
+  async init() {
+    if (await this.fs.exists(this.uri)) {
+      const fileContent = await this.fs.read(this.uri);
+      const reader = new ZipReader(new Uint8ArrayReader(fileContent));
+      const entries = await reader.getEntries();
+      for (const entry of entries) {
+        if (entry.filename === "stage.msgpack") {
+          const stageRawData = await entry.getData!(new Uint8ArrayWriter());
+          const decoded = this.decoder.decode(stageRawData) as any[];
+          for (const serializedStageObject of decoded) {
+            const stageObject = deserialize(this, serializedStageObject);
+            this.stage.push(stageObject);
+          }
+        }
+      }
+    }
+    this.loop();
   }
 
   private loop() {
