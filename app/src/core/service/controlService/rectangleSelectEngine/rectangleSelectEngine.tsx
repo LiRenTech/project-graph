@@ -63,7 +63,7 @@ export class RectangleSelect {
         // 不取消选择
       } else {
         // 取消选择所
-        this.project.stageManager.getStageObject().forEach((stageObject) => {
+        this.project.stageManager.getStageObjects().forEach((stageObject) => {
           stageObject.isSelected = false;
         });
       }
@@ -135,7 +135,7 @@ export class RectangleSelect {
       // 移动过程中不先暴力清除
     } else {
       // 先清空所有已经选择了的
-      this.project.stageManager.getStageObject().forEach((stageObject) => {
+      this.project.stageManager.getStageObjects().forEach((stageObject) => {
         stageObject.isSelected = false;
       });
     }

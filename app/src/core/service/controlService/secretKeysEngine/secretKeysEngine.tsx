@@ -361,7 +361,7 @@ export class SecretKeys {
       name: "将所有选中物体染色为纯红色",
       explain: "具体为：(239, 68, 68)，仅作快速标注用",
       func: () => {
-        const selectedStageObject = this.project.stageManager.getStageObject().filter((obj) => obj.isSelected);
+        const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
         for (const obj of selectedStageObject) {
           if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
             obj.color = new Color(239, 68, 68);
@@ -373,7 +373,7 @@ export class SecretKeys {
       name: "将所选实体的颜色亮度增加",
       explain: "不能对没有上色的或者透明的实体使用，b是brightness，句号键也是>键，可以看成往右走，数值增大",
       func: () => {
-        const selectedStageObject = this.project.stageManager.getStageObject().filter((obj) => obj.isSelected);
+        const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
         for (const obj of selectedStageObject) {
           if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
             if (obj.color.a === 0) {
@@ -393,7 +393,7 @@ export class SecretKeys {
       name: "将所选实体的颜色亮度减少",
       explain: "不能对没有上色的或者透明的实体使用，b是brightness，逗号键也是<键，可以看成往左走，数值减小",
       func: () => {
-        const selectedStageObject = this.project.stageManager.getStageObject().filter((obj) => obj.isSelected);
+        const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
         for (const obj of selectedStageObject) {
           if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
             if (obj.color.a === 0) {
@@ -413,7 +413,7 @@ export class SecretKeys {
       name: "将所选实体的颜色渐变",
       explain: "后续打算做成更改色相环，目前还不完善",
       func: () => {
-        const selectedStageObject = this.project.stageManager.getStageObject().filter((obj) => obj.isSelected);
+        const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
         for (const obj of selectedStageObject) {
           if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
             if (obj.color.a === 0) {

@@ -56,7 +56,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         const boundingRectangle = Rectangle.getBoundingRectangle(rectangles);
         this.project.effects.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));
         this.project.effects.addEffect(RectangleNoteEffect.fromShiftClickSelect(boundingRectangle));
-        for (const entity of this.project.stageManager.getStageObject()) {
+        for (const entity of this.project.stageManager.getStageObjects()) {
           if (entity.collisionBox.isIntersectsWithRectangle(boundingRectangle)) {
             entity.isSelected = true;
           }
@@ -72,7 +72,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         // 直接点击
         if (!clickedStageObject.isSelected) {
           // 清空所有其他节点的选中状态
-          this.project.stageManager.getStageObject().forEach((stageObject) => {
+          this.project.stageManager.getStageObjects().forEach((stageObject) => {
             if (stageObject === clickedStageObject) {
               return;
             }

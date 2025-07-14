@@ -54,7 +54,7 @@ export class StageObjectSelectCounter {
     this.selectedAssociationCount = 0;
     this.selectedMultiTargetUndirectedEdgeCount = 0;
 
-    for (const stageObject of this.project.stageManager.getStageObject()) {
+    for (const stageObject of this.project.stageManager.getStageObjects()) {
       if (!stageObject.isSelected) {
         continue;
       }

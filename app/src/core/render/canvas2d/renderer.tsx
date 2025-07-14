@@ -637,7 +637,7 @@ export class Renderer {
   /** 画所有被标签了的节点的特殊装饰物和缩小视野时的直观显示 */
   private renderTags() {
     for (const tagString of this.project.stageManager.TagOptions.getTagUUIDs()) {
-      const tagObject = this.project.stageManager.getStageObjectByUUID(tagString);
+      const tagObject = this.project.stageManager.get(tagString);
       if (!tagObject) {
         continue;
       }

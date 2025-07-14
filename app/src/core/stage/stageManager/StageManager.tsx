@@ -1,9 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { v4 } from "uuid";
 import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
-import { PathString } from "../../../utils/pathString";
 import { Project, service } from "../../Project";
 import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
@@ -32,12 +30,6 @@ import { GraphMethods } from "./basicMethods/GraphMethods";
 // zty012:这个是存储数据的，和舞台无关，应该单独抽离出来
 // 并且会在舞台之外的地方操作，所以应该是namespace单例
 
-type StageContent = {
-  entities: StringDict<Entity>;
-  associations: StringDict<Association>;
-  tags: string[];
-};
-
 /**
  * 子场景的相机数据
  */
@@ -63,89 +55,6 @@ export type ChildCameraData = {
  */
 @service("stageManager")
 export class StageManager {
-  getStageContentDebug() {
-    return this.stageContent.entities.length;
-  }
-
-  getStageJsonByPlugin(): string {
-    return JSON.stringify(this.stageContent);
-  }
-  /**
-   * 子舞台，用于渲染传送门中的另一个世界
-   * key：绝对路径构成的字符串，用于区分不同的子舞台
-   */
-  private readonly childStageContent: Record<string, StageContent> = {};
-
-  /**
-   * 每一个子舞台的相机数据，用于渲染传送门中的另一个世界
-   */
-  private readonly childStageCameraData: Record<string, ChildCameraData> = {};
-
-  updateChildStageCameraData(path: string, data: ChildCameraData) {
-    this.childStageCameraData[path] = data;
-  }
-  getChildStageCameraData(path: string) {
-    return this.childStageCameraData[path];
-  }
-
-  storeMainStage() {
-    this.childStageContent["main"] = {
-      entities: this.stageContent.entities.clone(),
-      associations: this.stageContent.associations.clone(),
-      tags: [...this.stageContent.tags],
-    };
-  }
-  restoreMainStage() {
-    this.stageContent.associations = this.childStageContent["main"].associations.clone();
-    this.stageContent.entities = this.childStageContent["main"].entities.clone();
-    this.stageContent.tags = [...this.childStageContent["main"].tags];
-  }
-  storeMainStageToChildStage(path: string) {
-    this.childStageContent[path] = {
-      entities: this.stageContent.entities.clone(),
-      associations: this.stageContent.associations.clone(),
-      tags: [...this.stageContent.tags],
-    };
-  }
-  storeChildStageToMainStage(path: string) {
-    this.stageContent.associations = this.childStageContent[path].associations.clone();
-    this.stageContent.entities = this.childStageContent[path].entities.clone();
-    this.stageContent.tags = [...this.childStageContent[path].tags];
-  }
-  getAllChildStageKeys(): string[] {
-    return Object.keys(this.childStageContent).filter((key) => key !== "main");
-  }
-  clearAllChildStage() {
-    for (const key of Object.keys(this.childStageContent)) {
-      if (key !== "main") {
-        this.childStageContent[key].entities.clear();
-        this.childStageContent[key].associations.clear();
-        this.childStageContent[key].tags = [];
-      }
-    }
-  }
-  // 使用这个方法时要提前保证当前主舞台槽上放的是主舞台
-  getAllChildStageKeysAndCamera(): { key: string; camera: ChildCameraData }[] {
-    const result = [];
-    for (const entity of this.getEntities().filter((entity) => entity instanceof PortalNode)) {
-      const newKey = PathString.relativePathToAbsolutePath(
-        PathString.dirPath(Stage.path.getFilePath()),
-        entity.portalFilePath,
-      );
-      const item = {
-        key: newKey,
-        camera: {
-          location: entity.location,
-          zoom: entity.cameraScale,
-          size: entity.size,
-          targetLocation: entity.targetLocation,
-        },
-      };
-      result.push(item);
-    }
-    return result;
-  }
-
   isEnableEntityCollision: boolean = false;
   isAllowAddCycleEdge: boolean = false;
 
@@ -158,44 +67,47 @@ export class StageManager {
     });
   }
 
-  isEmpty(): boolean {
-    return this.stageContent.entities.length === 0;
-  }
-  getTextNodes(): TextNode[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof TextNode);
-  }
-  getConnectableEntity(): ConnectableEntity[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof ConnectableEntity);
-  }
-  isEntityExists(uuid: string): boolean {
-    return this.stageContent.entities.hasId(uuid);
-  }
-  getSections(): Section[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof Section);
-  }
-  getImageNodes(): ImageNode[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof ImageNode);
-  }
-  getConnectPoints(): ConnectPoint[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof ConnectPoint);
-  }
-  getUrlNodes(): UrlNode[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof UrlNode);
-  }
-  getPortalNodes(): PortalNode[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof PortalNode);
-  }
-  getPenStrokes(): PenStroke[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof PenStroke);
-  }
-  getSvgNodes(): SvgNode[] {
-    return this.stageContent.entities.valuesToArray().filter((node) => node instanceof SvgNode);
+  get(uuid: string) {
+    return this.project.stage.find((node) => node.uuid === uuid);
   }
 
-  getStageObject(): StageObject[] {
+  isEmpty(): boolean {
+    return this.project.stage.length === 0;
+  }
+  getTextNodes(): TextNode[] {
+    return this.project.stage.filter((node) => node instanceof TextNode);
+  }
+  getConnectableEntity(): ConnectableEntity[] {
+    return this.project.stage.filter((node) => node instanceof ConnectableEntity);
+  }
+  isEntityExists(uuid: string): boolean {
+    return this.project.stage.filter((node) => node.uuid === uuid).length > 0;
+  }
+  getSections(): Section[] {
+    return this.project.stage.filter((node) => node instanceof Section);
+  }
+  getImageNodes(): ImageNode[] {
+    return this.project.stage.filter((node) => node instanceof ImageNode);
+  }
+  getConnectPoints(): ConnectPoint[] {
+    return this.project.stage.filter((node) => node instanceof ConnectPoint);
+  }
+  getUrlNodes(): UrlNode[] {
+    return this.project.stage.filter((node) => node instanceof UrlNode);
+  }
+  getPortalNodes(): PortalNode[] {
+    return this.project.stage.filter((node) => node instanceof PortalNode);
+  }
+  getPenStrokes(): PenStroke[] {
+    return this.project.stage.filter((node) => node instanceof PenStroke);
+  }
+  getSvgNodes(): SvgNode[] {
+    return this.project.stage.filter((node) => node instanceof SvgNode);
+  }
+
+  getStageObjects(): StageObject[] {
     const result: StageObject[] = [];
-    result.push(...this.stageContent.entities.valuesToArray());
-    result.push(...this.stageContent.associations.valuesToArray());
+    result.push(...this.project.stage);
     return result;
   }
 
@@ -204,175 +116,33 @@ export class StageManager {
    * @returns
    */
   getEntities(): Entity[] {
-    return this.stageContent.entities.valuesToArray();
-  }
-  getStageObjectByUUID(uuid: string): StageObject | null {
-    const entity = this.stageContent.entities.getById(uuid);
-    if (entity) {
-      return entity;
-    }
-    const association = this.stageContent.associations.getById(uuid);
-    if (association) {
-      return association;
-    }
-    return null;
+    return this.project.stage.filter((node) => node instanceof Entity);
   }
   getEntitiesByUUIDs(uuids: string[]): Entity[] {
-    const result = [];
-    for (const uuid of uuids) {
-      const entity = this.stageContent.entities.getById(uuid);
-      if (entity) {
-        result.push(entity);
-      }
-    }
-    return result;
+    return this.project.stage.filter((node) => uuids.includes(node.uuid) && node instanceof Entity) as Entity[];
   }
   isNoEntity(): boolean {
-    return this.stageContent.entities.length === 0;
+    return this.project.stage.filter((node) => node instanceof Entity).length === 0;
   }
-  deleteOneTextNode(node: TextNode) {
-    this.stageContent.entities.deleteValue(node);
-  }
-  deleteOneImage(node: ImageNode) {
-    this.stageContent.entities.deleteValue(node);
-  }
-  deleteOneUrlNode(node: UrlNode) {
-    this.stageContent.entities.deleteValue(node);
-  }
-  deleteOneSection(section: Section) {
-    this.stageContent.entities.deleteValue(section);
-  }
-  deleteOneConnectPoint(point: ConnectPoint) {
-    this.stageContent.entities.deleteValue(point);
-  }
-  deleteOnePortalNode(node: PortalNode) {
-    this.stageContent.entities.deleteValue(node);
-  }
-  deleteOnePenStroke(penStroke: PenStroke) {
-    this.stageContent.entities.deleteValue(penStroke);
-  }
-  deleteOneEntity(entity: Entity) {
-    this.stageContent.entities.deleteValue(entity);
-  }
-  deleteOneLineEdge(edge: LineEdge) {
-    this.stageContent.associations.deleteValue(edge);
-  }
-  deleteOneAssociation(association: Association) {
-    this.stageContent.associations.deleteValue(association);
+  delete(stageObject: StageObject) {
+    this.project.stage.splice(this.project.stage.indexOf(stageObject), 1);
   }
 
   getAssociations(): Association[] {
-    return this.stageContent.associations.valuesToArray();
+    return this.project.stage.filter((node) => node instanceof Association);
   }
   getEdges(): Edge[] {
-    return this.stageContent.associations.valuesToArray().filter((edge) => edge instanceof Edge);
+    return this.project.stage.filter((node) => node instanceof Edge);
   }
   getLineEdges(): LineEdge[] {
-    return this.stageContent.associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
+    return this.project.stage.filter((node) => node instanceof LineEdge);
   }
   getCrEdges(): CubicCatmullRomSplineEdge[] {
-    return this.stageContent.associations.valuesToArray().filter((edge) => edge instanceof CubicCatmullRomSplineEdge);
+    return this.project.stage.filter((node) => node instanceof CubicCatmullRomSplineEdge);
   }
 
-  /** 关于标签的相关操作 */
-  TagOptions = {
-    reset: (uuids: string[]) => {
-      this.stageContent.tags = [];
-      for (const uuid of uuids) {
-        this.stageContent.tags.push(uuid);
-      }
-    },
-    addTag: (uuid: string) => {
-      this.stageContent.tags.push(uuid);
-    },
-    removeTag: (uuid: string) => {
-      const index = this.stageContent.tags.indexOf(uuid);
-      if (index !== -1) {
-        this.stageContent.tags.splice(index, 1);
-      }
-    },
-    hasTag: (uuid: string): boolean => {
-      return this.stageContent.tags.includes(uuid);
-    },
-    getTagUUIDs: (): string[] => {
-      return this.stageContent.tags;
-    },
-
-    /**
-     * 清理未引用的标签
-     */
-    updateTags: () => {
-      const uuids = this.stageContent.tags.slice();
-      for (const uuid of uuids) {
-        if (!this.stageContent.entities.hasId(uuid) && !this.stageContent.associations.hasId(uuid)) {
-          this.stageContent.tags.splice(this.stageContent.tags.indexOf(uuid), 1);
-        }
-      }
-    },
-
-    moveUpTag: (uuid: string) => {
-      const index = this.stageContent.tags.indexOf(uuid);
-      if (index !== -1 && index > 0) {
-        const temp = this.stageContent.tags[index - 1];
-        this.stageContent.tags[index - 1] = uuid;
-        this.stageContent.tags[index] = temp;
-        console.log("move up tag");
-      }
-    },
-    moveDownTag: (uuid: string) => {
-      const index = this.stageContent.tags.indexOf(uuid);
-      if (index !== -1 && index < this.stageContent.tags.length - 1) {
-        const temp = this.stageContent.tags[index + 1];
-        this.stageContent.tags[index + 1] = uuid;
-        this.stageContent.tags[index] = temp;
-        console.log("move down tag");
-      }
-    },
-  };
-
-  /**
-   * 销毁函数
-   * 以防开发过程中造成多开
-   */
-  destroy() {
-    this.stageContent.entities.clear();
-    this.stageContent.associations.clear();
-    this.stageContent.tags = [];
-  }
-
-  addTextNode(node: TextNode) {
-    this.stageContent.entities.addValue(node, node.uuid);
-  }
-  addUrlNode(node: UrlNode) {
-    this.stageContent.entities.addValue(node, node.uuid);
-  }
-  addImageNode(node: ImageNode) {
-    this.stageContent.entities.addValue(node, node.uuid);
-  }
-  addSection(section: Section) {
-    this.stageContent.entities.addValue(section, section.uuid);
-  }
-  addConnectPoint(point: ConnectPoint) {
-    this.stageContent.entities.addValue(point, point.uuid);
-  }
-  addAssociation(association: Association) {
-    this.stageContent.associations.addValue(association, association.uuid);
-  }
-  addLineEdge(edge: LineEdge) {
-    this.stageContent.associations.addValue(edge, edge.uuid);
-  }
-  addCrEdge(edge: CubicCatmullRomSplineEdge) {
-    this.stageContent.associations.addValue(edge, edge.uuid);
-  }
-  addPenStroke(penStroke: PenStroke) {
-    this.stageContent.entities.addValue(penStroke, penStroke.uuid);
-  }
-  addPortalNode(portalNode: PortalNode) {
-    this.stageContent.entities.addValue(portalNode, portalNode.uuid);
-  }
-
-  addEntity(entity: Entity) {
-    this.stageContent.entities.addValue(entity, entity.uuid);
+  add(stageObject: StageObject) {
+    this.project.stage.push(stageObject);
   }
 
   /**
@@ -406,8 +176,10 @@ export class StageManager {
       const newChildList = [];
 
       for (const childUUID of section.childrenUUIDs) {
-        if (this.stageContent.entities.hasId(childUUID)) {
-          const childObject = this.stageContent.entities.getById(childUUID);
+        if (this.project.stage.find((node) => node.uuid === childUUID)) {
+          const childObject = this.project.stage.find(
+            (node) => node.uuid === childUUID && node instanceof Entity,
+          ) as Entity;
           if (childObject) {
             newChildList.push(childObject);
           }
@@ -431,7 +203,7 @@ export class StageManager {
     }
 
     // 对tags进行更新
-    this.TagOptions.updateTags();
+    // TODO: this.TagOptions.updateTags();
   }
 
   getTextNodeByUUID(uuid: string): TextNode | null {
@@ -451,10 +223,10 @@ export class StageManager {
     return null;
   }
   isSectionByUUID(uuid: string): boolean {
-    return this.stageContent.entities.getById(uuid) instanceof Section;
+    return this.project.stage.find((node) => node.uuid === uuid) instanceof Section;
   }
   getSectionByUUID(uuid: string): Section | null {
-    const entity = this.stageContent.entities.getById(uuid);
+    const entity = this.get(uuid);
     if (entity instanceof Section) {
       return entity;
     }
@@ -465,11 +237,11 @@ export class StageManager {
    * 计算所有节点的中心点
    */
   getCenter(): Vector {
-    if (this.stageContent.entities.length === 0) {
+    if (this.project.stage.length === 0) {
       return Vector.getZero();
     }
     const allNodesRectangle = Rectangle.getBoundingRectangle(
-      this.stageContent.entities.valuesToArray().map((node) => node.collisionBox.getRectangle()),
+      this.project.stage.map((node) => node.collisionBox.getRectangle()),
     );
     return allNodesRectangle.center;
   }
@@ -478,7 +250,7 @@ export class StageManager {
    * 计算所有节点的大小
    */
   getSize(): Vector {
-    if (this.stageContent.entities.length === 0) {
+    if (this.project.stage.length === 0) {
       return new Vector(this.project.renderer.w, this.project.renderer.h);
     }
     const size = this.getBoundingRectangle().size;
@@ -491,7 +263,7 @@ export class StageManager {
    */
   getBoundingRectangle(): Rectangle {
     const rect = Rectangle.getBoundingRectangle(
-      Array.from(this.stageContent.entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
+      Array.from(this.project.stage).map((node) => node.collisionBox.getRectangle()),
     );
 
     return rect;
@@ -613,10 +385,10 @@ export class StageManager {
    * @returns
    */
   getSelectedEntities(): Entity[] {
-    return this.stageContent.entities.valuesToArray().filter((entity) => entity.isSelected);
+    return this.project.stage.filter((so) => so.isSelected && so instanceof Entity) as Entity[];
   }
   getSelectedAssociations(): Association[] {
-    return this.stageContent.associations.valuesToArray().filter((association) => association.isSelected);
+    return this.project.stage.filter((so) => so.isSelected && so instanceof Association) as Association[];
   }
   getSelectedStageObjects(): StageObject[] {
     const result: StageObject[] = [];
@@ -961,12 +733,12 @@ export class StageManager {
         continue;
       }
       this.deleteEdge(edge);
-      const undirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity([edge.target, edge.source]);
+      const undirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(this.project, [edge.target, edge.source]);
       undirectedEdge.text = edge.text;
       undirectedEdge.color = edge.color.clone();
       undirectedEdge.arrow = "outer";
       // undirectedEdge.isSelected = true;
-      this.addAssociation(undirectedEdge);
+      this.add(undirectedEdge);
     }
     this.project.stageObjectSelectCounter.update();
   }
@@ -992,7 +764,7 @@ export class StageManager {
         lineEdge.text = edge.text;
         lineEdge.color = edge.color.clone();
         this.deleteAssociation(edge);
-        this.addLineEdge(lineEdge);
+        this.add(lineEdge);
         this.updateReferences();
       }
     }
@@ -1025,40 +797,14 @@ export class StageManager {
    * ctrl + A 全选
    */
   selectAll() {
-    const allEntity = this.stageContent.entities.valuesToArray();
+    const allEntity = this.project.stage;
     for (const entity of allEntity) {
       entity.isSelected = true;
     }
-    const associations = this.stageContent.associations.valuesToArray();
-    this.project.effects.addEffect(TextRiseEffect.default(`${allEntity.length}个实体，${associations.length}个关系`));
   }
   clearSelectAll() {
-    for (const entity of this.stageContent.entities.valuesToArray()) {
+    for (const entity of this.project.stage) {
       entity.isSelected = false;
     }
-    for (const edge of this.stageContent.associations.valuesToArray()) {
-      edge.isSelected = false;
-    }
-  }
-
-  addPortalNodeToStage(otherPath: string) {
-    const uuid = v4();
-    const relativePath = PathString.getRelativePath(Stage.path.getFilePath(), otherPath);
-    if (relativePath === "") {
-      return false;
-    }
-    this.stageContent.entities.addValue(
-      new PortalNode(this.project, {
-        uuid: uuid,
-        title: PathString.dirPath(otherPath),
-        portalFilePath: relativePath,
-        location: [this.project.camera.location.x, this.project.camera.location.y],
-        size: [500, 500],
-        cameraScale: 1,
-      }),
-      uuid,
-    );
-    this.project.historyManager.recordStep();
-    return true;
   }
 }
