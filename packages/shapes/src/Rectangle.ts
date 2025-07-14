@@ -1,6 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { serializable } from "@graphif/serializer";
-import { Line, Shape } from ".";
+import { Line } from "./Line";
+import { Shape } from "./Shape";
 
 export class Rectangle extends Shape {
   @serializable

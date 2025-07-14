@@ -10,7 +10,7 @@
     "build": {
       "dependsOn": ["^build"]
     },
-    "@graphif/app#build": {
+    "@graphif/project-graph#build": {
       "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
       "outputs": ["dist/**"]
     },
@@ -21,12 +21,12 @@
     "@graphif/ui#build": {
       "outputs": ["dist/**"]
     },
-    "@graphif/app#tauri:build": {
+    "@graphif/project-graph#tauri:build": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/release/**"]
     },
-    "@graphif/app#tauri:build:android": {
+    "@graphif/project-graph#tauri:build:android": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/*-android/release/**"]
@@ -36,7 +36,7 @@
       "cache": false,
       "persistent": true
     },
-    "@graphif/app#tauri:dev": {
+    "@graphif/project-graph#tauri:dev": {
       "with": ["dev", "@graphif/docs#dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
       "cache": false,

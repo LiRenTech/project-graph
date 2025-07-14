@@ -1,5 +1,6 @@
 import { Vector } from "@graphif/data-structures";
-import { Line, Rectangle } from ".";
+import { Line } from "./Line";
+import { Rectangle } from "./Rectangle";
 
 /**
  * 可交互的 图形抽象类

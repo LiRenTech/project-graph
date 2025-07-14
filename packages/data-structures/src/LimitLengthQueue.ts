@@ -1,4 +1,4 @@
-import { Queue } from ".";
+import { Queue } from "./Queue";
 
 export class LimitLengthQueue<T> extends Queue<T> {
   constructor(private limitLength: number) {

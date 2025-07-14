@@ -1,5 +1,5 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { passExtraAtArg1, serializable } from "@graphif/serializer";
+import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
 import { Rectangle } from "@graphif/shapes";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Project } from "../../../Project";
@@ -17,6 +17,7 @@ import { Section } from "./Section";
  * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
  */
 @passExtraAtArg1
+@passObject
 export class TextNode extends ConnectableEntity implements ResizeAble {
   @serializable
   uuid: string;

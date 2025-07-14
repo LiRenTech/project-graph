@@ -362,6 +362,25 @@ importers:
         specifier: ~5.8.3
         version: 5.8.3
 
+  packages/project-file:
+    dependencies:
+      "@graphif/serializer":
+        specifier: workspace:*
+        version: link:../serializer
+      "@msgpack/msgpack":
+        specifier: ^3.1.2
+        version: 3.1.2
+      "@zip.js/zip.js":
+        specifier: ^2.7.63
+        version: 2.7.63
+    devDependencies:
+      tsdown:
+        specifier: ^0.12.9
+        version: 0.12.9(typescript@5.8.3)
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+
   packages/serializer:
     dependencies:
       "@graphif/vite-plugin-original-class-name":

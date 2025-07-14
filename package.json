@@ -13,8 +13,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "test": "pnpm --filter @graphif/app test",
-    "tauri": "pnpm --filter @graphif/app tauri",
+    "test": "pnpm --filter @graphif/project-graph test",
+    "tauri": "pnpm --filter @graphif/project-graph tauri",
     "prepublish": "pnpm run build"
   },
   "devDependencies": {

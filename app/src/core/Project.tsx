@@ -1,6 +1,6 @@
-import { deserialize } from "@graphif/serializer";
+import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
-import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader } from "@zip.js/zip.js";
+import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
 import { URI } from "vscode-uri";
 import { FileSystemProvider, Service } from "./interfaces/Service";
 import type { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
@@ -290,11 +290,18 @@ export class Project {
     // await writeFile(stashFilePath, encoded);
   }
   async save() {
-    // TODO: save
+    const serializedStage = this.stage.map((stageObject) => serialize(stageObject));
+    const encodedStage = this.encoder.encodeSharedRef(serializedStage);
+    const uwriter = new Uint8ArrayWriter();
+    const writer = new ZipWriter(uwriter);
+    writer.add("stage.msgpack", new Uint8ArrayReader(encodedStage));
+    await writer.close();
+    const fileContent = await uwriter.getData();
+    await this.fs.write(this.uri, fileContent);
   }
 
-  registerFileSystemProvider(scheme: string, provider: FileSystemProvider) {
-    this.fileSystemProviders.set(scheme, provider);
+  registerFileSystemProvider(scheme: string, provider: { new (...args: any[]): FileSystemProvider }) {
+    this.fileSystemProviders.set(scheme, new provider(this));
   }
   get fs(): FileSystemProvider {
     return this.fileSystemProviders.get(this.uri.scheme)!;

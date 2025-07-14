@@ -6,7 +6,7 @@ import { URI } from "vscode-uri";
 import { Dialog } from "../../components/dialog";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
-import { projectsAtom, store } from "../../state";
+import { activeProjectAtom, projectsAtom, store } from "../../state";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
@@ -62,7 +62,11 @@ export namespace GlobalMenu {
         store.set(projectsAtom, [...store.get(projectsAtom), project]);
       }),
       new Separator(),
-      new MenuItem("保存", <Save />),
+      new MenuItem("保存", <Save />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.save();
+      }),
       new MenuItem("另存为", <FileDown />),
     ]),
     new Menu("设置", <SettingsIcon />, [

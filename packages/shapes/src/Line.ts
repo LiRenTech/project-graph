@@ -1,5 +1,7 @@
 import { Vector } from "@graphif/data-structures";
-import { Circle, Rectangle, Shape } from ".";
+import { Circle } from "./Circle";
+import { Rectangle } from "./Rectangle";
+import { Shape } from "./Shape";
 
 export interface IntersectionResult {
   intersects: boolean;

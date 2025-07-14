@@ -1,11 +1,10 @@
 import { Vector } from "@graphif/data-structures";
-import { flattenAllValues, serializable } from "@graphif/serializer";
+import { serializable } from "@graphif/serializer";
 import { Line, Rectangle, Shape } from "@graphif/shapes";
 
 /**
  * 碰撞箱类
  */
-@flattenAllValues
 export class CollisionBox {
   @serializable
   shapes: Shape[] = [];

@@ -1,5 +1,7 @@
 import { Vector } from "@graphif/data-structures";
-import { Line, Rectangle, Shape } from ".";
+import { Line } from "./Line";
+import { Rectangle } from "./Rectangle";
+import { Shape } from "./Shape";
 
 /**
  * CR曲线形状

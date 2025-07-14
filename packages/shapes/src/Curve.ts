@@ -1,5 +1,7 @@
 import { Vector } from "@graphif/data-structures";
-import { Line, Rectangle, Shape } from ".";
+import { Line } from "./Line";
+import { Rectangle } from "./Rectangle";
+import { Shape } from "./Shape";
 
 /**
  * 贝塞尔曲线

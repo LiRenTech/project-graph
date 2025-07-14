@@ -1,4 +1,4 @@
-import { StringDict, Vector } from "@graphif/data-structures";
+import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
 import { Direction } from "../../../types/directions";
