@@ -8,7 +8,8 @@
   },
   "tasks": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "@graphif/project-graph#build": {
       "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
@@ -17,9 +18,6 @@
     "@graphif/docs#build": {
       "inputs": ["**/*"],
       "outputs": ["out"]
-    },
-    "@graphif/ui#build": {
-      "outputs": ["dist/**"]
     },
     "@graphif/project-graph#tauri:build": {
       "dependsOn": ["build"],
