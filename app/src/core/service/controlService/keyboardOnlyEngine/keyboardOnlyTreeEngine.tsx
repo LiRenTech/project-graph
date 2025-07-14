@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";

@@ -1,5 +1,4 @@
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
+import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Project } from "../../../../Project";
 import { Effect } from "../effectObject";
 

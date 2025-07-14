@@ -1,4 +1,4 @@
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Effect } from "../../../../service/feedbackService/effectEngine/effectObject";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";

@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Project } from "../../../Project";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 

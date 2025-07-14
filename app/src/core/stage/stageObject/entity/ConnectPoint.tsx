@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";

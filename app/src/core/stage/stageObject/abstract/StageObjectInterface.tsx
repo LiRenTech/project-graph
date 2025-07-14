@@ -2,8 +2,8 @@
  * 此文件记录各种关于舞台场景的特性
  */
 
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 export interface ResizeAble {
   /**

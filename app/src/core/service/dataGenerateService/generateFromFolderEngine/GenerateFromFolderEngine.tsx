@@ -1,4 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
+import { Color } from "@graphif/data-structures";
 import { service } from "../../../Project";
 
 @service("generateFromFolder")

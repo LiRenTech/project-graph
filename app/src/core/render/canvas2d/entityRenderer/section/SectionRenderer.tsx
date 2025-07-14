@@ -1,8 +1,6 @@
+import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 import { getTextSize } from "../../../../../utils/font";
-import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
-import { CubicBezierCurve } from "../../../../dataStruct/shape/Curve";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Renderer } from "../../renderer";

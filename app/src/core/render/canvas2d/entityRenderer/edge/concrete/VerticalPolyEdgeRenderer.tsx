@@ -1,7 +1,5 @@
-import { Color } from "../../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../../dataStruct/Vector";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { Project, service } from "../../../../../Project";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";

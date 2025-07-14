@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";

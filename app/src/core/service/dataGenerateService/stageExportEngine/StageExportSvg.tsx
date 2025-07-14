@@ -1,9 +1,8 @@
+import { Color, colorInvert, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { Path } from "../../../../utils/path";
-import { Color, colorInvert } from "../../../dataStruct/Color";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";

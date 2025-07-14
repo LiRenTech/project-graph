@@ -1,10 +1,8 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { CubicCatmullRomSpline, Rectangle } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
-import { Color } from "../../../dataStruct/Color";
-import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";

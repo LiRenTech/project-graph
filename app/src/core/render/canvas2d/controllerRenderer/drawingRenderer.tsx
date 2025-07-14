@@ -1,5 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
-import { Vector } from "../../../dataStruct/Vector";
+import { Color, Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { MouseLocation } from "../../../service/controlService/MouseLocation";
 import { Settings } from "../../../service/Settings";

@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@generouted/react-router": "^1.20.0",
+    "@graphif/data-structures": "workspace:^",
     "@graphif/serializer": "workspace:^",
+    "@graphif/shapes": "workspace:^",
     "@graphif/vite-plugin-original-class-name": "workspace:^",
     "@headlessui/react": "^2.2.4",
     "@marsidev/react-turnstile": "^1.1.0",

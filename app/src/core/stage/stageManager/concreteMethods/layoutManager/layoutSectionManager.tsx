@@ -1,4 +1,4 @@
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { ConnectableEntity } from "../../../stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stageObject/entity/Section";
 import { GraphMethods } from "../../basicMethods/GraphMethods";

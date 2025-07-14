@@ -1,8 +1,5 @@
-import { Color } from "../../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
-import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
-import { Line } from "../../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../../dataStruct/Vector";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, SymmetryCurve } from "@graphif/shapes";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";

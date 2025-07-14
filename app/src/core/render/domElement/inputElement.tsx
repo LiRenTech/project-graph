@@ -1,5 +1,5 @@
+import { Vector } from "@graphif/data-structures";
 import { getEnterKey } from "../../../utils/keyboardFunctions";
-import { Vector } from "../../dataStruct/Vector";
 import { Project, service } from "../../Project";
 import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";

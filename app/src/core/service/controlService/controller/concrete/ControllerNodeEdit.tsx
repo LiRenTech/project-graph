@@ -1,9 +1,9 @@
+import { Vector } from "@graphif/data-structures";
 import { open } from "@tauri-apps/plugin-shell";
 import { Dialog } from "../../../../../components/dialog";
 import { Path } from "../../../../../utils/path";
 import { PathString } from "../../../../../utils/pathString";
 import { isMac, isWeb } from "../../../../../utils/platform";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";

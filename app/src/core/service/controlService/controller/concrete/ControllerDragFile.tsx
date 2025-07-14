@@ -1,10 +1,9 @@
+import { Color, Vector } from "@graphif/data-structures";
 import { writeFile } from "@tauri-apps/plugin-fs";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../../components/dialog";
 import { Path } from "../../../../../utils/path";
 import { PathString } from "../../../../../utils/pathString";
-import { Color } from "../../../../dataStruct/Color";
-import { Vector } from "../../../../dataStruct/Vector";
 import { ProjectFormatUpgrader } from "../../../../stage/ProjectFormatUpgrader";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";

@@ -1,10 +1,9 @@
+import { StringDict, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
 import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
 import { PathString } from "../../../utils/pathString";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { StringDict } from "../../dataStruct/StringDict";
-import { Vector } from "../../dataStruct/Vector";
 import { Project, service } from "../../Project";
 import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";

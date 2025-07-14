@@ -1,6 +1,4 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Project } from "../../../../Project";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { Effect } from "../effectObject";

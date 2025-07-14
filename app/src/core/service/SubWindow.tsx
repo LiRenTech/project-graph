@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { atom, useAtomValue } from "jotai";
 import { store } from "../../state";
-import { Rectangle } from "../dataStruct/shape/Rectangle";
-import { Vector } from "../dataStruct/Vector";
 
 export namespace SubWindow {
   // export enum IdEnum {}

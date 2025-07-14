@@ -1,7 +1,5 @@
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, Rectangle } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";

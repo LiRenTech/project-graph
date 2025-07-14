@@ -1,5 +1,5 @@
+import { Vector } from "@graphif/data-structures";
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 /**

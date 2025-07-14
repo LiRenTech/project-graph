@@ -1,10 +1,7 @@
+import { Color, MonoStack, ProgressNumber, Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { MarkdownNode, parseMarkdownToJSON } from "../../../../utils/markdownParse";
-import { Color } from "../../../dataStruct/Color";
-import { MonoStack } from "../../../dataStruct/MonoStack";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Settings } from "../../../service/Settings";

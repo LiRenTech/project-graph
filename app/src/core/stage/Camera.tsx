@@ -1,10 +1,9 @@
+import { Queue, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Dialog } from "../../components/dialog";
 import { Direction } from "../../types/directions";
 import { isMac } from "../../utils/platform";
 import { NumberFunctions } from "../algorithm/numberFunctions";
-import { Queue } from "../dataStruct/Queue";
-import { Rectangle } from "../dataStruct/shape/Rectangle";
-import { Vector } from "../dataStruct/Vector";
 import { Project, service } from "../Project";
 import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { easeOutExpo } from "../service/feedbackService/effectEngine/mathTools/easings";

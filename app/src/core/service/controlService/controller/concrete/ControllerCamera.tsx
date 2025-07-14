@@ -2,11 +2,10 @@
  * 存放具体的控制器实例
  */
 
+import { LimitLengthQueue, Vector } from "@graphif/data-structures";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isIpad, isMac } from "../../../../../utils/platform";
 import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
-import { LimitLengthQueue } from "../../../../dataStruct/LimitLengthQueue";
-import { Vector } from "../../../../dataStruct/Vector";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";

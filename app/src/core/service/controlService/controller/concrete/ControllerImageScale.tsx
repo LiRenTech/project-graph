@@ -1,5 +1,5 @@
+import { Vector } from "@graphif/data-structures";
 import { isMac } from "../../../../../utils/platform";
-import { Vector } from "../../../../dataStruct/Vector";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 import { ControllerClass } from "../ControllerClass";

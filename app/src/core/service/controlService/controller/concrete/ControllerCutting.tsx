@@ -1,9 +1,7 @@
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { Association } from "../../../../stage/stageObject/abstract/Association";

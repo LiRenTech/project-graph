@@ -1,5 +1,5 @@
+import { Vector } from "@graphif/data-structures";
 import { Dialog } from "../../../../../components/dialog";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { ControllerClass } from "../ControllerClass";
 

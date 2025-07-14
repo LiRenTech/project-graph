@@ -1,7 +1,5 @@
+import { Color, LruCache, Vector } from "@graphif/data-structures";
 import { FONT, replaceTextWhenProtect } from "../../../../utils/font";
-import { LruCache } from "../../../dataStruct/Cache";
-import { Color } from "../../../dataStruct/Color";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 
 /**

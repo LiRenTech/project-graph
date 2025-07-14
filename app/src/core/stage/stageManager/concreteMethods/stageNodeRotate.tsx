@@ -1,6 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../dataStruct/Vector";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";

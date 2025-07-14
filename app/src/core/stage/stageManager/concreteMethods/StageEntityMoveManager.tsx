@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { EntityJumpMoveEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";

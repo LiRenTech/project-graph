@@ -1,10 +1,8 @@
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { passExtraAtArg1, serializable } from "@graphif/serializer";
+import { Rectangle } from "@graphif/shapes";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Project } from "../../../Project";
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../dataStruct/Vector";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";

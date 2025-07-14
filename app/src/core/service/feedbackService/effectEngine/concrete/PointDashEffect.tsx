@@ -1,6 +1,4 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Project } from "../../../../Project";
 import { EffectParticle } from "../effectElements/effectParticle";
 import { Effect } from "../effectObject";

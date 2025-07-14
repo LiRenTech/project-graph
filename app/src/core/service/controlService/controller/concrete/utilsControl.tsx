@@ -1,8 +1,7 @@
+import { colorInvert, Vector } from "@graphif/data-structures";
 import AutoCompleteWindow from "../../../../../pages/_sub_window/AutoCompleteWindow";
 import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
-import { colorInvert } from "../../../../dataStruct/Color";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";

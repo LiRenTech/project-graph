@@ -1,3 +1,4 @@
+import { Color, Vector } from "@graphif/data-structures";
 import { Dialog } from "../../../../components/dialog";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
 import FindWindow from "../../../../pages/_sub_window/FindWindow";
@@ -8,8 +9,6 @@ import { Direction } from "../../../../types/directions";
 import { openBrowserOrFile } from "../../../../utils/externalOpen";
 import { openDevtools, writeStdout } from "../../../../utils/otherApi";
 import { isMac } from "../../../../utils/platform";
-import { Color } from "../../../dataStruct/Color";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { PenStrokeMethods } from "../../../stage/stageManager/basicMethods/PenStrokeMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";

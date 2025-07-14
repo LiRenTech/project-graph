@@ -1,5 +1,5 @@
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 

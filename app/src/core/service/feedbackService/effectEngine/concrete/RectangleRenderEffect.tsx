@@ -1,6 +1,5 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Color, mixColors, ProgressNumber } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Effect } from "../effectObject";

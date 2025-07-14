@@ -1,5 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Color, ProgressNumber } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";

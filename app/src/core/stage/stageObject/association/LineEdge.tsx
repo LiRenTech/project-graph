@@ -1,10 +1,9 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Project } from "../../../Project";
-import { Color } from "../../../dataStruct/Color";
-import { Vector } from "../../../dataStruct/Vector";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";

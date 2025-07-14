@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { isMac } from "../../../../../utils/platform";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { Settings } from "../../../Settings";

@@ -1,7 +1,6 @@
+import { Color, mixColors, ProgressNumber } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Random } from "../../../../algorithm/random";
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Project } from "../../../../Project";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { Effect } from "../effectObject";

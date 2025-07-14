@@ -1,9 +1,7 @@
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";

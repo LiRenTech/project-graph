@@ -1,4 +1,4 @@
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { ControllerClass } from "../ControllerClass";

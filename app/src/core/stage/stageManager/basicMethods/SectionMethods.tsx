@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Section } from "../../stageObject/entity/Section";

@@ -1,9 +1,8 @@
+import { ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { Direction } from "../../../../../types/directions";
 import { isMac } from "../../../../../utils/platform";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";

@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import { appScale } from "../../../../utils/platform";
 import { sleep } from "../../../../utils/sleep";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
 

@@ -1,4 +1,4 @@
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 // ...
 import { CursorNameEnum } from "../../../../types/cursors";

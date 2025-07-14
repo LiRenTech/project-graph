@@ -1,8 +1,5 @@
-import { mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
+import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, Rectangle } from "@graphif/shapes";
 import { Project } from "../../../../Project";
 import { Effect } from "../effectObject";
 

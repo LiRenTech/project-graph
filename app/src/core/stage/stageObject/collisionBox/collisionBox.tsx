@@ -1,8 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import { flattenAllValues, serializable } from "@graphif/serializer";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Shape } from "../../../dataStruct/shape/Shape";
-import { Vector } from "../../../dataStruct/Vector";
+import { Line, Rectangle, Shape } from "@graphif/shapes";
 
 /**
  * 碰撞箱类

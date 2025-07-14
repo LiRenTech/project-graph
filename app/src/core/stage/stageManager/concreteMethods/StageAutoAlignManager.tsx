@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Dialog } from "../../../../components/dialog";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";

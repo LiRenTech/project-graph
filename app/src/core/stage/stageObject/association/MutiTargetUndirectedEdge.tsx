@@ -1,11 +1,8 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Line, Rectangle, Shape } from "@graphif/shapes";
 import { v4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
-import { Color } from "../../../dataStruct/Color";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Shape } from "../../../dataStruct/shape/Shape";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";

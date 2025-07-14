@@ -1,5 +1,5 @@
-import { Color } from "../../dataStruct/Color";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Color } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 测试canvas上叠放dom元素

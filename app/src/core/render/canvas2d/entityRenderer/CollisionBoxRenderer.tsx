@@ -1,10 +1,5 @@
-import { Color } from "../../../dataStruct/Color";
-import { Circle } from "../../../dataStruct/shape/Circle";
-import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
-import { SymmetryCurve } from "../../../dataStruct/shape/Curve";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { Color, Vector } from "@graphif/data-structures";
+import { Circle, CubicCatmullRomSpline, Line, Rectangle, SymmetryCurve } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
 import { CollisionBox } from "../../../stage/stageObject/collisionBox/collisionBox";
 

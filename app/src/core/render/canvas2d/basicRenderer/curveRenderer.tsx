@@ -1,6 +1,5 @@
-import { Color } from "../../../dataStruct/Color";
-import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
-import { Vector } from "../../../dataStruct/Vector";
+import { Color, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, SymmetryCurve } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
 import { PenStrokeSegment } from "../../../stage/stageObject/entity/PenStroke";
 

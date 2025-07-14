@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
 import { isMac } from "../../../../utils/platform";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { StageDumper } from "../../../stage/StageDumper";
 import { SerializedDataAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";

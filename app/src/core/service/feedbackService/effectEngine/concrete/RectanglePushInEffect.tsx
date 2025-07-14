@@ -1,6 +1,5 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Color, ProgressNumber } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Project } from "../../../../Project";
 import { Effect } from "../effectObject";
 import { LineCuttingEffect } from "./LineCuttingEffect";

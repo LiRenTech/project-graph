@@ -1,5 +1,6 @@
 import { Vector } from "@graphif/data-structures";
 import { Line, Rectangle, Shape } from ".";
+// TODO: NumericalIntegration
 import { NumericalIntegration } from "../../algorithm/numericalIntegration";
 
 /**

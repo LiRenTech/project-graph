@@ -1,7 +1,6 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Color } from "../../../dataStruct/Color";
-import { Line } from "../../../dataStruct/shape/Line";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";

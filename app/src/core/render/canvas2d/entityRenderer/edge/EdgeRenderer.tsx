@@ -1,6 +1,6 @@
-import { Color } from "../../../../dataStruct/Color";
+import { Color } from "@graphif/data-structures";
 
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
 import { CubicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";

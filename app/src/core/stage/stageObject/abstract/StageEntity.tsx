@@ -1,5 +1,5 @@
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { StageObject } from "./StageObject";
 /**
  * 一切独立存在、能被移动的东西，且放在框里能被连带移动的东西

@@ -1,7 +1,6 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
-import { Color } from "../../../dataStruct/Color";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { SvgRenderer } from "../../../render/canvas2d/basicRenderer/svgRenderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";

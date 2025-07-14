@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
 import { Store } from "@tauri-apps/plugin-store";
 import { matchEmacsKey } from "../../../../utils/emacs";
 import { createStore } from "../../../../utils/store";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 
 /**

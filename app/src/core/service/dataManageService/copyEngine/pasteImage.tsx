@@ -1,7 +1,7 @@
+import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { PathString } from "../../../../utils/pathString";
-import { Vector } from "../../../dataStruct/Vector";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Settings } from "../../Settings";
 

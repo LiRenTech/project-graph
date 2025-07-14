@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { isMac } from "../../../../utils/platform";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";

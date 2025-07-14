@@ -1,5 +1,5 @@
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";

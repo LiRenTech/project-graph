@@ -1,5 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Color, ProgressNumber } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Association } from "../../stageObject/abstract/Association";

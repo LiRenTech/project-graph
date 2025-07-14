@@ -1,5 +1,5 @@
+import { Vector } from "@graphif/data-structures";
 import { isMac } from "../../../../../../utils/platform";
-import { Vector } from "../../../../../dataStruct/Vector";
 import { Project } from "../../../../../Project";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";

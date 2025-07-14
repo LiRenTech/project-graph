@@ -1,10 +1,8 @@
+import { Color, mixColors, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 import { getTextSize } from "../../../utils/font";
 import { appScale, isFrame } from "../../../utils/platform";
 import { Project, service } from "../../Project";
-import { Color, mixColors } from "../../dataStruct/Color";
-import { Vector } from "../../dataStruct/Vector";
-import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";

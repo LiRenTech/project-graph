@@ -1,7 +1,5 @@
-import { Color, mixColors } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../../dataStruct/Vector";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { Project } from "../../../../Project";
 import { Effect } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";

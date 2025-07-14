@@ -1,6 +1,5 @@
+import { Color, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
-import { Color } from "../../../../dataStruct/Color";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";

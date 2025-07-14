@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import tipsJson from "../../../assets/projectGraphTips.json";
 import { Serialized } from "../../../types/node";
-import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 // import { getRectangleFromSerializedEntities } from "../dataManageService/copyEngine/copyEngine";
 import { Dialog } from "../../../components/dialog";

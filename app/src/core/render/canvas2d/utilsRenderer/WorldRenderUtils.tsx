@@ -1,8 +1,5 @@
-import { Color } from "../../../dataStruct/Color";
-import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
-import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Vector } from "../../../dataStruct/Vector";
+import { Color, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, CubicCatmullRomSpline, Rectangle, SymmetryCurve } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
 
 /**

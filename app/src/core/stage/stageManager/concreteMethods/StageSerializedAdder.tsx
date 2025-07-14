@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
-import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";

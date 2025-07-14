@@ -1,7 +1,6 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 import { ConvexHull } from "../../../../algorithm/geometry/convexHull";
-import { Color } from "../../../../dataStruct/Color";
-import { Line } from "../../../../dataStruct/shape/Line";
-import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Renderer } from "../../renderer";

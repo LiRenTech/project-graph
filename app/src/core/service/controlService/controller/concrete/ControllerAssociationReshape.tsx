@@ -1,6 +1,6 @@
+import { Vector } from "@graphif/data-structures";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
-import { Vector } from "../../../../dataStruct/Vector";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";

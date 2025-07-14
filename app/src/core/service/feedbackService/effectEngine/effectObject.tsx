@@ -1,4 +1,4 @@
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { ProgressNumber } from "@graphif/data-structures";
 import { Project } from "../../../Project";
 
 /**

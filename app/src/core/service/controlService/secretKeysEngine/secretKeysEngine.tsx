@@ -1,12 +1,10 @@
+import { averageColors, Color, Queue, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { mkdir, readDir } from "@tauri-apps/plugin-fs";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { Project, service } from "../../../Project";
 import { Random } from "../../../algorithm/random";
-import { averageColors, Color } from "../../../dataStruct/Color";
-import { Queue } from "../../../dataStruct/Queue";
-import { Vector } from "../../../dataStruct/Vector";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CubicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
