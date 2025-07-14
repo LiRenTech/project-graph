@@ -1,4 +1,4 @@
-import { flattenAllValues, serializable } from "../Serializer";
+import { flattenAllValues, serializable } from "@graphif/serializer";
 
 @flattenAllValues
 export class Vector {

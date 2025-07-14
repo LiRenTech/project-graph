@@ -7,25 +7,25 @@
   },
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "type-check"]
+      "dependsOn": ["^build"]
     },
-    "@pg/app#build": {
+    "@graphif/app#build": {
       "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
       "outputs": ["dist/**"]
     },
-    "@pg/docs#build": {
+    "@graphif/docs#build": {
       "inputs": ["**/*"],
       "outputs": ["out"]
     },
-    "@pg/ui#build": {
+    "@graphif/ui#build": {
       "outputs": ["dist/**"]
     },
-    "@pg/app#tauri:build": {
+    "@graphif/app#tauri:build": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/release/**"]
     },
-    "@pg/app#tauri:build:android": {
+    "@graphif/app#tauri:build:android": {
       "dependsOn": ["build"],
       "inputs": ["src-tauri/**/*"],
       "outputs": ["src-tauri/target/*-android/release/**"]
@@ -35,17 +35,14 @@
       "cache": false,
       "persistent": true
     },
-    "@pg/app#tauri:dev": {
-      "with": ["dev", "@pg/docs#dev"],
+    "@graphif/app#tauri:dev": {
+      "with": ["dev", "@graphif/docs#dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
       "cache": false,
       "persistent": true
     },
     "type-check": {
       "inputs": ["app/src/**/*.tsx"]
-    },
-    "@pg/ui#build-storybook": {
-      "outputs": ["packages/ui/storybook-static/**"]
     }
   }
 }

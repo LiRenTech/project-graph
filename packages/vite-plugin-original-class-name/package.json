@@ -1,5 +1,5 @@
 {
-  "name": "@pglib/vite-plugin-original-class-name",
+  "name": "@graphif/vite-plugin-original-class-name",
   "description": "Add original class names to the dist code",
   "version": "1.0.0",
   "type": "module",

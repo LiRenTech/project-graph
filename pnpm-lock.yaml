@@ -58,6 +58,12 @@ importers:
       "@generouted/react-router":
         specifier: ^1.20.0
         version: 1.20.0(react-router@7.6.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
+      "@graphif/serializer":
+        specifier: workspace:^
+        version: link:../packages/serializer
+      "@graphif/vite-plugin-original-class-name":
+        specifier: workspace:^
+        version: link:../packages/vite-plugin-original-class-name
       "@headlessui/react":
         specifier: ^2.2.4
         version: 2.2.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -70,9 +76,6 @@ importers:
       "@octokit/rest":
         specifier: ^22.0.0
         version: 22.0.0
-      "@pglib/vite-plugin-original-class-name":
-        specifier: workspace:^
-        version: link:../packages/vite-plugin-original-class-name
       "@tauri-apps/api":
         specifier: ^2.6.0
         version: 2.6.0
@@ -173,12 +176,12 @@ importers:
         specifier: ^3.25.74
         version: 3.25.74
     devDependencies:
+      "@graphif/vite-plugin-pg-theme":
+        specifier: workspace:*
+        version: link:../packages/vite-plugin-pg-theme
       "@modyfi/vite-plugin-yaml":
         specifier: ^1.1.1
         version: 1.1.1(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))(rollup@4.44.2)
-      "@pglib/vite-plugin-pg-theme":
-        specifier: workspace:*
-        version: link:../packages/vite-plugin-pg-theme
       "@swc-jotai/react-refresh":
         specifier: ^0.3.0
         version: 0.3.0
@@ -339,6 +342,22 @@ importers:
         version: 0.25.2
       typescript:
         specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/serializer:
+    dependencies:
+      "@graphif/vite-plugin-original-class-name":
+        specifier: workspace:^
+        version: link:../vite-plugin-original-class-name
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+    devDependencies:
+      tsdown:
+        specifier: ^0.12.9
+        version: 0.12.9(typescript@5.8.3)
+      typescript:
+        specifier: ~5.8.3
         version: 5.8.3
 
   packages/vite-plugin-original-class-name:

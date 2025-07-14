@@ -1,5 +1,5 @@
+import { flattenAllValues, serializable } from "@graphif/serializer";
 import { Serialized } from "../../types/node";
-import { flattenAllValues, serializable } from "../Serializer";
 
 /**
  * 颜色对象

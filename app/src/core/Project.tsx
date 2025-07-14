@@ -1,3 +1,4 @@
+import { deserialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader } from "@zip.js/zip.js";
 import { URI } from "vscode-uri";
@@ -27,7 +28,6 @@ import type { RenderUtils } from "./render/canvas2d/utilsRenderer/RenderUtils";
 import type { SearchContentHighlightRenderer } from "./render/canvas2d/utilsRenderer/searchContentHighlightRenderer";
 import type { WorldRenderUtils } from "./render/canvas2d/utilsRenderer/WorldRenderUtils";
 import type { InputElement } from "./render/domElement/inputElement";
-import { Serializer } from "./Serializer";
 import type { AutoLayoutFastTree } from "./service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import type { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
 import type { ControllerUtils } from "./service/controlService/controller/concrete/utilsControl";
@@ -146,7 +146,7 @@ export class Project {
             const stageRawData = await entry.getData!(new Uint8ArrayWriter());
             const decoded = this.decoder.decode(stageRawData) as any[];
             for (const serializedStageObject of decoded) {
-              const stageObject = Serializer.deserialize(this, serializedStageObject);
+              const stageObject = deserialize(this, serializedStageObject);
               this.stage.push(stageObject);
             }
           }

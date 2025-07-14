@@ -13,8 +13,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "test": "pnpm --filter @pg/app test",
-    "tauri": "pnpm --filter @pg/app tauri"
+    "test": "pnpm --filter @graphif/app test",
+    "tauri": "pnpm --filter @graphif/app tauri"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

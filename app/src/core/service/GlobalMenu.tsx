@@ -1,3 +1,4 @@
+import { deserialize, serialize } from "@graphif/serializer";
 import { open } from "@tauri-apps/plugin-dialog";
 import { Bot, ExternalLink, File, FileDown, FilePlus, FolderOpen, Save, SettingsIcon, TestTube2 } from "lucide-react";
 import { ReactNode } from "react";
@@ -8,7 +9,6 @@ import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { projectsAtom, store } from "../../state";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
-import { Serializer } from "../Serializer";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
 
 export namespace GlobalMenu {
@@ -73,9 +73,9 @@ export namespace GlobalMenu {
         console.log("=========test serialize");
         const project = Project.newDraft();
         const obj = new TextNode(project, {});
-        const data = Serializer.serialize(obj);
+        const data = serialize(obj);
         console.log(data);
-        const obj2 = Serializer.deserialize(project, data);
+        const obj2 = deserialize(data, project);
         console.log("=========test deserialize");
         console.log(obj2);
       }),

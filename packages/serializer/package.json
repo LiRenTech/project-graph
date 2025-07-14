@@ -1,5 +1,6 @@
 {
-  "name": "@graphif/vite-plugin-pg-theme",
+  "name": "@graphif/serializer",
+  "description": "Serialize instances to objects",
   "version": "1.0.0",
   "type": "module",
   "files": [
@@ -19,13 +20,10 @@
   },
   "devDependencies": {
     "tsdown": "^0.12.9",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.2"
+    "typescript": "~5.8.3"
   },
   "dependencies": {
-    "yaml": "^2.8.0"
-  },
-  "peerDependencies": {
-    "vite": "^7.0.2"
+    "@graphif/vite-plugin-original-class-name": "workspace:^",
+    "reflect-metadata": "^0.2.2"
   }
 }

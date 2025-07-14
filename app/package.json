@@ -17,11 +17,12 @@
   },
   "dependencies": {
     "@generouted/react-router": "^1.20.0",
+    "@graphif/serializer": "workspace:^",
+    "@graphif/vite-plugin-original-class-name": "workspace:^",
     "@headlessui/react": "^2.2.4",
     "@marsidev/react-turnstile": "^1.1.0",
     "@msgpack/msgpack": "^3.1.2",
     "@octokit/rest": "^22.0.0",
-    "@graphif/vite-plugin-original-class-name": "workspace:^",
     "@tauri-apps/api": "^2.6.0",
     "@tauri-apps/plugin-cli": "~2.4.0",
     "@tauri-apps/plugin-clipboard-manager": "^2.3.0",
@@ -57,8 +58,8 @@
     "zod": "^3.25.74"
   },
   "devDependencies": {
-    "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@graphif/vite-plugin-pg-theme": "workspace:*",
+    "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@swc-jotai/react-refresh": "^0.3.0",
     "@tailwindcss/vite": "^4.1.11",
     "@tauri-apps/cli": "^2.6.2",

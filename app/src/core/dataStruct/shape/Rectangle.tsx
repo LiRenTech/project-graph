@@ -1,4 +1,4 @@
-import { flattenAllValues, serializable } from "../../Serializer";
+import { flattenAllValues, serializable } from "@graphif/serializer";
 import { Vector } from "../Vector";
 import { Line } from "./Line";
 import { Shape } from "./Shape";
