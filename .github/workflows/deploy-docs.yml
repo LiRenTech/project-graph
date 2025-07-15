@@ -1,4 +1,4 @@
-name: Deploy Worker
+name: Deploy docs
 on:
   push:
     branches:
@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
