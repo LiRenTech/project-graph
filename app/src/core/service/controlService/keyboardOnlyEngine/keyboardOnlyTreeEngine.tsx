@@ -49,7 +49,7 @@ export class KeyboardOnlyTreeEngine {
       size: [rootNode instanceof TextNode ? rootNode.collisionBox.getRectangle().width : 100, 100],
       sizeAdjust: rootNode instanceof TextNode ? rootNode.sizeAdjust : "auto",
     });
-    this.project.stageManager.addTextNode(newNode);
+    this.project.stageManager.add(newNode);
 
     // 如果是在框里，则把新生长的节点也纳入到框里
     const fatherSections = this.project.sectionMethods.getFatherSections(rootNode);
@@ -123,7 +123,7 @@ export class KeyboardOnlyTreeEngine {
       size: [parent instanceof TextNode ? parent.collisionBox.getRectangle().width : 100, 100],
       sizeAdjust: parent instanceof TextNode ? parent.sizeAdjust : "auto",
     });
-    this.project.stageManager.addTextNode(newNode);
+    this.project.stageManager.add(newNode);
     // 如果是在框里，则把新生长的节点也纳入到框里
     const fatherSections = this.project.sectionMethods.getFatherSections(parent);
     for (const section of fatherSections) {

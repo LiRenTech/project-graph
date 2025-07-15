@@ -64,7 +64,7 @@ export class NodeConnector {
       sourceRectRate: sourceRectRate || [0.5, 0.5],
     });
 
-    this.project.stageManager.addLineEdge(newEdge);
+    this.project.stageManager.add(newEdge);
 
     this.project.stageManager.updateReferences();
   }
@@ -74,7 +74,7 @@ export class NodeConnector {
       return;
     }
     const newEdge = CubicCatmullRomSplineEdge.fromTwoEntity(this.project, fromNode, toNode);
-    this.project.stageManager.addCrEdge(newEdge);
+    this.project.stageManager.add(newEdge);
     this.project.stageManager.updateReferences();
   }
 

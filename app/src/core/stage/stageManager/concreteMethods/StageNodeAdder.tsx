@@ -41,7 +41,7 @@ export class NodeAdder {
     node.color = await this.getAutoColor();
     // 将node本身向左上角移动，使其居中
     node.moveTo(node.rectangle.location.subtract(node.rectangle.size.divide(2)));
-    this.project.stageManager.addTextNode(node);
+    this.project.stageManager.add(node);
 
     for (const section of addToSections) {
       section.children.push(node);
@@ -156,7 +156,7 @@ export class NodeAdder {
       uuid: newUUID,
       location: [clickWorldLocation.x, clickWorldLocation.y],
     });
-    this.project.stageManager.addConnectPoint(connectPoint);
+    this.project.stageManager.add(connectPoint);
     for (const section of addToSections) {
       section.children.push(connectPoint);
       section.childrenUUIDs.push(connectPoint.uuid);
@@ -198,7 +198,7 @@ export class NodeAdder {
         location: [diffLocation.x + randomRadius * Math.random(), diffLocation.y + randomRadius * Math.random()],
         size: [100, 100],
       });
-      this.project.stageManager.addTextNode(node);
+      this.project.stageManager.add(node);
       nodeDict.set(name, node);
       return node;
     };
@@ -297,7 +297,7 @@ export class NodeAdder {
     });
     const nodeStack = new MonoStack<TextNode>();
     nodeStack.push(rootNode, -1);
-    this.project.stageManager.addTextNode(rootNode);
+    this.project.stageManager.add(rootNode);
     // 遍历每一行
     for (let yIndex = 0; yIndex < lines.length; yIndex++) {
       const line = lines[yIndex];
@@ -318,7 +318,7 @@ export class NodeAdder {
         location: [indent * 50 + diffLocation.x, yIndex * 100 + diffLocation.y],
         size: [100, 100],
       });
-      this.project.stageManager.addTextNode(node);
+      this.project.stageManager.add(node);
 
       // 检查栈
       // 保持一个严格单调栈
@@ -384,7 +384,7 @@ export class NodeAdder {
         location: [diffLocation.x + deepLevel * 50, diffLocation.y + visitedCount * 100],
         size: [100, 100],
       });
-      this.project.stageManager.addTextNode(node);
+      this.project.stageManager.add(node);
       monoStack.push(node, deepLevel);
       // 连接父节点
       const fatherNode = monoStack.unsafeGet(monoStack.length - 2);

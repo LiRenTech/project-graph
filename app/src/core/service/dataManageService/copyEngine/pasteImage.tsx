@@ -43,7 +43,7 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
       location: [mouseLocation.x, mouseLocation.y],
       path: `${imageFileName}.png`,
     });
-    this.project.stageManager.addImageNode(imageNode);
+    this.project.stageManager.add(imageNode);
   }, 100);
 }
 

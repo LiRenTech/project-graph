@@ -50,14 +50,14 @@ export class SerializedDataAdder {
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
-        this.project.stageManager.addEntity(entityObject);
+        this.project.stageManager.add(entityObject);
       }
     }
     for (const edge of updatedSerializedData.associations) {
       if (Serialized.isLineEdge(edge)) {
-        this.project.stageManager.addLineEdge(new LineEdge(this.project, edge));
+        this.project.stageManager.add(new LineEdge(this.project, edge));
       } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
-        this.project.stageManager.addCrEdge(new CubicCatmullRomSplineEdge(this.project, edge));
+        this.project.stageManager.add(new CubicCatmullRomSplineEdge(this.project, edge));
       }
     }
     this.project.stageManager.updateReferences();

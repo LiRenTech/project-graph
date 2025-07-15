@@ -45,16 +45,20 @@ export function serialize(obj: any): any {
   } else if (obj === null) {
     return null;
   } else if (typeof obj === "object") {
-    const result: any = {};
+    const className = getOriginalNameOf(obj.constructor);
+    if (!className) {
+      throw TypeError("[Serializer] Cannot find class name of", obj);
+    }
+    const result: any = {
+      _: className,
+    };
     for (const key in obj) {
       if (!Reflect.hasMetadata(serializableSymbol, obj, key)) continue;
-      if (!Object.hasOwn(obj, key)) continue;
       result[key] = serialize(obj[key]);
-      result._ = getOriginalNameOf(obj.constructor);
     }
     return result;
   } else {
-    throw TypeError("[Serializer] 不支持的类型", obj);
+    throw TypeError("[Serializer] Unsupported value type", obj);
   }
 }
 
@@ -62,7 +66,7 @@ export function deserialize(json: Record<string, any>, extra?: any): any {
   const className = json._;
   const class_ = classes.get(className);
   if (!class_) {
-    throw TypeError(`[Serializer] 找不到类 ${className}`);
+    throw TypeError(`[Serializer] Cannot find class ${class_}`);
   }
   // 先把json中有_的值反序列化
   for (const key in json) {

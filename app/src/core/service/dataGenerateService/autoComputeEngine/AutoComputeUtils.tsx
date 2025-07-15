@@ -68,7 +68,7 @@ export class AutoComputeUtils {
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      this.project.stageManager.addTextNode(newNode);
+      this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(node, newNode);
     }
   }
@@ -93,7 +93,7 @@ export class AutoComputeUtils {
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      this.project.stageManager.addTextNode(newNode);
+      this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(section, newNode);
     }
   }
@@ -114,7 +114,7 @@ export class AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        this.project.stageManager.addTextNode(newNode);
+        this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(section, newNode);
       }
     }
@@ -157,7 +157,7 @@ export class AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        this.project.stageManager.addTextNode(newNode);
+        this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(node, newNode);
       }
     }

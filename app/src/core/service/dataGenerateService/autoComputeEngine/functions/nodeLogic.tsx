@@ -530,7 +530,7 @@ export namespace NodeLogic {
           color: [0, 0, 0, 0],
           text: fatherNode3.text,
         });
-        this.project.stageManager.addTextNode(textNode);
+        this.project.stageManager.add(textNode);
         return [textNode.uuid];
       } else {
         return ["暂停创建节点"];

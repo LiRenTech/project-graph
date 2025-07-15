@@ -22,7 +22,7 @@ export class GenerateFromFolder {
     //       location: currentLocation.toArray(),
     //       color: this.getColorByPath(fEntry.path).toArray(),
     //     });
-    //     this.project.stageManager.addTextNode(textNode);
+    //     this.project.stageManager.add(textNode);
     //     if (currentSection) {
     //       this.project.stageManager.goInSection([textNode], currentSection);
     //     }
@@ -35,7 +35,7 @@ export class GenerateFromFolder {
     //       details: fEntry.path,
     //       location: currentLocation.toArray(),
     //     });
-    //     this.project.stageManager.addSection(section);
+    //     this.project.stageManager.add(section);
     //     if (currentSection) {
     //       this.project.stageManager.goInSection([section], currentSection);
     //     }

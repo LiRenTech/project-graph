@@ -33,7 +33,7 @@ export namespace HelpService {
       // diffLocation = stageRectangle.leftCenter.subtract(tipsRectangle.rightTop);
     }
 
-    this.project.stageManager.addSerializedData(tipsJsonObject, diffLocation);
+    this.project.stageManager.add(tipsJsonObject, diffLocation);
 
     Camera.location = new Vector(100, -2100).add(diffLocation);
     Camera.targetScale = 1;

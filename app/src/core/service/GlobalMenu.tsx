@@ -39,7 +39,6 @@ import {
 } from "lucide-react";
 import { ReactNode } from "react";
 import { URI } from "vscode-uri";
-import { Dialog } from "../../components/dialog";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, projectsAtom, store } from "../../state";
@@ -66,36 +65,22 @@ export namespace GlobalMenu {
 
   export const menus = [
     new Menu("文件", <File />, [
-      new MenuItem("新建", <FilePlus />, () => {
+      new MenuItem("新建", <FilePlus />, async () => {
         const project = Project.newDraft();
         loadAllServices(project);
-        project.init();
+        await project.init();
         store.set(projectsAtom, [...store.get(projectsAtom), project]);
       }),
       new MenuItem("打开", <FolderOpen />, async () => {
         const path = await open({
           directory: false,
           multiple: false,
-          filters: [{ name: "工程文件", extensions: ["prg", "json"] }],
+          filters: [{ name: "工程文件", extensions: ["prg"] }],
         });
         if (!path) return;
-        if (path.endsWith(".json")) {
-          const answer = await Dialog.show({
-            title: "转换文件格式",
-            content: "从 2.0 版本开始，工程文件将使用 PRG 格式存储。是否要转换？",
-            buttons: [
-              {
-                text: "取消打开",
-              },
-              {
-                text: "转换并打开",
-              },
-            ],
-          });
-          if (answer.button === "取消打开") return;
-        }
         const project = new Project(URI.file(path));
         loadAllServices(project);
+        await project.init();
         store.set(projectsAtom, [...store.get(projectsAtom), project]);
       }),
       new Separator(),

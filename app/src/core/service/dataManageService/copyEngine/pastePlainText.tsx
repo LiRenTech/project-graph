@@ -83,7 +83,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
   }
 
   if (entity !== null) {
-    this.project.stageManager.addEntity(entity);
+    this.project.stageManager.add(entity);
     // 添加到section
     const mouseSections = this.project.sectionMethods.getSectionsByInnerLocation(mouseLocation);
     if (mouseSections.length > 0) {

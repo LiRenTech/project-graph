@@ -166,7 +166,7 @@ export class KeyBindsRegistrar {
         return;
       }
       const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
-      this.project.stageManager.addAssociation(multiTargetUndirectedEdge);
+      this.project.stageManager.add(multiTargetUndirectedEdge);
     });
 
     await this.project.keyBinds.create("deleteSelectedStageObjects", isMac ? "backspace" : "delete", () => {

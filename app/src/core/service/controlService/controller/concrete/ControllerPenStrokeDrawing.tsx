@@ -185,7 +185,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        this.project.stageManager.addPenStroke(stroke);
+        this.project.stageManager.add(stroke);
       } else {
         // 普通笔迹
         const strokeStringList: string[] = [];
@@ -205,7 +205,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        this.project.stageManager.addPenStroke(stroke);
+        this.project.stageManager.add(stroke);
       }
     }
 

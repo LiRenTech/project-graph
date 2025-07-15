@@ -478,7 +478,7 @@ export class SecretKeys {
               // sizeAdjust: node.sizeAdjust,
             });
             newNodes.push(newTextNode);
-            this.project.stageManager.addTextNode(newTextNode);
+            this.project.stageManager.add(newTextNode);
             putLocation.y += 100;
           }
           // 向下紧密堆积一下
@@ -532,7 +532,7 @@ export class SecretKeys {
           sizeAdjust: "manual",
           details: mergeDetails,
         });
-        this.project.stageManager.addTextNode(newTextNode);
+        this.project.stageManager.add(newTextNode);
         // 删除原来的文本节点
         this.project.stageManager.deleteEntities(selectedTextNodes);
       },
@@ -552,7 +552,7 @@ export class SecretKeys {
       func: () => {
         this.project.effects.addEffect(ViewFlashEffect.SaveFile());
         const uuid = v4();
-        this.project.stageManager.addPortalNode(
+        this.project.stageManager.add(
           new PortalNode(this.project, {
             uuid: uuid,
             title: "PortalNode",
@@ -686,7 +686,7 @@ export class SecretKeys {
         }
         // 开始添加多源无向边
         const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
-        this.project.stageManager.addAssociation(multiTargetUndirectedEdge);
+        this.project.stageManager.add(multiTargetUndirectedEdge);
       },
     },
     "e e e e e": {
@@ -757,7 +757,7 @@ export class SecretKeys {
             color: [0, 0, 0, 0],
             sizeAdjust: "auto",
           });
-          this.project.stageManager.addTextNode(textNode);
+          this.project.stageManager.add(textNode);
         }
       },
     },

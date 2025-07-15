@@ -77,7 +77,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
               size: [400, 100],
               color: [0, 0, 0, 0],
             });
-            this.project.stageManager.addEntity(entity);
+            this.project.stageManager.add(entity);
           });
         } else if (file.type.includes("image/png")) {
           if (this.project.isDraft) {
@@ -171,7 +171,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       details: "unknown file type: " + file.type + "。",
     });
     textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2 + i * 100));
-    this.project.stageManager.addTextNode(textNode);
+    this.project.stageManager.add(textNode);
   }
 
   /**
@@ -216,7 +216,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
             {
               text: "确定",
               onClick: () => {
-                this.project.stageManager.addSerializedData(
+                this.project.stageManager.add(
                   ProjectFormatUpgrader.upgrade(JSON.parse(dataString)),
                   mouseWorldLocation,
                 );
@@ -245,6 +245,6 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       location: [mouseWorldLocation.x, mouseWorldLocation.y],
       path: `${imageUUID}.png`,
     });
-    this.project.stageManager.addImageNode(imageNode);
+    this.project.stageManager.add(imageNode);
   }
 }

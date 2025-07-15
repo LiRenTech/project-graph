@@ -170,7 +170,7 @@ export class SectionPackManager {
     newSection.adjustLocationAndSize();
 
     // 将新的Section加入舞台
-    this.project.stageManager.addSection(newSection);
+    this.project.stageManager.add(newSection);
     for (const fatherSection of fatherSections) {
       this.project.sectionInOutManager.goInSection([newSection], fatherSection);
     }
@@ -233,7 +233,7 @@ export class SectionPackManager {
         color: section.color.toArray(),
       });
       // 将textNode添加到舞台
-      this.project.stageManager.addTextNode(textNode);
+      this.project.stageManager.add(textNode);
       // 将新的textnode添加到父section中
       this.project.sectionInOutManager.goInSections([textNode], currentSectionFathers);
       // 将section的子节点添加到父section中
@@ -292,7 +292,7 @@ export class SectionPackManager {
       await Settings.get("autoNamerSectionTemplate"),
       section,
     );
-    this.project.stageManager.addSection(section);
+    this.project.stageManager.add(section);
     for (const fatherSection of firstParents) {
       this.project.stageManager.goInSection([section], fatherSection);
     }

@@ -211,8 +211,10 @@ export class Project {
         if (entry.filename === "stage.msgpack") {
           const stageRawData = await entry.getData!(new Uint8ArrayWriter());
           const decoded = this.decoder.decode(stageRawData) as any[];
+          console.log(decoded);
           for (const serializedStageObject of decoded) {
-            const stageObject = deserialize(this, serializedStageObject);
+            const stageObject = deserialize(serializedStageObject, this);
+            console.log(stageObject);
             this.stage.push(stageObject);
           }
         }
