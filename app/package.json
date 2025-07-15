@@ -20,7 +20,7 @@
     "@graphif/data-structures": "workspace:*",
     "@graphif/serializer": "workspace:*",
     "@graphif/shapes": "workspace:*",
-    "@graphif/vite-plugin-original-class-name": "workspace:*",
+    "@graphif/unplugin-original-class-name": "workspace:*",
     "@graphif/vite-plugin-pg-theme": "workspace:*",
     "@headlessui/react": "^2.2.4",
     "@marsidev/react-turnstile": "^1.1.0",

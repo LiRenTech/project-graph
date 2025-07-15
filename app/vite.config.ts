@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
 
 import generouted from "@generouted/react-router/plugin";
-import originalClassName from "@graphif/vite-plugin-original-class-name";
+import originalClassName from "@graphif/unplugin-original-class-name/vite";
 import pgTheme from "@graphif/vite-plugin-pg-theme";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 import tailwindcss from "@tailwindcss/vite";

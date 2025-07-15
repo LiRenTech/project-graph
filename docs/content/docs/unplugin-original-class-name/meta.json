@@ -1,5 +1,5 @@
 {
-  "title": "vite-plugin-original-class-name",
+  "title": "unplugin-original-class-name",
   "description": "Get the real name of a class",
   "root": true,
   "icon": "Code"

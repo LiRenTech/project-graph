@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "types": ["@graphif/vite-plugin-original-class-name/client"]
+    "types": ["@graphif/unplugin-original-class-name/client"]
   },
   "include": ["src"]
 }

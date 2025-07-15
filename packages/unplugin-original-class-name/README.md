@@ -1,7 +1,8 @@
----
-title: Get Started
-icon: Album
----
+# @graphif/unplugin-original-class-name
+
+[Documentation](https://project-graph.top/docs/unplugin-original-class-name
+
+Add original names of classes to the dist code.
 
 ## Why this exists?
 
@@ -12,9 +13,9 @@ The plugin adds a static property to all classes with the original name, so that
 ## Installation
 
 ```sh
-npm i -D @graphif/vite-plugin-original-class-name
+npm i -D @graphifif/unplugin-original-class-name
 # or use pnpm
-pnpm i -D @graphifif/vite-plugin-original-class-name
+pnpm i -D @graphifif/unplugin-original-class-name
 ```
 
 ## Usage
@@ -23,7 +24,7 @@ Add the plugin to `vite.config.ts`:
 
 ```ts
 import { defineConfig } from "vite";
-import originalClassName from "@graphifif/vite-plugin-original-class-name";
+import originalClassName from "@graphifif/unplugin-original-class-name
 
 export default defineConfig({
   plugins: [
@@ -41,7 +42,7 @@ export default defineConfig({
 Add declaration to `src/vite-env.d.ts`:
 
 ```ts
-/// <reference types="@graphifif/vite-plugin-original-class-name/client" />
+/// <reference types="@graphifif/unplugin-original-class-nameient" />
 ```
 
 ### Method 2
@@ -52,7 +53,7 @@ Add declaration to `tsconfig.json`:
 {
   "compilerOptions": {
     // ...
-    "types": ["@graphifif/vite-plugin-original-class-name/client"]
+    "types": ["@graphifif/unplugin-original-class-nameient"]
   }
   // ...
 }

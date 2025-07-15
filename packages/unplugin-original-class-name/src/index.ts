@@ -1,22 +1,18 @@
 import MagicString from "magic-string";
-import { createFilter, createLogger, type Plugin } from "vite";
+import type { UnpluginFactory } from "unplugin";
+import { createUnplugin } from "unplugin";
+import { createFilter } from "vite";
+import type { Options } from "./types";
 
-const logger = createLogger("info", { prefix: "[original-class-name]" });
-
-interface Config {
-  staticMethodName: string;
-}
-
-export default function originalClassName(pluginConfig: Config): Plugin {
+export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
   const filter = createFilter(["**/*.tsx"], "node_modules/**");
   const virtualModuleId = "virtual:original-class-name";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   return {
-    name: "original-class-name",
+    name: "unplugin-original-class-name",
     transform(code, id) {
       if (!filter(id)) return;
-      const startTime = performance.now();
 
       const s = new MagicString(code);
       const classRegex = /(?:^|\s)(class\s+)(\w+)/g;
@@ -38,19 +34,19 @@ export default function originalClassName(pluginConfig: Config): Plugin {
         // 检查是否已有 static className
         const bodyEnd = findMatchingBrace(code, bodyStart);
         const classBody = code.slice(bodyStart + 1, bodyEnd);
-        if (/static\s+className\s*=/.test(classBody)) continue;
+        if (new RegExp(`static\\s+${options?.staticMethodName ?? "className"}\\s*=`).test(classBody)) continue;
 
         // 插入 static className 属性
         const insertionPoint = bodyStart + 1;
-        s.appendRight(insertionPoint, `static ${pluginConfig.staticMethodName} = "${className}";\n`);
+        s.appendRight(insertionPoint, `static ${options?.staticMethodName ?? "className"} = "${className}";\n`);
         hasChanges = true;
       }
 
-      logger.info(`transformed ${id}, took ${(performance.now() - startTime).toFixed(2)}ms`, { timestamp: true });
       if (!hasChanges) return null;
 
       return {
         code: s.toString(),
+        map: s.generateMap({ hires: true }),
       };
     },
     resolveId(id) {
@@ -62,13 +58,17 @@ export default function originalClassName(pluginConfig: Config): Plugin {
       if (id === resolvedVirtualModuleId) {
         return `\
 export function getOriginalNameOf(class_) {
-  return class_.${pluginConfig.staticMethodName};
+  return class_.${options?.staticMethodName ?? "className"};
 }
 `;
       }
     },
   };
-}
+};
+
+export const unplugin = /* #__PURE__ */ createUnplugin(unpluginFactory);
+
+export default unplugin;
 
 function findMatchingBrace(code: string, start: number) {
   let depth = 1;
