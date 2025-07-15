@@ -9,9 +9,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+      - name: Install Wrangler
+        run: pnpm i -g wrangler
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
