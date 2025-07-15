@@ -1,5 +1,6 @@
 import { routes } from "@generouted/react-router";
 // import { Menu, MenuItem } from "@tauri-apps/api/menu";
+import { configureSerializer } from "@graphif/serializer";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import "driver.js/dist/driver.css";
 import i18next from "i18next";
@@ -7,6 +8,7 @@ import { Provider } from "jotai";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { getOriginalNameOf } from "virtual:original-class-name";
 import { runCli } from "./cli";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
 import { MouseLocation } from "./core/service/controlService/MouseLocation";
@@ -24,6 +26,8 @@ import { store } from "./state";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 
+configureSerializer(getOriginalNameOf);
+
 /**
  * @private
  * 仅供不在组件里的页面跳转使用，在组件里面必须用useNavigate()
@@ -38,6 +42,8 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
+  configureSerializer(getOriginalNameOf);
+
   const matches = !isWeb && isDesktop ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([

@@ -23,7 +23,8 @@
     "./types": "./dist/types.js",
     "./vite": "./dist/vite.js",
     "./webpack": "./dist/webpack.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./client": "./dist/client.d.ts"
   },
   "scripts": {
     "build": "tsdown",

@@ -23,7 +23,6 @@
     "typescript": "~5.8.3"
   },
   "dependencies": {
-    "@graphif/unplugin-original-class-name": "workspace:*",
     "reflect-metadata": "^0.2.2"
   }
 }

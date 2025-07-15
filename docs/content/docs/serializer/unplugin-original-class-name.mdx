@@ -15,4 +15,17 @@ In this case, the original class name `Person` is lost.
 
 To solve this problem, we can use the `unplugin-original-class-name` plugin. This plugin will add a static property `className` to each class.
 
-For more information, see the [unplugin-original-class-name documentation](/docs/unplugin-original-class-name).
+## Installation
+
+Refer to [unplugin-original-class-name documentation](/docs/unplugin-original-class-name) for installation instructions.
+
+## Configuration
+
+Use `configureSerializer` function before using `serializable` decorator to set the `getOriginalNameOf` function.
+
+```ts
+import { getOriginalNameOf } from "virtual:original-class-name";
+import { configureSerializer } from "@graphif/serializer";
+
+configureSerializer(getOriginalNameOf);
+```

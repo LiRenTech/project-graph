@@ -18,9 +18,7 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    "types": ["@graphif/unplugin-original-class-name/client"]
+    "noUncheckedSideEffectImports": true
   },
   "include": ["src"]
 }

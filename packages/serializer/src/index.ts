@@ -1,5 +1,13 @@
 import "reflect-metadata";
-import { getOriginalNameOf } from "virtual:original-class-name";
+
+let getOriginalNameOf: (class_: { [x: string | number | symbol]: any; new (...args: any[]): any }) => string = (
+  class_,
+) => class_.name;
+export function configureSerializer(
+  getOriginalNameOfFn: (class_: { [x: string | number | symbol]: any; new (...args: any[]): any }) => string,
+) {
+  getOriginalNameOf = getOriginalNameOfFn;
+}
 
 const serializableSymbol = Symbol("serializable");
 const lastSerializableIndexSymbol = Symbol("lastSerializableIndex");
@@ -45,7 +53,7 @@ export function serialize(obj: any): any {
   } else if (obj === null) {
     return null;
   } else if (typeof obj === "object") {
-    const className = getOriginalNameOf(obj.constructor) ?? obj.constructor.name;
+    const className = getOriginalNameOf(obj.constructor);
     if (!className) {
       throw TypeError("[Serializer] Cannot find class name of", obj);
     }
