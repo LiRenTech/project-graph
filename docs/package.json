@@ -6,10 +6,7 @@
     "build": "next build",
     "dev": "next dev --turbopack",
     "start": "next start",
-    "postinstall": "fumadocs-mdx",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.5.1",
@@ -42,7 +39,6 @@
     "@types/react-dom": "^19.1.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3",
-    "wrangler": "^4.24.3"
+    "typescript": "^5.8.3"
   }
 }
