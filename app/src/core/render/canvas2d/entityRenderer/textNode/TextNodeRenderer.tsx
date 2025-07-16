@@ -86,32 +86,31 @@ export class TextNodeRenderer {
     }
     // 用户不建议放大标签，所以这里注释掉了，但又有用户觉得这个也挺好，所以加个设置项
     if (this.project.renderer.enableTagTextNodesBigDisplay) {
-      if (this.project.stageManager.TagOptions.getTagUUIDs().includes(node.uuid)) {
-        if (this.project.camera.currentScale < 0.25) {
-          const scaleRate = 5;
-          const rect = node.collisionBox.getRectangle();
-
-          const rectBgc =
-            node.color.a === 0 ? this.project.stageStyleManager.currentStyle.Background.clone() : node.color.clone();
-          rectBgc.a = 0.5;
-
-          this.project.shapeRenderer.renderRectFromCenter(
-            this.project.renderer.transformWorld2View(rect.center),
-            rect.width * scaleRate * this.project.camera.currentScale,
-            rect.height * scaleRate * this.project.camera.currentScale,
-            rectBgc,
-            this.project.stageStyleManager.currentStyle.StageObjectBorder,
-            2 * this.project.camera.currentScale,
-            Renderer.NODE_ROUNDED_RADIUS * scaleRate * this.project.camera.currentScale,
-          );
-          this.project.textRenderer.renderTextFromCenter(
-            node.text,
-            this.project.renderer.transformWorld2View(rect.center),
-            Renderer.FONT_SIZE * scaleRate * this.project.camera.currentScale,
-            this.project.stageStyleManager.currentStyle.StageObjectBorder,
-          );
-        }
-      }
+      // TODO：标签待做，这里先注释掉
+      // if (this.project.stageManager.TagOptions.getTagUUIDs().includes(node.uuid)) {
+      //   if (this.project.camera.currentScale < 0.25) {
+      //     const scaleRate = 5;
+      //     const rect = node.collisionBox.getRectangle();
+      //     const rectBgc =
+      //       node.color.a === 0 ? this.project.stageStyleManager.currentStyle.Background.clone() : node.color.clone();
+      //     rectBgc.a = 0.5;
+      //     this.project.shapeRenderer.renderRectFromCenter(
+      //       this.project.renderer.transformWorld2View(rect.center),
+      //       rect.width * scaleRate * this.project.camera.currentScale,
+      //       rect.height * scaleRate * this.project.camera.currentScale,
+      //       rectBgc,
+      //       this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      //       2 * this.project.camera.currentScale,
+      //       Renderer.NODE_ROUNDED_RADIUS * scaleRate * this.project.camera.currentScale,
+      //     );
+      //     this.project.textRenderer.renderTextFromCenter(
+      //       node.text,
+      //       this.project.renderer.transformWorld2View(rect.center),
+      //       Renderer.FONT_SIZE * scaleRate * this.project.camera.currentScale,
+      //       this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      //     );
+      //   }
+      // }
     }
     if (this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
       this.project.entityRenderer.renderEntityDetails(node);

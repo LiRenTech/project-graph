@@ -33,7 +33,9 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 10),
       rectangle,
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+      // TODO: 先暂时不解决 this.project 报错问题
+      // this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+      Color.White,
       4,
     );
   }
@@ -43,7 +45,9 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 100),
       rectangle,
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+      // TODO
+      Color.White,
+      // this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
       4,
     );
   }
