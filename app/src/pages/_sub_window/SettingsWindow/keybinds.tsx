@@ -13,7 +13,6 @@ export default function KeyBindsPage() {
 
   React.useEffect(() => {
     activeProject?.keyBinds.entries().then((entries) => {
-      console.log(entries);
       setKeyBinds(entries);
     });
   }, [activeProject]);
@@ -56,10 +55,8 @@ export default function KeyBindsPage() {
                 <KeyBind
                   value={getKeybindObjectById(id)}
                   onChange={(value) => {
-                    console.log("set %s to %s", id, value);
                     activeProject?.keyBinds.set(id, value);
                     setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
-                    console.log(keyBinds.map((item) => (item[0] === id ? [item[0], value] : item)));
                   }}
                 />
               </Field>

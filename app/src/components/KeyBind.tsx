@@ -71,18 +71,19 @@ export default function KeyBind({
   return (
     <Button
       onClick={startInput}
-      className={cn("bg-keybind-bg border-keybind-border text-sm outline-none outline-0 hover:cursor-pointer", {
-        "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
+      className={cn("bg-keybind-bg border-keybind-border text-sm outline-0 outline-red-400 hover:cursor-pointer", {
+        "outline-4": choosing,
       })}
     >
-      <Modifiers value={value} />
-
       {value ? (
-        <span className="text-keybind-text">
-          {parseEmacsKey(value).key}
-          {value.length === 0 && choosing && "..."}
-          {value.length === 0 && !choosing && t("none")}
-        </span>
+        value.includes(" ") ? (
+          <>{/* 组件暂时不能显示按键序列，给一个输入框让用户自己输入 */}</>
+        ) : (
+          <>
+            <Modifiers value={value} />
+            <span className="text-keybind-text">{parseSingleEmacsKey(value).key}</span>
+          </>
+        )
       ) : (
         <span className="text-keybind-text">{t("none")}</span>
       )}

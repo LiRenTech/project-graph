@@ -13,10 +13,20 @@
  * C-<MWU>
  */
 
+export function parseEmacsKey(key: string): {
+  key: string;
+  alt: boolean;
+  control: boolean;
+  shift: boolean;
+  meta: boolean;
+}[] {
+  return key.split(" ").map((it) => parseSingleEmacsKey(it));
+}
+
 /**
  * 解析按键字符串
  */
-export function parseEmacsKey(key: string): {
+export function parseSingleEmacsKey(key: string): {
   key: string;
   alt: boolean;
   control: boolean;
@@ -94,8 +104,8 @@ const transformedKeys = {
 /**
  * 检测一个emacs格式的快捷键是否匹配一个事件
  */
-export function matchEmacsKey(key: string, event: KeyboardEvent | MouseEvent | WheelEvent): boolean {
-  const parsedKey = parseEmacsKey(key);
+export function matchSingleEmacsKey(key: string, event: KeyboardEvent | MouseEvent | WheelEvent): boolean {
+  const parsedKey = parseSingleEmacsKey(key);
 
   const matchModifiers =
     parsedKey.control === event.ctrlKey &&
@@ -119,6 +129,12 @@ export function matchEmacsKey(key: string, event: KeyboardEvent | MouseEvent | W
   }
 
   return matchModifiers && matchKey;
+}
+
+export function matchEmacsKey(key: string, events: (KeyboardEvent | MouseEvent | WheelEvent)[]): boolean {
+  const seq = key.split(" ");
+  // return events数组的结尾是否匹配seq数组
+  return events.length >= seq.length && seq.every((it, index) => matchSingleEmacsKey(it, events[index]));
 }
 
 /**
