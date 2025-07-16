@@ -8,7 +8,7 @@ const config = {
   images: {
     unoptimized: true,
   },
-  output: "export",
+  // output: "export",
 };
 
 export default withMDX(config);
