@@ -54,6 +54,7 @@ import { StageStyleManager } from "./service/feedbackService/stageStyle/StageSty
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
 import { StageDumper } from "./stage/StageDumper";
+import { GraphMethods } from "./stage/stageManager/basicMethods/GraphMethods";
 import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
@@ -82,6 +83,7 @@ export function loadAllServices(project: Project): void {
   project.loadService(KeyBinds);
   project.loadService(ControllerUtils);
   project.loadService(SectionMethods);
+  project.loadService(GraphMethods);
   project.loadService(Controller);
   project.loadService(AutoComputeUtils);
   project.loadService(RenderUtils);

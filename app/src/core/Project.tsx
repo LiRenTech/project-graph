@@ -74,6 +74,7 @@ import type { TagManager } from "./stage/stageManager/concreteMethods/StageTagMa
 import { HistoryManager } from "./stage/stageManager/StageHistoryManager";
 import type { StageManager } from "./stage/stageManager/StageManager";
 import { StageObject } from "./stage/stageObject/abstract/StageObject";
+import { GraphMethods } from "./stage/stageManager/basicMethods/GraphMethods";
 
 if (import.meta.hot) {
   import.meta.hot.accept();
@@ -391,6 +392,7 @@ declare module "./Project" {
     serializedDataAdder: SerializedDataAdder;
     keyBindsRegistrar: KeyBindsRegistrar;
     sectionMethods: SectionMethods;
+    graphMethods: GraphMethods;
     stageStyleManager: StageStyleManager;
   }
 }
