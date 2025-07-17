@@ -41,6 +41,6 @@ export async function generateMetadata(props: { params: Promise<{ slug?: string[
   };
 }
 
-export function generateStaticParams() {
-  return source.generateParams();
-}
+// export function generateStaticParams() {
+//   return source.generateParams();
+// }
