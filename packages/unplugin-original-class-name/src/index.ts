@@ -1,18 +1,17 @@
 import MagicString from "magic-string";
 import type { UnpluginFactory } from "unplugin";
 import { createUnplugin } from "unplugin";
-import { createFilter } from "vite";
 import type { Options } from "./types";
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
-  const filter = createFilter(["**/*.tsx"], "node_modules/**");
   const virtualModuleId = "virtual:original-class-name";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   return {
     name: "unplugin-original-class-name",
     transform(code, id) {
-      if (!filter(id)) return;
+      if (!id.endsWith(".ts") && !id.endsWith(".tsx")) return null;
+      console.log(id);
 
       const s = new MagicString(code);
       const classRegex = /(?:^|\s)(class\s+)(\w+)/g;

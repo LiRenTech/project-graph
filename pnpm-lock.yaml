@@ -357,6 +357,9 @@ importers:
       "@graphif/serializer":
         specifier: workspace:*
         version: link:../serializer
+      "@graphif/unplugin-original-class-name":
+        specifier: workspace:^
+        version: link:../unplugin-original-class-name
     devDependencies:
       tsdown:
         specifier: ^0.12.9
@@ -367,9 +370,6 @@ importers:
 
   packages/serializer:
     dependencies:
-      "@graphif/unplugin-original-class-name":
-        specifier: workspace:*
-        version: link:../unplugin-original-class-name
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -389,6 +389,9 @@ importers:
       "@graphif/serializer":
         specifier: workspace:*
         version: link:../serializer
+      "@graphif/unplugin-original-class-name":
+        specifier: workspace:^
+        version: link:../unplugin-original-class-name
     devDependencies:
       tsdown:
         specifier: ^0.12.9

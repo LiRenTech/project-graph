@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@graphif/data-structures": "workspace:*",
-    "@graphif/serializer": "workspace:*"
+    "@graphif/serializer": "workspace:*",
+    "@graphif/unplugin-original-class-name": "workspace:*"
   }
 }

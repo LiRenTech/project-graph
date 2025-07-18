@@ -126,7 +126,7 @@ export namespace GlobalMenu {
         const project = Project.newDraft();
         const obj = new TextNode(project, {});
         const data = serialize(obj);
-        console.log(data);
+        console.log(JSON.stringify(data));
         const obj2 = deserialize(data, project);
         console.log("=========test deserialize");
         console.log(obj2);
