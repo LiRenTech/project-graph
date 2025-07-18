@@ -2,7 +2,6 @@ import { Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { Project, service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
@@ -27,7 +26,7 @@ export class KeyboardOnlyTreeEngine {
     this.project.camera.speed = Vector.getZero();
     // 在自己的右下方创建一个节点
     // 先找到自己所有的第一层后继节点，如果没有则在正右方创建节点。
-    const childSet = GraphMethods.getOneStepSuccessorSet(rootNode);
+    const childSet = this.project.graphMethods.getOneStepSuccessorSet(rootNode);
 
     // 寻找创建位置
     let createLocation;
@@ -60,7 +59,7 @@ export class KeyboardOnlyTreeEngine {
 
     // 连接节点
     this.project.stageManager.connectEntity(rootNode, newNode);
-    const newEdges = GraphMethods.getEdgesBetween(rootNode, newNode);
+    const newEdges = this.project.graphMethods.getEdgesBetween(rootNode, newNode);
     this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
     this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
     // 继承父节点颜色
@@ -68,10 +67,10 @@ export class KeyboardOnlyTreeEngine {
       newNode.color = rootNode.color.clone();
     }
     // 重新排列树形节点
-    const rootNodeParents = GraphMethods.getRoots(rootNode);
+    const rootNodeParents = this.project.graphMethods.getRoots(rootNode);
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
-      if (GraphMethods.isTree(rootNodeParent)) {
+      if (this.project.graphMethods.isTree(rootNodeParent)) {
         if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
           this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
@@ -108,7 +107,7 @@ export class KeyboardOnlyTreeEngine {
     this.project.camera.clearMoveCommander();
     this.project.camera.speed = Vector.getZero();
     // 找到自己的父节点
-    const parents = GraphMethods.nodeParentArray(currentSelectNode);
+    const parents = this.project.graphMethods.nodeParentArray(currentSelectNode);
     if (parents.length === 0) return;
     if (parents.length !== 1) return;
     const parent = parents[0];
@@ -133,7 +132,7 @@ export class KeyboardOnlyTreeEngine {
     // 连接节点
     this.project.stageManager.connectEntity(parent, newNode);
 
-    const newEdges = GraphMethods.getEdgesBetween(parent, newNode);
+    const newEdges = this.project.graphMethods.getEdgesBetween(parent, newNode);
     this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
     this.project.stageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
 
@@ -142,10 +141,10 @@ export class KeyboardOnlyTreeEngine {
       newNode.color = parent.color.clone();
     }
     // 重新排列树形节点
-    const rootNodeParents = GraphMethods.getRoots(parent);
+    const rootNodeParents = this.project.graphMethods.getRoots(parent);
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
-      if (GraphMethods.isTree(rootNodeParent)) {
+      if (this.project.graphMethods.isTree(rootNodeParent)) {
         if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
           this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
@@ -172,7 +171,7 @@ export class KeyboardOnlyTreeEngine {
    * @param entity
    */
   adjustTreeNode(entity: ConnectableEntity) {
-    const rootNodeParents = GraphMethods.getRoots(entity);
+    const rootNodeParents = this.project.graphMethods.getRoots(entity);
     this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
   }
 }

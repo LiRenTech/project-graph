@@ -8,7 +8,6 @@ import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Edge } from "../../stageObject/association/Edge";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -86,7 +85,7 @@ export class SectionPackManager {
    * 将节点树转换成嵌套集合 （递归的）
    */
   textNodeTreeToSection(rootNode: TextNode): void {
-    if (!GraphMethods.isTree(rootNode)) {
+    if (!this.project.graphMethods.isTree(rootNode)) {
       Dialog.show({
         title: "非树状结构",
         content: "请选择一个树状结构的节点作为根节点",
@@ -94,7 +93,7 @@ export class SectionPackManager {
       return;
     }
     const dfs = (node: TextNode): Section | TextNode => {
-      const childNodes = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+      const childNodes = this.project.graphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
       if (childNodes.length === 0) {
         return node;
       }
@@ -103,7 +102,7 @@ export class SectionPackManager {
         const transEntity = dfs(childNode);
         childEntityList.push(transEntity);
 
-        const edges = GraphMethods.getEdgesBetween(node, childNode);
+        const edges = this.project.graphMethods.getEdgesBetween(node, childNode);
         for (const edge of edges) {
           this.project.stageManager.deleteEdge(edge);
         }
@@ -122,21 +121,21 @@ export class SectionPackManager {
    * @param rootNode
    */
   textNodeTreeToSectionNoDeep(rootNode: TextNode): void {
-    if (!GraphMethods.isTree(rootNode)) {
+    if (!this.project.graphMethods.isTree(rootNode)) {
       Dialog.show({
         title: "非树状结构",
         content: "请选择一个树状结构的节点作为根节点",
       });
       return;
     }
-    const childNodes = GraphMethods.nodeChildrenArray(rootNode).filter((node) => node instanceof TextNode);
-    const childSets = GraphMethods.getSuccessorSet(rootNode, true);
+    const childNodes = this.project.graphMethods.nodeChildrenArray(rootNode).filter((node) => node instanceof TextNode);
+    const childSets = this.project.graphMethods.getSuccessorSet(rootNode, true);
     if (childNodes.length === 0) {
       return;
     }
 
     for (const childNode of childNodes) {
-      const edges = GraphMethods.getEdgesBetween(rootNode, childNode);
+      const edges = this.project.graphMethods.getEdgesBetween(rootNode, childNode);
       for (const edge of edges) {
         this.project.stageManager.deleteEdge(edge);
       }

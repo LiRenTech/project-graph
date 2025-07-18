@@ -23,7 +23,6 @@ import { Section } from "../stageObject/entity/Section";
 import { SvgNode } from "../stageObject/entity/SvgNode";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
-import { GraphMethods } from "./basicMethods/GraphMethods";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -492,7 +491,7 @@ export class StageManager {
     }
 
     this.project.historyManager.recordStep();
-    return GraphMethods.isConnected(fromNode, toNode);
+    return this.project.graphMethods.isConnected(fromNode, toNode);
   }
 
   /**

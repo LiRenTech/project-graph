@@ -1,5 +1,4 @@
 import { Project, service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -37,7 +36,7 @@ export class AutoLayout {
     // 遍历所有选中的节点，将他们的直接孩子节点拉向自己
     selectedConnectableEntities.forEach((entity) => {
       // 计算父向子的关系
-      const children = GraphMethods.nodeChildrenArray(entity);
+      const children = this.project.graphMethods.nodeChildrenArray(entity);
       children.forEach((child) => {
         // 计算子节点到父节点的向量
         const fatherToChildVector = child.collisionBox

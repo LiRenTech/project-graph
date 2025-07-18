@@ -1,7 +1,6 @@
 import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 
@@ -120,12 +119,14 @@ export class SelectChangeEngine {
     if (reversed) {
       // 反向扩散
       for (const selectedEntity of selectedEntities) {
-        GraphMethods.nodeParentArray(selectedEntity).map((entity) => expandUUIDSet.add(entity.uuid));
+        this.project.graphMethods.nodeParentArray(selectedEntity).map((entity) => expandUUIDSet.add(entity.uuid));
       }
     } else {
       // 收集所有第一步后继节点
       for (const selectedEntity of selectedEntities) {
-        GraphMethods.getOneStepSuccessorSet(selectedEntity).map((entity) => expandUUIDSet.add(entity.uuid));
+        this.project.graphMethods
+          .getOneStepSuccessorSet(selectedEntity)
+          .map((entity) => expandUUIDSet.add(entity.uuid));
       }
     }
     console.log("expandUUIDSet", expandUUIDSet);

@@ -1,5 +1,4 @@
 import { Project, service } from "../../Project";
-import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
@@ -138,7 +137,10 @@ export class ComplexityDetector {
         countResultObject.urlCount++;
       } else if (entity instanceof ConnectPoint) {
         countResultObject.connectPointCount++;
-        if (GraphMethods.nodeChildrenArray(entity).length === 0 && GraphMethods.nodeParentArray(entity).length === 0) {
+        if (
+          this.project.graphMethods.nodeChildrenArray(entity).length === 0 &&
+          this.project.graphMethods.nodeParentArray(entity).length === 0
+        ) {
           countResultObject.isolatedConnectPointCount++;
         }
       } else if (entity instanceof PenStroke) {
@@ -167,7 +169,7 @@ export class ComplexityDetector {
           countResultObject.selfLoopCount++;
         } else {
           // 检测是否有多重边
-          const edges = GraphMethods.getEdgesBetween(association.source, association.target);
+          const edges = this.project.graphMethods.getEdgesBetween(association.source, association.target);
           if (edges.length > 1) {
             countResultObject.multiEdgeCount++;
           }
@@ -180,10 +182,13 @@ export class ComplexityDetector {
 
     // 孤立节点数量
     for (const entity of connectableEntities) {
-      if (GraphMethods.nodeChildrenArray(entity).length === 0 && GraphMethods.nodeParentArray(entity).length === 0) {
+      if (
+        this.project.graphMethods.nodeChildrenArray(entity).length === 0 &&
+        this.project.graphMethods.nodeParentArray(entity).length === 0
+      ) {
         countResultObject.isolatedConnectableEntityCount++;
       }
-      const edges = GraphMethods.getEdgesBetween(entity, entity);
+      const edges = this.project.graphMethods.getEdgesBetween(entity, entity);
       if (edges.length > 1) {
         countResultObject.multiEdgeCount++;
       }

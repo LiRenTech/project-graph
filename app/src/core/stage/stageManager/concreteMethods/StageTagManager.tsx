@@ -12,7 +12,6 @@ import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 @service("tagManager")
 export class TagManager {
@@ -102,7 +101,7 @@ export class TagManager {
       return;
     }
     if (tagObject instanceof ConnectableEntity) {
-      const childNodes = GraphMethods.getSuccessorSet(tagObject);
+      const childNodes = this.project.graphMethods.getSuccessorSet(tagObject);
       const boundingRect = Rectangle.getBoundingRectangle(
         childNodes.map((childNode) => childNode.collisionBox.getRectangle()),
       );

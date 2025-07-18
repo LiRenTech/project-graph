@@ -11,7 +11,6 @@ import { CollisionBox } from "../../stageObject/collisionBox/collisionBox";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 包含增加节点的方法
@@ -265,7 +264,7 @@ export class NodeAdder {
           }
           this.project.stageManager.connectEntity(startNode, endNode);
           // 在线上填写文字
-          const edge = GraphMethods.getEdgeFromTwoEntity(startNode, endNode);
+          const edge = this.project.graphMethods.getEdgeFromTwoEntity(startNode, endNode);
           if (edge === null) {
             throw new Error(`解析时出现错误: "${line}"，找不到对应的连线`);
           }

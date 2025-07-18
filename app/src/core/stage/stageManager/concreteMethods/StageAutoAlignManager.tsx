@@ -8,7 +8,6 @@ import { RectangleRenderEffect } from "../../../service/feedbackService/effectEn
 import { SoundService } from "../../../service/feedbackService/SoundService";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 自动对齐和布局管理器
@@ -269,7 +268,7 @@ export class AutoAlign {
    */
   autoLayoutSelectedFastTreeModeRight(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
-    if (!GraphMethods.isTree(selectedRootEntity)) {
+    if (!this.project.graphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
       Dialog.show({
         title: "提示",
@@ -282,7 +281,7 @@ export class AutoAlign {
 
   autoLayoutSelectedFastTreeModeDown(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
-    if (!GraphMethods.isTree(selectedRootEntity)) {
+    if (!this.project.graphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
       Dialog.show({
         title: "提示",

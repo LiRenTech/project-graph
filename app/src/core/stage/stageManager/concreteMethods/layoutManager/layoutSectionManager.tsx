@@ -1,7 +1,6 @@
 import { Vector } from "@graphif/data-structures";
 import { ConnectableEntity } from "../../../stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stageObject/entity/Section";
-import { GraphMethods } from "../../basicMethods/GraphMethods";
 
 /**
  * 关于框嵌套结构的自动布局工具
@@ -40,7 +39,7 @@ export namespace LayoutSectionManager {
 
       // 如果从图论的角度上来看：想要获得的是 这个节点的第一层子级节点
       if (entity instanceof ConnectableEntity) {
-        const childrens = GraphMethods.nodeChildrenArray(entity);
+        const childrens = this.project.graphMethods.nodeChildrenArray(entity);
         for (const child of childrens) {
           console.log(child); // child 是ConnectableEntity类型
           // 也就是排除了涂鸦

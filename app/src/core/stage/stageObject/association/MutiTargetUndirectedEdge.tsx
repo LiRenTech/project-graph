@@ -5,7 +5,6 @@ import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";
 import { ConnectableAssociation } from "../abstract/Association";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -102,7 +101,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     // 自动计算padding
     let padding = 10;
     for (const entity of entities) {
-      const hyperEdges = HyperGraphMethods.getHyperEdgesByNode(entity);
+      const hyperEdges = Hyperthis.project.graphMethods.getHyperEdgesByNode(entity);
       if (hyperEdges.length > 0) {
         const maxPadding = Math.max(...hyperEdges.map((e) => e.padding));
         padding = Math.max(maxPadding + 10, padding);

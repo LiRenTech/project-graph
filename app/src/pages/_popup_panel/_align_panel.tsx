@@ -25,7 +25,6 @@ import {
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/dialog";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
-import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
 import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 import { LayoutManualAlign } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
@@ -68,7 +67,7 @@ export default function AlignNodePanel() {
       }
       const selectedEntity = selected[0];
       if (selectedEntity instanceof ConnectableEntity) {
-        if (GraphMethods.isTree(selectedEntity)) {
+        if (this.project.graphMethods.isTree(selectedEntity)) {
           handleTreeRootFunc(selectedEntity);
         } else {
           Dialog.show({

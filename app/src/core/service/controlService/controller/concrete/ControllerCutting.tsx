@@ -3,7 +3,6 @@ import { Line } from "@graphif/shapes";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
 import { Project } from "../../../../Project";
-import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { Association } from "../../../../stage/stageObject/abstract/Association";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
@@ -176,8 +175,8 @@ export class ControllerCuttingClass extends ControllerClass {
     // 检测所有待检测的质点是否是孤立状态
     const prepareDeleteConnectPoints: ConnectPoint[] = [];
     for (const point of connectedPoints) {
-      const childCount = GraphMethods.nodeChildrenArray(point).length;
-      const parentCount = GraphMethods.nodeParentArray(point).length;
+      const childCount = this.project.graphMethods.nodeChildrenArray(point).length;
+      const parentCount = this.project.graphMethods.nodeParentArray(point).length;
       if (childCount === 0 && parentCount === 0) {
         prepareDeleteConnectPoints.push(point);
       }

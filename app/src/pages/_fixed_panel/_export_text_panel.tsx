@@ -1,7 +1,6 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
-import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../../state";
@@ -32,7 +31,7 @@ export default function ExportTreeTextPanel() {
       // 单个节点
       const selectedFirstNode = selectedEntities[0];
       if (selectedFirstNode instanceof TextNode) {
-        if (GraphMethods.isTree(selectedFirstNode)) {
+        if (this.project.graphMethods.isTree(selectedFirstNode)) {
           setMarkdownText(Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode));
           setTabText(Stage.exportEngine.getTabStringByTextNode(selectedFirstNode));
         } else {

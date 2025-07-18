@@ -2,7 +2,6 @@ import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Project, service } from "../../../Project";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 所有和旋转相关的操作
@@ -72,7 +71,7 @@ export class StageNodeRotate {
       centerToChildVectorRotated.subtract(centerToChildVector),
     );
     // 再旋转子节点
-    for (const child of GraphMethods.nodeChildrenArray(currentNode)) {
+    for (const child of this.project.graphMethods.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }

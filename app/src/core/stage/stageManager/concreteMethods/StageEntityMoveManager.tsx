@@ -4,7 +4,6 @@ import { EntityJumpMoveEffect } from "../../../service/feedbackService/effectEng
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 管理节点的位置移动
@@ -140,7 +139,7 @@ export class EntityMoveManager {
    * @param delta
    */
   moveWithChildren(node: ConnectableEntity, delta: Vector) {
-    const successorSet = GraphMethods.getSuccessorSet(node);
+    const successorSet = this.project.graphMethods.getSuccessorSet(node);
     for (const successor of successorSet) {
       this.moveEntityUtils(successor, delta);
     }

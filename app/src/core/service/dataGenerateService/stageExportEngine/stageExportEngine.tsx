@@ -1,6 +1,5 @@
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -54,11 +53,12 @@ export class StageExport {
       if (node.details.trim()) {
         nodesContent += "\t" + node.details + "\n";
       }
-      const childTextNodes = GraphMethods.nodeChildrenArray(node)
+      const childTextNodes = this.project.graphMethods
+        .nodeChildrenArray(node)
         .filter((node) => node instanceof TextNode)
         .filter((node) => nodes.includes(node));
       for (const child of childTextNodes) {
-        const link = GraphMethods.getEdgeFromTwoEntity(node, child);
+        const link = this.project.graphMethods.getEdgeFromTwoEntity(node, child);
         if (link) {
           linksContent += `${node.text} -${link.text}-> ${child.text}\n`;
         } else {
@@ -111,7 +111,7 @@ export class StageExport {
    * @param node
    */
   private getNodeChildrenArray(node: TextNode): ConnectableEntity[] {
-    const result = GraphMethods.nodeChildrenArray(node);
+    const result = this.project.graphMethods.nodeChildrenArray(node);
     // 如果全都在右侧或者左侧
     if (
       result.every((v) => v.geometryCenter.x > node.geometryCenter.x) ||

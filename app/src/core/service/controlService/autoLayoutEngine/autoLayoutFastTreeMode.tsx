@@ -1,7 +1,6 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { Project, service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -22,11 +21,11 @@ export class AutoLayoutFastTree {
       const spaceX = 20;
       const spaceY = 150;
       // 子节点所占空间的宽度
-      let width = Math.max(0, GraphMethods.nodeChildrenArray(node).length - 1) * spaceX;
+      let width = Math.max(0, this.project.graphMethods.nodeChildrenArray(node).length - 1) * spaceX;
       const widths: number[] = [];
       const paddings: number[] = [];
       let sumWidths = -width; // widths元素之和
-      for (const child of GraphMethods.nodeChildrenArray(node)) {
+      for (const child of this.project.graphMethods.nodeChildrenArray(node)) {
         const childrenWidth = dfs(child);
         const wd = child.collisionBox.getRectangle().size.x;
         widths.push(Math.max(wd, childrenWidth));
@@ -37,7 +36,7 @@ export class AutoLayoutFastTree {
       let currentX =
         node.geometryCenter.x - (sumWidths - paddings[0] - paddings[paddings.length - 1]) / 2 - paddings[0];
       for (let i = 0; i < widths.length; i++) {
-        const child = GraphMethods.nodeChildrenArray(node)[i];
+        const child = this.project.graphMethods.nodeChildrenArray(node)[i];
         child.moveTo(new Vector(currentX + paddings[i], node.collisionBox.getRectangle().top + spaceY));
         currentX += widths[i] + spaceX;
       }
@@ -52,7 +51,7 @@ export class AutoLayoutFastTree {
    * @returns
    */
   getTreeBoundingRectangle(node: ConnectableEntity): Rectangle {
-    const childList = GraphMethods.nodeChildrenArray(node);
+    const childList = this.project.graphMethods.nodeChildrenArray(node);
     const childRectangle = childList.map((child) => this.getTreeBoundingRectangle(child));
     return Rectangle.getBoundingRectangle(childRectangle.concat([node.collisionBox.getRectangle()]));
   }
@@ -93,7 +92,7 @@ export class AutoLayoutFastTree {
    * @param rootNode
    */
   adjustRootNodeLocationByChildren(rootNode: ConnectableEntity, gap = 100) {
-    const childList = GraphMethods.nodeChildrenArray(rootNode);
+    const childList = this.project.graphMethods.nodeChildrenArray(rootNode);
     if (childList.length === 0) {
       return;
     }
@@ -113,9 +112,9 @@ export class AutoLayoutFastTree {
 
     const dfs = (node: ConnectableEntity) => {
       // 按照从上到下的顺序排序
-      const childList = GraphMethods.nodeChildrenArray(node).sort(
-        (a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
-      );
+      const childList = this.project.graphMethods
+        .nodeChildrenArray(node)
+        .sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
       for (const child of childList) {
         dfs(child); // 递归口
       }
@@ -148,13 +147,13 @@ export class AutoLayoutFastTree {
    */
   private treeReverse(selectedRootEntity: ConnectableEntity, direction: "X" | "Y") {
     // 检测树形结构
-    const nodeChildrenArray = GraphMethods.nodeChildrenArray(selectedRootEntity);
+    const nodeChildrenArray = this.project.graphMethods.nodeChildrenArray(selectedRootEntity);
     if (nodeChildrenArray.length <= 1) {
       return;
     }
     // 遍历所有节点，将其位置根据选中的根节点进行镜像位置调整
     const dfs = (node: ConnectableEntity) => {
-      const childList = GraphMethods.nodeChildrenArray(node);
+      const childList = this.project.graphMethods.nodeChildrenArray(node);
       for (const child of childList) {
         dfs(child); // 递归口
       }

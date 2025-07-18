@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { Project, service } from "../../../Project";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -20,7 +19,7 @@ export class AutoComputeUtils {
    * @returns
    */
   getParentTextNodes(node: TextNode): TextNode[] {
-    const parents = GraphMethods.nodeParentArray(node).filter((node) => node instanceof TextNode);
+    const parents = this.project.graphMethods.nodeParentArray(node).filter((node) => node instanceof TextNode);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
       return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
@@ -29,7 +28,7 @@ export class AutoComputeUtils {
   }
 
   getParentEntities(node: TextNode): ConnectableEntity[] {
-    const parents = GraphMethods.nodeParentArray(node);
+    const parents = this.project.graphMethods.nodeParentArray(node);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
       return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
@@ -43,7 +42,8 @@ export class AutoComputeUtils {
    * @returns
    */
   getChildTextNodes(node: TextNode): TextNode[] {
-    return GraphMethods.nodeChildrenArray(node)
+    return this.project.graphMethods
+      .nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
   }
@@ -54,7 +54,7 @@ export class AutoComputeUtils {
    * @param resultText
    */
   getNodeOneResult(node: TextNode, resultText: string) {
-    const childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+    const childrenList = this.project.graphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -79,7 +79,9 @@ export class AutoComputeUtils {
    * @param resultText
    */
   getSectionOneResult(section: Section, resultText: string) {
-    const childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
+    const childrenList = this.project.graphMethods
+      .nodeChildrenArray(section)
+      .filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -99,7 +101,7 @@ export class AutoComputeUtils {
   }
 
   getSectionMultiResult(section: Section, resultTextList: string[]) {
-    let childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
+    let childrenList = this.project.graphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -119,7 +121,8 @@ export class AutoComputeUtils {
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
-    childrenList = GraphMethods.nodeChildrenArray(section)
+    childrenList = this.project.graphMethods
+      .nodeChildrenArray(section)
       .filter((node) => node instanceof TextNode)
       .sort(
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
@@ -142,7 +145,7 @@ export class AutoComputeUtils {
       return;
     }
     // 先把子节点数量凑够
-    let childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+    let childrenList = this.project.graphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -162,7 +165,8 @@ export class AutoComputeUtils {
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
-    childrenList = GraphMethods.nodeChildrenArray(node)
+    childrenList = this.project.graphMethods
+      .nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort(
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
@@ -191,12 +195,12 @@ export class AutoComputeUtils {
    * @param node
    */
   isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
-    for (const fatherNode of GraphMethods.nodeParentArray(node)) {
+    for (const fatherNode of this.project.graphMethods.nodeParentArray(node)) {
       if (fatherNode instanceof TextNode && this.isNameIsLogicNode(fatherNode.text)) {
         return true;
       }
     }
-    for (const childNode of GraphMethods.nodeChildrenArray(node)) {
+    for (const childNode of this.project.graphMethods.nodeChildrenArray(node)) {
       if (childNode instanceof TextNode && this.isNameIsLogicNode(childNode.text)) {
         return true;
       }
