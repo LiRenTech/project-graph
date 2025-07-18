@@ -1,4 +1,5 @@
 import { Color, MonoStack, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { MarkdownNode, parseMarkdownToJSON } from "../../../../utils/markdownParse";
@@ -6,6 +7,7 @@ import { Project, service } from "../../../Project";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Settings } from "../../../service/Settings";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "../../stageObject/collisionBox/collisionBox";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -35,8 +37,7 @@ export class NodeAdder {
       uuid: newUUID,
       text: await this.getAutoName(),
       details: "",
-      location: [clickWorldLocation.x, clickWorldLocation.y],
-      size: [100, 100],
+      collisionBox: new CollisionBox([new Rectangle(clickWorldLocation, Vector.getZero())]),
     });
     node.color = await this.getAutoColor();
     // 将node本身向左上角移动，使其居中

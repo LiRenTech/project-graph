@@ -92,7 +92,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   constructor(
     protected readonly project: Project,
     {
-      uuid = crypto.randomUUID(),
+      uuid = crypto.randomUUID() as string,
       text = "",
       details = "",
       collisionBox = new CollisionBox([new Rectangle(Vector.getZero(), Vector.getZero())]),
