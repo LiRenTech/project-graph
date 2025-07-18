@@ -55,7 +55,7 @@ export class DeleteManager {
 
   private deleteSvgNode(entity: SvgNode) {
     if (this.project.stageManager.getEntities().includes(entity)) {
-      this.project.stageManager.deleteOneEntity(entity);
+      this.project.stageManager.delete(entity);
       // 删除所有相关的边
       this.deleteEntityAfterClearAssociation(entity);
     }
@@ -63,7 +63,7 @@ export class DeleteManager {
 
   private deletePortalNode(entity: PortalNode) {
     if (this.project.stageManager.getPortalNodes().includes(entity)) {
-      this.project.stageManager.deleteOnePortalNode(entity);
+      this.project.stageManager.delete(entity);
       // 删除所有相关的边
       this.deleteEntityAfterClearAssociation(entity);
     }
@@ -71,7 +71,7 @@ export class DeleteManager {
 
   private deletePenStroke(penStroke: PenStroke) {
     if (this.project.stageManager.getPenStrokes().includes(penStroke)) {
-      this.project.stageManager.deleteOnePenStroke(penStroke);
+      this.project.stageManager.delete(penStroke);
     }
   }
 
@@ -87,7 +87,7 @@ export class DeleteManager {
     }
 
     // 再删除自己
-    this.project.stageManager.deleteOneSection(entity);
+    this.project.stageManager.delete(entity);
     this.deleteEntityAfterClearAssociation(entity);
     // 将自己所有的父级Section的children添加自己的children
     const fatherSections = this.project.sectionMethods.getFatherSections(entity);
@@ -95,7 +95,7 @@ export class DeleteManager {
   }
   private deleteImageNode(entity: ImageNode) {
     if (this.project.stageManager.getImageNodes().includes(entity)) {
-      this.project.stageManager.deleteOneImage(entity);
+      this.project.stageManager.delete(entity);
       this.project.effects.addEffect(
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
@@ -105,7 +105,7 @@ export class DeleteManager {
   }
   private deleteUrlNode(entity: UrlNode) {
     if (this.project.stageManager.getUrlNodes().includes(entity)) {
-      this.project.stageManager.deleteOneUrlNode(entity);
+      this.project.stageManager.delete(entity);
       // 删除所有相关的边
       this.deleteEntityAfterClearAssociation(entity);
     }
@@ -115,7 +115,7 @@ export class DeleteManager {
     // 先判断这个node是否在nodes里
     if (this.project.stageManager.getConnectPoints().includes(entity)) {
       // 从数组中去除
-      this.project.stageManager.deleteOneConnectPoint(entity);
+      this.project.stageManager.delete(entity);
       this.project.effects.addEffect(
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
@@ -132,7 +132,7 @@ export class DeleteManager {
       // TODO: 删除逻辑节点存储的状态
       // if (NodeLogic.delayStates.has(entity.uuid)) NodeLogic.delayStates.delete(entity.uuid);
       // 从数组中去除
-      this.project.stageManager.deleteOneTextNode(entity);
+      this.project.stageManager.delete(entity);
       // 增加特效
       this.project.effects.addEffect(
         new ExplodeDashEffect(
@@ -170,7 +170,7 @@ export class DeleteManager {
       }
     }
     for (const edge of prepareDeleteAssociation) {
-      this.project.stageManager.deleteOneAssociation(edge);
+      this.project.stageManager.delete(edge);
     }
   }
 
@@ -188,7 +188,7 @@ export class DeleteManager {
       this.project.stageManager.isEntityExists(toNode.uuid)
     ) {
       // 删除边
-      this.project.stageManager.deleteOneAssociation(deleteEdge);
+      this.project.stageManager.delete(deleteEdge);
       this.project.stageManager.updateReferences();
       return true;
     } else {
@@ -197,7 +197,7 @@ export class DeleteManager {
   }
 
   deleteMultiTargetUndirectedEdge(edge: MultiTargetUndirectedEdge) {
-    this.project.stageManager.deleteOneAssociation(edge);
+    this.project.stageManager.delete(edge);
     this.project.stageManager.updateReferences();
     return true;
   }
