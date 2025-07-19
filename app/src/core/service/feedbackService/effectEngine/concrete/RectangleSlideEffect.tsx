@@ -10,10 +10,6 @@ import { LineEffect } from "./LineEffect";
  * 显示渐变直线作为视觉效果
  */
 export class RectangleSlideEffect extends Effect {
-  getClassName(): string {
-    return "RectangleSlideEffect";
-  }
-
   constructor(
     public startRect: Rectangle,
     public endRect: Rectangle,

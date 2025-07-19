@@ -7,9 +7,6 @@ import { Effect } from "../effectObject";
  * 用途之一：给逻辑引擎渲染编号
  */
 export class TextRaiseEffectLocated extends Effect {
-  getClassName(): string {
-    return "TextRaiseEffectLocated";
-  }
   constructor(
     public text: string,
     public location: Vector,

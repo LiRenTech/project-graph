@@ -22,10 +22,6 @@ export class EdgeCutEffect extends Effect {
     return new EdgeCutEffect(new ProgressNumber(0, 30), 0, start, end, color, width);
   }
 
-  getClassName(): string {
-    return "EdgeCutEffect";
-  }
-
   render(project: Project) {
     const midPoint = new Vector((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
 

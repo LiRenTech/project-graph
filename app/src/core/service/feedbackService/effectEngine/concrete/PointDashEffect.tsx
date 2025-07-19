@@ -7,9 +7,6 @@ import { Effect } from "../effectObject";
  * 在一个点迸发一些粒子效果
  */
 export class PointDashEffect extends Effect {
-  getClassName(): string {
-    return "PointDashEffect";
-  }
   public particleList: EffectParticle[] = [];
 
   constructor(

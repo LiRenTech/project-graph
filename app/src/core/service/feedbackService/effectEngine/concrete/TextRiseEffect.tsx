@@ -7,10 +7,6 @@ import { easeInOutSine } from "../mathTools/easings";
  * 文字上浮特效
  */
 export class TextRiseEffect extends Effect {
-  getClassName(): string {
-    return "TextRiseEffect";
-  }
-
   constructor(
     public text: string,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),

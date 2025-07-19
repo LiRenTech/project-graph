@@ -137,7 +137,4 @@ export class MouseTipFeedbackEffect extends Effect {
       );
     }
   }
-  getClassName(): string {
-    return "MouseTipFeedbackEffect";
-  }
 }

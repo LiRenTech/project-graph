@@ -6,9 +6,6 @@ import { Effect } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
 export class EntityJumpMoveEffect extends Effect {
-  getClassName(): string {
-    return "EntityJumpMoveEffect";
-  }
   constructor(
     public time: number,
     public rectStart: Rectangle,

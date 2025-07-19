@@ -7,9 +7,6 @@ import { Effect } from "../effectObject";
  * 实体对齐特效
  */
 export class EntityAlignEffect extends Effect {
-  getClassName(): string {
-    return "EntityAlignEffect";
-  }
   private lines: Line[] = [];
   static fromEntity(moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
     return new EntityAlignEffect(new ProgressNumber(0, 20), moveRectangle, targetRectangle);

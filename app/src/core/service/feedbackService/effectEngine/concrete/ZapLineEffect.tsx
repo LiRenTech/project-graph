@@ -10,9 +10,6 @@ import { Effect } from "../effectObject";
  * 最终不一定到达end点，因为有随机偏移
  */
 export class ZapLineEffect extends Effect {
-  getClassName(): string {
-    return "ZapLineEffect";
-  }
   constructor(
     start: Vector,
     private end: Vector,

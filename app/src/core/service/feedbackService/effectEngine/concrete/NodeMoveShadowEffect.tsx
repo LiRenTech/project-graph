@@ -8,9 +8,6 @@ import { Effect } from "../effectObject";
  *
  */
 export class NodeMoveShadowEffect extends Effect {
-  getClassName(): string {
-    return "NodeMoveShadowEffect";
-  }
   pointList: Vector[] = [];
   pointInitSpeedList: Vector[] = [];
 

@@ -8,9 +8,6 @@ import { Effect } from "../effectObject";
  * 一个矩形被一刀切成两半，两个多边形的的特效
  */
 export class RectangleSplitTwoPartEffect extends Effect {
-  getClassName(): string {
-    return "RectangleSplitTwoPartEffect";
-  }
   /**
    * 长度只有2
    */

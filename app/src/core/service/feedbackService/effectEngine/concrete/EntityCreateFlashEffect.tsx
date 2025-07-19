@@ -10,9 +10,6 @@ import { Effect } from "../effectObject";
  * 实体创建时闪光特效
  */
 export class EntityCreateFlashEffect extends Effect {
-  getClassName(): string {
-    return "EntityCreateFlashEffect";
-  }
   constructor(
     /**
      * 一开始为0，每tick + 1

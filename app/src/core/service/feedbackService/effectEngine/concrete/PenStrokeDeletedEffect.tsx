@@ -4,9 +4,6 @@ import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { Effect } from "../effectObject";
 
 export class PenStrokeDeletedEffect extends Effect {
-  getClassName(): string {
-    return "PenStrokeDeletedEffect";
-  }
   private pathList: Vector[] = [];
   private currentPartList: Vector[] = [];
   private color: Color = new Color(0, 0, 0);

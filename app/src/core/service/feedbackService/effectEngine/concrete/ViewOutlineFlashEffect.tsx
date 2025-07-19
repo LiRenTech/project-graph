@@ -7,9 +7,6 @@ import { Effect } from "../effectObject";
  * 屏幕边缘闪颜色效果
  */
 export class ViewOutlineFlashEffect extends Effect {
-  getClassName(): string {
-    return "ViewOutlineFlashEffect";
-  }
   constructor(
     public color: Color,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),

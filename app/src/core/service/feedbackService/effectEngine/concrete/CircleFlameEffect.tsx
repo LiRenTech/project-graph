@@ -18,9 +18,6 @@ export class CircleFlameEffect extends Effect {
   ) {
     super(timeProgress);
   }
-  getClassName(): string {
-    return "CircleFlameEffect";
-  }
 
   render(project: Project) {
     if (this.timeProgress.isFull) {

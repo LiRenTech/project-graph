@@ -7,9 +7,6 @@ import { Effect } from "../effectObject";
  * 直接显示全部，随着时间推移逐渐透明
  */
 export class LineEffect extends Effect {
-  getClassName(): string {
-    return "LineEffect";
-  }
   constructor(
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,

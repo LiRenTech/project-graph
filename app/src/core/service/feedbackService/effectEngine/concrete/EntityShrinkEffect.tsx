@@ -11,9 +11,6 @@ import { Effect } from "../effectObject";
  * 实体收缩消失特效
  */
 export class EntityShrinkEffect extends Effect {
-  getClassName(): string {
-    return "EntityShrinkEffect";
-  }
   constructor(
     public time: number,
     public rect: Rectangle,

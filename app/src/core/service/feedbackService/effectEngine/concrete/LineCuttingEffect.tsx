@@ -14,9 +14,6 @@ import { Effect } from "../effectObject";
  *                   ->
  */
 export class LineCuttingEffect extends Effect {
-  getClassName(): string {
-    return "LineCuttingEffect";
-  }
   constructor(
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,

@@ -19,10 +19,6 @@ export class CircleChangeRadiusEffect extends Effect {
     super(timeProgress);
   }
 
-  getClassName(): string {
-    return "CircleChangeRadiusEffect";
-  }
-
   get radius() {
     return this.radiusStart + (this.radiusEnd - this.radiusStart) * this.timeProgress.rate;
   }

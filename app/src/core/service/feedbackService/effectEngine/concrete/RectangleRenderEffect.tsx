@@ -5,9 +5,6 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Effect } from "../effectObject";
 
 export class RectangleRenderEffect extends Effect {
-  getClassName(): string {
-    return "RectangleRenderEffect";
-  }
   constructor(
     public override timeProgress: ProgressNumber,
     private rectangle: Rectangle,

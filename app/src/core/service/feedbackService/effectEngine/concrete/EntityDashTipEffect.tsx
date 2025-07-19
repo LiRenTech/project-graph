@@ -6,9 +6,6 @@ import { EffectParticle } from "../effectElements/effectParticle";
 import { Effect } from "../effectObject";
 
 export class EntityDashTipEffect extends Effect {
-  getClassName(): string {
-    return "EntityDashTipEffect";
-  }
   constructor(
     public time: number,
     public rect: Rectangle,

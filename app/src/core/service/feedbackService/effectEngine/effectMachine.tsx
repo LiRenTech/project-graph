@@ -1,3 +1,4 @@
+import { getOriginalNameOf } from "virtual:original-class-name";
 import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
 import { Effect } from "./effectObject";
@@ -21,7 +22,7 @@ export class Effects {
   private effects: Effect[] = [];
 
   public addEffect(effect: Effect) {
-    if (!(this.effectsPerferences[effect.getClassName()] ?? true)) {
+    if (!(this.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true)) {
       return;
     }
     this.effects.push(effect);
@@ -32,7 +33,9 @@ export class Effects {
   }
 
   public addEffects(effects: Effect[]) {
-    this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.getClassName()] ?? true));
+    this.effects.push(
+      ...effects.filter((effect) => this.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true),
+    );
   }
 
   tick() {

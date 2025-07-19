@@ -12,9 +12,6 @@ import { Effect } from "../effectObject";
  * 可以用来表示提醒效果
  */
 export class EntityShakeEffect extends Effect {
-  getClassName(): string {
-    return "EntityShakeEffect";
-  }
   constructor(
     public time: number,
     public rect: Rectangle,

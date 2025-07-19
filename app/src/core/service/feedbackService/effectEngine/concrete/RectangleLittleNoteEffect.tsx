@@ -10,9 +10,6 @@ import { Effect } from "../effectObject";
  * 附着在矩形上，从中心向外扩散
  */
 export class RectangleLittleNoteEffect extends Effect {
-  getClassName(): string {
-    return "RectangleLittleNoteEffect";
-  }
   private currentRect: Rectangle;
 
   constructor(
