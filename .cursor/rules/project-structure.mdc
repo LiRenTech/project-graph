@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+description: 项目结构指南
+---
+## 项目概述
+
+Project Graph 是一个图形化思维桌面工具和知识管理系统，支持节点连接、图形渲染和自动布局等功能。
+
+## 技术架构
+
+- 框架：React (TypeScript) + Tauri (Rust)
+- 构建工具：Vite + pnpm (monorepo)
+- 图形渲染：Canvas 2D
+- UI: tailwindcss
+
+# 项目结构指南
+
+- 前端主目录为 [app/](mdc:app/)，主要入口为 [app/src/main.tsx](mdc:app/src/main.tsx)。
+- 业务核心相关内容位于 [packages/](mdc:packages/)、[app/src/core/](mdc:app/src/core/)。
+- 文档和说明文件在 [docs/](mdc:docs/)、[docs-pg/](mdc:docs-pg/)。
+- Tauri 桌面端相关内容在 [app/src-tauri/](mdc:app/src-tauri/)。
+- 主要的样式文件在 [app/src/css/](mdc:app/src/css/)。
+- 主要的 React 组件在 [app/src/components/](mdc:app/src/components/)。
+- 配置文件和脚本分布在各主目录下。
+
+此规则有助于快速定位项目主要部分和理解整体架构。

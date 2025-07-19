@@ -113,7 +113,7 @@ export class Project {
   }
 
   private readonly services = new Map<string, Service>();
-  private readonly tickableServices = new Set<Service>();
+  private readonly tickableServices: Service[] = [];
   private readonly fileSystemProviders = new Map<string, FileSystemProvider>();
   private rafHandle = -1;
   private _uri: URI;
@@ -158,7 +158,7 @@ export class Project {
     const inst = new service(this);
     this.services.set(service.id, inst);
     if ("tick" in inst) {
-      this.tickableServices.add(inst);
+      this.tickableServices.push(inst);
     }
     this[service.id as keyof this] = inst as this[keyof this];
     // TODO: 现在的热重载用不了
@@ -196,7 +196,7 @@ export class Project {
     if (service) {
       service.dispose?.();
       this.services.delete(serviceId);
-      this.tickableServices.delete(service);
+      this.tickableServices.splice(this.tickableServices.indexOf(service), 1);
     }
   }
 
@@ -237,7 +237,7 @@ export class Project {
         service.tick?.();
       } catch (e) {
         console.error("[%s] %o", service, e);
-        this.tickableServices.delete(service);
+        this.tickableServices.splice(this.tickableServices.indexOf(service), 1);
       }
     }
   }
@@ -255,7 +255,7 @@ export class Project {
     }
     await Promise.allSettled(promises);
     this.services.clear();
-    this.tickableServices.clear();
+    this.tickableServices.length = 0;
   }
 
   /**

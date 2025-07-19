@@ -77,6 +77,7 @@ import { StageManager } from "./stage/stageManager/StageManager";
 export function loadAllServices(project: Project): void {
   project.registerFileSystemProvider("file", FileSystemProviderFile);
   project.registerFileSystemProvider("draft", FileSystemProviderDraft);
+  project.loadService(Renderer);
   project.loadService(Canvas);
   project.loadService(InputElement);
   project.loadService(StageStyleManager);
@@ -142,7 +143,6 @@ export function loadAllServices(project: Project): void {
   project.loadService(UrlNodeRenderer);
   project.loadService(BackgroundRenderer);
   project.loadService(SearchContentHighlightRenderer);
-  project.loadService(Renderer);
   project.loadService(StageExport);
   project.loadService(StageExportPng);
   project.loadService(StageExportSvg);
