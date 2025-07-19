@@ -1,5 +1,6 @@
-import { docs } from "@/.source";
+import { blogPosts, docs } from "@/.source";
 import { loader } from "fumadocs-core/source";
+import { createMDXSource } from "fumadocs-mdx";
 import { icons } from "lucide-react";
 import { createElement } from "react";
 
@@ -17,4 +18,9 @@ export const source = loader({
     }
     return createElement(icons.OctagonAlert);
   },
+});
+
+export const blog = loader({
+  baseUrl: "/blog",
+  source: createMDXSource(blogPosts),
 });
