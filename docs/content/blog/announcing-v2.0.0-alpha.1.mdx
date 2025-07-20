@@ -1,0 +1,79 @@
+---
+title: v2.0.0-alpha.1 正式发布
+date: 2025-07-21
+author: zty012
+---
+
+我们很高兴地宣布 Project Graph 2.0.0-alpha.1 正式发布。
+
+此版本是 2.0 的第一个测试版本，包含多项新功能和性能提升，为 2.0 正式版的发布做准备。
+
+## 免责声明
+
+此版本是测试版本，存在一些问题，使用此版本导致的数据丢失、文件损坏等风险由使用者自行承担。
+
+## 重要公告
+
+### 迁移到 Graphif 组织
+
+由于本项目逐渐成熟，我们决定将项目脱离 [LiRenTech](https://github.com/LiRenTech) 组织，转移到 [Graphif](https://github.com/graphif) 组织下。
+
+以后也会在 Graphif 组织下发布更多开源项目。
+
+## 新功能
+
+### 多标签页
+
+![.png](https://s2.loli.net/2025/07/21/Qxnz641DPGhSIUo.png)
+
+现在可以在单个窗口内打开多个文件，并可以自由切换。
+
+### `*.prg` 文件格式
+
+将 `*.json` 文件格式改为了基于 zip 和 MsgPack 的 `*.prg` 文件格式，减小了文件大小，并且可以直接嵌入图片文件。
+
+## 已知问题
+
+### 菜单栏只有少部分功能可用
+
+目前只有以下功能可用：
+
+- 文件
+  - 新建
+  - 打开
+  - 保存
+- 设置
+  - 设置
+  - test
+
+### 所有键盘相关的功能失效
+
+原因未知
+
+## 开源项目
+
+### `@graphif/serializer`
+
+[文档](/docs/serializer)
+
+序列化和反序列化 JS 对象，并且保留 prototype。
+
+### `@graphif/shapes`
+
+提供可序列化的几何图形类。
+
+### `@graphif/data-structures`
+
+提供可序列化的常用数据结构。
+
+### `@graphif/unplugin-original-class-name`
+
+[文档](/docs/unplugin-original-class-name)
+
+在压缩后的代码中保留原始类名。
+
+### `@graphif/vite-plugin-pg-theme`
+
+[文档](/docs/vite-plugin-pg-theme)
+
+根据 `pg-theme` 主题文件自动生成 Tailwind CSS 主题代码。
