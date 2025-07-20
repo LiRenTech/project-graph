@@ -17,6 +17,9 @@
 --color-tab-text: var(--color-tab-text);
 --color-tab-border: var(--color-tab-border);
 --color-tab-active-bg: var(--color-tab-active-bg);
+--color-tab-selected-bg: var(--color-tab-selected-bg);
+--color-tab-selected-text: var(--color-tab-selected-text);
+--color-tab-selected-border: var(--color-tab-selected-border);
 --color-menu-item-hover-bg: var(--color-menu-item-hover-bg);
 --color-menu-separator-bg: var(--color-menu-separator-bg);
 --color-tooltip-bg: var(--color-tooltip-bg);
@@ -790,6 +793,144 @@
   }
   &::placeholder {
     color: var(--color-tab-placeholder-text, var(--color-tab-text));
+  }
+}
+@utility el-tab-selected {
+  background-color: var(--color-tab-selected-bg);
+  color: var(--color-tab-selected-text);
+  border-color: var(--color-tab-selected-border, transparent);
+  --tw-shadow-color: var(--color-tab-selected-shadow);
+  &:hover {
+    background-color: var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-hover-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-hover-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow));
+  }
+  &:active {
+    background-color: var(--color-tab-selected-active-bg, var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg)));
+    color: var(--color-tab-selected-active-text, var(--color-tab-selected-hover-text, var(--color-tab-selected-text)));
+    border-color: var(--color-tab-selected-active-border, var(--color-tab-selected-hover-border, var(--color-tab-selected-border)));
+    --tw-shadow-color: var(--color-tab-selected-active-shadow, var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow)));
+  }
+  &:disabled,
+  &[disabled] {
+    background-color: var(--color-tab-selected-disabled-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-disabled-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-disabled-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-disabled-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus {
+    background-color: var(--color-tab-selected-focus-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-within {
+    background-color: var(--color-tab-selected-focus-within-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-within-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-within-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-within-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-visible {
+    background-color: var(--color-tab-selected-focus-visible-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-visible-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-visible-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-visible-shadow, var(--color-tab-selected-shadow));
+  }
+  &::placeholder {
+    color: var(--color-tab-selected-placeholder-text, var(--color-tab-selected-text));
+  }
+}
+@utility el-tab-selected {
+  background-color: var(--color-tab-selected-bg);
+  color: var(--color-tab-selected-text);
+  border-color: var(--color-tab-selected-border, transparent);
+  --tw-shadow-color: var(--color-tab-selected-shadow);
+  &:hover {
+    background-color: var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-hover-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-hover-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow));
+  }
+  &:active {
+    background-color: var(--color-tab-selected-active-bg, var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg)));
+    color: var(--color-tab-selected-active-text, var(--color-tab-selected-hover-text, var(--color-tab-selected-text)));
+    border-color: var(--color-tab-selected-active-border, var(--color-tab-selected-hover-border, var(--color-tab-selected-border)));
+    --tw-shadow-color: var(--color-tab-selected-active-shadow, var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow)));
+  }
+  &:disabled,
+  &[disabled] {
+    background-color: var(--color-tab-selected-disabled-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-disabled-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-disabled-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-disabled-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus {
+    background-color: var(--color-tab-selected-focus-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-within {
+    background-color: var(--color-tab-selected-focus-within-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-within-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-within-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-within-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-visible {
+    background-color: var(--color-tab-selected-focus-visible-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-visible-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-visible-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-visible-shadow, var(--color-tab-selected-shadow));
+  }
+  &::placeholder {
+    color: var(--color-tab-selected-placeholder-text, var(--color-tab-selected-text));
+  }
+}
+@utility el-tab-selected {
+  background-color: var(--color-tab-selected-bg);
+  color: var(--color-tab-selected-text);
+  border-color: var(--color-tab-selected-border, transparent);
+  --tw-shadow-color: var(--color-tab-selected-shadow);
+  &:hover {
+    background-color: var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-hover-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-hover-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow));
+  }
+  &:active {
+    background-color: var(--color-tab-selected-active-bg, var(--color-tab-selected-hover-bg, var(--color-tab-selected-bg)));
+    color: var(--color-tab-selected-active-text, var(--color-tab-selected-hover-text, var(--color-tab-selected-text)));
+    border-color: var(--color-tab-selected-active-border, var(--color-tab-selected-hover-border, var(--color-tab-selected-border)));
+    --tw-shadow-color: var(--color-tab-selected-active-shadow, var(--color-tab-selected-hover-shadow, var(--color-tab-selected-shadow)));
+  }
+  &:disabled,
+  &[disabled] {
+    background-color: var(--color-tab-selected-disabled-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-disabled-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-disabled-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-disabled-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus {
+    background-color: var(--color-tab-selected-focus-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-within {
+    background-color: var(--color-tab-selected-focus-within-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-within-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-within-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-within-shadow, var(--color-tab-selected-shadow));
+  }
+  &:focus-visible {
+    background-color: var(--color-tab-selected-focus-visible-bg, var(--color-tab-selected-bg));
+    color: var(--color-tab-selected-focus-visible-text, var(--color-tab-selected-text));
+    border-color: var(--color-tab-selected-focus-visible-border, var(--color-tab-selected-border));
+    --tw-shadow-color: var(--color-tab-selected-focus-visible-shadow, var(--color-tab-selected-shadow));
+  }
+  &::placeholder {
+    color: var(--color-tab-selected-placeholder-text, var(--color-tab-selected-text));
   }
 }
 @utility el-menu-item {

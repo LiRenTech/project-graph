@@ -222,13 +222,19 @@ export default function App() {
           <div
             key={project.uri.toString()}
             className={cn("el-tab flex shrink-0 items-center gap-1 rounded-lg border p-2", {
-              "el-tab-active": activeProject?.uri.toString() === project.uri.toString(),
+              "el-tab-selected": activeProject?.uri.toString() === project.uri.toString(),
             })}
             onClick={() => {
               setActiveProject(project);
             }}
           >
-            <span className="text-sm">{project.uri.toString()}</span>
+            <span className="text-sm">
+              {project.uri.scheme === "draft"
+                ? `草稿 (${project.uri.path})`
+                : project.uri.scheme === "file"
+                  ? project.uri.path.split("/").pop()
+                  : project.uri.toString()}
+            </span>
             <X
               size={16}
               strokeWidth={3}

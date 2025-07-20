@@ -34,6 +34,10 @@ tab:
   border: *surface3
   active:
     bg: *surface2
+  selected:
+    bg: *surface2
+    text: *text
+    border: *surface3
 
 menu:
   item:
