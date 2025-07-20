@@ -33,7 +33,7 @@ export class TextRiseEffect extends Effect {
       renderCenterLocation,
       20,
       Infinity,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      project.stageStyleManager.currentStyle.StageObjectBorder,
     );
     project.canvas.ctx.globalAlpha = 1;
   }

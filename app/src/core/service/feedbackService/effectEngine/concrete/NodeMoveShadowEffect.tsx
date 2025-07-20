@@ -86,8 +86,8 @@ export class NodeMoveShadowEffect extends Effect {
     for (const point of this.pointList) {
       const viewLocation = project.renderer.transformWorld2View(point);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.effects.flash,
-        this.project.stageStyleManager.currentStyle.effects.flash.toTransparent(),
+        project.stageStyleManager.currentStyle.effects.flash,
+        project.stageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 

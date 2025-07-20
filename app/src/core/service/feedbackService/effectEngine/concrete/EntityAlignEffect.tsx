@@ -92,8 +92,8 @@ export class EntityAlignEffect extends Effect {
         project.renderer.transformWorld2View(line.start),
         project.renderer.transformWorld2View(line.end),
         mixColors(
-          this.project.stageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
-          this.project.stageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
+          project.stageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
+          project.stageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
         0.5 * project.camera.currentScale,

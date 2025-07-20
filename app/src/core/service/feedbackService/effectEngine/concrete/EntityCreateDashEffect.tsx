@@ -101,8 +101,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayTop) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -111,8 +111,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayBottom) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -122,8 +122,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayLeft) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -133,8 +133,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayRight) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        this.project.stageStyleManager.currentStyle.StageObjectBorder,
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 

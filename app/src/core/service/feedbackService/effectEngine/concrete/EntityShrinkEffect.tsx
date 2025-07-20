@@ -46,7 +46,7 @@ export class EntityShrinkEffect extends Effect {
     project.shapeRenderer.renderRect(
       project.renderer.transformWorld2View(rectangleA),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      this.project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+      project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
       2 * project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );

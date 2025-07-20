@@ -26,10 +26,10 @@ export class EntityJumpMoveEffect extends Effect {
     // 画地面阴影
     project.shapeRenderer.renderRectWithShadow(
       project.renderer.transformWorld2View(groundShadowRect),
-      this.project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
+      project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       Color.Transparent,
       2 * project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
+      project.stageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       10,
       0,
       0,
@@ -40,7 +40,7 @@ export class EntityJumpMoveEffect extends Effect {
     project.shapeRenderer.renderRect(
       project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
-      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );
