@@ -2,6 +2,7 @@
   "name": "@graphif/vite-plugin-pg-theme",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "keywords": [
     "vite-plugin"
   ],

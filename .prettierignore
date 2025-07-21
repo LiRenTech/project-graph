@@ -13,3 +13,5 @@ vite-env.d.ts
 dist
 .next
 out
+
+LICENSE

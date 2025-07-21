@@ -2,6 +2,7 @@
   "name": "@graphif/docs",
   "version": "0.0.0",
   "private": true,
+  "license": "CC-BY-SA-4.0",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",

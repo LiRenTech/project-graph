@@ -3,6 +3,7 @@
   "description": "Serialize instances to objects",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "files": [
     "dist"
   ],

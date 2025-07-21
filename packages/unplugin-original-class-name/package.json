@@ -3,6 +3,7 @@
   "description": "Add original class names to the dist code",
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "keywords": [
     "unplugin"
   ],
