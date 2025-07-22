@@ -1,7 +1,0 @@
-{
-  "title": "舞台对象",
-  "description": "快速绘制节点图的桌面工具",
-  "root": false,
-  "icon": "Hexagon",
-  "pages": ["entity", "association"]
-}
