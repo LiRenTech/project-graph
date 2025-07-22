@@ -3,6 +3,7 @@ import { loader } from "fumadocs-core/source";
 import { createMDXSource } from "fumadocs-mdx";
 import { icons } from "lucide-react";
 import { createElement } from "react";
+import { i18n } from "./i18n";
 
 // `loader()` also assign a URL to your pages
 // See https://fumadocs.vercel.app/docs/headless/source-api for more info
@@ -18,6 +19,7 @@ export const source = loader({
     }
     return createElement(icons.OctagonAlert);
   },
+  i18n,
 });
 
 export const blog = loader({

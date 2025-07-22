@@ -1,6 +1,5 @@
 import { blog } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
-import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 
@@ -20,12 +19,19 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
         <span>{page.data.date.toLocaleDateString()}</span>
       </div>
       <DocsBody>
-        <MDXContent
-          components={getMDXComponents({
-            a: createRelativeLink(blog, page),
-          })}
-        />
+        <MDXContent components={getMDXComponents()} />
       </DocsBody>
     </DocsPage>
   );
+}
+
+export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
+  const params = await props.params;
+  const page = blog.getPage(params.slug);
+  if (!page) notFound();
+
+  return {
+    title: page.data.title,
+    description: page.data.description,
+  };
 }

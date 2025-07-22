@@ -1,3 +1,4 @@
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 import { createGenerator } from "fumadocs-typescript";
 import { AutoTypeTable } from "fumadocs-typescript/ui";
 import * as TabsComponents from "fumadocs-ui/components/tabs";
@@ -6,11 +7,12 @@ import type { MDXComponents } from "mdx/types";
 
 const generator = createGenerator();
 
-export function getMDXComponents(components?: MDXComponents): MDXComponents {
+export function getMDXComponents(extraComponents?: MDXComponents): MDXComponents {
   return {
     ...defaultComponents,
+    a: DynamicLink,
     AutoTypeTable: (props) => <AutoTypeTable {...props} generator={generator} />,
-    ...components,
     ...TabsComponents,
+    ...extraComponents,
   };
 }

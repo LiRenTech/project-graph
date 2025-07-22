@@ -1,13 +1,12 @@
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
-import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 import { RelatedFileButton } from "./page.client";
 
-export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
+export default async function Page(props: { params: Promise<{ lang: string; slug?: string[] }> }) {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
 
   const MDXContent = page.data.body;
@@ -20,19 +19,15 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         {"relatedFile" in page.data && <RelatedFileButton relatedFile={page.data.relatedFile} />}
       </div>
       <DocsBody>
-        <MDXContent
-          components={getMDXComponents({
-            a: createRelativeLink(source, page),
-          })}
-        />
+        <MDXContent components={getMDXComponents()} />
       </DocsBody>
     </DocsPage>
   );
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
+export async function generateMetadata(props: { params: Promise<{ lang: string; slug?: string[] }> }) {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
 
   return {

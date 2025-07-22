@@ -1,8 +1,8 @@
 "use client";
 
+import Logo from "@/app/components/Logo";
 import { useRouter } from "fumadocs-core/framework";
 import { ChevronRight } from "lucide-react";
-import Logo from "../components/Logo";
 
 export default function HomePage() {
   const router = useRouter();

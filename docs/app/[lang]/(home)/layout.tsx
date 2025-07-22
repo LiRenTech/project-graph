@@ -1,12 +1,14 @@
+import Logo from "@/app/components/Logo";
 import { baseOptions } from "@/app/layout.config";
 import Link from "fumadocs-core/link";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { NavbarMenu, NavbarMenuContent, NavbarMenuLink, NavbarMenuTrigger } from "fumadocs-ui/layouts/home/navbar";
 import { AlbumIcon, Braces, Code, Cpu, GitPullRequestArrow } from "lucide-react";
 import type { ReactNode } from "react";
-import Logo from "../components/Logo";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ params, children }: { params: Promise<{ lang: string }>; children: ReactNode }) {
+  const { lang } = await params;
+
   return (
     <HomeLayout
       style={
@@ -14,7 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           "--spacing-fd-container": "1120px",
         } as object
       }
-      {...baseOptions}
+      {...baseOptions(lang)}
       links={[
         {
           type: "custom",
