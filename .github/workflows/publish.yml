@@ -115,7 +115,7 @@ jobs:
       - name: Delete release
         if: inputs.delete_release == true
         run: |
-          gh release delete nightly --yes --cleanup-tag || true
+          gh release delete ${{ inputs.release_tag }} --yes --cleanup-tag || true
           sleep 1
       - name: Create release
         env:
