@@ -5,11 +5,16 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "App version (x.y.z)"
+        description: "应用版本 (x.y.z)"
         required: true
       prerelease:
         type: boolean
         description: "Is pre-release"
+        required: false
+        default: false
+      delete_release:
+        type: boolean
+        description: "删除以前的release"
         required: false
         default: false
 
@@ -26,7 +31,7 @@ jobs:
       aur_version: ${{ inputs.version }}
       aur_key_algorithm: "ed25519"
       aur_package_name: "project-graph-bin"
-      delete_release: false
+      delete_release: ${{ inputs.delete_release }}
       prerelease: ${{ inputs.prerelease }}
       release_name: "v${{ inputs.version }}"
       release_tag: "v${{ inputs.version }}"
