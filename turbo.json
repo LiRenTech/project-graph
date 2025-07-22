@@ -41,7 +41,7 @@
       "persistent": true
     },
     "type-check": {
-      "inputs": ["app/src/**/*.tsx"]
+      "inputs": ["src/**/*.{ts,tsx}"]
     }
   }
 }
