@@ -1,38 +1,66 @@
-"use client";
+import DynamicLink from "fumadocs-core/dynamic-link";
+import { PlayCircle } from "lucide-react";
 
-import Logo from "@/app/components/Logo";
-import { useRouter } from "fumadocs-core/framework";
-import { ChevronRight } from "lucide-react";
+const translations = {
+  "zh-CN": {
+    news: "2.0 版本将在 8 月 21 日发布",
+    slogan: ["笔起思涌", "图见真意"],
+    description: "次世代的节点图绘制工具",
+    start: "开始使用",
+    video: "宣传片",
+  },
+  en: {
+    news: "Version 2.0 will be released on August 21",
+    slogan: ["Draw fast", "Think efficiently"],
+    description: "Next-generation node graph drawing tool",
+    start: "Get started",
+    video: "Watch video",
+  },
+};
 
-export default function HomePage() {
-  const router = useRouter();
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+
+  function t<T extends keyof (typeof translations)[keyof typeof translations]>(
+    key: T,
+  ): (typeof translations)[keyof typeof translations][T] {
+    return translations[lang as keyof typeof translations][key];
+  }
 
   return (
-    <main className="flex px-52 py-32">
-      <div className="max-w-1/2 flex flex-col gap-8">
-        <h1 className="-z-20 bg-gradient-to-r from-blue-500 to-lime-600 bg-clip-text text-7xl font-bold leading-tight text-transparent">
-          Project Graph
-        </h1>
-        <h2 className="text-5xl font-bold opacity-75">计划 - 投射</h2>
-        <p className="text-2xl opacity-75">快速绘制节点图的桌面工具，可以用于项目进程拓扑图绘制、快速头脑风暴草稿。</p>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => {
-              router.push("/docs/app");
-            }}
-            className="bg-fd-accent rounded-4xl flex cursor-pointer items-center gap-2 px-6 py-4 transition-all duration-200 active:scale-90 active:rounded-2xl"
-          >
-            快速开始
-            <ChevronRight />
-          </button>
-        </div>
+    <main className="container flex min-h-full flex-col items-center gap-8 py-28">
+      {/* news */}
+      <div className="flex rounded-full border border-blue-400 px-3 py-1 text-sm opacity-50 transition hover:scale-110 hover:opacity-100">
+        {t("news")}
       </div>
-      <div className="flex flex-1 justify-center">
-        <div className="relative w-1/3">
-          <Logo className="size-full" />
-          <Logo className="not-dark:opacity-50 absolute inset-0 -z-10 size-full scale-150 blur-2xl" />
+      {/* slogan */}
+      <h1 className="flex flex-col items-center bg-gradient-to-br from-blue-400 to-lime-500 bg-clip-text text-7xl font-semibold leading-tight text-transparent">
+        {t("slogan").map((word, index) => (
+          <span key={index}>{word}</span>
+        ))}
+      </h1>
+      {/* description */}
+      <h2 className="text-xl opacity-60">{t("description")}</h2>
+      {/* links */}
+      <DynamicLink
+        href="/docs/app"
+        className="rounded-xl border-t-2 border-white/50 bg-gradient-to-br from-blue-500 to-lime-700 px-4 py-3 transition hover:-translate-y-1"
+      >
+        {t("start")}
+      </DynamicLink>
+      {/* video */}
+      {lang === "zh-CN" && (
+        <div className="mt-8 flex w-full flex-col items-center gap-8">
+          <div className="flex items-center gap-2 text-lg opacity-75">
+            <PlayCircle />
+            {t("video")}
+          </div>
+          <iframe
+            src="https://player.bilibili.com/player.html?aid=113667215527700&poster=1&autoplay=0"
+            className="aspect-video w-96 rounded-3xl transition-all hover:w-full"
+          />
         </div>
-      </div>
+      )}
     </main>
   );
 }
