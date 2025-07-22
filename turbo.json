@@ -13,7 +13,8 @@
     },
     "@graphif/project-graph#build": {
       "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"]
     },
     "@graphif/docs#build": {
       "inputs": ["**/*"],
