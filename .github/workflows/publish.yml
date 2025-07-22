@@ -109,7 +109,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
       - name: Install dependencies
         run: npm i -g node-fetch
       - name: Delete release
@@ -210,7 +210,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -346,7 +346,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
       - name: Setup AUR private key
         run: |
           mkdir -p ~/.ssh
