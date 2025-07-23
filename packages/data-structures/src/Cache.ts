@@ -2,47 +2,38 @@
  * 最近最少使用缓存
  * 原理：当缓存满时，删除最早添加的缓存
  */
-export class LruCache<K, V> {
-  private cache: Map<K, V> = new Map();
+export class LruCache<K, V> extends Map<K, V> {
   private readonly capacity: number;
 
   constructor(capacity: number) {
+    super();
     if (capacity <= 0) {
       throw new Error("capacity must be greater than 0");
     }
     this.capacity = capacity;
   }
 
-  get(key: K): V | undefined {
-    const value = this.cache.get(key);
-    if (value) {
-      this.cache.delete(key);
-      this.cache.set(key, value);
-    }
-    return value;
-  }
-
-  set(key: K, value: V): void {
-    if (this.cache.size >= this.capacity) {
-      const firstKey = this.cache.keys().next().value;
+  set(key: K, value: V): this {
+    if (super.has(key)) {
+      super.delete(key);
+    } else if (super.size >= this.capacity) {
+      const firstKey = super.keys().next().value;
       if (firstKey !== undefined) {
-        // 检查 firstKey 是否为 undefined
-        this.cache.delete(firstKey);
+        super.delete(firstKey);
       }
     }
-    this.cache.set(key, value);
+    super.set(key, value);
+    return this;
   }
 
-  has(key: K): boolean {
-    return this.cache.has(key);
-  }
-
-  clear(): void {
-    this.cache.clear();
-  }
-
-  size(): number {
-    return this.cache.size;
+  // 重写 get：访问后把该 key 提到“最近使用”位置
+  get(key: K): V | undefined {
+    const value = super.get(key);
+    if (value !== undefined) {
+      super.delete(key);
+      super.set(key, value);
+    }
+    return value;
   }
 }
 

@@ -47,6 +47,7 @@ export namespace Settings {
     compatibilityMode: boolean;
     historySize: number; // 暂无
     autoRefreshStageByMouseAction: boolean;
+    textCacheSize: number;
     // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
@@ -188,6 +189,7 @@ export namespace Settings {
     autoRefreshStageByMouseAction: true,
     compressPastedImages: true,
     maxPastedImageSize: 1920,
+    textCacheSize: 100,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

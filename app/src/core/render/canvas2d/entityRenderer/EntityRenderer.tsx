@@ -156,7 +156,7 @@ export class EntityRenderer {
       this.project.svgNodeRenderer.render(entity);
     }
     // details右上角小按钮
-    if (this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
+    if (this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale) {
       this.project.entityDetailsButtonRenderer.render(entity);
     }
   }
@@ -167,7 +167,7 @@ export class EntityRenderer {
    */
   renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
-      if (this.project.renderer.isAlwaysShowDetails) {
+      if (Settings.sync.alwaysShowDetails) {
         this._renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
       } else {
         if (entity.isMouseHover) {
@@ -274,7 +274,7 @@ export class EntityRenderer {
       }
     }
     // 调试，缩放信息和位置信息
-    if (this.project.renderer.isShowDebug) {
+    if (Settings.sync.showDebug) {
       this.project.textRenderer.renderOneLineText(
         "scale: " + imageNode.scaleNumber.toString(),
         this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),

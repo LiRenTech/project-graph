@@ -77,71 +77,12 @@ export class Renderer {
   }
 
   /**
-   * 是否显示各种调试信息文字
-   */
-  isShowDebug = true;
-  private isShowBackgroundHorizontalLines = false;
-  private isShowBackgroundVerticalLines = false;
-  private isShowBackgroundDots = false;
-  /**
    * 仅在导出png时开启
    */
-
   isRenderBackground = false;
-  private isShowBackgroundCartesian = false;
-  isAlwaysShowDetails = false;
-  protectingPrivacy = false;
-  enableTagTextNodesBigDisplay = false;
-  private isRenderCenterPointer = true;
-  textIntegerLocationAndSizeRender = false;
-  isPauseRenderWhenManipulateOvertime = true;
-  renderOverTimeWhenNoManipulateTime = 5; // s
-  ignoreTextNodeTextRenderLessThanCameraScale = 0.065;
-  windowBackgroundAlpha = 0.9;
 
   // 确保这个函数在软件打开的那一次调用
-  constructor(private readonly project: Project) {
-    Settings.watch("entityDetailsFontSize", (value) => {
-      Renderer.FONT_SIZE_DETAILS = value;
-    });
-    Settings.watch("entityDetailsLinesLimit", (value) => {
-      Renderer.ENTITY_DETAILS_LIENS_LIMIT = value;
-    });
-    Settings.watch("entityDetailsWidthLimit", (value) => {
-      Renderer.ENTITY_DETAILS_WIDTH = value;
-    });
-    Settings.watch("showDebug", (value) => (this.isShowDebug = value));
-    Settings.watch("showBackgroundHorizontalLines", (value) => {
-      this.isShowBackgroundHorizontalLines = value;
-    });
-    Settings.watch("showBackgroundVerticalLines", (value) => {
-      this.isShowBackgroundVerticalLines = value;
-    });
-    Settings.watch("showBackgroundDots", (value) => {
-      this.isShowBackgroundDots = value;
-    });
-    Settings.watch("showBackgroundCartesian", (value) => {
-      this.isShowBackgroundCartesian = value;
-    });
-    Settings.watch("windowBackgroundAlpha", (value) => {
-      this.windowBackgroundAlpha = value;
-    });
-
-    Settings.watch("alwaysShowDetails", (value) => (this.isAlwaysShowDetails = value));
-    Settings.watch("protectingPrivacy", (value) => (this.protectingPrivacy = value));
-    Settings.watch("isRenderCenterPointer", (value) => (this.isRenderCenterPointer = value));
-    Settings.watch("enableTagTextNodesBigDisplay", (value) => (this.enableTagTextNodesBigDisplay = value));
-    Settings.watch("textIntegerLocationAndSizeRender", (value) => (this.textIntegerLocationAndSizeRender = value));
-    Settings.watch(
-      "isPauseRenderWhenManipulateOvertime",
-      (value) => (this.isPauseRenderWhenManipulateOvertime = value),
-    );
-    Settings.watch("renderOverTimeWhenNoManipulateTime", (value) => (this.renderOverTimeWhenNoManipulateTime = value));
-    Settings.watch(
-      "ignoreTextNodeTextRenderLessThanCameraScale",
-      (value) => (this.ignoreTextNodeTextRenderLessThanCameraScale = value),
-    );
-  }
+  constructor(private readonly project: Project) {}
 
   /**
    * 渲染总入口
@@ -153,43 +94,8 @@ export class Renderer {
     const viewRectangle = this.getCoverWorldRectangle();
     this.project.canvas.ctx.clearRect(0, 0, this.w, this.h);
     this.renderBackground();
-
-    // 渲染舞台要素
-    if (this.project.camera.limitCameraInCycleSpace) {
-      // 循环空间渲染
-      const originCameraLocation = this.project.camera.location.clone();
-      const LimitX = this.project.camera.cameraCycleSpaceSizeX;
-      const LimitY = this.project.camera.cameraCycleSpaceSizeY;
-      for (let yi = -1; yi <= 1; yi++) {
-        for (let xi = -1; xi <= 1; xi++) {
-          this.project.camera.location.x = originCameraLocation.x + xi * LimitX;
-          this.project.camera.location.y = originCameraLocation.y + yi * LimitY;
-          this.renderMainStageElements(viewRectangle);
-        }
-      }
-      this.project.camera.location = originCameraLocation;
-      this.renderCycleSpaceBorder();
-    } else {
-      // 正常模式渲染
-      this.renderMainStageElements(viewRectangle);
-    }
-
-    // 不随摄像机移动的渲染要素
+    this.renderMainStageElements(viewRectangle);
     this.renderViewElements(viewRectangle);
-  }
-
-  private renderCycleSpaceBorder() {
-    this.project.shapeRenderer.renderRect(
-      this.transformWorld2View(
-        new Rectangle(
-          Vector.getZero(),
-          new Vector(this.project.camera.cameraCycleSpaceSizeX, this.project.camera.cameraCycleSpaceSizeY),
-        ),
-      ),
-      Color.Transparent,
-      this.project.stageStyleManager.currentStyle.SelectRectangleBorder,
-      2 * this.project.camera.currentScale,
-    );
   }
 
   private renderViewElements(viewRectangle: Rectangle) {
@@ -241,7 +147,7 @@ export class Renderer {
 
   // 渲染中心准星
   private renderCenterPointer() {
-    if (!this.isRenderCenterPointer) {
+    if (!Settings.sync.isRenderCenterPointer) {
       return;
     }
     const viewCenterLocation = this.transformWorld2View(this.project.camera.location);
@@ -267,7 +173,7 @@ export class Renderer {
 
   private renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
-    if (this.protectingPrivacy) {
+    if (Settings.sync.protectingPrivacy) {
       this.project.shapeRenderer.renderRect(
         this.transformWorld2View(viewRectangle),
         Color.Transparent,
@@ -396,7 +302,7 @@ export class Renderer {
           this.project.edgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
-      if (this.isShowDebug) {
+      if (Settings.sync.showDebug) {
         // 调试模式下显示右键连线轨迹
         const points = this.project.controller.nodeConnection
           .getMouseLocationsPoints()
@@ -738,16 +644,16 @@ export class Renderer {
         0,
       );
     }
-    if (this.isShowBackgroundDots) {
+    if (Settings.sync.showBackgroundDots) {
       this.project.backgroundRenderer.renderDotBackground(rect);
     }
-    if (this.isShowBackgroundHorizontalLines) {
+    if (Settings.sync.showBackgroundHorizontalLines) {
       this.project.backgroundRenderer.renderHorizonBackground(rect);
     }
-    if (this.isShowBackgroundVerticalLines) {
+    if (Settings.sync.showBackgroundVerticalLines) {
       this.project.backgroundRenderer.renderVerticalBackground(rect);
     }
-    if (this.isShowBackgroundCartesian) {
+    if (Settings.sync.showBackgroundCartesian) {
       this.project.backgroundRenderer.renderCartesianBackground(rect);
     }
   }
@@ -773,7 +679,7 @@ export class Renderer {
 
   /** 画debug信息 */
   private renderDebugDetails() {
-    if (!this.isShowDebug || isFrame) {
+    if (!Settings.sync.showDebug || isFrame) {
       return;
     }
 

@@ -1,14 +1,58 @@
 import { Color, LruCache, Vector } from "@graphif/data-structures";
+import md5 from "md5";
 import { FONT, replaceTextWhenProtect } from "../../../../utils/font";
 import { Project, service } from "../../../Project";
+import { Settings } from "../../../service/Settings";
 
 /**
  * 专门用于在Canvas上渲染文字
+ * 支持缓存
  * 注意：基于View坐标系
  */
 @service("textRenderer")
 export class TextRenderer {
+  private cache = new LruCache<string, ImageBitmap>(Settings.sync.textCacheSize);
+
   constructor(private readonly project: Project) {}
+
+  private hash(text: string, fontSize: number, width: number): string {
+    // md5(text)_fontSize_width
+    const textHash = md5(text);
+    return `${textHash}_${fontSize}_${width}`;
+  }
+  private getCache(text: string, fontSize: number, width: number) {
+    const cacheKey = this.hash(text, fontSize, width);
+    const cacheValue = this.cache.get(cacheKey);
+    return cacheValue;
+  }
+  /**
+   * 获取text和width相同，fontSize最接近的缓存图片
+   */
+  /**
+   * 获取 text 和 width 相同，fontSize 最接近的缓存图片
+   */
+  private getCacheNearestSize(text: string, fontSize: number, width: number): ImageBitmap | undefined {
+    let best: ImageBitmap | undefined = undefined;
+    let minDelta = Infinity;
+    for (const key of this.cache.keys()) {
+      const parts = key.split("_");
+      if (parts.length !== 3) continue;
+
+      const [textHash, cachedFontSizeStr, cachedWidthStr] = parts;
+      const cachedFontSize = Number(cachedFontSizeStr);
+      const cachedWidth = Number(cachedWidthStr);
+
+      if (textHash === md5(text) && cachedWidth === width) {
+        const delta = Math.abs(cachedFontSize - fontSize);
+        if (delta < minDelta) {
+          minDelta = delta;
+          best = this.cache.get(key);
+        }
+      }
+    }
+
+    return best;
+  }
 
   /**
    * 从左上角画文本
@@ -19,16 +63,16 @@ export class TextRenderer {
    */
   renderOneLineText(text: string, location: Vector, fontSize: number, color: Color = Color.White): void {
     // alphabetic, top, hanging, middle, ideographic, bottom
-    text = this.project.renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     this.project.canvas.ctx.textBaseline = "middle";
     this.project.canvas.ctx.textAlign = "left";
-    if (this.project.renderer.textIntegerLocationAndSizeRender) {
+    if (Settings.sync.textIntegerLocationAndSizeRender) {
       this.project.canvas.ctx.font = `${Math.round(fontSize)}px ${FONT}`;
     } else {
       this.project.canvas.ctx.font = `${fontSize}px normal ${FONT}`;
     }
     this.project.canvas.ctx.fillStyle = color.toString();
-    if (this.project.renderer.textIntegerLocationAndSizeRender) {
+    if (Settings.sync.textIntegerLocationAndSizeRender) {
       this.project.canvas.ctx.fillText(text, Math.floor(location.x), Math.floor(location.y + fontSize / 2));
     } else {
       this.project.canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
@@ -44,16 +88,16 @@ export class TextRenderer {
    * @param shadowColor
    */
   renderTextFromCenter(text: string, centerLocation: Vector, size: number, color: Color = Color.White): void {
-    text = this.project.renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     this.project.canvas.ctx.textBaseline = "middle";
     this.project.canvas.ctx.textAlign = "center";
-    if (this.project.renderer.textIntegerLocationAndSizeRender) {
+    if (Settings.sync.textIntegerLocationAndSizeRender) {
       this.project.canvas.ctx.font = `${Math.round(size)}px normal ${FONT}`;
     } else {
       this.project.canvas.ctx.font = `${size}px normal ${FONT}`;
     }
     this.project.canvas.ctx.fillStyle = color.toString();
-    if (this.project.renderer.textIntegerLocationAndSizeRender) {
+    if (Settings.sync.textIntegerLocationAndSizeRender) {
       this.project.canvas.ctx.fillText(text, Math.floor(centerLocation.x), Math.floor(centerLocation.y));
     } else {
       this.project.canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
@@ -82,7 +126,7 @@ export class TextRenderer {
     lineHeight: number = 1.2,
     limitLines: number = Infinity,
   ): void {
-    text = this.project.renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, fontSize, limitWidth);
     // 限制行数
@@ -105,7 +149,7 @@ export class TextRenderer {
     lineHeight: number = 1.2,
     limitLines: number = Infinity,
   ): void {
-    text = this.project.renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, size, limitWidth);
     // 限制行数
