@@ -144,7 +144,7 @@ export namespace GlobalMenu {
     ]),
     new Menu("关于", <CircleAlert />, [
       new MenuItem("关于", <MessageCircleWarning />, () => {
-        AIWindow.open();
+        SettingsWindow.open("about");
       }),
       new MenuItem("新手引导", <PersonStanding />, () => {}),
       new MenuItem("进入官网", <Earth />, () => {}),

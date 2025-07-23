@@ -102,9 +102,10 @@ const pages = [
     icon: <CodeXml />,
     component: <Scripts />,
   },
-];
+] as const;
+type Page = (typeof pages)[number]["id"];
 
-export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage?: string }) {
+export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage?: Page }) {
   const { t } = useTranslation("settings");
   const [currentPage, setCurrentPage] = useState(defaultPage);
 
@@ -133,7 +134,7 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
   );
 }
 
-SettingsWindow.open = (page: string) => {
+SettingsWindow.open = (page: Page) => {
   SubWindow.create({
     title: "设置",
     children: <SettingsWindow defaultPage={page} />,

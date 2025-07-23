@@ -53,7 +53,6 @@ import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { StageStyleManager } from "./service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
-import { StageDumper } from "./stage/StageDumper";
 import { GraphMethods } from "./stage/stageManager/basicMethods/GraphMethods";
 import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
@@ -94,7 +93,6 @@ export function loadAllServices(project: Project): void {
   project.loadService(Effects);
   project.loadService(AutoCompute);
   project.loadService(SecretKeys);
-  project.loadService(StageDumper);
   project.loadService(HistoryManager);
   project.loadService(RectangleSelect);
   project.loadService(StageNodeRotate);
