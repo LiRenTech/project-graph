@@ -1,0 +1,16 @@
+{
+  "title": "Contribute",
+  "description": "Contribute to the project",
+  "root": true,
+  "icon": "GitPullRequestArrow",
+  "pages": [
+    "index",
+    "---Development---",
+    "env",
+    "dev",
+    "---Translation---",
+    "weblate",
+    "---Documentation---",
+    "docs-style-guide"
+  ]
+}

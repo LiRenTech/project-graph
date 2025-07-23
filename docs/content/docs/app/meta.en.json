@@ -3,5 +3,5 @@
   "description": "The software",
   "root": true,
   "icon": "AppWindowMac",
-  "pages": ["---Tutorial---", "index", "---Features---", "...features", "---Miscellaneous---", "...misc"]
+  "pages": ["index", "---Features---", "...features", "---Miscellaneous---", "...misc"]
 }
