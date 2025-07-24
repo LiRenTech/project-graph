@@ -68,6 +68,12 @@ export default async function Layout({ params, children }: { params: Promise<{ l
           url: "/blog",
           active: "nested-url",
         },
+        {
+          icon: <AlbumIcon />,
+          text: "更新日志",
+          url: "/release",
+          active: "nested-url",
+        },
       ]}
     >
       {children}

@@ -3,7 +3,9 @@ import { blog } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import type { ReactNode } from "react";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+
   const pageDates = new Map<string, Date>();
   for (const page of blog.getPages()) {
     pageDates.set(page.slugs[0], page.data.date);
@@ -11,6 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <DocsLayout
+      {...baseOptions(lang)}
       tree={{
         ...blog.pageTree,
         children: blog.pageTree.children.sort((a, b) => {
@@ -20,7 +23,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           return bDate.getTime() - aDate.getTime();
         }),
       }}
-      {...baseOptions}
     >
       {children}
     </DocsLayout>

@@ -256,6 +256,18 @@ importers:
 
   docs:
     dependencies:
+      "@octokit/core":
+        specifier: ^7.0.3
+        version: 7.0.3
+      "@octokit/openapi-types":
+        specifier: ^25.1.0
+        version: 25.1.0
+      "@octokit/request":
+        specifier: ^10.0.3
+        version: 10.0.3
+      "@octokit/types":
+        specifier: ^14.1.0
+        version: 14.1.0
       "@radix-ui/react-primitive":
         specifier: ^2.1.3
         version: 2.1.3(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -292,9 +304,15 @@ importers:
       rehype-katex:
         specifier: ^7.0.1
         version: 7.0.1
+      rehype-react:
+        specifier: ^8.0.0
+        version: 8.0.0
       remark:
         specifier: ^15.0.1
         version: 15.0.1
+      remark-breaks:
+        specifier: ^4.0.0
+        version: 4.0.0
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
@@ -304,6 +322,12 @@ importers:
       remark-mdx:
         specifier: ^3.1.0
         version: 3.1.0
+      remark-parse:
+        specifier: ^11.0.0
+        version: 11.0.0
+      remark-rehype:
+        specifier: ^11.1.2
+        version: 11.1.2
       shiki:
         specifier: ^3.8.1
         version: 3.8.1
@@ -2006,6 +2030,11 @@ packages:
   "@octokit/core@7.0.2":
     resolution:
       { integrity: sha512-ODsoD39Lq6vR6aBgvjTnA3nZGliknKboc9Gtxr7E4WDNqY24MxANKcuDQSF0jzapvGb3KWOEDrKfve4HoWGK+g== }
+    engines: { node: ">= 20" }
+
+  "@octokit/core@7.0.3":
+    resolution:
+      { integrity: sha512-oNXsh2ywth5aowwIa7RKtawnkdH6LgU1ztfP9AIUCQCvzysB+WeU8o2kyyosDPwBZutPpjZDKPQGIzzrfTWweQ== }
     engines: { node: ">= 20" }
 
   "@octokit/endpoint@11.0.0":
@@ -6190,6 +6219,10 @@ packages:
     resolution:
       { integrity: sha512-EcmOpxsZ96CvlP03NghtH1EsLtr0n9Tm4lPUJUBccV9RwUOneqSycg19n5HGzCf+10LozMRSObtVr3ee1WoHtg== }
 
+  mdast-util-newline-to-break@2.0.0:
+    resolution:
+      { integrity: sha512-MbgeFca0hLYIEx/2zGsszCSEJJ1JSCdiY5xQxRcLDDGa8EPvlLPupJ4DSajbMPAnC0je8jfb9TiUATnxxrHUog== }
+
   mdast-util-phrasing@4.1.0:
     resolution:
       { integrity: sha512-TqICwyvJJpBwvGAMZjj4J2n0X8QWp21b9l0o7eXyVJ25YNWYbJDVIyD1bZXE6WtV6RmKJVYmQAKWa0zWOABz2w== }
@@ -7187,9 +7220,17 @@ packages:
     resolution:
       { integrity: sha512-OiM2wrZ/wuhKkigASodFoo8wimG3H12LWQaH8qSPVJn9apWKFSH3YOCtbKpBorTVw/eI7cuT21XBbvwEswbIOA== }
 
+  rehype-react@8.0.0:
+    resolution:
+      { integrity: sha512-vzo0YxYbB2HE+36+9HWXVdxNoNDubx63r5LBzpxBGVWM8s9mdnMdbmuJBAX6TTyuGdZjZix6qU3GcSuKCIWivw== }
+
   rehype-recma@1.0.0:
     resolution:
       { integrity: sha512-lqA4rGUf1JmacCNWWZx0Wv1dHqMwxzsDWYMTowuplHF3xH0N/MmrZ/G3BDZnzAkRmxDadujCjaKM2hqYdCBOGw== }
+
+  remark-breaks@4.0.0:
+    resolution:
+      { integrity: sha512-IjEjJOkH4FuJvHZVIW0QCDWxcG96kCq7An/KVH2NfJe6rKZU2AsHeB3OEjPNRxi4QC34Xdx7I2KGYn6IpT7gxQ== }
 
   remark-gfm@4.0.1:
     resolution:
@@ -9857,6 +9898,16 @@ snapshots:
   "@octokit/auth-token@6.0.0": {}
 
   "@octokit/core@7.0.2":
+    dependencies:
+      "@octokit/auth-token": 6.0.0
+      "@octokit/graphql": 9.0.1
+      "@octokit/request": 10.0.3
+      "@octokit/request-error": 7.0.0
+      "@octokit/types": 14.1.0
+      before-after-hook: 4.0.0
+      universal-user-agent: 7.0.3
+
+  "@octokit/core@7.0.3":
     dependencies:
       "@octokit/auth-token": 6.0.0
       "@octokit/graphql": 9.0.1
@@ -13613,6 +13664,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  mdast-util-newline-to-break@2.0.0:
+    dependencies:
+      "@types/mdast": 4.0.4
+      mdast-util-find-and-replace: 3.0.2
+
   mdast-util-phrasing@4.1.0:
     dependencies:
       "@types/mdast": 4.0.4
@@ -14544,6 +14600,14 @@ snapshots:
       unist-util-visit-parents: 6.0.1
       vfile: 6.0.3
 
+  rehype-react@8.0.0:
+    dependencies:
+      "@types/hast": 3.0.4
+      hast-util-to-jsx-runtime: 2.3.6
+      unified: 11.0.5
+    transitivePeerDependencies:
+      - supports-color
+
   rehype-recma@1.0.0:
     dependencies:
       "@types/estree": 1.0.8
@@ -14551,6 +14615,12 @@ snapshots:
       hast-util-to-estree: 3.1.3
     transitivePeerDependencies:
       - supports-color
+
+  remark-breaks@4.0.0:
+    dependencies:
+      "@types/mdast": 4.0.4
+      mdast-util-newline-to-break: 2.0.0
+      unified: 11.0.5
 
   remark-gfm@4.0.1:
     dependencies:

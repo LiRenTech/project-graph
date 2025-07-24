@@ -21,6 +21,10 @@ const translations = {
 export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
 
+  if (!(lang in translations)) {
+    return <></>;
+  }
+
   function t<T extends keyof (typeof translations)[keyof typeof translations]>(
     key: T,
   ): (typeof translations)[keyof typeof translations][T] {
