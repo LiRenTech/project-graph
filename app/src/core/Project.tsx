@@ -170,7 +170,6 @@ export class Project {
         console.warn("[Project] 未找到服务 %s 的模块路径，将无法热重载该服务", service.id);
         return;
       }
-      // console.log("accept", modulePath);
       import.meta.hot.accept(modulePath, (module) => {
         console.debug("[Project] 热重载服务: %s (%s)", service.id, modulePath);
         // 先卸载原来的服务
@@ -212,10 +211,8 @@ export class Project {
         if (entry.filename === "stage.msgpack") {
           const stageRawData = await entry.getData!(new Uint8ArrayWriter());
           const decoded = this.decoder.decode(stageRawData) as any[];
-          console.log(decoded);
           for (const serializedStageObject of decoded) {
             const stageObject = deserialize(serializedStageObject, this);
-            console.log(stageObject);
             this.stage.push(stageObject);
           }
         }

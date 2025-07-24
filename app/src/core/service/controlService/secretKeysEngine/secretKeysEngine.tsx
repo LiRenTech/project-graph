@@ -1,6 +1,6 @@
 import { averageColors, Color, Queue, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { mkdir, readDir } from "@tauri-apps/plugin-fs";
+import { mkdir } from "@tauri-apps/plugin-fs";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { Project, service } from "../../../Project";
@@ -41,7 +41,6 @@ export class SecretKeys {
     window.addEventListener("keyup", (event) => {
       this.pressedKeys.enqueue(event.key.toLowerCase());
       const { isTriggered, secretName, key } = this.detectAndCall();
-      // console.log(this.pressedKeys.arrayList);
       if (isTriggered) {
         // 清空队列
         this.pressedKeys.clear();
@@ -353,7 +352,6 @@ export class SecretKeys {
             continue;
           }
           edge.isSelected = true;
-          console.log(edge);
         }
       },
     },
@@ -776,8 +774,7 @@ export class SecretKeys {
       explain: "未来即将删除",
       isHidden: true,
       func: () => {
-        const files = readDir("D:\\");
-        console.log(files);
+        // const files = readDir("D:\\");
       },
     },
     "v f v f v f 1": {
@@ -788,8 +785,7 @@ export class SecretKeys {
         // const folderPath = "D:\\Desktop\\graph\\projectGraph\\welcome";
         // TODO: 读取文件夹结构并生成图
         // readDir(folderPath).then((folderStructure) => {
-        //   console.log(folderStructure);
-        // });
+        //   // });
       },
     },
   };

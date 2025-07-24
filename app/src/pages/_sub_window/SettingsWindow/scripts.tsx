@@ -99,7 +99,6 @@ export default function ScriptsPage() {
                 <Switch
                   value={script.enabled}
                   onChange={async (value) => {
-                    // console.log(value);
                     await UserScriptsManager.checkoutUserScriptEnabled(script.path, value);
                     updateUIList();
                   }}

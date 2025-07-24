@@ -317,8 +317,6 @@ export class EntityRenderer {
     // }
     const segmentList = penStroke.getSegmentList();
 
-    // console.log("@@", segmentList);
-
     this.project.curveRenderer.renderPenStroke(
       segmentList.map((segment) => ({
         startLocation: this.project.renderer.transformWorld2View(segment.startLocation),

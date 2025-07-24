@@ -1,4 +1,3 @@
-import { deserialize, serialize } from "@graphif/serializer";
 import { open } from "@tauri-apps/plugin-dialog";
 import {
   Airplay,
@@ -44,7 +43,6 @@ import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, projectsAtom, store } from "../../state";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
-import { TextNode } from "../stage/stageObject/entity/TextNode";
 
 export namespace GlobalMenu {
   export class Menu {
@@ -122,14 +120,10 @@ export namespace GlobalMenu {
         SettingsWindow.open("visual");
       }),
       new MenuItem("test", <TestTube2 />, () => {
-        console.log("=========test serialize");
-        const project = Project.newDraft();
-        const obj = new TextNode(project, {});
-        const data = serialize(obj);
-        console.log(JSON.stringify(data));
-        const obj2 = deserialize(data, project);
-        console.log("=========test deserialize");
-        console.log(obj2);
+        // const project = Project.newDraft();
+        // const obj = new TextNode(project, {});
+        // const data = serialize(obj);
+        // const obj2 = deserialize(data, project);
       }),
     ]),
     new Menu("AI", <Bot />, [

@@ -55,7 +55,6 @@ export class GenerateFromFolder {
   private getColorByPath(path: string): Color {
     if (path.includes(".")) {
       const ext = path.split(".").pop() as string;
-      console.log(ext);
       if (ext in GenerateFromFolder.fileExtColorMap) {
         return Color.fromHex(GenerateFromFolder.fileExtColorMap[ext]);
       } else {

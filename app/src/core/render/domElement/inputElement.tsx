@@ -5,7 +5,6 @@ import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/
 import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
-import { Renderer } from "../canvas2d/renderer";
 
 /**
  * 主要用于解决canvas上无法输入的问题，用临时生成的jsdom元素透明地贴在上面
@@ -125,7 +124,7 @@ export class InputElement {
     onChange: (value: string, element: HTMLTextAreaElement) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
     selectAllWhenCreated = true,
-    limitWidth = 100,
+    // limitWidth = 100,
   ): Promise<string> {
     return new Promise((resolve) => {
       const textareaElement = document.createElement("textarea");
@@ -133,13 +132,12 @@ export class InputElement {
 
       textareaElement.id = "textarea-element";
       textareaElement.autocomplete = "off"; // 禁止使用自动填充内容，防止影响输入体验
-      const initSizeView = this.project.textRenderer.measureMultiLineTextSize(
-        defaultValue,
-        Renderer.FONT_SIZE * this.project.camera.currentScale,
-        limitWidth,
-        1.5,
-      );
-      console.log(initSizeView);
+      // const initSizeView = this.project.textRenderer.measureMultiLineTextSize(
+      //   defaultValue,
+      //   Renderer.FONT_SIZE * this.project.camera.currentScale,
+      //   limitWidth,
+      //   1.5,
+      // );
       Object.assign(textareaElement.style, style);
       document.body.appendChild(textareaElement);
 

@@ -65,7 +65,6 @@ export class StageExportPng {
       this.project.camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
       await sleep(2);
       if (this.project.renderer.frameIndex - lastFrame < 2) {
-        console.log("等待", lastFrame, this.project.renderer.frameIndex, i);
         continue;
       }
       lastFrame = this.project.renderer.frameIndex;

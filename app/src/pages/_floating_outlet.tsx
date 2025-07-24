@@ -14,7 +14,6 @@ export default function FloatingOutlet() {
           className="text-panel-text absolute right-4 top-4 cursor-pointer hover:rotate-90"
           id="close-popin-btn"
           onClick={() => {
-            console.log("closing popin");
             navigate("/");
           }}
         />

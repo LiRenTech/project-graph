@@ -7,8 +7,8 @@ import Input from "../components/Input";
 import Select from "../components/Select";
 import Slider from "../components/Slider";
 import Switch from "../components/Switch";
-import { Panel } from "../components/panel";
 import { Dialog } from "../components/dialog";
+import { Panel } from "../components/panel";
 
 export default function UITestPage() {
   return (
@@ -51,13 +51,12 @@ export default function UITestPage() {
       </Button>
       <Button
         onClick={async () => {
-          const res = await Dialog.show({
+          await Dialog.show({
             title: "提示",
             content: "提示内容",
             type: "info",
             input: true,
           });
-          console.log(res);
         }}
       >
         Dialog

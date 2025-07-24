@@ -129,8 +129,6 @@ export class SelectChangeEngine {
           .map((entity) => expandUUIDSet.add(entity.uuid));
       }
     }
-    console.log("expandUUIDSet", expandUUIDSet);
-
     if (isKeepExpand) {
       // 保留原有的选择 的扩散
       const combinedUUIDSet = new Set([...selectedEntitiesUUIDSet, ...expandUUIDSet]);

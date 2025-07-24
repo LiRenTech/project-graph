@@ -15,7 +15,6 @@ export default function Introduction() {
     check().then((update) => {
       setCheckingUpdate(false);
       setUpdate(update);
-      console.log(update);
     });
   }, []);
 

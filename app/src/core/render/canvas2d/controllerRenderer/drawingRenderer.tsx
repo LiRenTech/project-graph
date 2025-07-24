@@ -150,12 +150,10 @@ export class DrawingControllerRenderer {
 
   rotateUpAngle() {
     this.diffAngle += 5;
-    console.log("rotateUpAngle", this.diffAngle);
   }
 
   rotateDownAngle() {
     this.diffAngle -= 5;
-    console.log("rotateUpAngle", this.diffAngle);
   }
 
   /**

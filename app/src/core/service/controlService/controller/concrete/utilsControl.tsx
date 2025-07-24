@@ -392,7 +392,6 @@ export class ControllerUtils {
         const resizeRect = selectedEntity.getResizeHandleRect();
         if (resizeRect.isPointIn(clickedLocation)) {
           // 点中了扩大缩小的东西
-          console.log("点击在了调整大小的小框上");
           return true;
         }
       }

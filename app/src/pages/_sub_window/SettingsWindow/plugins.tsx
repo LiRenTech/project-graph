@@ -1,5 +1,4 @@
 import { open as openFile } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
 import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, Box, PartyPopper, Plug, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -27,9 +26,8 @@ export default function PluginsPage() {
 
     // 开始解析插件内容代码格式
 
-    const code = await readTextFile(path);
+    // const code = await readTextFile(path);
     // 解析插件内容，判断是否符合插件格式要求
-    console.log(code);
     // const { pluginData, error, success } = parsePluginCode(code);
 
     // if (!success) {

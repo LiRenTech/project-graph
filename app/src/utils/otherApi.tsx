@@ -3,9 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { isWeb } from "./platform";
 
 export async function writeStdout(content: string): Promise<void> {
-  if (isWeb) {
-    console.log("STDOUT:", content);
-  } else {
+  if (!isWeb) {
     return invoke("write_stdout", { content });
   }
 }
@@ -19,9 +17,7 @@ export async function writeStderr(content: string): Promise<void> {
 }
 
 export async function openDevtools(): Promise<void> {
-  if (isWeb) {
-    console.log("open devtools is not supported on web platform");
-  } else {
+  if (!isWeb) {
     return invoke("open_devtools");
   }
 }

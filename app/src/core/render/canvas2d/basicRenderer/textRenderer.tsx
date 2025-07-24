@@ -64,7 +64,6 @@ export class TextRenderer {
     createImageBitmap(canvas).then((bmp) => {
       const cacheKey = this.hash(text, size);
       this.cache.set(cacheKey, bmp);
-      // console.log("[TextRenderer] 缓存已建立 %s", cacheKey);
     });
     return canvas;
   }
@@ -90,7 +89,6 @@ export class TextRenderer {
           // 文字应该渲染成什么大小
           const textSize = getTextSize(text, size);
           const nearestBitmap = this.getCacheNearestSize(text, size);
-          // console.log("[TextRenderer] 缩放状态下 (%f -> %f)，使用缓存图片 %o", currentScale, targetScale, nearestBitmap);
           if (nearestBitmap) {
             this.project.canvas.ctx.drawImage(
               nearestBitmap,

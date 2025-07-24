@@ -24,8 +24,7 @@ export interface PluginCodeParseData {
  * // ==/UserScript==
  * `;
  * const result = parsePluginCode(code);
- * console.log(result);
- *
+ * *
  * {
  *   data: { name: '摄像机疯狂抖动插件', version: '1.0.0', description: '测试插件', author: 'Littlefean' },
  *   error: '',

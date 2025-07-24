@@ -64,7 +64,6 @@ export class StageStyle {
     style.effects = Object.fromEntries(
       Object.entries(themeObj?.content.effects).map(([k, v]) => [k, Color.fromCss(v as string)]),
     ) as any as EffectColors;
-    // console.log(style);
     return style;
   }
 }

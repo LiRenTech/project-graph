@@ -132,7 +132,6 @@ export class ControllerCameraMac {
       return;
     }
     if (this.project.controller.pressingKeySet.has(" ")) {
-      console.log("space pressed, ignore touch pad move");
       this.handleRectangleSelectByTwoFingerMove(event);
       return;
     } else if (this.project.controller.pressingKeySet.has("meta") && isMac) {

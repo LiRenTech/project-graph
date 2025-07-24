@@ -16,9 +16,7 @@ export namespace Themes {
       query: "?raw",
     }),
   ).map((theme) => {
-    // console.log(theme);
     const data = parseYamlWithFrontmatter<Themes.Metadata, any>(theme);
-    // console.log(data);
     return {
       metadata: data.frontmatter,
       content: data.content,

@@ -18,8 +18,6 @@ export class RectangleSlideEffect extends Effect {
     public isHorizontal: boolean = true,
   ) {
     super(timeProgress);
-    console.log("创建了特效");
-
     this.subEffects = [];
     const trailCount = 50; // 每条边显示5条尾翼线
     const minLength = 100;

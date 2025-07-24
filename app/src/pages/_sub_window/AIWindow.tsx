@@ -79,7 +79,6 @@ export default function AIWindow() {
     let lastChunk: OpenAI.ChatCompletionChunk | null = null;
     for await (const chunk of stream) {
       const delta = chunk.choices[0].delta;
-      console.log(delta.content);
       streamingMsg += delta.content;
       setLastMessageContent(streamingMsg);
       scrollToBottom();

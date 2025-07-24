@@ -48,7 +48,6 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
   };
 
   const onInputChange = (input: string) => {
-    console.log(input, "inputContent");
     if (input === "#") {
       // 默认的shift + 3 会触发井号
       return;
@@ -245,8 +244,6 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
               }
               const jsonFiles = await readFolderRecursive(path, [".json"]);
               const filteredFiles = jsonFiles.filter((path) => !path.toLowerCase().includes("backup"));
-
-              console.log(filteredFiles);
 
               await RecentFileManager.addRecentFilesByPaths(filteredFiles);
               updateRecentFiles();

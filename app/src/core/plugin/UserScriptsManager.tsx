@@ -185,7 +185,6 @@ export namespace UserScriptsManager {
         break;
       }
     }
-    console.log(runningScripts);
     store.set("userScripts", existingFiles);
     store.save();
   }

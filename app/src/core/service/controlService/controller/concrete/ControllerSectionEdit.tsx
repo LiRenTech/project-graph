@@ -50,8 +50,6 @@ export class ControllerSectionEdit extends ControllerClass {
               }
             }
           }
-        } else {
-          console.log(button, value);
         }
       });
     }

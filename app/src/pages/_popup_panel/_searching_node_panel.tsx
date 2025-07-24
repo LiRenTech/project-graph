@@ -54,7 +54,6 @@ export default function SearchingNodePanel() {
 
     const keyDownEvent = (event: KeyboardEvent) => {
       if (event.key == "Enter") {
-        // console.log(`s[${searchString}]`);
         // setSearchString(input.value);
         // search();
         const searchBtn = document.querySelector(".search-btn") as HTMLInputElement;
@@ -84,7 +83,6 @@ export default function SearchingNodePanel() {
           className="search-panel-input"
           onChange={(value) => {
             setSearchString(value);
-            console.log("value change", value);
           }}
           value={searchString}
         />

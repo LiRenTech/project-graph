@@ -20,11 +20,9 @@ export default function NavLink({
       to={to}
       className={cn(className, isActive && "el-nav-link border-1")}
       onMouseEnter={() => {
-        // console.log("mouse enter");
         SoundService.play.mouseEnterButton();
       }}
-      onMouseDown={(e: React.MouseEvent) => {
-        console.log(e);
+      onMouseDown={() => {
         SoundService.play.mouseClickButton();
       }}
       {...props}

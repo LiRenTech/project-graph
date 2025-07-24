@@ -68,7 +68,6 @@ export class Renderer {
     const scale = window.devicePixelRatio * (1 / appScale);
     this.w = newW;
     this.h = newH;
-    console.log(newW, newH);
     this.project.canvas.element.width = newW * scale;
     this.project.canvas.element.height = newH * scale;
     this.project.canvas.element.style.width = `${newW * (1 / appScale)}px`;

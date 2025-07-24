@@ -50,8 +50,6 @@ export class CurveRenderer {
     this.project.canvas.ctx.lineJoin = "round";
     this.project.canvas.ctx.moveTo(stroke[0].startLocation.x, stroke[0].startLocation.y);
     for (let i = 0; i < stroke.length; i++) {
-      // console.log(stroke[i].width);
-
       /*
       // 修改循环开始从0
       if (i > 0) {

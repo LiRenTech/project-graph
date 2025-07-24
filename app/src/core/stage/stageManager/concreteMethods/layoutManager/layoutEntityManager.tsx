@@ -14,7 +14,6 @@ export namespace LayoutEntityManager {
       const dfs = (entityList: Entity[]) => {
         // 检查每一个实体
         for (const entity of entityList) {
-          // console.log(entity);
           // 如果当前这个实体是 Section，就进入到Section内部
           if (entity instanceof Section) {
             const childEntity = entity.children;

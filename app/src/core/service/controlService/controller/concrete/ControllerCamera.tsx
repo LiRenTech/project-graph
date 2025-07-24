@@ -203,7 +203,6 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     if (event.button === 4) {
-      // console.log(this.recordCameraScale);
       // this.project.camera.currentScale = this.recordCameraScale;
       // this.project.camera.currentScale = this.recordCameraScale;
       // // this.project.camera.location = this.recordCameraLocation.clone();
@@ -241,8 +240,6 @@ export class ControllerCameraClass extends ControllerClass {
     if (Settings.sync.mouseLeftMode === "draw" && this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
-    // console.log(event);
-    // console.log(event.deltaX, event.deltaY);
     // 禁用触控板在这里的滚动
     const isUsingTouchPad = !this.isMouseWheel(event);
     if (!Settings.sync.enableWindowsTouchPad) {
@@ -592,7 +589,6 @@ export class ControllerCameraClass extends ControllerClass {
     if (multiArray.length >= 4) {
       if (ArrayFunctions.isSame(multiArray)) {
         // 检测到关键数字
-        // console.log("检测到关键数字", multiArray[0]);
         this.importantNumbers.add(distance);
         // 连续4个都一样，说明是滚轮
         // 实测发现连续三个都一样，用滚轮极小概率触发。四个都一样几乎不太可能了
