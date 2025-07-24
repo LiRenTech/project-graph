@@ -48,10 +48,10 @@ export namespace Settings {
     historySize: number; // 暂无
     autoRefreshStageByMouseAction: boolean;
     textCacheSize: number;
+    textScalingBehavior: "temp" | "nearestCache" | "cacheEveryTick";
     // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
-    textIntegerLocationAndSizeRender: boolean;
     isPauseRenderWhenManipulateOvertime: boolean;
     renderOverTimeWhenNoManipulateTime: number;
     ignoreTextNodeTextRenderLessThanCameraScale: number;
@@ -181,7 +181,6 @@ export namespace Settings {
     historySize: 20,
     effectsPerferences: {},
     isEnableEntityCollision: false,
-    textIntegerLocationAndSizeRender: false,
     isPauseRenderWhenManipulateOvertime: true,
     renderOverTimeWhenNoManipulateTime: 5,
     ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
@@ -190,6 +189,7 @@ export namespace Settings {
     compressPastedImages: true,
     maxPastedImageSize: 1920,
     textCacheSize: 100,
+    textScalingBehavior: "temp",
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

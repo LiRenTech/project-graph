@@ -8,8 +8,8 @@ import {
   RefreshCcwDot,
   ScanEye,
   ScanText,
+  Text,
   Turtle,
-  Type,
   Undo,
   Ungroup,
 } from "lucide-react";
@@ -32,6 +32,8 @@ export default function Performance() {
           max={3840}
           step={50}
         />
+        <SettingField icon={<MemoryStick />} settingKey="textCacheSize" type="number" />
+        <SettingField icon={<Text />} settingKey="textScalingBehavior" type="select" />
       </FieldGroup>
 
       <FieldGroup title={t("cpu.title")} description={t("cpu.description")} icon={<Cpu />}>
@@ -48,7 +50,6 @@ export default function Performance() {
           step={0.1}
         />
         <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.1} />
-        <SettingField icon={<Type />} settingKey="textIntegerLocationAndSizeRender" type="switch" />
 
         {/* 0.065 */}
         <SettingField

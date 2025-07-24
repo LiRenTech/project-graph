@@ -25,4 +25,8 @@ export class Canvas {
     });
     resizeObserver.observe(wrapper);
   }
+
+  dispose() {
+    this.element.remove();
+  }
 }

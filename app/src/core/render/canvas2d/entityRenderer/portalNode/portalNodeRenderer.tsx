@@ -32,7 +32,7 @@ export class PortalNodeRenderer {
       10 * this.project.camera.currentScale,
     );
     // 绘制标题，和节点文字大小保持一致
-    this.project.textRenderer.renderOneLineText(
+    this.project.textRenderer.renderText(
       portalNode.title,
       this.project.renderer.transformWorld2View(leftTopLocation.add(Vector.same(Renderer.NODE_PADDING))),
       Renderer.FONT_SIZE * this.project.camera.currentScale,
@@ -47,7 +47,7 @@ export class PortalNodeRenderer {
       5 * this.project.camera.currentScale,
     );
     // 绘制文件路径文字
-    this.project.textRenderer.renderOneLineText(
+    this.project.textRenderer.renderText(
       `path: "${portalNode.portalFilePath}"`,
       this.project.renderer.transformWorld2View(
         leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y)).add(Vector.same(Renderer.NODE_PADDING)),
@@ -98,7 +98,7 @@ export class PortalNodeRenderer {
           Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
         );
         // 绘制悬浮提示文字
-        this.project.textRenderer.renderOneLineText(
+        this.project.textRenderer.renderText(
           "双击编辑标题",
           this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
@@ -115,7 +115,7 @@ export class PortalNodeRenderer {
           Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
         );
         // 绘制悬浮提示文字
-        this.project.textRenderer.renderOneLineText(
+        this.project.textRenderer.renderText(
           "双击编辑相对路径",
           this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,

@@ -229,7 +229,7 @@ export class Renderer {
           1,
         );
         // 完全覆盖框选的提示
-        this.project.textRenderer.renderOneLineText(
+        this.project.textRenderer.renderText(
           "完全覆盖框选",
           this.transformWorld2View(rectangle.leftBottom).add(new Vector(20, 10)),
           10,
@@ -552,7 +552,7 @@ export class Renderer {
         1,
       );
       // 在原位置下写标注
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         "ctrl+shift+v 原位置叠加粘贴",
         this.transformWorld2View(
           new Vector(
@@ -715,7 +715,7 @@ export class Renderer {
       detailsData.push(`render time:${k}: ${v.toFixed(2)}`);
     }
     for (const line of detailsData) {
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderTempText(
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
@@ -739,7 +739,7 @@ export class Renderer {
 
     for (const key of this.project.controller.pressingKeySet) {
       const textLocation = new Vector(x, this.h - 100);
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         key,
         textLocation,
         fontSize,
@@ -755,7 +755,7 @@ export class Renderer {
         this.project.controller.pressingKeySet.has("a") ||
         this.project.controller.pressingKeySet.has("d"))
     ) {
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         "      方向键移动视野被禁止，可通过快捷键或设置界面松开“手刹”",
         new Vector(margin, this.h - 60),
         15,

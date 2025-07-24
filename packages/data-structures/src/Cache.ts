@@ -7,13 +7,13 @@ export class LruCache<K, V> extends Map<K, V> {
 
   constructor(capacity: number) {
     super();
-    if (capacity <= 0) {
-      throw new Error("capacity must be greater than 0");
-    }
     this.capacity = capacity;
   }
 
   set(key: K, value: V): this {
+    if (this.capacity === 0) {
+      return this;
+    }
     if (super.has(key)) {
       super.delete(key);
     } else if (super.size >= this.capacity) {

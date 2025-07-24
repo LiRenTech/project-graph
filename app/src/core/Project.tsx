@@ -221,15 +221,20 @@ export class Project {
         }
       }
     }
-    this.loop();
   }
 
-  private loop() {
+  loop() {
+    if (this.rafHandle !== -1) return;
     const animationFrame = () => {
       this.tick();
       this.rafHandle = requestAnimationFrame(animationFrame.bind(this));
     };
     animationFrame();
+  }
+  pause() {
+    if (this.rafHandle === -1) return;
+    cancelAnimationFrame(this.rafHandle);
+    this.rafHandle = -1;
   }
   private tick() {
     for (const service of this.tickableServices) {

@@ -98,7 +98,7 @@ export class BackgroundRenderer {
       const renderLocation = this.project.renderer.transformWorld2View(new Vector(x, 0));
       renderLocation.y = Math.max(renderLocation.y, 0);
       renderLocation.y = Math.min(renderLocation.y, this.project.renderer.h - 10);
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         `${x}`,
         renderLocation,
         10,
@@ -110,7 +110,7 @@ export class BackgroundRenderer {
       const renderLocation = this.project.renderer.transformWorld2View(new Vector(0, y));
       renderLocation.x = Math.max(renderLocation.x, 0);
       renderLocation.x = Math.min(renderLocation.x, this.project.renderer.w - 40);
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         `${y}`,
         renderLocation,
         10,

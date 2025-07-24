@@ -29,7 +29,7 @@ export class UrlNodeRenderer {
     );
     // 绘制标题
     if (!urlNode.isEditingTitle) {
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         urlNode.title,
         this.project.renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
@@ -47,7 +47,7 @@ export class UrlNodeRenderer {
       4 * this.project.camera.currentScale,
     );
     // 绘制url
-    this.project.textRenderer.renderOneLineText(
+    this.project.textRenderer.renderText(
       urlNode.url.length > 35 ? urlNode.url.slice(0, 35) + "..." : urlNode.url,
       this.project.renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
@@ -81,7 +81,7 @@ export class UrlNodeRenderer {
         0,
       );
       // 绘制提示
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         "双击打开链接",
         this.project.renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
         Renderer.FONT_SIZE * 0.5 * this.project.camera.currentScale,

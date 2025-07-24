@@ -35,7 +35,7 @@ export class SectionRenderer {
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * this.project.camera.currentScale,
     );
     if (!section.isEditingTitle) {
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         section.text,
         this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
@@ -51,7 +51,7 @@ export class SectionRenderer {
     let borderWidth = 2 * this.project.camera.currentScale;
     if (this.project.entityRenderer.sectionBitTitleRenderType !== "none") {
       borderWidth =
-        this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale
+        this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale
           ? 2 * this.project.camera.currentScale
           : 2;
     }
@@ -68,11 +68,11 @@ export class SectionRenderer {
     );
 
     if (
-      this.project.camera.currentScale > this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale &&
+      this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale &&
       !section.isEditingTitle
     ) {
       // 正常显示标题
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         section.text,
         this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
@@ -162,12 +162,12 @@ export class SectionRenderer {
       2,
     );
 
-    this.project.textRenderer.renderOneLineText(section.text, leftTopFontViewLocation, fontSize, textColor);
+    this.project.textRenderer.renderText(section.text, leftTopFontViewLocation, fontSize, textColor);
   }
 
   private getFontSizeBySectionSize(section: Section): Vector {
     // 缩放过小了，显示巨大化文字
-    this.project.textRenderer.renderOneLineText("", Vector.getZero(), 100);
+    this.project.textRenderer.renderText("", Vector.getZero(), 100);
 
     const textSize = this.project.canvas.ctx.measureText(section.text);
     const width = textSize.width;

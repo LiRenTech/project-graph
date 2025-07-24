@@ -275,13 +275,13 @@ export class EntityRenderer {
     }
     // 调试，缩放信息和位置信息
     if (Settings.sync.showDebug) {
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         "scale: " + imageNode.scaleNumber.toString(),
         this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
         3 * this.project.camera.currentScale,
         Color.Gray,
       );
-      this.project.textRenderer.renderOneLineText(
+      this.project.textRenderer.renderText(
         "origin size: " + imageNode.originImageSize.toString(),
         this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
         3 * this.project.camera.currentScale,

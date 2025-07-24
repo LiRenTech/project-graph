@@ -3,7 +3,6 @@ import { Rectangle } from "@graphif/shapes";
 import { Serialized } from "../../../../types/node";
 import { isMac } from "../../../../utils/platform";
 import { Project, service } from "../../../Project";
-import { StageDumper } from "../../../stage/StageDumper";
 import { SerializedDataAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
@@ -23,7 +22,7 @@ export class CopyEngine {
    * 注意：这个不是系统粘贴板
    */
   copyBoardData: Serialized.File = {
-    version: StageDumper.latestVersion,
+    version: Project.latestVersion,
     entities: [],
     associations: [],
     tags: [],

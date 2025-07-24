@@ -226,6 +226,8 @@ export default function App() {
             })}
             onClick={() => {
               setActiveProject(project);
+              project.loop();
+              projects.filter((p) => p.uri.toString() !== project.uri.toString()).forEach((p) => p.pause());
             }}
           >
             <span className="text-sm">
@@ -239,6 +241,10 @@ export default function App() {
               size={16}
               strokeWidth={3}
               className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
+              onClick={async () => {
+                await project.dispose();
+                setProjects((projects) => projects.filter((p) => p.uri.toString() !== project.uri.toString()));
+              }}
             />
           </div>
         ))}

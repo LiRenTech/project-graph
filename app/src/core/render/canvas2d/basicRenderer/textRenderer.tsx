@@ -1,6 +1,6 @@
 import { Color, LruCache, Vector } from "@graphif/data-structures";
 import md5 from "md5";
-import { FONT, replaceTextWhenProtect } from "../../../../utils/font";
+import { FONT, getTextSize, replaceTextWhenProtect } from "../../../../utils/font";
 import { Project, service } from "../../../Project";
 import { Settings } from "../../../service/Settings";
 
@@ -15,98 +15,125 @@ export class TextRenderer {
 
   constructor(private readonly project: Project) {}
 
-  private hash(text: string, fontSize: number, width: number): string {
-    // md5(text)_fontSize_width
+  private hash(text: string, size: number): string {
+    // md5(text)_fontSize
     const textHash = md5(text);
-    return `${textHash}_${fontSize}_${width}`;
+    return `${textHash}_${size}`;
   }
-  private getCache(text: string, fontSize: number, width: number) {
-    const cacheKey = this.hash(text, fontSize, width);
+  private getCache(text: string, size: number) {
+    const cacheKey = this.hash(text, size);
     const cacheValue = this.cache.get(cacheKey);
     return cacheValue;
   }
   /**
-   * 获取text和width相同，fontSize最接近的缓存图片
+   * 获取text相同，fontSize最接近的缓存图片
    */
-  /**
-   * 获取 text 和 width 相同，fontSize 最接近的缓存图片
-   */
-  private getCacheNearestSize(text: string, fontSize: number, width: number): ImageBitmap | undefined {
-    let best: ImageBitmap | undefined = undefined;
-    let minDelta = Infinity;
+  private getCacheNearestSize(text: string, size: number): ImageBitmap | undefined {
+    const textHash = md5(text);
+    let nearestBitmap: ImageBitmap | undefined;
+    let minDiff = Infinity;
+
+    // 遍历缓存中所有key
     for (const key of this.cache.keys()) {
-      const parts = key.split("_");
-      if (parts.length !== 3) continue;
-
-      const [textHash, cachedFontSizeStr, cachedWidthStr] = parts;
+      // 解构出textHash和fontSize
+      const [cachedTextHash, cachedFontSizeStr] = key.split("_");
       const cachedFontSize = Number(cachedFontSizeStr);
-      const cachedWidth = Number(cachedWidthStr);
 
-      if (textHash === md5(text) && cachedWidth === width) {
-        const delta = Math.abs(cachedFontSize - fontSize);
-        if (delta < minDelta) {
-          minDelta = delta;
-          best = this.cache.get(key);
+      // 只处理相同text的缓存
+      if (cachedTextHash === textHash) {
+        const diff = Math.abs(cachedFontSize - size);
+        if (diff < minDiff) {
+          minDiff = diff;
+          nearestBitmap = this.cache.get(key);
         }
       }
     }
 
-    return best;
+    return nearestBitmap;
+  }
+
+  private buildCache(text: string, size: number, color: Color) {
+    const textSize = getTextSize(text, size);
+    const canvas = new OffscreenCanvas(textSize.x, textSize.y);
+    const ctx = canvas.getContext("2d")!;
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    ctx.font = `${size}px normal ${FONT}`;
+    ctx.fillStyle = color.toString();
+    ctx.fillText(text, 0, size / 2);
+    createImageBitmap(canvas).then((bmp) => {
+      const cacheKey = this.hash(text, size);
+      this.cache.set(cacheKey, bmp);
+      // console.log("[TextRenderer] 缓存已建立 %s", cacheKey);
+    });
+    return canvas;
   }
 
   /**
    * 从左上角画文本
-   * @param text
-   * @param location
-   * @param fontSize
-   * @param color
    */
-  renderOneLineText(text: string, location: Vector, fontSize: number, color: Color = Color.White): void {
-    // alphabetic, top, hanging, middle, ideographic, bottom
+  renderText(text: string, location: Vector, size: number, color: Color = Color.White): void {
+    if (text.trim().length === 0) return;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    // 如果有缓存，直接渲染
+    const cache = this.getCache(text, size);
+    if (cache) {
+      this.project.canvas.ctx.drawImage(cache, location.x, location.y);
+      return;
+    }
+    if (Settings.sync.textScalingBehavior !== "cacheEveryTick") {
+      // 如果摄像机正在缩放，就找到大小最接近的缓存图片，然后位图缩放
+      const currentScale = this.project.camera.currentScale.toFixed(2);
+      const targetScale = this.project.camera.targetScale.toFixed(2);
+      if (currentScale !== targetScale) {
+        if (Settings.sync.textScalingBehavior === "nearestCache") {
+          // 文字应该渲染成什么大小
+          const textSize = getTextSize(text, size);
+          const nearestBitmap = this.getCacheNearestSize(text, size);
+          // console.log("[TextRenderer] 缩放状态下 (%f -> %f)，使用缓存图片 %o", currentScale, targetScale, nearestBitmap);
+          if (nearestBitmap) {
+            this.project.canvas.ctx.drawImage(
+              nearestBitmap,
+              location.x,
+              location.y,
+              Math.round(textSize.x),
+              Math.round(textSize.y),
+            );
+            return;
+          }
+        } else if (Settings.sync.textScalingBehavior === "temp") {
+          this.renderTempText(text, location, size, color);
+          return;
+        }
+      }
+    }
+    this.project.canvas.ctx.drawImage(this.buildCache(text, size, color), location.x, location.y);
+  }
+  /**
+   * 渲染临时文字，不构建缓存，不使用缓存
+   */
+  renderTempText(text: string, location: Vector, size: number, color: Color = Color.White): void {
+    if (text.trim().length === 0) return;
     text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     this.project.canvas.ctx.textBaseline = "middle";
     this.project.canvas.ctx.textAlign = "left";
-    if (Settings.sync.textIntegerLocationAndSizeRender) {
-      this.project.canvas.ctx.font = `${Math.round(fontSize)}px ${FONT}`;
-    } else {
-      this.project.canvas.ctx.font = `${fontSize}px normal ${FONT}`;
-    }
+    this.project.canvas.ctx.font = `${size}px normal ${FONT}`;
     this.project.canvas.ctx.fillStyle = color.toString();
-    if (Settings.sync.textIntegerLocationAndSizeRender) {
-      this.project.canvas.ctx.fillText(text, Math.floor(location.x), Math.floor(location.y + fontSize / 2));
-    } else {
-      this.project.canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
-    }
+    this.project.canvas.ctx.fillText(text, location.x, location.y + size / 2);
   }
 
   /**
    * 从中心位置开始绘制文本
-   * @param text
-   * @param centerLocation
-   * @param size
-   * @param color
-   * @param shadowColor
    */
   renderTextFromCenter(text: string, centerLocation: Vector, size: number, color: Color = Color.White): void {
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
-    this.project.canvas.ctx.textBaseline = "middle";
-    this.project.canvas.ctx.textAlign = "center";
-    if (Settings.sync.textIntegerLocationAndSizeRender) {
-      this.project.canvas.ctx.font = `${Math.round(size)}px normal ${FONT}`;
-    } else {
-      this.project.canvas.ctx.font = `${size}px normal ${FONT}`;
-    }
-    this.project.canvas.ctx.fillStyle = color.toString();
-    if (Settings.sync.textIntegerLocationAndSizeRender) {
-      this.project.canvas.ctx.fillText(text, Math.floor(centerLocation.x), Math.floor(centerLocation.y));
-    } else {
-      this.project.canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
-    }
-    // 重置阴影
-    this.project.canvas.ctx.shadowBlur = 0; // 阴影模糊程度
-    this.project.canvas.ctx.shadowOffsetX = 0; // 水平偏移
-    this.project.canvas.ctx.shadowOffsetY = 0; // 垂直偏移
-    this.project.canvas.ctx.shadowColor = "none";
+    if (text.trim().length === 0) return;
+    const textSize = getTextSize(text, size);
+    this.renderText(text, centerLocation.subtract(textSize.divide(2)), size, color);
+  }
+  renderTempTextFromCenter(text: string, centerLocation: Vector, size: number, color: Color = Color.White): void {
+    if (text.trim().length === 0) return;
+    const textSize = getTextSize(text, size);
+    this.renderTempText(text, centerLocation.subtract(textSize.divide(2)), size, color);
   }
 
   /**
@@ -126,6 +153,29 @@ export class TextRenderer {
     lineHeight: number = 1.2,
     limitLines: number = Infinity,
   ): void {
+    if (text.trim().length === 0) return;
+    let currentY = 0; // 顶部偏移量
+    let textLineArray = this.textToTextArrayWrapCache(text, fontSize, limitWidth);
+    // 限制行数
+    if (limitLines < textLineArray.length) {
+      textLineArray = textLineArray.slice(0, limitLines);
+      textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
+    }
+    for (const line of textLineArray) {
+      this.renderText(line, location.add(new Vector(0, currentY)), fontSize, color);
+      currentY += fontSize * lineHeight;
+    }
+  }
+  renderTempMultiLineText(
+    text: string,
+    location: Vector,
+    fontSize: number,
+    limitWidth: number,
+    color: Color = Color.White,
+    lineHeight: number = 1.2,
+    limitLines: number = Infinity,
+  ): void {
+    if (text.trim().length === 0) return;
     text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, fontSize, limitWidth);
@@ -135,7 +185,7 @@ export class TextRenderer {
       textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
     }
     for (const line of textLineArray) {
-      this.renderOneLineText(line, location.add(new Vector(0, currentY)), fontSize, color);
+      this.renderTempText(line, location.add(new Vector(0, currentY)), fontSize, color);
       currentY += fontSize * lineHeight;
     }
   }
@@ -149,6 +199,7 @@ export class TextRenderer {
     lineHeight: number = 1.2,
     limitLines: number = Infinity,
   ): void {
+    if (text.trim().length === 0) return;
     text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, size, limitWidth);
@@ -159,6 +210,34 @@ export class TextRenderer {
     }
     for (const line of textLineArray) {
       this.renderTextFromCenter(
+        line,
+        centerLocation.add(new Vector(0, currentY - ((textLineArray.length - 1) * size) / 2)),
+        size,
+        color,
+      );
+      currentY += size * lineHeight;
+    }
+  }
+  renderTempMultiLineTextFromCenter(
+    text: string,
+    centerLocation: Vector,
+    size: number,
+    limitWidth: number,
+    color: Color,
+    lineHeight: number = 1.2,
+    limitLines: number = Infinity,
+  ): void {
+    if (text.trim().length === 0) return;
+    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    let currentY = 0; // 顶部偏移量
+    let textLineArray = this.textToTextArrayWrapCache(text, size, limitWidth);
+    // 限制行数
+    if (limitLines < textLineArray.length) {
+      textLineArray = textLineArray.slice(0, limitLines);
+      textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
+    }
+    for (const line of textLineArray) {
+      this.renderTempTextFromCenter(
         line,
         centerLocation.add(new Vector(0, currentY - ((textLineArray.length - 1) * size) / 2)),
         size,
@@ -195,7 +274,7 @@ export class TextRenderer {
   private textToTextArray(text: string, fontSize: number, limitWidth: number): string[] {
     let currentLine = "";
     // 先渲染一下空字符串，否则长度大小可能不匹配，造成蜜汁bug
-    this.renderOneLineText("", Vector.getZero(), fontSize, Color.White);
+    this.renderText("", Vector.getZero(), fontSize, Color.White);
     const lines: string[] = [];
 
     for (const char of text) {

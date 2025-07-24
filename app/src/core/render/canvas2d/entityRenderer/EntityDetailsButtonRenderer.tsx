@@ -26,7 +26,7 @@ export class EntityDetailsButtonRenderer {
       isMouseHovering = true;
       if (!entity.isEditingDetails)
         // 鼠标悬浮在这上面
-        this.project.textRenderer.renderOneLineText(
+        this.project.textRenderer.renderText(
           "点击展开或关闭节点注释详情",
           this.project.renderer.transformWorld2View(
             entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12)),
@@ -35,7 +35,7 @@ export class EntityDetailsButtonRenderer {
           this.project.stageStyleManager.currentStyle.DetailsDebugText,
         );
     }
-    this.project.textRenderer.renderOneLineText(
+    this.project.textRenderer.renderText(
       entity.isEditingDetails ? "✏️" : "📃",
       this.project.renderer.transformWorld2View(entity.detailsButtonRectangle().leftTop),
       (isMouseHovering ? getFontSizeByTime() : 20) * this.project.camera.currentScale,
