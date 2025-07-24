@@ -198,11 +198,14 @@ export function FieldGroup({
       {/* 可能的描述行 */}
       {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
       {/* 内容 */}
-      {isOpen && (
-        <div className="bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
-          {children}
-        </div>
-      )}
+      <div
+        className={cn(
+          "bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl",
+          !isOpen && "h-0",
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

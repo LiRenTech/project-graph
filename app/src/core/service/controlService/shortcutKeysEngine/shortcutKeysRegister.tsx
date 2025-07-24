@@ -479,16 +479,15 @@ export class KeyBindsRegistrar {
       Stage.MouseModeManager.checkoutConnectAndCuttingHook();
     });
 
-    (
-      await this.project.keyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", async () => {
-        // lastMouseMode = Settings.sync.mouseLeftMode;
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        Stage.MouseModeManager.checkoutConnectAndCuttingHook();
-      })
-    ).up(async () => {
+    await this.project.keyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", async () => {
+      // lastMouseMode = Settings.sync.mouseLeftMode;
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      Stage.MouseModeManager.checkoutSelectAndMoveHook();
+      Stage.MouseModeManager.checkoutConnectAndCuttingHook();
     });
+    // .up(async () => {
+    //   if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    //   Stage.MouseModeManager.checkoutSelectAndMoveHook();
+    // });
 
     await this.project.keyBinds.create("selectEntityByPenStroke", "C-w", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
@@ -536,19 +535,19 @@ export class KeyBindsRegistrar {
       this.project.keyboardOnlyTreeEngine.onBroadGenerateNode();
     });
 
-    (await this.project.keyBinds.create("generateNodeGraph", "`"))
-      .down(() => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        if (this.project.keyboardOnlyGraphEngine.isEnableVirtualCreate()) {
-          this.project.keyboardOnlyGraphEngine.createStart();
-        }
-      })
-      .up(() => {
-        if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-        if (this.project.keyboardOnlyGraphEngine.isCreating()) {
-          this.project.keyboardOnlyGraphEngine.createFinished();
-        }
-      });
+    // (await this.project.keyBinds.create("generateNodeGraph", "`"))
+    //   .down(() => {
+    //     if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    //     if (this.project.keyboardOnlyGraphEngine.isEnableVirtualCreate()) {
+    //       this.project.keyboardOnlyGraphEngine.createStart();
+    //     }
+    //   })
+    //   .up(() => {
+    //     if (!this.project.keyboardOnlyEngine.isOpenning()) return;
+    //     if (this.project.keyboardOnlyGraphEngine.isCreating()) {
+    //       this.project.keyboardOnlyGraphEngine.createFinished();
+    //     }
+    //   });
     await this.project.keyBinds.create("treeGraphAdjust", "f", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
       const entities = this.project.stageManager
