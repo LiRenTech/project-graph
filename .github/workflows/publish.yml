@@ -159,7 +159,7 @@ jobs:
           - platform: "ubuntu-22.04"
             dist: "src-tauri/target/**/bundle/**/*.{deb,AppImage,rpm,sig}"
           - platform: "windows-latest"
-            dist: "src-tauri/target/**/bundle/nsis"
+            dist: "src-tauri/target/**/bundle/**/*.{exe,sig}"
           - platform: "macos-latest"
             args: "--target universal-apple-darwin"
             rust_targets: "aarch64-apple-darwin,x86_64-apple-darwin"
@@ -276,12 +276,15 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
+      - name: target folder structure
+        run: tree app/src-tauri/target
+
       - name: MacOS - Rename app.tar.gz
         if: matrix.platform == 'macos-latest'
         run: |
           cd app/src-tauri/target/*/release/bundle/macos
-          mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz"
-          mv *.app.tar.gz.sig "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz.sig"
+          mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_universal.app.tar.gz"
+          mv *.app.tar.gz.sig "Project Graph_${{ inputs.app_version }}_universal.app.tar.gz.sig"
       - name: Linux - Rename rpm
         if: matrix.platform == 'ubuntu-22.04'
         run: |
