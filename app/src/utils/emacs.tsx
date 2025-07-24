@@ -5,7 +5,6 @@
  * <MWU>: MouseWheelUp
  * <MWD>: MouseWheelDown
  * key: 其他按键
- * 不支持按键序列 eg. C-x c
  * @example
  * C-home
  * C-S-end

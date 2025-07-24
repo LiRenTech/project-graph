@@ -1,6 +1,5 @@
 import { useAtom } from "jotai";
 import { FileQuestion, Keyboard } from "lucide-react";
-import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Field, FieldGroup } from "../../../components/Field";
 import KeyBind from "../../../components/KeyBind";
@@ -8,28 +7,16 @@ import { shortcutKeysGroups } from "../../../core/service/controlService/shortcu
 import { activeProjectAtom } from "../../../state";
 
 export default function KeyBindsPage() {
-  const [keyBinds, setKeyBinds] = React.useState<[string, string][]>([]);
   const [activeProject] = useAtom(activeProjectAtom);
-
-  React.useEffect(() => {
-    activeProject?.keyBinds.entries().then((entries) => {
-      setKeyBinds(entries);
-    });
-  }, [activeProject]);
-
-  const getKeybindObjectById = useCallback(
-    (id: string) => {
-      return keyBinds.find((item) => item[0] === id)?.[1];
-    },
-    [keyBinds],
-  );
 
   /**
    * 获取未加入分组的快捷键
    * @returns
    */
   const getUnGroupedKeys = () => {
-    return keyBinds.filter((item) => !shortcutKeysGroups.some((group) => group.keys.includes(item[0])));
+    return [...(activeProject?.keyBinds.registered ?? [])].filter(
+      (item) => !shortcutKeysGroups.some((group) => group.keys.includes(item[0])),
+    );
   };
 
   const { t } = useTranslation("keyBinds");
@@ -53,10 +40,9 @@ export default function KeyBindsPage() {
                 description={t(`${id}.description`, { defaultValue: "" })}
               >
                 <KeyBind
-                  value={getKeybindObjectById(id)}
+                  defaultValue={[...(activeProject?.keyBinds.registered ?? [])].find((item) => item[0] === id)?.[1]}
                   onChange={(value) => {
                     activeProject?.keyBinds.set(id, value);
-                    setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
                   }}
                 />
               </Field>
@@ -65,7 +51,7 @@ export default function KeyBindsPage() {
         );
       })}
       <FieldGroup title={t2.t(`otherKeys.title`)} description={t2.t(`otherKeys.description`)} icon={<FileQuestion />}>
-        {getUnGroupedKeys().map(([id, bind]) => (
+        {getUnGroupedKeys().map((id) => (
           <Field
             key={id}
             icon={<Keyboard />}
@@ -73,10 +59,9 @@ export default function KeyBindsPage() {
             description={t(`${id}.description`, { defaultValue: "" })}
           >
             <KeyBind
-              value={bind}
+              defaultValue={[...(activeProject?.keyBinds.registered ?? [])].find((item) => item[0] === id)?.[1]}
               onChange={(value) => {
                 activeProject?.keyBinds.set(id, value);
-                setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
               }}
             />
           </Field>

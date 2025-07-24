@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Check, Delete } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "../utils/cn";
 import { formatEmacsKey, parseEmacsKey } from "../utils/emacs";
@@ -7,93 +8,116 @@ import Button from "./Button";
 
 /**
  * 绑定快捷键的组件
- * @param param0
- * @returns
+ * 非受控！！
  */
 export default function KeyBind({
-  value = "",
+  defaultValue = "",
   onChange = () => {},
 }: {
-  value?: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
 }) {
   const [choosing, setChoosing] = useState(false);
+  const [value, setValue] = useState(defaultValue);
   const { t } = useTranslation("keys");
 
-  const startInput = () => {
-    const end = () => {
-      setChoosing(false);
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("wheel", handleWheel);
-    };
+  const handleKeyDown = (event: KeyboardEvent) => {
+    event.preventDefault();
+    if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta") {
+      return;
+    }
+    setValue((prev) => prev + " " + formatEmacsKey(event));
+  };
+  const handleMouseDown = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.button !== 0) {
+      setValue((prev) => prev + " " + formatEmacsKey(event));
+    }
+  };
+  const handleMouseUp = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  const handleWheel = (event: WheelEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setValue((prev) => prev + " " + formatEmacsKey(event));
+  };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      event.preventDefault();
-      if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta") {
-        return;
-      }
-      if (event.key === "Escape") {
-        end();
-        return;
-      }
-      onChange(formatEmacsKey(event));
-      end();
-    };
-    const handleMouseDown = (event: MouseEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.button !== 0) {
-        onChange(formatEmacsKey(event));
-        end();
-      }
-    };
-    const handleMouseUp = (event: MouseEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onChange(formatEmacsKey(event));
-      end();
-    };
+  const startInput = () => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("wheel", handleWheel);
 
     setChoosing(true);
-    onChange("");
+    setValue("");
   };
 
+  const endInput = () => {
+    setChoosing(false);
+    onChange(value.trim());
+    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("mousedown", handleMouseDown);
+    document.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("wheel", handleWheel);
+  };
+
+  useEffect(() => endInput, []);
+
   return (
-    <Button
-      onClick={startInput}
-      className={cn("bg-keybind-bg border-keybind-border text-sm outline-0 outline-red-400 hover:cursor-pointer", {
-        "outline-4": choosing,
-      })}
-    >
-      {value ? (
-        value.includes(" ") ? (
-          <>{/* 组件暂时不能显示按键序列，给一个输入框让用户自己输入 */}</>
+    <>
+      <Button
+        onClick={startInput}
+        className={cn(
+          "bg-keybind-bg border-keybind-border flex items-center gap-2 outline-0 outline-red-400 hover:cursor-pointer",
+          {
+            "outline-4": choosing,
+          },
+        )}
+      >
+        {value ? (
+          parseEmacsKey(value.trim()).map((key, index) => (
+            <span key={index}>
+              <Modifiers modifiers={key} />
+              {key.key}
+            </span>
+          ))
         ) : (
-          <>
-            <Modifiers value={value} />
-            <span className="text-keybind-text">{parseSingleEmacsKey(value).key}</span>
-          </>
-        )
-      ) : (
-        <span className="text-keybind-text">{t("none")}</span>
+          <span className="text-keybind-text">{t("none")}</span>
+        )}
+      </Button>
+      {choosing && (
+        <>
+          <Button
+            onClick={() => {
+              onChange(value.trim().split(" ").slice(0, -1).join(" "));
+            }}
+          >
+            <Delete />
+            删除一个按键
+          </Button>
+          <Button onClick={endInput}>
+            <Check />
+            完成
+          </Button>
+        </>
       )}
-    </Button>
+    </>
   );
 }
 
-function Modifiers({ value }: { value: string }) {
-  const modifiers = parseEmacsKey(value);
-
+function Modifiers({
+  modifiers,
+}: {
+  modifiers: {
+    control: boolean;
+    alt: boolean;
+    shift: boolean;
+    meta: boolean;
+  };
+}) {
   const mods = [];
 
   if (modifiers.control) {

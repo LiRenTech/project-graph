@@ -1,4 +1,4 @@
-import { Vector } from "@graphif/data-structures";
+import { Queue } from "@graphif/data-structures";
 import { Store } from "@tauri-apps/plugin-store";
 import { matchEmacsKey } from "../../../../utils/emacs";
 import { createStore } from "../../../../utils/store";
@@ -12,9 +12,14 @@ export class KeyBinds {
   private store: Store | null = null;
 
   constructor(private readonly project: Project) {
-    createStore("keybinds.json").then((store) => {
-      this.store = store;
-    });
+    (async () => {
+      this.store = await createStore("keybinds.json");
+      await this.project.keyBindsRegistrar.registerKeyBinds();
+      if ((await this.store.values()).find((it) => typeof it === "string")) {
+        // 重置store
+        await this.store.clear();
+      }
+    })();
   }
 
   async set(id: string, key: string) {
@@ -69,7 +74,7 @@ export class KeyBinds {
   // 仅用于初始化软件时注册快捷键
   registered: Set<string> = new Set();
 
-  async create(id: string, defaultKey: string, onPress?: () => void): Promise<_Bind> {
+  async create(id: string, defaultKey: string, onPress = () => {}): Promise<_Bind> {
     if (this.registered.has(id)) {
       throw new Error(`Keybind ${id} 已经注册过了`);
     }
@@ -80,10 +85,7 @@ export class KeyBinds {
       await this.set(id, defaultKey);
       userSetKey = defaultKey;
     }
-    const obj = new _Bind(this.project, id, userSetKey);
-    if (onPress) {
-      obj.down(onPress);
-    }
+    const obj = new _Bind(this.project, id, userSetKey, onPress);
     // 监听快捷键变化
     await this.watch(id, (key) => {
       obj.key = key;
@@ -94,79 +96,42 @@ export class KeyBinds {
 
 class _Bind {
   public button: number = -1;
-  private start: Vector | null = null;
   // @ts-expect-error // TODO: dblclick
   private lastMatch: number = 0;
+  private events = new Queue<MouseEvent | KeyboardEvent | WheelEvent>();
+
+  private enqueue(event: MouseEvent | KeyboardEvent | WheelEvent) {
+    // 队列里面最多20个
+    while (this.events.length >= 20) {
+      this.events.dequeue();
+    }
+    this.events.enqueue(event);
+  }
+  private check() {
+    if (matchEmacsKey(this.key, this.events.arrayList)) {
+      this.onPress();
+    }
+  }
 
   constructor(
     private readonly project: Project,
     public id: string,
     public key: string,
+    private readonly onPress: () => void,
   ) {
+    // 有任意事件时，管它是什么，都放进队列
     this.project.canvas.element.addEventListener("mousedown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        this.start = new Vector(event.clientX, event.clientY);
-      }
+      this.enqueue(event);
+      this.check();
     });
-    this.project.canvas.element.addEventListener("mouseup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        this.start = null;
-      }
-    });
-  }
-
-  /**
-   * 快捷键按下的时候触发的函数
-   * @param handler
-   */
-  public down(handler: () => void) {
     this.project.canvas.element.addEventListener("keydown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    this.project.canvas.element.addEventListener("mousedown", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
+      if (["control", "alt", "shift", "meta"].includes(event.key.toLowerCase())) return;
+      this.enqueue(event);
+      this.check();
     });
     this.project.canvas.element.addEventListener("wheel", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
+      this.enqueue(event);
+      this.check();
     });
-    return this;
-  }
-  /**
-   * 快捷键按下并抬起的时候触发的函数
-   * @param handler
-   */
-  public up(handler: () => void) {
-    this.project.canvas.element.addEventListener("keyup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    this.project.canvas.element.addEventListener("mouseup", (event) => {
-      if (matchEmacsKey(this.key, event)) {
-        handler();
-      }
-    });
-    return this;
-  }
-
-  /**
-   * 快捷键鼠标拖动的时候触发的函数
-   * @param handler
-   */
-  public drag(handler: (start: Vector) => void) {
-    this.project.canvas.element.addEventListener("mousemove", (event) => {
-      if (this.start && matchEmacsKey(this.key, event)) {
-        const end = new Vector(event.clientX, event.clientY);
-        handler(this.start);
-        this.start = end;
-      }
-    });
-    return this;
   }
 }
