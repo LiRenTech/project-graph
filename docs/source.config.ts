@@ -1,6 +1,7 @@
 import { defineCollections, defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
+import { Pluggable } from "unified";
 import { z } from "zod";
 
 export const docs = defineDocs({
@@ -27,6 +28,6 @@ export default defineConfig({
     // MDX options
     remarkPlugins: [remarkMath],
     // Place it at first so that it won't be changed by syntax highlighter
-    rehypePlugins: (v) => [rehypeKatex, ...v],
+    rehypePlugins: (v: Pluggable[]) => [rehypeKatex, ...v],
   },
 });
