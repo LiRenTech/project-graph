@@ -157,13 +157,13 @@ jobs:
       matrix:
         include:
           - platform: "ubuntu-22.04"
-            dist: "src-tauri/target/**/bundle/**/*.{deb,AppImage,rpm,sig}"
+            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}"
           - platform: "windows-latest"
-            dist: "src-tauri/target/**/bundle/**/*.{exe,sig}"
+            dist: "src-tauri/target/release/bundle/nsis"
           - platform: "macos-latest"
             args: "--target universal-apple-darwin"
             rust_targets: "aarch64-apple-darwin,x86_64-apple-darwin"
-            dist: "src-tauri/target/**/bundle/**/*.{dmg,tar.gz,sig}"
+            dist: "src-tauri/target/universal-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -275,9 +275,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-
-      - name: target folder structure
-        run: tree app/src-tauri/target
 
       - name: MacOS - Rename app.tar.gz
         if: matrix.platform == 'macos-latest'
