@@ -40,67 +40,67 @@ const pages = [
   {
     id: "about",
     icon: <Info />,
-    component: <About />,
+    children: <About />,
   },
   {
     id: "visual",
     icon: <Eye />,
-    component: <Visual />,
+    children: <Visual />,
   },
   {
     id: "control",
     icon: <Wrench />,
-    component: <Control />,
+    children: <Control />,
   },
   {
     id: "keybinds",
     icon: isMac ? <Command /> : <Keyboard />,
-    component: <Keybinds />,
+    children: <Keybinds />,
   },
   {
     id: "themes",
     icon: <Palette />,
-    component: <Themes />,
+    children: <Themes />,
   },
   {
     id: "performance",
     icon: <Zap />,
-    component: <Performance />,
+    children: <Performance />,
   },
   {
     id: "effects",
     icon: <Sparkles />,
-    component: <Effects />,
+    children: <Effects />,
   },
   {
     id: "automation",
     icon: <Bot />,
-    component: <Automation />,
+    children: <Automation />,
   },
   {
     id: "ai",
     icon: <Brain />,
-    component: <AISettings />,
+    children: <AISettings />,
   },
   {
     id: "github",
     icon: <Github />,
-    component: <GithubPage />,
+    children: <GithubPage />,
   },
   {
     id: "sounds",
     icon: <Speaker />,
-    component: <Sounds />,
+    children: <Sounds />,
   },
   {
     id: "plugins",
     icon: <Plug />,
-    component: <Plugins />,
+    children: <Plugins />,
   },
   {
     id: "scripts",
     icon: <CodeXml />,
-    component: <Scripts />,
+    children: <Scripts />,
   },
 ] as const;
 type Page = (typeof pages)[number]["id"];
@@ -127,7 +127,7 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
           ))}
         </div>
         <div className="mx-auto max-w-[900px] flex-1 overflow-auto rounded-xl">
-          {pages.find((page) => page.id === currentPage)?.component}
+          {pages.find((page) => page.id === currentPage)?.children}
         </div>
       </div>
     </div>

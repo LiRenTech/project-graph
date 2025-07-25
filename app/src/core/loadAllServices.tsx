@@ -36,6 +36,7 @@ import { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEng
 import { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
+import { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
 import { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
@@ -79,7 +80,7 @@ export function loadAllServices(project: Project): void {
   project.loadService(Canvas);
   project.loadService(InputElement);
   project.loadService(StageStyleManager);
-  // project.loadService(KeyBinds);
+  project.loadService(KeyBinds);
   project.loadService(ControllerUtils);
   project.loadService(SectionMethods);
   project.loadService(GraphMethods);

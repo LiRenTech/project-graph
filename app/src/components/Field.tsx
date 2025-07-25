@@ -31,9 +31,14 @@ export function SettingField({
   kind?: "file" | "directory";
   extra?: React.ReactNode;
 }) {
-  const [value, setValue] = React.useState<any>(Settings.sync[settingKey]);
+  const [value, setValue] = React.useState<any>();
   const { t, i18n } = useTranslation("settings");
 
+  React.useEffect(() => {
+    Settings.get(settingKey).then((v) => {
+      setValue(v);
+    });
+  }, []);
   React.useEffect(() => {
     if (value !== undefined) {
       Settings.set(settingKey, value);
@@ -193,14 +198,11 @@ export function FieldGroup({
       {/* 可能的描述行 */}
       {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
       {/* 内容 */}
-      <div
-        className={cn(
-          "bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl",
-          !isOpen && "h-0",
-        )}
-      >
-        {children}
-      </div>
+      {isOpen && (
+        <div className="bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
