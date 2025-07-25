@@ -7,37 +7,23 @@ icon: Keyboard
 
 快捷键的配置存在于数据文件夹中的 `keybinds.json` 文件中，如果改乱了，可以直接删除该文件，然后重启软件即可。
 
-快捷键甚至可以监听鼠标事件
+快捷键甚至可以监听鼠标事件和鼠标滚轮
 
-## 不同系统的修饰键统一命名
+## 快捷键的格式
 
-| Windows | macOS | Linux | 配置文件中的名称 |
-| --- | --- | --- | --- |
-| Ctrl | Control | Ctrl | `Control` |
-| Shift | Shift | Shift | `Shift` |
-| Alt | Option | Alt | `Alt` |
-| Win | Command | Super | `Meta` |
+快捷键序列由多个按键组成，使用空格分隔，代表**依次**按下每个按键
 
-## 快捷键格式
+每个按键由“修饰键+按键”组成，用连字符“-”分隔。
 
-快捷键的组合按键只能是以下格式（可选四个修饰键 + 一个非修饰键）：
+| 修饰键 | 代表的按键 | Windows | macOS   | Linux (默认 keymap) |
+| ------ | ---------- | ------- | ------- | ------------------- |
+| C      | Ctrl       | Ctrl    | Control | Ctrl                |
+| A      | Alt        | Alt     | Option  | Alt                 |
+| S      | Shift      | Shift   | Shift   | Shift               |
+| M      | Meta       | Windows | Command | Super               |
 
-windows系统
-
-```
-(Ctrl | Shift | Alt | Win | 无) + 其他某个任意按键
-```
-
-macos系统
-
-```
-(Control | Shift | Option | Command | 无) + 其他某个任意按键
-```
-
-Linux系统
-
-```
-(Ctrl | Shift | Alt | Super | 无) + 其他某个任意按键
-```
-
-快捷键的具体分布图可详见菜单栏中的 `新手引导` 文件。
+| 特殊按键 | 代表的按键   |
+| -------- | ------------ |
+| `<MWU>`  | 鼠标滚轮向上 |
+| `<MWD>`  | 鼠标滚轮向下 |
+| `<x>`    | 鼠标按键 x   |
