@@ -50,6 +50,8 @@ export namespace Settings {
     textCacheSize: number;
     textScalingBehavior: "temp" | "nearestCache" | "cacheEveryTick";
     antialiasing: "disabled" | "low" | "medium" | "high";
+    maxFps: number;
+    maxFpsUnfocused: number;
     // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
@@ -192,6 +194,8 @@ export namespace Settings {
     textCacheSize: 100,
     textScalingBehavior: "temp",
     antialiasing: "low",
+    maxFps: 60,
+    maxFpsUnfocused: 30,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",
@@ -271,8 +275,7 @@ export namespace Settings {
 
   export async function init() {
     store = await createStore("settings.json");
-    Object.assign(sync, Object.fromEntries(await store.entries()));
-    // 调用所有watcher
+    Object.assign(sync, Object.fromEntries(await store.entries())); // 调用所有watcher
     Object.entries(callbacks).forEach(([key, callbacks]) => {
       callbacks.forEach((callback) => {
         get(key as keyof Settings).then((value) => {
