@@ -1,5 +1,5 @@
 import { Check, Delete } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "../utils/cn";
 import { formatEmacsKey, parseEmacsKey } from "../utils/emacs";
@@ -21,50 +21,54 @@ export default function KeyBind({
   const [value, setValue] = useState(defaultValue);
   const { t } = useTranslation("keys");
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     event.preventDefault();
-    if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta") {
-      return;
-    }
+    if (["Control", "Alt", "Shift", "Meta"].includes(event.key)) return;
     setValue((prev) => prev + " " + formatEmacsKey(event));
-  };
-  const handleMouseDown = (event: MouseEvent) => {
+  }, []);
+
+  const handleMouseDown = useCallback((event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
     if (event.button !== 0) {
       setValue((prev) => prev + " " + formatEmacsKey(event));
     }
-  };
-  const handleMouseUp = (event: MouseEvent) => {
+  }, []);
+
+  const handleMouseUp = useCallback((event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-  };
-  const handleWheel = (event: WheelEvent) => {
+  }, []);
+
+  const handleWheel = useCallback((event: WheelEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setValue((prev) => prev + " " + formatEmacsKey(event));
-  };
+  }, []);
 
-  const startInput = () => {
+  const startInput = useCallback(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("wheel", handleWheel);
-
     setChoosing(true);
     setValue("");
-  };
+  }, [handleKeyDown, handleMouseDown, handleMouseUp, handleWheel]);
 
-  const endInput = () => {
-    setChoosing(false);
-    onChange(value.trim());
+  const endInput = useCallback(() => {
     document.removeEventListener("keydown", handleKeyDown);
     document.removeEventListener("mousedown", handleMouseDown);
     document.removeEventListener("mouseup", handleMouseUp);
     document.removeEventListener("wheel", handleWheel);
-  };
+    setChoosing(false);
+    onChange(value.trim());
+  }, [handleKeyDown, handleMouseDown, handleMouseUp, handleWheel, value, onChange]);
 
-  useEffect(() => endInput, []);
+  useEffect(() => {
+    return () => {
+      endInput();
+    };
+  }, []);
 
   return (
     <>

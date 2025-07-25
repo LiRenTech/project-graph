@@ -1,5 +1,5 @@
 import { ChevronRight, RotateCw } from "lucide-react";
-import React, { useState } from "react";
+import React, { startTransition, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Settings } from "../core/service/Settings";
 import { cn } from "../utils/cn";
@@ -31,14 +31,17 @@ export function SettingField({
   kind?: "file" | "directory";
   extra?: React.ReactNode;
 }) {
-  const [value, setValue] = React.useState<any>();
+  const [value, setValue] = React.useState<any>(Settings.defaultSettings[settingKey]);
   const { t, i18n } = useTranslation("settings");
 
   React.useEffect(() => {
-    Settings.get(settingKey).then((v) => {
-      setValue(v);
+    Settings.get(settingKey).then((val) => {
+      startTransition(() => {
+        setValue(val);
+      });
     });
-  }, []);
+  }, [settingKey]);
+
   React.useEffect(() => {
     if (value !== undefined) {
       Settings.set(settingKey, value);
@@ -171,8 +174,8 @@ export function Field({
  */
 export function FieldGroup({
   title = "",
-  icon = <></>,
-  children = <></>,
+  icon = null,
+  children = null,
   className = "",
   description = "",
 }: {
@@ -183,26 +186,60 @@ export function FieldGroup({
   description?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [height, setHeight] = useState<number | string>(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => {
+      if (isOpen) setHeight(el.offsetHeight);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isOpen]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setHeight(0);
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      const el = innerRef.current;
+      if (el) setHeight(el.offsetHeight);
+    });
+  }, [isOpen]);
+
+  const handleToggle = () => {
+    setAnimating(true);
+    setIsOpen((o) => !o);
+    setTimeout(() => setAnimating(false), 250);
+  };
 
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
-      {/* 第一行，标题行 */}
       <div
         className="text-settings-text my-2 flex cursor-pointer items-center gap-2 pl-4 pt-4 text-sm opacity-60 hover:opacity-100"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
       >
-        <span className="cursor-pointer">{icon}</span>
-        <span className="cursor-pointer">{title}</span>
+        <span>{icon}</span>
+        <span>{title}</span>
         <ChevronRight className={cn(isOpen && "rotate-90")} />
       </div>
-      {/* 可能的描述行 */}
+
       {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
-      {/* 内容 */}
-      {isOpen && (
-        <div className="bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
-          {children}
+
+      <div ref={contentRef} className="overflow-hidden rounded-xl transition-all" style={{ height }}>
+        <div
+          ref={innerRef}
+          className={cn("transition-opacity duration-200", !isOpen && !isAnimating && "pointer-events-none opacity-0")}
+        >
+          <div className="bg-field-group-bg group/field-group ...">{children}</div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

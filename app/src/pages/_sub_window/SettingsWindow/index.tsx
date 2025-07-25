@@ -15,7 +15,7 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Github from "../../../assets/github.svg?react";
 import Button from "../../../components/Button";
@@ -112,11 +112,15 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
   return (
     <div className="flex h-full w-full flex-col p-8">
       <div className="flex flex-1 gap-8 overflow-hidden">
-        <div className="text-appmenu-item-text flex h-full flex-col gap-2 overflow-y-auto *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
+        <div className="text-appmenu-item-text flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
           {pages.map((page) => (
             <Button
               key={page.id}
-              onClick={() => setCurrentPage(page.id)}
+              onClick={() => {
+                startTransition(() => {
+                  setCurrentPage(page.id);
+                });
+              }}
               className={cn(
                 page.id !== currentPage && "text-sub-window-text border-none bg-transparent hover:scale-125",
               )}

@@ -2175,50 +2175,50 @@
     color: var(--color-select-popup-placeholder-text, var(--color-select-popup-text));
   }
 }
-@utility el-select-popup-shadow {
-  background-color: var(--color-select-popup-shadow-bg);
-  color: var(--color-select-popup-shadow-text);
-  border-color: var(--color-select-popup-shadow-border, transparent);
-  --tw-shadow-color: var(--color-select-popup-shadow-shadow);
+@utility el-select-popup {
+  background-color: var(--color-select-popup-bg);
+  color: var(--color-select-popup-text);
+  border-color: var(--color-select-popup-border, transparent);
+  --tw-shadow-color: var(--color-select-popup-shadow);
   &:hover {
-    background-color: var(--color-select-popup-shadow-hover-bg, var(--color-select-popup-shadow-bg));
-    color: var(--color-select-popup-shadow-hover-text, var(--color-select-popup-shadow-text));
-    border-color: var(--color-select-popup-shadow-hover-border, var(--color-select-popup-shadow-border));
-    --tw-shadow-color: var(--color-select-popup-shadow-hover-shadow, var(--color-select-popup-shadow-shadow));
+    background-color: var(--color-select-popup-hover-bg, var(--color-select-popup-bg));
+    color: var(--color-select-popup-hover-text, var(--color-select-popup-text));
+    border-color: var(--color-select-popup-hover-border, var(--color-select-popup-border));
+    --tw-shadow-color: var(--color-select-popup-hover-shadow, var(--color-select-popup-shadow));
   }
   &:active {
-    background-color: var(--color-select-popup-shadow-active-bg, var(--color-select-popup-shadow-hover-bg, var(--color-select-popup-shadow-bg)));
-    color: var(--color-select-popup-shadow-active-text, var(--color-select-popup-shadow-hover-text, var(--color-select-popup-shadow-text)));
-    border-color: var(--color-select-popup-shadow-active-border, var(--color-select-popup-shadow-hover-border, var(--color-select-popup-shadow-border)));
-    --tw-shadow-color: var(--color-select-popup-shadow-active-shadow, var(--color-select-popup-shadow-hover-shadow, var(--color-select-popup-shadow-shadow)));
+    background-color: var(--color-select-popup-active-bg, var(--color-select-popup-hover-bg, var(--color-select-popup-bg)));
+    color: var(--color-select-popup-active-text, var(--color-select-popup-hover-text, var(--color-select-popup-text)));
+    border-color: var(--color-select-popup-active-border, var(--color-select-popup-hover-border, var(--color-select-popup-border)));
+    --tw-shadow-color: var(--color-select-popup-active-shadow, var(--color-select-popup-hover-shadow, var(--color-select-popup-shadow)));
   }
   &:disabled,
   &[disabled] {
-    background-color: var(--color-select-popup-shadow-disabled-bg, var(--color-select-popup-shadow-bg));
-    color: var(--color-select-popup-shadow-disabled-text, var(--color-select-popup-shadow-text));
-    border-color: var(--color-select-popup-shadow-disabled-border, var(--color-select-popup-shadow-border));
-    --tw-shadow-color: var(--color-select-popup-shadow-disabled-shadow, var(--color-select-popup-shadow-shadow));
+    background-color: var(--color-select-popup-disabled-bg, var(--color-select-popup-bg));
+    color: var(--color-select-popup-disabled-text, var(--color-select-popup-text));
+    border-color: var(--color-select-popup-disabled-border, var(--color-select-popup-border));
+    --tw-shadow-color: var(--color-select-popup-disabled-shadow, var(--color-select-popup-shadow));
   }
   &:focus {
-    background-color: var(--color-select-popup-shadow-focus-bg, var(--color-select-popup-shadow-bg));
-    color: var(--color-select-popup-shadow-focus-text, var(--color-select-popup-shadow-text));
-    border-color: var(--color-select-popup-shadow-focus-border, var(--color-select-popup-shadow-border));
-    --tw-shadow-color: var(--color-select-popup-shadow-focus-shadow, var(--color-select-popup-shadow-shadow));
+    background-color: var(--color-select-popup-focus-bg, var(--color-select-popup-bg));
+    color: var(--color-select-popup-focus-text, var(--color-select-popup-text));
+    border-color: var(--color-select-popup-focus-border, var(--color-select-popup-border));
+    --tw-shadow-color: var(--color-select-popup-focus-shadow, var(--color-select-popup-shadow));
   }
   &:focus-within {
-    background-color: var(--color-select-popup-shadow-focus-within-bg, var(--color-select-popup-shadow-bg));
-    color: var(--color-select-popup-shadow-focus-within-text, var(--color-select-popup-shadow-text));
-    border-color: var(--color-select-popup-shadow-focus-within-border, var(--color-select-popup-shadow-border));
-    --tw-shadow-color: var(--color-select-popup-shadow-focus-within-shadow, var(--color-select-popup-shadow-shadow));
+    background-color: var(--color-select-popup-focus-within-bg, var(--color-select-popup-bg));
+    color: var(--color-select-popup-focus-within-text, var(--color-select-popup-text));
+    border-color: var(--color-select-popup-focus-within-border, var(--color-select-popup-border));
+    --tw-shadow-color: var(--color-select-popup-focus-within-shadow, var(--color-select-popup-shadow));
   }
   &:focus-visible {
-    background-color: var(--color-select-popup-shadow-focus-visible-bg, var(--color-select-popup-shadow-bg));
-    color: var(--color-select-popup-shadow-focus-visible-text, var(--color-select-popup-shadow-text));
-    border-color: var(--color-select-popup-shadow-focus-visible-border, var(--color-select-popup-shadow-border));
-    --tw-shadow-color: var(--color-select-popup-shadow-focus-visible-shadow, var(--color-select-popup-shadow-shadow));
+    background-color: var(--color-select-popup-focus-visible-bg, var(--color-select-popup-bg));
+    color: var(--color-select-popup-focus-visible-text, var(--color-select-popup-text));
+    border-color: var(--color-select-popup-focus-visible-border, var(--color-select-popup-border));
+    --tw-shadow-color: var(--color-select-popup-focus-visible-shadow, var(--color-select-popup-shadow));
   }
   &::placeholder {
-    color: var(--color-select-popup-shadow-placeholder-text, var(--color-select-popup-shadow-text));
+    color: var(--color-select-popup-placeholder-text, var(--color-select-popup-text));
   }
 }
 @utility el-select-option {
@@ -3739,50 +3739,50 @@
     color: var(--color-sub-window-placeholder-text, var(--color-sub-window-text));
   }
 }
-@utility el-sub-window-shadow {
-  background-color: var(--color-sub-window-shadow-bg);
-  color: var(--color-sub-window-shadow-text);
-  border-color: var(--color-sub-window-shadow-border, transparent);
-  --tw-shadow-color: var(--color-sub-window-shadow-shadow);
+@utility el-sub-window {
+  background-color: var(--color-sub-window-bg);
+  color: var(--color-sub-window-text);
+  border-color: var(--color-sub-window-border, transparent);
+  --tw-shadow-color: var(--color-sub-window-shadow);
   &:hover {
-    background-color: var(--color-sub-window-shadow-hover-bg, var(--color-sub-window-shadow-bg));
-    color: var(--color-sub-window-shadow-hover-text, var(--color-sub-window-shadow-text));
-    border-color: var(--color-sub-window-shadow-hover-border, var(--color-sub-window-shadow-border));
-    --tw-shadow-color: var(--color-sub-window-shadow-hover-shadow, var(--color-sub-window-shadow-shadow));
+    background-color: var(--color-sub-window-hover-bg, var(--color-sub-window-bg));
+    color: var(--color-sub-window-hover-text, var(--color-sub-window-text));
+    border-color: var(--color-sub-window-hover-border, var(--color-sub-window-border));
+    --tw-shadow-color: var(--color-sub-window-hover-shadow, var(--color-sub-window-shadow));
   }
   &:active {
-    background-color: var(--color-sub-window-shadow-active-bg, var(--color-sub-window-shadow-hover-bg, var(--color-sub-window-shadow-bg)));
-    color: var(--color-sub-window-shadow-active-text, var(--color-sub-window-shadow-hover-text, var(--color-sub-window-shadow-text)));
-    border-color: var(--color-sub-window-shadow-active-border, var(--color-sub-window-shadow-hover-border, var(--color-sub-window-shadow-border)));
-    --tw-shadow-color: var(--color-sub-window-shadow-active-shadow, var(--color-sub-window-shadow-hover-shadow, var(--color-sub-window-shadow-shadow)));
+    background-color: var(--color-sub-window-active-bg, var(--color-sub-window-hover-bg, var(--color-sub-window-bg)));
+    color: var(--color-sub-window-active-text, var(--color-sub-window-hover-text, var(--color-sub-window-text)));
+    border-color: var(--color-sub-window-active-border, var(--color-sub-window-hover-border, var(--color-sub-window-border)));
+    --tw-shadow-color: var(--color-sub-window-active-shadow, var(--color-sub-window-hover-shadow, var(--color-sub-window-shadow)));
   }
   &:disabled,
   &[disabled] {
-    background-color: var(--color-sub-window-shadow-disabled-bg, var(--color-sub-window-shadow-bg));
-    color: var(--color-sub-window-shadow-disabled-text, var(--color-sub-window-shadow-text));
-    border-color: var(--color-sub-window-shadow-disabled-border, var(--color-sub-window-shadow-border));
-    --tw-shadow-color: var(--color-sub-window-shadow-disabled-shadow, var(--color-sub-window-shadow-shadow));
+    background-color: var(--color-sub-window-disabled-bg, var(--color-sub-window-bg));
+    color: var(--color-sub-window-disabled-text, var(--color-sub-window-text));
+    border-color: var(--color-sub-window-disabled-border, var(--color-sub-window-border));
+    --tw-shadow-color: var(--color-sub-window-disabled-shadow, var(--color-sub-window-shadow));
   }
   &:focus {
-    background-color: var(--color-sub-window-shadow-focus-bg, var(--color-sub-window-shadow-bg));
-    color: var(--color-sub-window-shadow-focus-text, var(--color-sub-window-shadow-text));
-    border-color: var(--color-sub-window-shadow-focus-border, var(--color-sub-window-shadow-border));
-    --tw-shadow-color: var(--color-sub-window-shadow-focus-shadow, var(--color-sub-window-shadow-shadow));
+    background-color: var(--color-sub-window-focus-bg, var(--color-sub-window-bg));
+    color: var(--color-sub-window-focus-text, var(--color-sub-window-text));
+    border-color: var(--color-sub-window-focus-border, var(--color-sub-window-border));
+    --tw-shadow-color: var(--color-sub-window-focus-shadow, var(--color-sub-window-shadow));
   }
   &:focus-within {
-    background-color: var(--color-sub-window-shadow-focus-within-bg, var(--color-sub-window-shadow-bg));
-    color: var(--color-sub-window-shadow-focus-within-text, var(--color-sub-window-shadow-text));
-    border-color: var(--color-sub-window-shadow-focus-within-border, var(--color-sub-window-shadow-border));
-    --tw-shadow-color: var(--color-sub-window-shadow-focus-within-shadow, var(--color-sub-window-shadow-shadow));
+    background-color: var(--color-sub-window-focus-within-bg, var(--color-sub-window-bg));
+    color: var(--color-sub-window-focus-within-text, var(--color-sub-window-text));
+    border-color: var(--color-sub-window-focus-within-border, var(--color-sub-window-border));
+    --tw-shadow-color: var(--color-sub-window-focus-within-shadow, var(--color-sub-window-shadow));
   }
   &:focus-visible {
-    background-color: var(--color-sub-window-shadow-focus-visible-bg, var(--color-sub-window-shadow-bg));
-    color: var(--color-sub-window-shadow-focus-visible-text, var(--color-sub-window-shadow-text));
-    border-color: var(--color-sub-window-shadow-focus-visible-border, var(--color-sub-window-shadow-border));
-    --tw-shadow-color: var(--color-sub-window-shadow-focus-visible-shadow, var(--color-sub-window-shadow-shadow));
+    background-color: var(--color-sub-window-focus-visible-bg, var(--color-sub-window-bg));
+    color: var(--color-sub-window-focus-visible-text, var(--color-sub-window-text));
+    border-color: var(--color-sub-window-focus-visible-border, var(--color-sub-window-border));
+    --tw-shadow-color: var(--color-sub-window-focus-visible-shadow, var(--color-sub-window-shadow));
   }
   &::placeholder {
-    color: var(--color-sub-window-shadow-placeholder-text, var(--color-sub-window-shadow-text));
+    color: var(--color-sub-window-placeholder-text, var(--color-sub-window-text));
   }
 }
 @utility el-ai-input {
