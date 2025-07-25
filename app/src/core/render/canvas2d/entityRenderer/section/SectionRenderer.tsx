@@ -2,6 +2,7 @@ import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures"
 import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 import { getTextSize } from "../../../../../utils/font";
 import { Project, service } from "../../../../Project";
+import { Settings } from "../../../../service/Settings";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Renderer } from "../../renderer";
 
@@ -207,7 +208,7 @@ export class SectionRenderer {
       );
     }
     // debug: 绿色虚线 观察父子关系
-    if (this.project.renderer.isShowDebug) {
+    if (Settings.sync.showDebug) {
       for (const child of section.children) {
         const start = section.rectangle.topCenter;
         const end = child.collisionBox.getRectangle().leftTop;
