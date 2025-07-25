@@ -597,6 +597,15 @@ settings:
       temp: 每一帧都重新渲染文本，不使用缓存
       nearestCache: 使用文本大小最接近的缓存，缩放再渲染
       cacheEveryTick: 每一帧都重新渲染文本，并且缓存
+  antialiasing:
+    title: 抗锯齿
+    description: |
+      *重新打开文件时生效
+    options:
+      disabled: 关闭
+      low: 低
+      medium: 中
+      high: 高
 
 plugins:
   welcome:

@@ -49,6 +49,7 @@ export namespace Settings {
     autoRefreshStageByMouseAction: boolean;
     textCacheSize: number;
     textScalingBehavior: "temp" | "nearestCache" | "cacheEveryTick";
+    antialiasing: "disabled" | "low" | "medium" | "high";
     // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
@@ -190,6 +191,7 @@ export namespace Settings {
     maxPastedImageSize: 1920,
     textCacheSize: 100,
     textScalingBehavior: "temp",
+    antialiasing: "low",
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

@@ -1,4 +1,5 @@
 import { Project, service } from "../Project";
+import { Settings } from "../service/Settings";
 
 /**
  * 将Canvas标签和里面的ctx捏在一起封装成一个类
@@ -14,6 +15,11 @@ export class Canvas {
     element.tabIndex = 0;
     element.addEventListener("mousemove", () => element.focus());
     this.ctx = element.getContext("2d")!;
+    if (Settings.sync.antialiasing === "disabled") {
+      this.ctx.imageSmoothingEnabled = false;
+    } else {
+      this.ctx.imageSmoothingQuality = Settings.sync.antialiasing;
+    }
   }
 
   mount(wrapper: HTMLDivElement) {

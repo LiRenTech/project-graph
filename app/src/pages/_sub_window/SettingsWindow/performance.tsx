@@ -1,4 +1,5 @@
 import {
+  Calculator,
   Cpu,
   Hourglass,
   ImageMinus,
@@ -32,8 +33,6 @@ export default function Performance() {
           max={3840}
           step={50}
         />
-        <SettingField icon={<MemoryStick />} settingKey="textCacheSize" type="number" />
-        <SettingField icon={<Text />} settingKey="textScalingBehavior" type="select" />
       </FieldGroup>
 
       <FieldGroup title={t("cpu.title")} description={t("cpu.description")} icon={<Cpu />}>
@@ -60,6 +59,9 @@ export default function Performance() {
           max={0.3}
           step={0.01}
         />
+        <SettingField icon={<MemoryStick />} settingKey="textCacheSize" type="number" />
+        <SettingField icon={<Text />} settingKey="textScalingBehavior" type="select" />
+        <SettingField icon={<Calculator />} settingKey="antialiasing" type="select" />
       </FieldGroup>
 
       <FieldGroup title={t("dev.title")} description={t("dev.description")} icon={<Hourglass />}>

@@ -54,8 +54,12 @@ export class TextRenderer {
 
   private buildCache(text: string, size: number, color: Color) {
     const textSize = getTextSize(text, size);
+    // 这里用OffscreenCanvas而不是document.createElement("canvas")
+    // 因为OffscreenCanvas有神秘优化，后续也方便移植到Worker中渲染
     const canvas = new OffscreenCanvas(textSize.x, textSize.y);
     const ctx = canvas.getContext("2d")!;
+    // 如果这里开了抗锯齿，并且外层的canvas也开了抗锯齿，会导致文字模糊
+    ctx.imageSmoothingEnabled = false;
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
     ctx.font = `${size}px normal ${FONT}`;
