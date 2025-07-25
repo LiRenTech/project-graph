@@ -14,7 +14,9 @@ export class Canvas {
   ) {
     element.tabIndex = 0;
     element.addEventListener("mousemove", () => element.focus());
-    this.ctx = element.getContext("2d")!;
+    this.ctx = element.getContext("2d", {
+      alpha: Settings.sync.windowBackgroundAlpha !== 1,
+    })!;
     if (Settings.sync.antialiasing === "disabled") {
       this.ctx.imageSmoothingEnabled = false;
     } else {

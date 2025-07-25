@@ -135,6 +135,8 @@ settings:
       也能很直观的知道当前的视野缩放倍数
   windowBackgroundAlpha:
     title: 窗口背景透明度
+    description: |
+      *从1改到小于1的值需要重新打开文件才能生效
   showDebug:
     title: 显示调试信息
     description: |

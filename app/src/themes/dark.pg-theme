@@ -162,7 +162,7 @@ ai:
       bg: *surface2
 
 stage:
-  Background: "#181818"
+  Background: "#000000"
   GridNormal: "rgba(255, 255, 255, 0.2)"
   GridHeavy: "rgba(255, 255, 255, 0.3)"
   DetailsDebugText: "rgba(255, 255, 255, 0.5)"
