@@ -78,7 +78,7 @@ export class Renderer {
   /**
    * 仅在导出png时开启
    */
-  isRenderBackground = false;
+  isRenderBackground = true;
 
   // 确保这个函数在软件打开的那一次调用
   constructor(private readonly project: Project) {}
@@ -91,7 +91,6 @@ export class Renderer {
   tick() {
     this.updateFPS();
     const viewRectangle = this.getCoverWorldRectangle();
-    this.project.canvas.ctx.clearRect(0, 0, this.w, this.h);
     this.renderBackground();
     this.renderMainStageElements(viewRectangle);
     this.renderViewElements(viewRectangle);
@@ -642,6 +641,8 @@ export class Renderer {
         Color.Transparent,
         0,
       );
+    } else {
+      this.project.canvas.ctx.clearRect(0, 0, this.w, this.h);
     }
     if (Settings.sync.showBackgroundDots) {
       this.project.backgroundRenderer.renderDotBackground(rect);
