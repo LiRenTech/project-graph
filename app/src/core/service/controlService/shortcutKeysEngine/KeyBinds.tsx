@@ -15,7 +15,7 @@ export class KeyBinds {
     (async () => {
       this.store = await createStore("keybinds.json");
       await this.project.keyBindsRegistrar.registerKeyBinds();
-      if ((await this.store.values()).find((it) => typeof it === "string")) {
+      if ((await this.store.values()).find((it) => typeof it !== "string")) {
         // 重置store
         await this.store.clear();
       }

@@ -62,7 +62,7 @@ export function parseSingleEmacsKey(key: string): {
 
   const specialKeyMatch = /^<(.+?)>$/.exec(keyPart);
   const parsedKey = specialKeyMatch
-    ? specialKeyMatch[1] // 保持特殊按键原样（MWU/MWD/数字等）
+    ? keyPart // 保持特殊按键原样（MWU/MWD/数字等）
     : keyPart.toLowerCase(); // 普通按键转为小写
 
   return {
@@ -117,23 +117,33 @@ export function matchSingleEmacsKey(key: string, event: KeyboardEvent | MouseEve
     const eventKey = event.key.toLowerCase();
     if (eventKey in transformedKeys) {
       matchKey = transformedKeys[eventKey as keyof typeof transformedKeys] === parsedKey.key;
+    } else {
+      matchKey = eventKey === parsedKey.key;
     }
-    matchKey = key === parsedKey.key;
   }
   if (event instanceof MouseEvent) {
-    matchKey = event.button === parseInt(parsedKey.key);
+    matchKey = event.button === parseInt(parsedKey.key.slice(1, -1));
   }
   if (event instanceof WheelEvent) {
-    matchKey = (event.deltaY > 0 && parsedKey.key === "MWU") || (event.deltaY < 0 && parsedKey.key === "MWD");
+    matchKey = (event.deltaY < 0 && parsedKey.key === "<MWU>") || (event.deltaY > 0 && parsedKey.key === "<MWD>");
   }
 
   return matchModifiers && matchKey;
 }
 
 export function matchEmacsKey(key: string, events: (KeyboardEvent | MouseEvent | WheelEvent)[]): boolean {
-  const seq = key.split(" ");
-  // return events数组的结尾是否匹配seq数组
-  return events.length >= seq.length && seq.every((it, index) => matchSingleEmacsKey(it, events[index]));
+  const seq = key.trim().split(/\s+/);
+  if (seq.length === 0 || events.length < seq.length) return false;
+
+  // 从后往前比对
+  for (let i = 0; i < seq.length; i++) {
+    const seqIdx = seq.length - 1 - i; // 从 seq 尾部开始
+    const eventIdx = events.length - 1 - i; // 从 events 尾部开始
+    if (!matchSingleEmacsKey(seq[seqIdx], events[eventIdx])) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -153,7 +163,7 @@ export function formatEmacsKey(event: KeyboardEvent | MouseEvent | WheelEvent): 
     key = `<${event.button}>`;
   }
   if (event instanceof WheelEvent) {
-    key = event.deltaY > 0 ? "<MWU>" : "<MWD>";
+    key = event.deltaY < 0 ? "<MWU>" : "<MWD>";
   }
 
   const modifiers = [];

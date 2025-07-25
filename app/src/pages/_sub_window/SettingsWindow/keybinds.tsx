@@ -1,5 +1,6 @@
 import { useAtom } from "jotai";
 import { FileQuestion, Keyboard } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Field, FieldGroup } from "../../../components/Field";
 import KeyBind from "../../../components/KeyBind";
@@ -8,15 +9,26 @@ import { activeProjectAtom } from "../../../state";
 
 export default function KeyBindsPage() {
   const [activeProject] = useAtom(activeProjectAtom);
+  const [data, setData] = useState<[string, string][]>([]);
+
+  useEffect(() => {
+    if (activeProject) {
+      activeProject.keyBinds.entries().then((entries) => {
+        setData(entries);
+      });
+    }
+  }, [activeProject]);
 
   /**
    * 获取未加入分组的快捷键
    * @returns
    */
   const getUnGroupedKeys = () => {
-    return [...(activeProject?.keyBinds.registered ?? [])].filter(
-      (item) => !shortcutKeysGroups.some((group) => group.keys.includes(item[0])),
-    );
+    return data
+      .filter((item) => {
+        return !shortcutKeysGroups.some((group) => group.keys.includes(item[0]));
+      })
+      .map((item) => item[0]);
   };
 
   const { t } = useTranslation("keyBinds");
@@ -40,8 +52,16 @@ export default function KeyBindsPage() {
                 description={t(`${id}.description`, { defaultValue: "" })}
               >
                 <KeyBind
-                  defaultValue={[...(activeProject?.keyBinds.registered ?? [])].find((item) => item[0] === id)?.[1]}
+                  defaultValue={data.find((item) => item[0] === id)?.[1]}
                   onChange={(value) => {
+                    setData((data) =>
+                      data.map((item) => {
+                        if (item[0] === id) {
+                          return [id, value];
+                        }
+                        return item;
+                      }),
+                    );
                     activeProject?.keyBinds.set(id, value);
                   }}
                 />
@@ -59,8 +79,16 @@ export default function KeyBindsPage() {
             description={t(`${id}.description`, { defaultValue: "" })}
           >
             <KeyBind
-              defaultValue={[...(activeProject?.keyBinds.registered ?? [])].find((item) => item[0] === id)?.[1]}
+              defaultValue={data.find((item) => item[0] === id)?.[1]}
               onChange={(value) => {
+                setData((data) =>
+                  data.map((item) => {
+                    if (item[0] === id) {
+                      return [id, value];
+                    }
+                    return item;
+                  }),
+                );
                 activeProject?.keyBinds.set(id, value);
               }}
             />
