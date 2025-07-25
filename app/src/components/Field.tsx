@@ -190,6 +190,7 @@ export function FieldGroup({
   const contentRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setAnimating] = useState(false);
+  const [shouldMount, setShouldMount] = useState(isOpen);
 
   useEffect(() => {
     const el = innerRef.current;
@@ -215,8 +216,18 @@ export function FieldGroup({
 
   const handleToggle = () => {
     setAnimating(true);
-    setIsOpen((o) => !o);
-    setTimeout(() => setAnimating(false), 250);
+    const next = !isOpen;
+    setIsOpen(next);
+
+    if (next) {
+      setShouldMount(true); // 展开：立即挂载
+    } else {
+      setTimeout(() => {
+        // 折叠：动画后再卸载
+        setShouldMount(false);
+      }, 250);
+    }
+    setTimeout(() => setAnimating(false), 500);
   };
 
   return (
@@ -233,12 +244,14 @@ export function FieldGroup({
       {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
 
       <div ref={contentRef} className="overflow-hidden rounded-xl transition-all" style={{ height }}>
-        <div
-          ref={innerRef}
-          className={cn("transition-opacity duration-200", !isOpen && !isAnimating && "pointer-events-none opacity-0")}
-        >
-          <div className="bg-field-group-bg group/field-group ...">{children}</div>
-        </div>
+        {shouldMount && (
+          <div
+            ref={innerRef}
+            className={cn("transition-all", !isOpen && !isAnimating && "pointer-events-none opacity-0")}
+          >
+            <div className="bg-field-group-bg group/field-group">{children}</div>
+          </div>
+        )}
       </div>
     </div>
   );

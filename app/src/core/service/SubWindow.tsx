@@ -1,6 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { atom, useAtomValue } from "jotai";
+import { startTransition } from "react";
 import { store } from "../../state";
 
 export namespace SubWindow {
@@ -91,10 +92,16 @@ export namespace SubWindow {
     }
     update(id, { closing: true });
     setTimeout(() => {
-      store.set(
-        subWindowsAtom,
-        store.get(subWindowsAtom).filter((window) => window.id !== id),
-      );
+      // 窗口已经几乎看不见了，可以先把children清空
+      update(id, { children: null });
+    }, 450);
+    setTimeout(() => {
+      startTransition(() => {
+        store.set(
+          subWindowsAtom,
+          store.get(subWindowsAtom).filter((window) => window.id !== id),
+        );
+      });
     }, 500);
   }
   export function focus(id: string) {
