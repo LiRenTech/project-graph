@@ -151,10 +151,9 @@ export default function App() {
   //   }
   // }, []);
 
-  // FIXME: remove bg-black
   return (
     <div
-      className={cn("relative flex h-full w-full flex-col gap-2 bg-black p-2")}
+      className={cn("relative flex h-full w-full flex-col gap-2 p-2")}
       style={{ zoom: appScale }}
       onContextMenu={(e) => e.preventDefault()}
     >

@@ -22,7 +22,7 @@ export default function RenderSubWindows() {
               height: win.rect.height + "px",
             }}
             className={cn(
-              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border shadow-xl",
+              "el-sub-window pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border shadow-xl",
               "data-closed:scale-90 data-closed:opacity-0",
             )}
             onClick={() => {

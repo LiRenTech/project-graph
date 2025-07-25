@@ -57,7 +57,7 @@ export function generateUtilities(themeContent: any) {
   const utilities = generateColors(themeContent)
     .map((color) =>
       color.replaceAll(
-        /(-(hover|active|disabled|focus|focus-within|focus-visible|placeholder))?-(bg|text|border)$/gm,
+        /(-(hover|active|disabled|focus|focus-within|focus-visible|placeholder))?-(bg|text|border|shadow)$/gm,
         "",
       ),
     )

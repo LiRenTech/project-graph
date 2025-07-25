@@ -4,6 +4,7 @@ import generouted from "@generouted/react-router/plugin";
 import originalClassName from "@graphif/unplugin-original-class-name/vite";
 import pgTheme from "@graphif/vite-plugin-pg-theme";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
+import reactScan from "@react-scan/vite-plugin-react-scan";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-oxc";
 import { createLogger, defineConfig } from "vite";
@@ -34,6 +35,8 @@ export default defineConfig({
     react(),
     // 自动生成路由文件
     generouted(),
+    // 分析组件性能
+    reactScan(),
   ],
 
   // 不清屏，方便看rust报错
