@@ -17,6 +17,7 @@ import { CollaborationEngine } from "../../dataManageService/collaborationEngine
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
+import { CollisionBox } from "../../../stage/stageObject/collisionBox/collisionBox";
 
 interface SecretKeyItem {
   name: string;
@@ -470,9 +471,10 @@ export class SecretKeys {
             const newTextNode = new TextNode(this.project, {
               uuid: v4(),
               text: splitedText,
-              location: [putLocation.x, putLocation.y],
-              size: [1, 1],
-              color: node.color.clone().toArray(),
+              collisionBox: new CollisionBox([
+                new Rectangle(new Vector(putLocation.x, putLocation.y), new Vector(1, 1)),
+              ]),
+              color: node.color.clone(),
               // sizeAdjust: node.sizeAdjust,
             });
             newNodes.push(newTextNode);
@@ -524,9 +526,8 @@ export class SecretKeys {
         const newTextNode = new TextNode(this.project, {
           uuid: v4(),
           text: mergeText,
-          location: [leftTop.x, leftTop.y],
-          size: [400, 1],
-          color: avgColor.toArray(),
+          collisionBox: new CollisionBox([new Rectangle(new Vector(leftTop.x, leftTop.y), new Vector(400, 1))]),
+          color: avgColor.clone(),
           sizeAdjust: "manual",
           details: mergeDetails,
         });
@@ -683,7 +684,7 @@ export class SecretKeys {
           return;
         }
         // 开始添加多源无向边
-        const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
+        const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(this.project, selectedNodes);
         this.project.stageManager.add(multiTargetUndirectedEdge);
       },
     },
@@ -748,11 +749,13 @@ export class SecretKeys {
           const textNode = new TextNode(this.project, {
             uuid: v4(),
             text: emoji,
-            location: currentLocation
-              .add(Random.randomVectorOnNormalCircle().multiply(Random.randomInt(50, 2000)))
-              .toArray(),
-            size: [100, 100],
-            color: [0, 0, 0, 0],
+            collisionBox: new CollisionBox([
+              new Rectangle(
+                currentLocation.add(Random.randomVectorOnNormalCircle().multiply(Random.randomInt(50, 2000))),
+                new Vector(100, 100),
+              ),
+            ]),
+            color: Color.Transparent.clone(),
             sizeAdjust: "auto",
           });
           this.project.stageManager.add(textNode);
