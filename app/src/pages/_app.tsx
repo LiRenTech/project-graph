@@ -14,6 +14,7 @@ import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop } from "../utils/platform";
 import RenderSubWindows from "./_render_sub_windows";
 import MenuWindow from "./_sub_window/MenuWindow";
+import Welcome from "./_welcome";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);
@@ -155,107 +156,116 @@ export default function App() {
   //   }
   // }, []);
 
-  return (
-    <div
-      className={cn("relative flex h-full w-full gap-2 p-2", !isWide && "flex-col")}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {/* 第一行：logo | 菜单 | ...移动窗口区域... | 窗口控制按钮 */}
-      <div className="el-titlebar z-10 flex h-8 shrink-0 items-center overflow-hidden rounded-lg border px-2">
-        {/* <img src={icon} alt="logo" className="m-2 mr-4 size-6" /> */}
-        <div className="flex h-full items-center text-sm">
-          {GlobalMenu.menus.map((menu, i) => (
-            <div
-              key={i}
-              className="el-titlebar-menu flex h-full cursor-pointer items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
-              onMouseDown={() => {
-                MenuWindow.open(menu);
-              }}
-            >
-              {menu.icon}
-              {menu.name}
-            </div>
-          ))}
+  const Tabs = () => (
+    <div className="z-10 flex gap-2 overflow-x-auto">
+      {projects.map((project) => (
+        <div
+          key={project.uri.toString()}
+          className={cn("el-tab flex shrink-0 items-center gap-1 rounded-lg border p-2", {
+            "el-tab-selected": activeProject?.uri.toString() === project.uri.toString(),
+          })}
+          onClick={() => {
+            setActiveProject(project);
+            project.loop();
+            projects.filter((p) => p.uri.toString() !== project.uri.toString()).forEach((p) => p.pause());
+          }}
+        >
+          <span className="text-sm">
+            {project.uri.scheme === "draft"
+              ? `草稿 (${project.uri.path})`
+              : project.uri.scheme === "file"
+                ? project.uri.path.split("/").pop()
+                : project.uri.toString()}
+          </span>
+          <X
+            size={16}
+            strokeWidth={3}
+            className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
+            onClick={async () => {
+              await project.dispose();
+              setProjects((projects) => projects.filter((p) => p.uri.toString() !== project.uri.toString()));
+            }}
+          />
         </div>
-        {/* 悬浮拖拽区域 ↓ */}
-        <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
-        {isDesktop && (
-          <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
-            {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
-            {alwaysOnTop ? (
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="relative flex h-full w-full flex-col gap-2 p-2" onContextMenu={(e) => e.preventDefault()}>
+      {/* 菜单 | 标签页 | ...移动窗口区域... | 窗口控制按钮 */}
+      <div className="z-10 flex h-8 gap-2">
+        <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-lg border">
+          {/* <img src={icon} alt="logo" className="m-2 mr-4 size-6" /> */}
+          <div className="flex h-full items-center text-sm">
+            {GlobalMenu.menus.map((menu, i) => (
               <div
-                onClick={() => {
-                  getCurrentWindow().setAlwaysOnTop(false);
-                  setAlwaysOnTop(false);
+                key={i}
+                className="el-titlebar-menu flex h-full cursor-pointer items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
+                onMouseDown={() => {
+                  MenuWindow.open(menu);
                 }}
               >
-                <PinOff size={14} strokeWidth={2} />
+                {menu.icon}
+                {menu.name}
               </div>
-            ) : (
-              <div
-                onClick={() => {
-                  getCurrentWindow().setAlwaysOnTop(true);
-                  setAlwaysOnTop(true);
-                }}
-              >
-                <Pin size={14} strokeWidth={2} />
-              </div>
-            )}
-            <div onClick={() => getCurrentWindow().minimize()}>
-              <Minus size={14} strokeWidth={4} />
-            </div>
-            {maximized ? (
-              <div onClick={() => getCurrentWindow().unmaximize()}>
-                <Copy size={12} strokeWidth={3} />
-              </div>
-            ) : (
-              <div onClick={() => getCurrentWindow().maximize()}>
-                <Square size={10} strokeWidth={5} />
-              </div>
-            )}
-            <div onClick={() => getCurrentWindow().close()}>
-              <X size={14} strokeWidth={4} />
-            </div>
+            ))}
           </div>
-        )}
+        </div>
+        {isWide && <Tabs />}
+        <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
+        <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-lg border">
+          {isDesktop && (
+            <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
+              {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
+              {alwaysOnTop ? (
+                <div
+                  onClick={() => {
+                    getCurrentWindow().setAlwaysOnTop(false);
+                    setAlwaysOnTop(false);
+                  }}
+                >
+                  <PinOff size={14} strokeWidth={2} />
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    getCurrentWindow().setAlwaysOnTop(true);
+                    setAlwaysOnTop(true);
+                  }}
+                >
+                  <Pin size={14} strokeWidth={2} />
+                </div>
+              )}
+              <div onClick={() => getCurrentWindow().minimize()}>
+                <Minus size={14} strokeWidth={4} />
+              </div>
+              {maximized ? (
+                <div onClick={() => getCurrentWindow().unmaximize()}>
+                  <Copy size={12} strokeWidth={3} />
+                </div>
+              ) : (
+                <div onClick={() => getCurrentWindow().maximize()}>
+                  <Square size={10} strokeWidth={5} />
+                </div>
+              )}
+              <div onClick={() => getCurrentWindow().close()}>
+                <X size={14} strokeWidth={4} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* 第二行：标签页 */}
-      <div className="z-10 flex h-8 gap-2 overflow-x-auto">
-        {projects.map((project) => (
-          <div
-            key={project.uri.toString()}
-            className={cn("el-tab flex shrink-0 items-center gap-1 rounded-lg border p-2", {
-              "el-tab-selected": activeProject?.uri.toString() === project.uri.toString(),
-            })}
-            onClick={() => {
-              setActiveProject(project);
-              project.loop();
-              projects.filter((p) => p.uri.toString() !== project.uri.toString()).forEach((p) => p.pause());
-            }}
-          >
-            <span className="text-sm">
-              {project.uri.scheme === "draft"
-                ? `草稿 (${project.uri.path})`
-                : project.uri.scheme === "file"
-                  ? project.uri.path.split("/").pop()
-                  : project.uri.toString()}
-            </span>
-            <X
-              size={16}
-              strokeWidth={3}
-              className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
-              onClick={async () => {
-                await project.dispose();
-                setProjects((projects) => projects.filter((p) => p.uri.toString() !== project.uri.toString()));
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      {!isWide && <Tabs />}
 
       {/* canvas */}
       <div className="absolute inset-0 overflow-hidden" ref={canvasWrapperRef}></div>
+      {projects.length === 0 && (
+        <div className="absolute inset-0 overflow-hidden *:h-full *:w-full">
+          <Welcome />
+        </div>
+      )}
 
       {/* ======= */}
       {/* <ErrorHandler /> */}
