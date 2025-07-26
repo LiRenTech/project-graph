@@ -16,8 +16,6 @@ export const isLinux = !isWeb && platform() === "linux";
 
 export const isTest = import.meta.env.LR_VITEST === "true";
 
-export const appScale = isMobile ? 0.5 : 1;
-
 export function family() {
   if (isWeb) {
     // 从userAgent判断unix|windows

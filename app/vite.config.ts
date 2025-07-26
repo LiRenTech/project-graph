@@ -10,7 +10,7 @@ import react from "@vitejs/plugin-react-oxc";
 import { createLogger, defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
-const host = process.env.TAURI_DEV_HOST;
+const host = "0.0.0.0";
 export const viteLogger = createLogger("info", { prefix: "[project-graph]" });
 
 // https://vitejs.dev/config/

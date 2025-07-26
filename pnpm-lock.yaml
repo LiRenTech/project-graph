@@ -16,6 +16,9 @@ importers:
       "@types/node":
         specifier: ^24.1.0
         version: 24.1.0
+      cross-env:
+        specifier: ^10.0.0
+        version: 10.0.0
       eslint:
         specifier: ^9.31.0
         version: 9.31.0(jiti@2.4.2)
@@ -238,6 +241,9 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
+      vconsole:
+        specifier: ^3.15.1
+        version: 3.15.1
       vditor:
         specifier: ^3.11.1
         version: 3.11.1
@@ -838,6 +844,10 @@ packages:
   "@emnapi/wasi-threads@1.0.2":
     resolution:
       { integrity: sha512-5n3nTJblwRi8LlXkJ9eBzu+kZR8Yxcc7ubakyQTFzPMtIhFpUBRbsnc2Dv88IZDIbCDlBiWrknhB4Lsz7mg6BA== }
+
+  "@epic-web/invariant@1.0.0":
+    resolution:
+      { integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA== }
 
   "@esbuild/aix-ppc64@0.25.2":
     resolution:
@@ -4286,6 +4296,11 @@ packages:
     resolution:
       { integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw== }
 
+  copy-text-to-clipboard@3.2.0:
+    resolution:
+      { integrity: sha512-RnJFp1XR/LOBDckxTib5Qjr/PMfkatD0MUCQgdpqS8MdKiNUzBjAQBEN6oUy+jW7LI93BBG3DtMB2KOOKpGs2Q== }
+    engines: { node: ">=12" }
+
   core-js@3.44.0:
     resolution:
       { integrity: sha512-aFCtd4l6GvAXwVEh3XbbVqJGHDJt0OZRa+5ePGx3LLwi12WfexqQxcsohb2wgsa/92xtl19Hd66G/L+TaAxDMw== }
@@ -4299,6 +4314,12 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  cross-env@10.0.0:
+    resolution:
+      { integrity: sha512-aU8qlEK/nHYtVuN4p7UQgAwVljzMg8hB4YK5ThRqD2l/ziSnryncPNn7bMLt5cFYsKVKBh8HqLqyCoTupEUu7Q== }
+    engines: { node: ">=20" }
+    hasBin: true
 
   cross-spawn@7.0.6:
     resolution:
@@ -6524,6 +6545,10 @@ packages:
       typescript:
         optional: true
 
+  mutation-observer@1.0.3:
+    resolution:
+      { integrity: sha512-M/O/4rF2h776hV7qGMZUH3utZLO/jK7p8rnNgGkjKUw8zCGjRQPxB8z6+5l8+VjRUQ3dNYu4vjqXYLr+U8ZVNA== }
+
   mute-stream@2.0.0:
     resolution:
       { integrity: sha512-WWdIxpyjEn+FhQJQQv9aQAYlHoNVdzIzUySNV1gHUPDSdZJ3yZn7pAAbQcV7B56Mvu881q9FZV+0Vx2xC44VWA== }
@@ -8547,6 +8572,10 @@ packages:
       { integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg== }
     engines: { node: ">= 0.8" }
 
+  vconsole@3.15.1:
+    resolution:
+      { integrity: sha512-KH8XLdrq9T5YHJO/ixrjivHfmF2PC2CdVoK6RWZB4yftMykYIaXY1mxZYAic70vADM54kpMQF+dYmvl5NRNy1g== }
+
   vditor@3.11.1:
     resolution:
       { integrity: sha512-7rjNSXYVyZG0mVZpUG2tfxwnoNtkcRCnwdSju+Zvpjf/r72iQa6kLpeThFMIKPuQ5CRnQQv6gnR3eNU6UGbC2Q== }
@@ -9291,6 +9320,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  "@epic-web/invariant@1.0.0": {}
 
   "@esbuild/aix-ppc64@0.25.2":
     optional: true
@@ -11912,6 +11943,8 @@ snapshots:
       is-what: 3.14.1
     optional: true
 
+  copy-text-to-clipboard@3.2.0: {}
+
   core-js@3.44.0: {}
 
   cosmiconfig@8.3.6(typescript@5.8.3):
@@ -11922,6 +11955,11 @@ snapshots:
       path-type: 4.0.0
     optionalDependencies:
       typescript: 5.8.3
+
+  cross-env@10.0.0:
+    dependencies:
+      "@epic-web/invariant": 1.0.0
+      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:
@@ -14274,6 +14312,8 @@ snapshots:
       - "@types/node"
     optional: true
 
+  mutation-observer@1.0.3: {}
+
   mute-stream@2.0.0:
     optional: true
 
@@ -16021,6 +16061,13 @@ snapshots:
     optional: true
 
   vary@1.1.2: {}
+
+  vconsole@3.15.1:
+    dependencies:
+      "@babel/runtime": 7.27.6
+      copy-text-to-clipboard: 3.2.0
+      core-js: 3.44.0
+      mutation-observer: 1.0.3
 
   vditor@3.11.1:
     dependencies:

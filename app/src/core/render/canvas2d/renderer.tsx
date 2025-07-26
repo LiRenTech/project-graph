@@ -1,7 +1,7 @@
 import { Color, mixColors, Vector } from "@graphif/data-structures";
 import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 import { getTextSize } from "../../../utils/font";
-import { appScale, isFrame } from "../../../utils/platform";
+import { isFrame } from "../../../utils/platform";
 import { Project, service } from "../../Project";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
@@ -65,13 +65,13 @@ export class Renderer {
    * 它能让画布的大小和屏幕的大小保持一致
    */
   resizeWindow(newW: number, newH: number) {
-    const scale = window.devicePixelRatio * (1 / appScale);
+    const scale = window.devicePixelRatio;
     this.w = newW;
     this.h = newH;
     this.project.canvas.element.width = newW * scale;
     this.project.canvas.element.height = newH * scale;
-    this.project.canvas.element.style.width = `${newW * (1 / appScale)}px`;
-    this.project.canvas.element.style.height = `${newH * (1 / appScale)}px`;
+    this.project.canvas.element.style.width = `${newW}px`;
+    this.project.canvas.element.style.height = `${newH}px`;
     this.project.canvas.ctx.scale(scale, scale);
   }
 

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "tauri:dev": "turbo run tauri:dev",
+    "tauri:dev:android": "turbo run tauri:dev:android",
     "build": "turbo run build",
     "tauri:build": "turbo run tauri:build",
     "tauri:build:android": "turbo run tauri:build:android",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@eslint/js": "^9.31.0",
     "@types/node": "^24.1.0",
+    "cross-env": "^10.0.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",

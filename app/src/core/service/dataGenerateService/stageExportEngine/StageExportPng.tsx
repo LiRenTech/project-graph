@@ -1,5 +1,4 @@
 import { Vector } from "@graphif/data-structures";
-import { appScale } from "../../../../utils/platform";
 import { sleep } from "../../../../utils/sleep";
 import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
@@ -11,7 +10,7 @@ export class StageExportPng {
   /**
    * 系统缩放因子
    */
-  static SCALE = window.devicePixelRatio * (1 / appScale);
+  static SCALE = window.devicePixelRatio;
 
   /**
    * 导出时，相机缩放因子
@@ -155,8 +154,8 @@ export class StageExportPng {
     // 设置大小
     resultCanvas.width = stageSize.x * StageExportPng.SCALE * this.cameraScaleWhenExport;
     resultCanvas.height = stageSize.y * StageExportPng.SCALE * this.cameraScaleWhenExport;
-    resultCanvas.style.width = `${stageSize.x * (1 / appScale) * this.cameraScaleWhenExport}px`;
-    resultCanvas.style.height = `${stageSize.y * (1 / appScale) * this.cameraScaleWhenExport}px`;
+    resultCanvas.style.width = `${stageSize.x * 1 * this.cameraScaleWhenExport}px`;
+    resultCanvas.style.height = `${stageSize.y * 1 * this.cameraScaleWhenExport}px`;
     const ctx = resultCanvas.getContext("2d")!;
     ctx.scale(StageExportPng.SCALE, StageExportPng.SCALE);
     // 设置大小完毕

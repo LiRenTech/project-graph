@@ -17,7 +17,7 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn("group/switch el-switch-false relative h-8 w-14 rounded-full hover:cursor-pointer", {
+      className={cn("group/switch el-switch-false relative h-8 w-14 shrink-0 rounded-full hover:cursor-pointer", {
         "el-switch-true": value,
         "el-switch-disabled cursor-not-allowed": disabled,
       })}

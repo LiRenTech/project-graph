@@ -5,14 +5,13 @@ import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import icon from "../assets/icon.png";
 import { Dialog } from "../components/dialog";
 import { GlobalMenu } from "../core/service/GlobalMenu";
 import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
 import { activeProjectAtom, projectsAtom } from "../state";
 import { cn } from "../utils/cn";
-import { appScale, getCurrentWindow } from "../utils/platform";
+import { getCurrentWindow, isDesktop } from "../utils/platform";
 import RenderSubWindows from "./_render_sub_windows";
 import MenuWindow from "./_sub_window/MenuWindow";
 
@@ -28,6 +27,7 @@ export default function App() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const [isWindowCollapsing, setIsWindowCollapsing] = useState(false);
   const [isClassroomMode, setIsClassroomMode] = Settings.use("isClassroomMode");
+  const [isWide, setIsWide] = useState(false);
 
   const { t } = useTranslation("app");
 
@@ -110,6 +110,8 @@ export default function App() {
 
     // 恢复窗口位置大小
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
+
+    setIsWide(window.innerWidth / window.innerHeight > 2);
   }, []);
 
   // https://github.com/tauri-apps/tauri/issues/5812
@@ -122,6 +124,8 @@ export default function App() {
         isOnResizedDisabled.current = false;
         // your stuff
         _setMaximized(isMaximized);
+        // 如果窗口大小比例>2就是宽屏
+        setIsWide(window.innerWidth / window.innerHeight > 2);
       });
   }
   useEffect(() => {
@@ -153,14 +157,13 @@ export default function App() {
 
   return (
     <div
-      className={cn("relative flex h-full w-full flex-col gap-2 p-2")}
-      style={{ zoom: appScale }}
+      className={cn("relative flex h-full w-full gap-2 p-2", !isWide && "flex-col")}
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* 第一行：logo | 菜单 | ...移动窗口区域... | 窗口控制按钮 */}
-      <div className="el-titlebar z-10 flex h-8 items-center overflow-hidden rounded-lg border">
-        <img src={icon} alt="logo" className="m-2 size-6" />
-        <div className="ml-2 flex h-full items-center text-sm">
+      <div className="el-titlebar z-10 flex h-8 shrink-0 items-center overflow-hidden rounded-lg border px-2">
+        {/* <img src={icon} alt="logo" className="m-2 mr-4 size-6" /> */}
+        <div className="flex h-full items-center text-sm">
           {GlobalMenu.menus.map((menu, i) => (
             <div
               key={i}
@@ -176,43 +179,45 @@ export default function App() {
         </div>
         {/* 悬浮拖拽区域 ↓ */}
         <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
-        <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
-          {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
-          {alwaysOnTop ? (
-            <div
-              onClick={() => {
-                getCurrentWindow().setAlwaysOnTop(false);
-                setAlwaysOnTop(false);
-              }}
-            >
-              <PinOff size={14} strokeWidth={2} />
+        {isDesktop && (
+          <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
+            {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
+            {alwaysOnTop ? (
+              <div
+                onClick={() => {
+                  getCurrentWindow().setAlwaysOnTop(false);
+                  setAlwaysOnTop(false);
+                }}
+              >
+                <PinOff size={14} strokeWidth={2} />
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  getCurrentWindow().setAlwaysOnTop(true);
+                  setAlwaysOnTop(true);
+                }}
+              >
+                <Pin size={14} strokeWidth={2} />
+              </div>
+            )}
+            <div onClick={() => getCurrentWindow().minimize()}>
+              <Minus size={14} strokeWidth={4} />
             </div>
-          ) : (
-            <div
-              onClick={() => {
-                getCurrentWindow().setAlwaysOnTop(true);
-                setAlwaysOnTop(true);
-              }}
-            >
-              <Pin size={14} strokeWidth={2} />
+            {maximized ? (
+              <div onClick={() => getCurrentWindow().unmaximize()}>
+                <Copy size={12} strokeWidth={3} />
+              </div>
+            ) : (
+              <div onClick={() => getCurrentWindow().maximize()}>
+                <Square size={10} strokeWidth={5} />
+              </div>
+            )}
+            <div onClick={() => getCurrentWindow().close()}>
+              <X size={14} strokeWidth={4} />
             </div>
-          )}
-          <div onClick={() => getCurrentWindow().minimize()}>
-            <Minus size={14} strokeWidth={4} />
           </div>
-          {maximized ? (
-            <div onClick={() => getCurrentWindow().unmaximize()}>
-              <Copy size={12} strokeWidth={3} />
-            </div>
-          ) : (
-            <div onClick={() => getCurrentWindow().maximize()}>
-              <Square size={10} strokeWidth={5} />
-            </div>
-          )}
-          <div onClick={() => getCurrentWindow().close()}>
-            <X size={14} strokeWidth={4} />
-          </div>
-        </div>
+        )}
       </div>
 
       {/* 第二行：标签页 */}

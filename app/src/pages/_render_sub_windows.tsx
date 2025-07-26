@@ -49,6 +49,29 @@ export default function RenderSubWindows() {
               window.addEventListener("mouseup", onMouseUp);
               window.addEventListener("mousemove", onMouseMove);
             }}
+            onTouchStart={(e) => {
+              SubWindow.focus(win.id);
+              if (e.touches.length > 1) return;
+              const touch = e.touches[0];
+              // 如果按到的元素的父元素都没有data-pg-drag-region属性，就不移动窗口
+              if (!(e.target as HTMLElement).closest("[data-pg-drag-region]")) {
+                return;
+              }
+              const start = new Vector(touch.clientX, touch.clientY);
+              const onTouchEnd = () => {
+                window.removeEventListener("touchend", onTouchEnd);
+                window.removeEventListener("touchmove", onTouchMove);
+              };
+              const onTouchMove = (e: TouchEvent) => {
+                if (e.touches.length > 1) return;
+                const touch = e.touches[0];
+                const delta = new Vector(touch.clientX, touch.clientY).subtract(start);
+                const newRect = win.rect.translate(delta);
+                SubWindow.update(win.id, { rect: newRect });
+              };
+              window.addEventListener("touchend", onTouchEnd);
+              window.addEventListener("touchmove", onTouchMove);
+            }}
           >
             <div className={cn("flex p-1", win.titleBarOverlay && "pointer-events-none absolute left-0 top-0 w-full")}>
               <div className="flex-1 px-1" data-pg-drag-region={win.titleBarOverlay ? undefined : ""}>
@@ -92,6 +115,25 @@ export default function RenderSubWindows() {
                 window.addEventListener("mouseup", onMouseUp);
                 window.addEventListener("mousemove", onMouseMove);
               }}
+              onTouchStart={(e) => {
+                if (e.touches.length > 1) return;
+                const touch = e.touches[0];
+                const start = new Vector(touch.clientX, touch.clientY);
+                const onTouchEnd = () => {
+                  window.removeEventListener("touchend", onTouchEnd);
+                  window.removeEventListener("touchmove", onTouchMove);
+                };
+                const onTouchMove = (e: TouchEvent) => {
+                  if (e.touches.length > 1) return;
+                  const touch = e.touches[0];
+                  const delta = new Vector(touch.clientX, touch.clientY).subtract(start);
+                  SubWindow.update(win.id, {
+                    rect: new Rectangle(win.rect.location, win.rect.size.add(delta)),
+                  });
+                };
+                window.addEventListener("touchend", onTouchEnd);
+                window.addEventListener("touchmove", onTouchMove);
+              }}
             />
             {/* 左下角 */}
             <div
@@ -113,6 +155,28 @@ export default function RenderSubWindows() {
                 };
                 window.addEventListener("mouseup", onMouseUp);
                 window.addEventListener("mousemove", onMouseMove);
+              }}
+              onTouchStart={(e) => {
+                if (e.touches.length > 1) return;
+                const touch = e.touches[0];
+                const start = new Vector(touch.clientX, touch.clientY);
+                const onTouchEnd = () => {
+                  window.removeEventListener("touchend", onTouchEnd);
+                  window.removeEventListener("touchmove", onTouchMove);
+                };
+                const onTouchMove = (e: TouchEvent) => {
+                  if (e.touches.length > 1) return;
+                  const touch = e.touches[0];
+                  const delta = new Vector(touch.clientX, touch.clientY).subtract(start);
+                  SubWindow.update(win.id, {
+                    rect: new Rectangle(
+                      new Vector(win.rect.left + delta.x, win.rect.top),
+                      new Vector(win.rect.width - delta.x, win.rect.height + delta.y),
+                    ),
+                  });
+                };
+                window.addEventListener("touchend", onTouchEnd);
+                window.addEventListener("touchmove", onTouchMove);
               }}
             />
           </div>

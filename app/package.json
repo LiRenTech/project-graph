@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:dev:android": "tauri android dev",
+    "tauri:dev:android": "adb reverse tcp:1420 tcp:1420 && adb reverse tcp:1421 tcp:1421 && tauri android dev --host 0.0.0.0",
     "tauri:build": "node ./scripts/tauri_build.js",
     "tauri:build:android": "tauri android build",
     "test": "vitest"
@@ -78,6 +78,7 @@
     "tauri-plugin-gamepad-api": "^0.0.5",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
+    "vconsole": "^3.15.1",
     "vditor": "^3.11.1",
     "vite": "^7.0.2",
     "vite-plugin-svgr": "^4.3.0",

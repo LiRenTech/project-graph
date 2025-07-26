@@ -8,6 +8,7 @@ import { Provider } from "jotai";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import VConsole from "vconsole";
 import { getOriginalNameOf } from "virtual:original-class-name";
 import { runCli } from "./cli";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
@@ -27,6 +28,9 @@ import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 
 configureSerializer(getOriginalNameOf);
+if (import.meta.env.DEV) {
+  new VConsole();
+}
 
 /**
  * @private
@@ -102,6 +106,13 @@ async function renderApp(cli: boolean = false) {
     await getCurrentWindow().setSkipTaskbar(true);
     root.render(<></>);
   } else {
+    // if (isMobile) {
+    //   document.querySelector<HTMLMetaElement>("meta[name=viewport]")!.content =
+    //     "width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=yes, interactive-widget=overlays-content";
+    //   document.documentElement.style.transform = "scale(0.5)";
+    //   document.documentElement.style.transformOrigin = "top left";
+    //   document.documentElement.style.overflow = "hidden";
+    // }
     root.render(
       <Provider store={store}>
         <Routes />

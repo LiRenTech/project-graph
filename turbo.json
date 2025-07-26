@@ -36,8 +36,14 @@
       "persistent": true
     },
     "@graphif/project-graph#tauri:dev": {
-      "with": ["dev", "@graphif/docs#dev"],
+      "with": ["dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
+      "cache": false,
+      "persistent": true
+    },
+    "@graphif/project-graph#tauri:dev:android": {
+      "with": ["dev"],
+      "outputs": ["app/src-tauri/target/aarch64-linux-android/**"],
       "cache": false,
       "persistent": true
     },

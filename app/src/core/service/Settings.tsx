@@ -151,7 +151,7 @@ export namespace Settings {
     language: "zh_CN",
     // 视觉相关
     lineStyle: "straight",
-    theme: "park",
+    theme: "dark",
     showTipsOnUI: true,
     isClassroomMode: false,
     isRenderCenterPointer: false,
