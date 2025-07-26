@@ -274,6 +274,7 @@ export namespace Settings {
   export const sync = defaultSettings;
 
   export async function init() {
+    if (store) return;
     store = await createStore("settings.json");
     Object.assign(sync, Object.fromEntries(await store.entries())); // 调用所有watcher
     Object.entries(callbacks).forEach(([key, callbacks]) => {
@@ -313,6 +314,7 @@ export namespace Settings {
   } = {};
 
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
+    // console.log(key, value);
     store.set(key, value);
     store.save();
     sync[key] = value;

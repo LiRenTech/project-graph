@@ -27,6 +27,9 @@ export class KeyBinds {
       throw new Error("Store not initialized.");
     }
     await this.store.set(id, key);
+    if (this.callbacks[id]) {
+      this.callbacks[id].forEach((callback) => callback(key));
+    }
   }
 
   async get(id: string): Promise<string | null> {
@@ -43,22 +46,25 @@ export class KeyBinds {
    * @param callback
    * @returns
    */
-  async watch(id: string, callback: (key: string) => void) {
-    if (!this.store) {
-      throw new Error("Store not initialized.");
+  watch(key: string, callback: (value: string) => void) {
+    if (!this.callbacks[key]) {
+      this.callbacks[key] = [];
     }
-    const data = await this.store.get<string>(id);
-    if (data) {
-      callback(data);
-      return this.store.onChange<string>((changedId, data) => {
-        if (changedId !== id) return;
-        if (!data) return;
-        callback(data);
+    this.callbacks[key].push(callback);
+    if (this.store) {
+      this.get(key).then((value) => {
+        if (!value) return;
+        callback(value);
       });
-    } else {
-      throw new Error(`Keybind ${id} not found.`);
     }
+    return () => {
+      this.callbacks[key] = this.callbacks[key].filter((cb) => cb !== callback);
+    };
   }
+
+  private callbacks: {
+    [key: string]: Array<(value: any) => void>;
+  } = {};
 
   /**
    * 获取所有快捷键绑定
@@ -87,8 +93,8 @@ export class KeyBinds {
     }
     const obj = new _Bind(this.project, id, userSetKey, onPress);
     // 监听快捷键变化
-    await this.watch(id, (key) => {
-      obj.key = key;
+    this.watch(id, (value) => {
+      obj.key = value;
     });
     return obj;
   }
