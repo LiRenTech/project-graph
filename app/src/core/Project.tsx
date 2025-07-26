@@ -2,6 +2,7 @@ import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
 import { URI } from "vscode-uri";
+import { projectsAtom, store } from "../state";
 import { FileSystemProvider, Service } from "./interfaces/Service";
 import type { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
 import type { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
@@ -143,7 +144,8 @@ export class Project {
    * URI为draft:UUID
    */
   static newDraft(): Project {
-    const uri = URI.parse("draft:" + crypto.randomUUID());
+    const num = store.get(projectsAtom).filter((p) => p.isDraft).length + 1;
+    const uri = URI.parse("draft:" + num);
     return new Project(uri);
   }
 

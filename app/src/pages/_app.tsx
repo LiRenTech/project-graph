@@ -112,7 +112,17 @@ export default function App() {
     // 恢复窗口位置大小
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
 
-    setIsWide(window.innerWidth / window.innerHeight > 2);
+    setIsWide(window.innerWidth / window.innerHeight > 1.8);
+
+    const unlisten1 = getCurrentWindow().onResized(() => {
+      if (!isOnResizedDisabled.current) {
+        isMaximizedWorkaround();
+      }
+      setIsWide(window.innerWidth / window.innerHeight > 1.8);
+    });
+    return () => {
+      unlisten1?.then((f) => f());
+    };
   }, []);
 
   // https://github.com/tauri-apps/tauri/issues/5812
@@ -125,20 +135,8 @@ export default function App() {
         isOnResizedDisabled.current = false;
         // your stuff
         _setMaximized(isMaximized);
-        // 如果窗口大小比例>2就是宽屏
-        setIsWide(window.innerWidth / window.innerHeight > 2);
       });
   }
-  useEffect(() => {
-    const unlisten = getCurrentWindow().onResized(() => {
-      if (!isOnResizedDisabled.current) {
-        isMaximizedWorkaround();
-      }
-    });
-    return () => {
-      if (unlisten) unlisten.then((f) => f());
-    };
-  }, []);
 
   useEffect(() => {
     if (!canvasWrapperRef.current) return;
@@ -157,7 +155,7 @@ export default function App() {
   // }, []);
 
   const Tabs = () => (
-    <div className="z-10 flex gap-2 overflow-x-auto">
+    <div className="z-10 flex h-8 gap-2 overflow-x-auto">
       {projects.map((project) => (
         <div
           key={project.uri.toString()}
