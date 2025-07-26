@@ -1,13 +1,15 @@
 import { Check, Stars, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { getOriginalNameOf } from "virtual:original-class-name";
 import { ButtonField, Field } from "../../../components/Field";
 import Switch from "../../../components/Switch";
+import { Settings } from "../../../core/service/Settings";
 
-const effects = Object.keys(
-  import.meta.glob("../../core/service/feedbackService/effectEngine/concrete/*.tsx", {
+const effects = Object.values(
+  import.meta.glob("../../../core/service/feedbackService/effectEngine/concrete/*.tsx", {
     eager: true,
   }),
-).map((path) => path.replace("../../core/service/feedbackService/effectEngine/concrete/", "").replace(".tsx", ""));
+).map((module: any) => getOriginalNameOf(Object.values(module)[0] as any));
 
 export default function EffectsPage() {
   const { t } = useTranslation("effects");
