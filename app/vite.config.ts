@@ -36,9 +36,7 @@ export default defineConfig({
     // 自动生成路由文件
     generouted(),
     // 分析组件性能
-    reactScan({
-      enable: process.env.LR_REACT_SCAN === "true",
-    }),
+    reactScan(),
   ],
 
   // 不清屏，方便看rust报错
