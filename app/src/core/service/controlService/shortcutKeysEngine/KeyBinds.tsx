@@ -43,22 +43,23 @@ export class KeyBinds {
    * @param callback
    * @returns
    */
-  async watch(id: string, callback: (key: string) => void) {
-    if (!this.store) {
-      throw new Error("Store not initialized.");
-    }
-    const data = await this.store.get<string>(id);
-    if (data) {
-      callback(data);
-      return this.store.onChange<string>((changedId, data) => {
-        if (changedId !== id) return;
-        if (!data) return;
-        callback(data);
-      });
-    } else {
-      throw new Error(`Keybind ${id} not found.`);
-    }
-  }
+  // TODO: watch
+  // async watch(id: string, callback: (key: string) => void) {
+  //   if (!this.store) {
+  //     throw new Error("Store not initialized.");
+  //   }
+  //   const data = await this.store.get<string>(id);
+  //   if (data) {
+  //     callback(data);
+  //     return this.store.onChange<string>((changedId, data) => {
+  //       if (changedId !== id) return;
+  //       if (!data) return;
+  //       callback(data);
+  //     });
+  //   } else {
+  //     throw new Error(`Keybind ${id} not found.`);
+  //   }
+  // }
 
   /**
    * 获取所有快捷键绑定
