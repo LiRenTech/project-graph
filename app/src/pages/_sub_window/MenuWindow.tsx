@@ -33,7 +33,7 @@ export default function MenuWindow({ menu, winId = "" }: { menu: GlobalMenu.Menu
 MenuWindow.open = (menu: GlobalMenu.Menu) => {
   SubWindow.create({
     children: <MenuWindow menu={menu} />,
-    rect: new Rectangle(MouseLocation.vector(), Vector.same(-1)),
+    rect: new Rectangle(new Vector(MouseLocation.x - 8, MouseLocation.y < 42 ? 42 : MouseLocation.y), Vector.same(-1)),
     titleBarOverlay: true,
     closable: false,
     closeWhenClickOutside: true,
