@@ -190,7 +190,10 @@ export default function App() {
   );
 
   return (
-    <div className="relative flex h-full w-full flex-col gap-2 p-2" onContextMenu={(e) => e.preventDefault()}>
+    <div
+      className="bg-stage-background relative flex h-full w-full flex-col gap-2 p-2"
+      onContextMenu={(e) => e.preventDefault()}
+    >
       {/* 菜单 | 标签页 | ...移动窗口区域... | 窗口控制按钮 */}
       <div className="z-10 flex h-8 gap-2">
         <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-lg border">
