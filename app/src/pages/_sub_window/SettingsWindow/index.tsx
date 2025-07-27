@@ -9,7 +9,6 @@ import {
   Info,
   Keyboard,
   Palette,
-  Plug,
   Sparkles,
   Speaker,
   Wrench,
@@ -30,7 +29,6 @@ import Effects from "./effects";
 import GithubPage from "./github";
 import Keybinds from "./keybinds";
 import Performance from "./performance";
-import Plugins from "./plugins";
 import Scripts from "./scripts";
 import Sounds from "./sounds";
 import Themes from "./themes";
@@ -92,11 +90,11 @@ const pages = [
     icon: <Speaker />,
     children: <Sounds />,
   },
-  {
-    id: "plugins",
-    icon: <Plug />,
-    children: <Plugins />,
-  },
+  // {
+  //   id: "plugins",
+  //   icon: <Plug />,
+  //   children: <Plugins />,
+  // },
   {
     id: "scripts",
     icon: <CodeXml />,
