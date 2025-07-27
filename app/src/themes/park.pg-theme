@@ -9,138 +9,176 @@ description:
   en: A dark and colorful theme with a black and white feel.
   zh_CN: 兼具夜晚防刺眼的特性与一定的色彩
 ---
-panel:
-  bg: "#364153"
-  text: "#e5e7eb"
-  details-text: "#8a909d"
-  success-text: "#43f243"
-  warning-text: "#eeff6b"
-  error-text: "#ffe27a"
+colors:
+  text: &text "#e5e7eb"
+  surface1: &surface1 "#364153"
+  surface2: &surface2 "#4a5565"
+  surface3: &surface3 "#6b7280"
+  surface4: &surface4 "#94a3b8"
+  primary: &primary "#6a9a75"
+
+titlebar:
+  bg: *surface1
+  text: *text
+  border: *surface2
+  control:
+    hover:
+      bg: *surface2
+  menu:
+    hover:
+      bg: *surface2
+
+tab:
+  bg: *surface1
+  text: *text
+  border: *surface2
+  active:
+    bg: *surface2
+  selected:
+    bg: *surface2
+    text: *text
+    border: *surface2
+
+menu:
+  item:
+    hover:
+      bg: *surface2
+  separator:
+    bg: *surface3
 
 tooltip:
-  bg: "#4a5565"
-  text: "#e1e4e7"
-  border: "#24354f"
+  bg: *surface2
+  text: *text
+  border: *surface3
 
 button:
-  bg: "#49644e"
-  text: "#d5f4db"
-  border: "#7a9a81"
+  bg: *surface2
+  text: *text
+  border: *surface3
 
-icon-button:
-  bg: "#4a5565"
-  text: "#e4f0fa"
-  border: "#6a7680"
-
-table:
-  header-bg: "oklch(0.269 0 0)"
-  header-text: "#fff"
-  row-bg: "oklch(0.269 0 0)"
-  row-text: "#fff"
-  row-hover-bg: "oklch(0.371 0 0)"
-  row-hover-text: "#fff"
+dialog:
+  info:
+    bg: "#4a5565"
+  success:
+    bg: "#48604d"
+  warning:
+    bg: "#4f6252"
+  error:
+    bg: "#4a3f52"
 
 input:
-  bg: "#4e6352"
-  text: "#d5f4db"
-  border: "#799680"
-  placeholder: "#93a998"
+  bg: *surface2
+  text: *text
+  border: *surface3
+  placeholder:
+    text: *surface4
 
 keybind:
-  bg: "#506855"
-  text: "#d5f4db"
-  border: "#7b9a82"
-  active-outline: "#d7efdc"
-  modifiers-bg: "rgb(27, 33, 39)"
-  modifiers-text: "#d5f4db"
+  bg: *surface2
+  text: *text
+  border: *surface3
+  active-outline: *primary
+  modifiers-bg: "#1b2127"
+  modifiers-text: *text
 
 select:
-  bg: "#4c6050"
-  text: "#deffe3"
-  border: "#7d9883"
+  bg: *surface2
+  text: *text
+  border: *surface3
   popup:
-    bg: "#4f6252"
-    border: "oklch(0.8 0.02 240)"
-    shadow: "rgba(0,0,0,0.1)" # 补充投影默认值
+    bg: *surface2
+    border: *surface3
+    shadow: "rgba(0,0,0,0.3)"
   option:
-    bg: "transparent"
-    text: "#d5f4db"
-    border: "transparent"
+    bg: transparent
+    text: *text
+    border: transparent
     hover:
-      bg: "#28372b"
-      text: "#d5f4db"
-      border: "transparent"
+      bg: *surface1
+      text: *text
+      border: transparent
     selected:
-      bg: "#6a9a75"
-      text: "#28372b"
-      border: "transparent"
+      bg: *surface3
+      text: *text
+      border: transparent
       hover:
-        bg: "#d5f4db"
-        text: "#28372b"
-        border: "transparent"
+        bg: *surface4
+        text: *text
+        border: transparent
 
 slider:
-  line: "#6f7871"
-  handle: "#c0cbc2"
+  line:
+    bg: *surface3
+  handle:
+    bg: *primary
 
 switch:
   false:
-    bg: "#1b231d"
-    dot: "#425346"
+    bg: *surface3
+    dot:
+      bg: *surface2
   true:
-    bg: "#48604d"
-    dot: "#b0cfb6"
-  disabled: # 补充禁用状态
-    bg: "#22272d"
-    dot: "#1b2127"
-
-appmenu:
-  border: "#4a5565"
-  category:
-    title: "#8a909d"
-    separator: "#4a5565"
-  item:
-    text: "#e5e7eb"
-  hover-bg: "#17191c"
+    bg: *primary
+    dot:
+      bg: *surface2
+  disabled:
+    bg: *surface3
+    dot:
+      bg: *surface4
 
 toolbar:
-  bg: "#4a5565"
-  icon: "oklch(0.95 0.02 270)"
-  icon-hover-bg: "#1e2939"
-  border: "#80878e"
+  bg: *surface1
+  icon:
+    hover:
+      bg: *surface2
+  border: *surface3
   tooltip:
-    bg: "#4a5565"
-    text: "#e1e4e7"
-    border: "#24354f"
-  collapsed-bg: "#e5e7eb"
-  selected-item-bg: "rgb(30, 41, 57)"
+    bg: *surface2
+    text: *text
+    border: *surface3
+  collapsed-bg: *text
+  selected-item-bg: *surface4
 
 field-group:
-  bg: "#22272d"
-  hover-bg: "#1b2127"
+  bg: *surface2
+  hover-bg: *surface2
 
 sub-window:
-  bg: "#2d3238"
-  text: "#fff"
-  border: "#344b62"
-  shadow: "rgba(0, 0, 0, 0.1)"
+  bg: *surface1
+  text: *text
+  border: *surface3
+  shadow: *surface1
+
+ai:
+  input:
+    border: *surface3
+    placeholder:
+      text: *surface4
+    button:
+      hover:
+        bg: *surface2
+    focus-within:
+      border: *primary
+  message:
+    user:
+      bg: *surface2
 
 stage:
-  Background: "rgba(34, 34, 34)"
-  GridNormal: "rgba(94, 101, 108, 0.5)" # 雾霭灰网格
-  GridHeavy: "rgb(94, 101, 108)" # 夜霭加深
-  DetailsDebugText: "rgba(118, 129, 143, 0.7)" # 暮霭灰
+  Background: "#060710"
+  GridNormal: "rgba(94, 101, 108, 0.5)"
+  GridHeavy: "rgb(94, 101, 108)"
+  DetailsDebugText: "rgba(118, 129, 143, 0.7)"
   SelectRectangleBorder: "#fff"
-  SelectRectangleFill: "rgba(169, 221, 208, 0.15)" # 月下竹影
-  StageObjectBorder: "rgb(229, 231, 235)"
-  NodeDetailsText: "#c0c8d0" # 霜月白
+  SelectRectangleFill: "rgba(169, 221, 208, 0.15)"
+  StageObjectBorder: "#e5e7eb"
+  NodeDetailsText: "#c0c8d0"
+  CollideBoxSelected: "rgba(106, 153, 85, 0.85)"
   CollideBoxPreSelected: "rgba(106, 153, 85, 0.5)"
-  CollideBoxSelected: "rgba(106, 153, 85, 0.85)" # 深林选中
-  CollideBoxPreDelete: "rgba(255, 210, 0, 0.2)" # 落叶黄
+  CollideBoxPreDelete: "rgba(255, 210, 0, 0.2)"
 
 effects:
   flash: "#fff"
-  dash: "#6b7280" # 夜雾拖影
-  windowFlash: "#eef1f0" # 月光涟漪
-  warningShadow: "rgba(223, 195, 134, 0.4)" # 夜鸮警示
+  dash: "#6b7280"
+  windowFlash: "#eef1f0"
+  warningShadow: "rgba(223, 195, 134, 0.4)"
   successShadow: "rgba(122, 154, 129, 0.8)"

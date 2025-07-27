@@ -9,121 +9,159 @@ name:
   en: Light
   zh_CN: 明亮
 ---
-panel:
-  bg: "rgb(255, 255, 255)"
-  text: "rgb(52, 58, 64)"
-  details-text: "rgb(103, 107, 112)"
-  success-text: "#00a300"
-  warning-text: "#b16100"
-  error-text: "#bd0000"
+colors:
+  text: &text "#000"
+  surface1: &surface1 "rgb(255, 255, 255)"
+  surface2: &surface2 "rgb(248, 249, 250)"
+  surface3: &surface3 "rgb(225, 227, 229)"
+  surface4: &surface4 "rgb(200, 205, 212)"
+  primary: &primary "rgb(23, 114, 246)"
+
+titlebar:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  control:
+    hover:
+      bg: *surface2
+  menu:
+    hover:
+      bg: *surface2
+
+tab:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  active:
+    bg: *surface2
+  selected:
+    bg: *surface2
+    text: *text
+    border: *surface3
+
+menu:
+  item:
+    hover:
+      bg: *surface2
+  separator:
+    bg: *surface3
 
 tooltip:
   bg: "rgb(255, 243, 205)"
-  border: "rgb(225, 180, 126)"
   text: "rgb(0, 0, 0)"
+  border: "rgb(225, 180, 126)"
 
 button:
-  bg: "rgb(108, 128, 149)"
-  text: "rgb(255, 255, 255)"
-  border: "#344b62"
+  bg: *surface2
+  text: *text
+  border: *surface3
 
-icon-button:
-  bg: "rgb(90, 116, 144)"
-  text: "rgb(255, 255, 255)"
-  border: "#344b62"
-
-table:
-  header-bg: "rgb(90, 116, 144)"
-  header-text: "#fff"
-  row-bg: "rgb(227, 236, 250)"
-  row-text: "rgb(0, 0, 0)"
-  row-hover-bg: "rgb(247, 255, 255)"
-  row-hover-text: "rgb(0, 0, 0)"
+dialog:
+  info:
+    bg: "rgb(208, 228, 249)"
+  success:
+    bg: "rgb(212, 237, 218)"
+  warning:
+    bg: "rgb(255, 243, 205)"
+  error:
+    bg: "rgb(248, 215, 218)"
 
 input:
-  bg: "rgb(255, 255, 255)"
-  text: "rgb(24, 25, 28)"
-  border: "oklch(0.85 0.02 0)"
-  placeholder: "rgb(132, 145, 165)"
+  bg: *surface1
+  text: *text
+  border: *surface3
+  placeholder:
+    text: *surface4
 
 keybind:
-  bg: "rgb(255, 255, 255)"
-  text: "rgb(24, 25, 28)"
-  border: "oklch(0.85 0.02 0)"
-  active-outline: "oklch(0.7 0.2 259.815)"
-  modifiers-bg: "rgb(108, 128, 149)"
-  modifiers-text: "rgb(255, 255, 255)"
+  bg: *surface1
+  text: *text
+  border: *surface3
+  active-outline: *primary
+  modifiers-bg: "#6c8095"
+  modifiers-text: "#fff"
 
 select:
-  bg: "rgb(248, 248, 250)"
-  text: "rgb(25, 27, 31)"
-  border: "oklch(0.85 0.02 0)"
+  bg: *surface1
+  text: *text
+  border: *surface3
   popup:
-    bg: "rgb(248, 248, 250)"
-    border: "oklch(0.85 0.02 0)"
-    shadow: "oklch(0.85 0.02 0 / 0.1)"
+    bg: *surface1
+    border: *surface3
+    shadow: "rgba(0, 0, 0, 0.1)"
   option:
-    bg: "transparent"
-    text: "rgb(25, 27, 31)"
-    border: "transparent"
+    bg: transparent
+    text: *text
+    border: transparent
     hover:
-      bg: "transparent"
-      text: "rgb(25, 27, 31)"
-      border: "rgb(132, 145, 165)"
+      bg: *surface2
+      text: *text
+      border: transparent
     selected:
-      bg: "rgb(255, 243, 205)"
-      text: "rgb(102, 77, 3)"
-      border: "rgb(255, 230, 156)"
+      bg: *surface3
+      text: *text
+      border: transparent
       hover:
-        bg: "rgb(255, 243, 205)"
-        text: "rgb(102, 77, 3)"
-        border: "rgb(255, 230, 156)"
+        bg: *surface4
+        text: *text
+        border: transparent
 
 slider:
-  line: "rgb(225, 227, 229)"
-  handle: "oklch(0.7 0.2 254.624)"
+  line:
+    bg: *surface3
+  handle:
+    bg: *primary
 
 switch:
   false:
-    bg: "rgb(152, 165, 185)"
-    dot: "rgb(250, 250, 250)"
+    bg: *surface4
+    dot:
+      bg: *surface1
   true:
-    bg: "rgb(23, 114, 246)"
-    dot: "rgb(250, 250, 250)"
+    bg: *primary
+    dot:
+      bg: *surface1
   disabled:
-    bg: "rgb(56, 57, 60)"
-    dot: "rgb(155, 161, 166)"
-
-appmenu:
-  border: "rgb(132, 145, 165)"
-  category:
-    title: "rgb(26, 88, 150)"
-    separator: "rgb(132, 145, 165)"
-  item:
-    text: "rgb(25, 27, 31)"
-  hover-bg: "rgb(233, 234, 237)"
+    bg: *surface3
+    dot:
+      bg: *surface4
 
 toolbar:
-  bg: "rgb(231, 240, 254)"
-  icon: "rgb(23, 114, 200)"
-  border: "rgb(80, 80, 80)"
-  icon-hover-bg: "rgb(0 0 0 / 0.1)"
+  bg: *surface1
+  icon:
+    hover:
+      bg: *surface2
+  border: *surface3
   tooltip:
-    bg: "rgb(0, 0, 0)"
-    text: "rgb(0, 0, 0)"
-    border: "rgb(23, 114, 200)"
-  collapsed-bg: "oklch(0.15 0.05 0)"
-  selected-item-bg: "rgb(149, 155, 164)"
+    bg: *surface2
+    text: *text
+    border: *surface3
+  collapsed-bg: *text
+  selected-item-bg: *surface4
 
 field-group:
-  bg: "#fff"
-  hover-bg: "rgb(248, 248, 250)"
+  bg: *surface2
+  hover-bg: *surface2
 
 sub-window:
-  bg: "rgb(208, 228, 249)"
-  text: "#000"
-  border: "#344b62"
-  shadow: "rgba(0, 0, 0, 0.1)"
+  bg: *surface1
+  text: *text
+  border: *surface3
+  shadow: rgba(0, 0, 0, 0.1)
+
+ai:
+  input:
+    border: *surface3
+    placeholder:
+      text: *surface4
+    button:
+      hover:
+        bg: *surface2
+    focus-within:
+      border: *primary
+  message:
+    user:
+      bg: *surface2
 
 stage:
   Background: "#ffffff"
@@ -134,13 +172,13 @@ stage:
   SelectRectangleFill: "rgba(0, 50, 100, 0.1)"
   StageObjectBorder: "#000000"
   NodeDetailsText: "#000000"
-  CollideBoxPreSelected: "rgba(23, 114, 246, 0.5)"
   CollideBoxSelected: "rgba(23, 114, 246, 0.8)"
+  CollideBoxPreSelected: "rgba(23, 114, 246, 0.5)"
   CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
   flash: "#000"
   dash: "#000"
   windowFlash: "#fff"
-  warningShadow: "#f00"
+  warningShadow: "#c00"
   successShadow: "rgb(23, 114, 246)"

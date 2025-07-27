@@ -9,137 +9,176 @@ name:
   en: Macaron
   zh_CN: 马卡龙
 ---
-panel:
-  bg: "#f4c5b3"
-  text: "oklch(0.45 0.08 340)"
-  details-text: "oklch(0.55 0.06 340)"
-  success-text: "rgb(22, 135, 67)"
-  warning-text: "rgb(255, 82, 82)"
-  error-text: "#ff0000"
+colors:
+  text: &text "oklch(0.45 0.08 340)"
+  surface1: &surface1 "#f4c5b3"
+  surface2: &surface2 "#f9d8dc"
+  surface3: &surface3 "#edc5d0"
+  surface4: &surface4 "#d2adb4"
+  primary: &primary "oklch(0.8 0.07 340)"
+
+titlebar:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  control:
+    hover:
+      bg: *surface2
+  menu:
+    hover:
+      bg: *surface2
+
+tab:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  active:
+    bg: *surface2
+  selected:
+    bg: *surface2
+    text: *text
+    border: *surface3
+
+menu:
+  item:
+    hover:
+      bg: *surface2
+  separator:
+    bg: *surface3
 
 tooltip:
   bg: "#ffe8eb"
-  text: "oklch(0.4 0.08 340)"
+  text: *text
   border: "oklch(0.88 0.05 340)"
 
 button:
-  bg: "#f9d8dc"
+  bg: *surface2
   text: "#573541"
-  border: "#edc5d0"
+  border: *surface3
 
-icon-button:
-  bg: "#f9d8dc"
-  text: "#573541"
-  border: "#edc5d0"
-
-table:
-  header-bg: "rgb(152, 118, 127)"
-  header-text: "#fff"
-  row-bg: "rgb(238, 201, 211)"
-  row-text: "#573541"
-  row-hover-bg: "rgb(218, 180, 190)"
-  row-hover-text: "#573541"
+dialog:
+  info:
+    bg: "#ffe8eb"
+  success:
+    bg: "#e3f2e3"
+  warning:
+    bg: "#fff2e6"
+  error:
+    bg: "#fce8e8"
 
 input:
   bg: "oklch(0.98 0.02 60)"
-  text: "oklch(0.45 0.08 340)"
+  text: *text
   border: "oklch(0.9 0.04 30)"
-  placeholder: "oklch(0.7 0.06 340)"
+  placeholder:
+    text: *surface4
 
 keybind:
   bg: "oklch(0.95 0.05 60)"
-  text: "oklch(0.45 0.08 340)"
+  text: *text
   border: "oklch(0.9 0.04 60)"
-  active-outline: "oklch(0.8 0.06 340)"
+  active-outline: *primary
   modifiers-bg: "#b582a5"
   modifiers-text: "oklch(0.95 0.05 60)"
 
 select:
   bg: "oklch(0.97 0.04 60)"
-  text: "oklch(0.45 0.08 340)"
+  text: *text
   border: "oklch(0.9 0.04 30)"
   popup:
     bg: "oklch(0.96 0.05 320)"
     border: "oklch(0.9 0.04 320)"
     shadow: "oklch(0.85 0.05 340 / 0.1)"
   option:
-    bg: "transparent"
-    text: "oklch(0.15 0.05 0)"
-    border: "transparent"
+    bg: transparent
+    text: *text
+    border: transparent
     hover:
       bg: "oklch(0.94 0.06 340)"
-      text: "oklch(0.15 0.05 0)"
-      border: "transparent"
+      text: *text
+      border: transparent
     selected:
       bg: "oklch(0.9 0.08 340)"
-      text: "oklch(0.15 0.05 0)"
-      border: "transparent"
+      text: *text
+      border: transparent
       hover:
         bg: "oklch(0.85 0.05 0)"
-        text: "oklch(0.15 0.05 0)"
-        border: "transparent"
+        text: *text
+        border: transparent
 
 slider:
-  line: "#c59cb8"
-  handle: "#865667"
+  line:
+    bg: "#c59cb8"
+  handle:
+    bg: "#865667"
 
 switch:
   false:
     bg: "#e2c8d9"
-    dot: "#b582a5"
+    dot:
+      bg: "#b582a5"
   true:
-    bg: "oklch(0.8 0.07 340)"
-    dot: "oklch(0.96 0.03 60)"
+    bg: *primary
+    dot:
+      bg: "oklch(0.96 0.03 60)"
   disabled:
     bg: "#f4dadd"
-    dot: "#fbd1d7"
-
-appmenu:
-  bg: "#f9d8dc"
-  border: "#dfb5c0"
-  category:
-    title: "#866171"
-    separator: "#dfb5c0"
-  item:
-    text: "#573541"
-  hover-bg: "#f0c5b1"
+    dot:
+      bg: "#fbd1d7"
 
 toolbar:
-  bg: "#f9d8dc"
-  icon: "oklch(0.45 0.08 340)"
-  icon-hover-bg: "oklch(0.94 0.06 340 / 0.2)"
+  bg: *surface2
+  icon:
+    hover:
+      bg: "oklch(0.94 0.06 340 / 0.2)"
   border: "#573541"
-  collapsed-bg: "oklch(0.45 0.08 340)"
   tooltip:
     bg: "#ffe8eb"
-    text: "oklch(0.4 0.08 340)"
+    text: *text
     border: "oklch(0.88 0.05 340)"
+  collapsed-bg: *text
   selected-item-bg: "rgb(208, 170, 186)"
-
-settings:
-  page-bg: "oklch(0.98 0.02 60)"
-  text: "#573541"
 
 field-group:
   bg: "#f4dadd"
   hover-bg: "#fbd1d7"
 
+sub-window:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  shadow: "rgba(0, 0, 0, 0.1)"
+
+ai:
+  input:
+    border: *surface3
+    placeholder:
+      text: *surface4
+    button:
+      hover:
+        bg: *surface2
+    focus-within:
+      border: *primary
+  message:
+    user:
+      bg: *surface2
+
 stage:
-  Background: "#f3e9ea" # 樱粉色
+  Background: "#f4e5d3"
   GridNormal: "rgba(111, 98, 98, 0.3)"
   GridHeavy: "rgba(111, 98, 98, 0.5)"
-  DetailsDebugText: "#d2adb4" # 灰紫
+  DetailsDebugText: "#d2adb4"
   SelectRectangleBorder: "rgba(77, 16, 24, 0.5)"
   SelectRectangleFill: "rgba(227, 180, 184, 0.3)"
-  StageObjectBorder: "#72244e" # 深色边框
-  NodeDetailsText: "#6b596c" # 深灰紫
+  StageObjectBorder: "#72244e"
+  NodeDetailsText: "#6b596c"
   CollideBoxPreSelected: "rgba(238, 63, 77, 0.3)"
   CollideBoxSelected: "rgba(238, 63, 77, 0.7)"
-  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)" # 补充默认值
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
-  flash: "#8b5891" # 紫罗兰
-  dash: "#000000" # 纯黑
-  windowFlash: "#f9e9ea" # 背景同色系
+  flash: "#8b5891"
+  dash: "#000000"
+  windowFlash: "#f9e9ea"
   warningShadow: "rgba(226, 167, 31, 0.2)"
-  successShadow: "#7893af" # 灰蓝
+  successShadow: "#7893af"

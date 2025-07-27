@@ -9,137 +9,176 @@ name:
   en: Morandi
   zh_CN: 莫兰迪
 ---
-panel:
-  bg: "#d6dbd5"
-  text: "oklch(0.25 0.03 240)"
-  details-text: "oklch(0.35 0.03 240)"
-  success-text: "#9aff9a"
-  warning-text: "#ffd8a8"
-  error-text: "#c93030"
+colors:
+  text: &text "oklch(0.25 0.03 240)"
+  surface1: &surface1 "#d6dbd5"
+  surface2: &surface2 "#e8e6e7"
+  surface3: &surface3 "#c9d2da"
+  surface4: &surface4 "#949cae"
+  primary: &primary "oklch(0.7 0.05 210)"
+
+titlebar:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  control:
+    hover:
+      bg: *surface2
+  menu:
+    hover:
+      bg: *surface2
+
+tab:
+  bg: *surface1
+  text: *text
+  border: *surface3
+  active:
+    bg: *surface2
+  selected:
+    bg: *surface2
+    text: *text
+    border: *surface3
+
+menu:
+  item:
+    hover:
+      bg: *surface2
+  separator:
+    bg: *surface3
 
 tooltip:
   bg: "oklch(0.85 0.02 240)"
-  text: "oklch(0.25 0.03 240)"
+  text: *text
   border: "oklch(0.8 0.02 240)"
 
 button:
   bg: "oklch(0.85 0.02 270)"
-  text: "oklch(0.25 0.03 240)"
+  text: *text
   border: "oklch(0.82 0.02 270)"
 
-icon-button:
-  bg: "oklch(0.85 0.02 210)"
-  text: "oklch(0.25 0.03 240)"
-  border: "oklch(0.78 0.02 210)"
-
-table:
-  header-bg: "rgb(170, 187, 190)"
-  header-text: "rgb(20, 36, 47)"
-  row-bg: "rgb(192, 210, 213)"
-  row-text: "rgb(20, 36, 47)"
-  row-hover-bg: "rgb(202, 220, 223)"
-  row-hover-text: "rgb(20, 36, 47)"
+dialog:
+  info:
+    bg: "oklch(0.9 0.02 240)"
+  success:
+    bg: "oklch(0.9 0.02 150)"
+  warning:
+    bg: "oklch(0.9 0.02 60)"
+  error:
+    bg: "oklch(0.85 0.03 25)"
 
 input:
   bg: "oklch(0.96 0.02 240)"
-  text: "oklch(0.25 0.03 240)"
-  border: "oklch(0.85 0.02 240)"
-  placeholder: "oklch(0.75 0.02 240)"
+  text: *text
+  border: *surface3
+  placeholder:
+    text: *surface4
 
 keybind:
   bg: "oklch(0.85 0.02 210)"
-  text: "oklch(0.25 0.03 240)"
+  text: *text
   border: "oklch(0.78 0.02 210)"
-  active-outline: "oklch(0.85 0.02 270)"
+  active-outline: *primary
   modifiers-bg: "oklch(0.75 0.02 210)"
-  modifiers-text: "oklch(0.25 0.03 240)"
+  modifiers-text: *text
 
 select:
   bg: "oklch(0.96 0.02 240)"
-  text: "oklch(0.25 0.03 240)"
-  border: "oklch(0.85 0.02 240)"
+  text: *text
+  border: *surface3
   popup:
     bg: "oklch(0.85 0.02 240)"
     border: "oklch(0.8 0.02 240)"
     shadow: "oklch(0.8 0.02 240 / 0.1)"
   option:
-    bg: "transparent"
-    text: "oklch(0.25 0.03 240)"
-    border: "transparent"
+    bg: transparent
+    text: *text
+    border: transparent
     hover:
       bg: "oklch(0.88 0.02 240)"
-      text: "oklch(0.25 0.03 240)"
-      border: "transparent"
+      text: *text
+      border: transparent
     selected:
       bg: "oklch(0.85 0.02 210)"
-      text: "oklch(0.25 0.03 240)"
-      border: "transparent"
+      text: *text
+      border: transparent
       hover:
         bg: "oklch(0.85 0.02 240)"
-        text: "oklch(0.25 0.03 240)"
-        border: "transparent"
+        text: *text
+        border: transparent
 
 slider:
-  line: "#949cae"
-  handle: "#666b75"
+  line:
+    bg: *surface4
+  handle:
+    bg: "#666b75"
 
 switch:
   false:
-    bg: "#b5c0c8"
-    dot: "#dde7ef"
+    bg: *surface3
+    dot:
+      bg: "#dde7ef"
   true:
     bg: "#a4aaba"
-    dot: "oklch(1 0.02 240)"
+    dot:
+      bg: "oklch(1 0.02 240)"
   disabled:
     bg: "#d8dfe5"
-    dot: "#c9d2da"
-
-appmenu:
-  bg: "#d6dbd5"
-  border: "oklch(0.85 0.02 240)"
-  category:
-    title: "rgb(67, 80, 88)"
-    separator: "oklch(0.8 0.02 240)"
-  item:
-    text: "oklch(0.25 0.03 240)"
-  hover-bg: "oklch(0.85 0.02 270)"
+    dot:
+      bg: "#c9d2da"
 
 toolbar:
   bg: "oklch(0.85 0.02 240)"
-  icon: "oklch(0.95 0.02 270)"
-  icon-hover-bg: "oklch(0.85 0.02 210)"
-  border: "oklch(0.25 0.03 240)"
+  icon:
+    hover:
+      bg: "oklch(0.85 0.02 210)"
+  border: *text
   tooltip:
     bg: "oklch(0.85 0.02 240)"
-    text: "oklch(0.25 0.03 240)"
+    text: *text
     border: "oklch(0.8 0.02 240)"
   collapsed-bg: "#14242f"
   selected-item-bg: "rgb(142, 155, 166)"
-
-settings:
-  page-bg: "oklch(0.94 0.005 240)"
-  text: "#14242f"
 
 field-group:
   bg: "#d8dfe5"
   hover-bg: "#c9d2da"
 
+sub-window:
+  bg: *surface2
+  text: *text
+  border: *surface3
+  shadow: "rgba(0, 0, 0, 0.1)"
+
+ai:
+  input:
+    border: *surface3
+    placeholder:
+      text: *surface4
+    button:
+      hover:
+        bg: *surface2
+    focus-within:
+      border: *primary
+  message:
+    user:
+      bg: *surface2
+
 stage:
-  Background: "#e8e6e7" # 浅冷灰色背景
-  GridNormal: "rgba(98, 98, 111, 0.3)" # 低饱和冷灰蓝
-  GridHeavy: "rgba(98, 98, 111, 0.5)" # 加深冷灰蓝
-  DetailsDebugText: "#6b7280" # 深灰蓝调试文字
-  SelectRectangleBorder: "rgba(71, 108, 117, 0.5)" # 雾霾蓝边框
-  SelectRectangleFill: "rgba(169, 221, 208, 0.3)" # 浅豆绿填充
-  StageObjectBorder: "#45484f" # 冷绿边框
-  NodeDetailsText: "#414a54" # 深冷灰文字
-  CollideBoxPreSelected: "rgba(169, 221, 208, 0.3)" # 浅豆绿预选
-  CollideBoxSelected: "rgba(62, 125, 83, 0.4)" # 冷绿选中
-  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)" # 补充默认预删状态
+  Background: "#e8e6e7"
+  GridNormal: "rgba(98, 98, 111, 0.3)"
+  GridHeavy: "rgba(98, 98, 111, 0.5)"
+  DetailsDebugText: "#6b7280"
+  SelectRectangleBorder: "rgba(71, 108, 117, 0.5)"
+  SelectRectangleFill: "rgba(169, 221, 208, 0.3)"
+  StageObjectBorder: "#45484f"
+  NodeDetailsText: "#414a54"
+  CollideBoxPreSelected: "rgba(169, 221, 208, 0.3)"
+  CollideBoxSelected: "rgba(62, 125, 83, 0.4)"
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
-  flash: "#8b949d" # 冷淡蓝闪烁
-  dash: "#6b7280" # 薰衣草拖影
-  windowFlash: "#eef1f0" # 背景同色窗口闪烁
+  flash: "#8b949d"
+  dash: "#6b7280"
+  windowFlash: "#eef1f0"
   warningShadow: "rgba(248, 128, 112, 0.4)"
-  successShadow: "#7893af" # 冷蓝成功阴影
+  successShadow: "#7893af"

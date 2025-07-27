@@ -107,8 +107,10 @@ select:
         border: transparent
 
 slider:
-  line: *surface3
-  handle: *primary
+  line:
+    bg: *surface3
+  handle:
+    bg: *primary
 
 switch:
   false:

@@ -24,20 +24,17 @@ const _Box = <E extends ElementType = "div">(
   const [tooltipY, setTooltipY] = React.useState(-1000); // 防止遮挡左上角菜单按钮
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
-    // eslint-disable-next-line react/prop-types
     props.onMouseEnter?.(event);
     setShowTooltip(true);
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    // eslint-disable-next-line react/prop-types
     props.onMouseMove?.(event);
     setTooltipX(event.clientX);
     setTooltipY(event.clientY);
   };
 
   const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-    // eslint-disable-next-line react/prop-types
     props.onMouseLeave?.(event);
     setTooltipY(-1000); // 防止遮挡左上角菜单按钮
     setShowTooltip(false);
@@ -47,7 +44,7 @@ const _Box = <E extends ElementType = "div">(
     <>
       <Component
         ref={ref}
-        className={cn("rounded-md border text-white", className)}
+        className={cn("rounded-md border", className)}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
