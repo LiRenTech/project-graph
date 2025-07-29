@@ -1,9 +1,9 @@
+import toast from "react-hot-toast";
 import { getEnterKey } from "../../../../utils/keyboardFunctions";
 import { Project, service } from "../../../Project";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
-import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../Settings";
 
 /**
@@ -100,6 +100,6 @@ export class KeyboardOnlyEngine {
     for (const textNode of textNodes) {
       this.project.effects.addEffect(EntityShakeEffect.fromEntity(textNode));
     }
-    this.project.effects.addEffect(TextRiseEffect.default("您可能记错了节点进入编辑状态的控制键设置"));
+    toast("您可能记错了节点进入编辑状态的控制键设置");
   }
 }

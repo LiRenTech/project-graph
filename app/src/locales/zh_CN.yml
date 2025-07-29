@@ -688,74 +688,6 @@ appMenu:
       fullscreen: 全屏
       cancelFullscreen: 退出全屏
 
-toolbar:
-  pinnedTools:
-    title: 常驻工具
-    items:
-      generateTextNodeByText: 通过文本生成节点
-      autoFillColorSettings: 设置实体创建时自动填充的颜色
-  stageObjects:
-    title: 舞台对象
-    items:
-      setColor: 设置舞台对象的颜色，注意要先选中再点颜色 （F6）
-      delete: 删除选中的舞台对象
-      tag: 给舞台对象添加标签，如果已添加则去除标签
-  multiTargetUndirectedEdges:
-    title: 多源无向边
-    items:
-      switchToEdge: 切换为有向边
-      arrowExterior: 箭头向外
-      arrowInterior: 箭头向内
-      noArrow: 无箭头
-      switchRenderState: 转换渲染形态
-  edge:
-    title: 有向边
-    items:
-      switchDirection: 反转选中连线方向
-      switchToCrEdge: 切换为CR曲线（还在开发中，不推荐使用）
-      switchToUndirectedEdge: 切换为无向边
-      setExtremePoint: 设置选中连线的端点位置
-  crEdge:
-    title: CR曲线
-    items:
-      addControlPoint: 添加控制点
-      tensionIncrease: 拉紧曲线
-      tensionDecrease: 放松曲线
-  entity:
-    title: 实体
-    items:
-      align: 实体对齐相关
-      saveNew: 将选中的节点保存为新文件
-      packSection: 将选中节点打包Section（快捷键可自定义）
-      createMultiTargetEdgeConvex: 创建无向边(凸包型)
-      createMultiTargetEdgeLine: 创建无向边(连线型)
-      openPathByContent: 将实体详细信息第一行视为本地绝对路径，并打开文件/文件夹
-  imageNode:
-    title: 图片节点
-    items:
-      refresh: 刷新选中内容(图片加载失败了可以选中图片然后点这个按钮)
-      openImage: 打开选中图片
-  textNode:
-    title: 文本节点
-    items:
-      switchWidthAdjustMode: 切换宽度调整模式（ttt）
-      aiGenerateNewNode: AI扩展节点
-  section:
-    title: 框
-    items:
-      checkoutFolderState: 切换Section的折叠状态（快捷键可自定义）
-  mouseMode:
-    title: 鼠标模式
-    items:
-      leftMouseSelectMove: 左键：框选/移动/创建节点 模式
-      leftMouseDraw: 左键：涂鸦模式
-      leftMouseCutAndConnect: 左键：连接/斩断 模式
-  drawColor:
-    title: 涂鸦笔触颜色
-
-
-
-
 startFilePanel:
   title: 选择启动时自动加载的工程文件
   tips:
@@ -928,10 +860,6 @@ effects:
     title: 固定位置的文本节点悬浮上升效果
     description: |
       文本节点悬浮上升效果，用于提示重要信息
-  TextRiseEffect:
-    title: 上浮文字效果
-    description: |
-      文本节点上浮效果，用于提示重要信息
   ViewFlashEffect:
     title: 视野闪烁效果
     description: |

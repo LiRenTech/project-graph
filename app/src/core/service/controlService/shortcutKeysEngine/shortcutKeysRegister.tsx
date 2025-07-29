@@ -1,5 +1,6 @@
 import { averageColors, Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
 import { v4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
@@ -18,7 +19,6 @@ import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/associatio
 import { CollisionBox } from "../../../stage/stageObject/collisionBox/collisionBox";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
-import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { Settings } from "../../Settings";
@@ -168,7 +168,7 @@ export class KeyBindsRegistrar {
         .getSelectedEntities()
         .filter((node) => node instanceof ConnectableEntity);
       if (selectedNodes.length <= 1) {
-        this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+        toast.error("至少选择两个可连接节点");
         return;
       }
       const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -440,18 +440,14 @@ export class KeyBindsRegistrar {
       if (Settings.sync.mouseLeftMode === "draw") {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth + 4;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+        toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
       }
     });
     await this.project.keyBinds.create("penStrokeWidthDecrease", "-", async () => {
       if (Settings.sync.mouseLeftMode === "draw") {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth - 4;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+        toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
       }
     });
 
@@ -831,9 +827,7 @@ export class KeyBindsRegistrar {
         .getSelectedEntities()
         .filter((node) => node instanceof TextNode);
       if (selectedTextNodes.length <= 1) {
-        setTimeout(() => {
-          this.project.effects.addEffect(TextRiseEffect.default("rua的节点数量不能小于2"));
-        }, 500);
+        toast.error("rua的节点数量不能小于2");
         return;
       }
       selectedTextNodes = selectedTextNodes.sort(

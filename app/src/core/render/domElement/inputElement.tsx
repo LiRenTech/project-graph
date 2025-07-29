@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
+import toast from "react-hot-toast";
 import { getEnterKey } from "../../../utils/keyboardFunctions";
 import { Project, service } from "../../Project";
 import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";
-import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 
 /**
@@ -283,7 +283,7 @@ export class InputElement {
     for (const textNode of textNodes) {
       this.project.effects.addEffect(EntityShakeEffect.fromEntity(textNode));
     }
-    this.project.effects.addEffect(TextRiseEffect.default("您可能记错了退出或换行的控制设置"));
+    toast("您可能记错了退出或换行的控制设置");
   }
 
   private textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";

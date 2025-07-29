@@ -2,9 +2,9 @@ import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer, Telescope } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
-import { TextRiseEffect } from "../../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
@@ -27,7 +27,7 @@ export default function FindWindow() {
         node.isSelected = true;
       }
     }
-    this.project.effects.addEffect(TextRiseEffect.default(`${searchResults.length}个结果已全部选中`));
+    toast.success(`${searchResults.length}个结果已全部选中`);
   };
 
   return (

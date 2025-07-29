@@ -1,4 +1,5 @@
 import { Color, ProgressNumber } from "@graphif/data-structures";
+import toast from "react-hot-toast";
 import { Project, service } from "../../../Project";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
@@ -7,7 +8,6 @@ import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
-import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 
 @service("contentSearch")
 export class ContentSearch {
@@ -96,7 +96,7 @@ export class ContentSearch {
     if (this.currentSearchResultIndex < this.searchResultNodes.length - 1) {
       this.currentSearchResultIndex++;
     } else {
-      this.project.effects.addEffect(TextRiseEffect.default("已经到底了"));
+      toast("已经到底了");
       return;
     }
     // 取消选择所有节点
@@ -121,7 +121,7 @@ export class ContentSearch {
     if (this.currentSearchResultIndex > 0) {
       this.currentSearchResultIndex--;
     } else {
-      this.project.effects.addEffect(TextRiseEffect.default("已经到头了"));
+      toast("已经到头了");
     }
     // 取消选择所有节点
     for (const node of this.project.stageManager.getTextNodes()) {

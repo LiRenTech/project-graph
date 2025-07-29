@@ -1,4 +1,5 @@
 import { colorInvert, Vector } from "@graphif/data-structures";
+import toast from "react-hot-toast";
 import AutoCompleteWindow from "../../../../../pages/_sub_window/AutoCompleteWindow";
 import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
@@ -15,7 +16,6 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { LogicNodeNameToRenderNameMap } from "../../../dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
-import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { SubWindow } from "../../../SubWindow";
 
 /**
@@ -307,7 +307,7 @@ export class ControllerUtils {
   editNodeDetailsByKeyboard() {
     const nodes = this.project.stageManager.getEntities().filter((node) => node.isSelected);
     if (nodes.length === 0) {
-      this.project.effects.addEffect(TextRiseEffect.default("请先选择一个节点，才能编辑详细信息"));
+      toast.error("请先选择一个节点，才能编辑详细信息");
       return;
     }
     this.editNodeDetails(nodes[0]);

@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
+import toast from "react-hot-toast";
 import { Project, service } from "../../../Project";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 
@@ -97,7 +97,7 @@ export class KeyboardOnlyGraphEngine {
   async createFinished() {
     this._isCreating = false;
     if (this.getPressTabTimeInterval() < 100) {
-      this.project.effects.addEffect(TextRiseEffect.default("松开 生长键 过快💨"));
+      toast.error("节点生长快捷键松开过快");
       return;
     }
 

@@ -1,5 +1,6 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { writeFile } from "@tauri-apps/plugin-fs";
+import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../../components/dialog";
 import { Path } from "../../../../../utils/path";
@@ -8,7 +9,6 @@ import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
-import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 
@@ -21,7 +21,6 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     event.preventDefault();
     event.stopPropagation();
     this.isDraggingFile = true;
-    this.project.effects.addEffect(new TextRiseEffect("正在拖入文件"));
     this.draggingLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
   };
 
@@ -156,7 +155,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
 
   async dealTempFileDrop(mouseWorldLocation: Vector) {
     // 未知类型，按插入一个textNode判断
-    this.project.effects.addEffect(new TextRiseEffect("不能直接拖入文字"));
+    toast.error("不能直接拖入文字");
     this.project.effects.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(mouseWorldLocation, 100));
   }
 
@@ -192,12 +191,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       // 在这里处理读取到的内容
       const dataString = fileContent?.toString();
       if (dataString === undefined) {
-        Dialog.show({
-          title: "提示",
-          content: "文件内容为空",
-          type: "warning",
-        });
-        this.project.effects.addEffect(new TextRiseEffect("文件内容为空"));
+        toast.error("文件内容为空");
       } else {
         // 检测是否有图片节点
         if (dataString.includes("core:image_node")) {
@@ -230,9 +224,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     };
 
     reader.onerror = (e) => {
-      console.error("文件读取错误:", e);
-      this.project.effects.addEffect(new TextRiseEffect("文件读取错误:" + e));
-      this.project.effects.addEffect(new ViewFlashEffect(Color.Red));
+      throw e;
     };
   }
 

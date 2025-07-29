@@ -1,11 +1,11 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
 import { EntityShakeEffect } from "../../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
-import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
@@ -60,7 +60,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
         ) {
           this.project.effects.addEffect(EntityShakeEffect.fromEntity(entity));
           this.project.effects.addEffect(EntityShakeEffect.fromEntity(selectedEntity));
-          this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
+          toast.error("禁止将框套入自身内部");
           return;
         }
       }
@@ -92,7 +92,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
         for (const targetSection of targetSections) {
           if (this.project.sectionMethods.isEntityInSection(targetSection, selectedEntity)) {
             this.project.effects.addEffect(EntityShakeEffect.fromEntity(targetSection));
-            this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
+            toast.error("禁止将框套入自身内部");
             return;
           }
         }

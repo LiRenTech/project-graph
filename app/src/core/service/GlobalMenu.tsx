@@ -1,3 +1,5 @@
+import { appCacheDir, dataDir } from "@tauri-apps/api/path";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-dialog";
 import { open as openFilePath } from "@tauri-apps/plugin-shell";
 import {
@@ -37,16 +39,15 @@ import {
   View,
 } from "lucide-react";
 import { ReactNode } from "react";
+import toast from "react-hot-toast";
 import { URI } from "vscode-uri";
+import { Dialog } from "../../components/dialog";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "../../state";
+import { PathString } from "../../utils/pathString";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
-import { Dialog } from "../../components/dialog";
-import { appCacheDir, dataDir } from "@tauri-apps/api/path";
-import { PathString } from "../../utils/pathString";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Settings } from "./Settings";
 
 export namespace GlobalMenu {
@@ -161,10 +162,7 @@ export namespace GlobalMenu {
         SettingsWindow.open("visual");
       }),
       new MenuItem("test", <TestTube2 />, () => {
-        // const project = Project.newDraft();
-        // const obj = new TextNode(project, {});
-        // const data = serialize(obj);
-        // const obj2 = deserialize(data, project);
+        toast.success("hello world");
       }),
     ]),
     new Menu("AI", <Bot />, [

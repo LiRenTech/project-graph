@@ -1,11 +1,11 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
 import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
 import { Project, service } from "../../Project";
 import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
-import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 import { Association } from "../stageObject/abstract/Association";
 import { ConnectableEntity } from "../stageObject/abstract/ConnectableEntity";
@@ -468,7 +468,7 @@ export class StageManager {
       this.project.stageObjectSelectCounter.update();
       return res;
     }
-    this.project.effects.addEffect(TextRiseEffect.default("无法删除未知类型的关系"));
+    toast.error("无法删除未知类型的关系");
     return false;
   }
 

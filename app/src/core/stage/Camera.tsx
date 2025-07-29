@@ -1,11 +1,11 @@
 import { Queue, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
 import { Dialog } from "../../components/dialog";
 import { Direction } from "../../types/directions";
 import { isMac } from "../../utils/platform";
 import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Project, service } from "../Project";
-import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { easeOutExpo } from "../service/feedbackService/effectEngine/mathTools/easings";
 import { Settings } from "../service/Settings";
 import { Entity } from "./stageObject/abstract/StageEntity";
@@ -151,7 +151,7 @@ export class Camera {
       // 实测只有把摩擦力和动力都拉满时才会瞬间触发NaN，当玩家正常数据状态下有意识地向远处飞时反而不会触发
       // 因此这个彩蛋可能是个bug。先暂时改成正常的提示语
       // this.project.effects.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
-      this.project.effects.addEffect(new TextRiseEffect("已自动重置视野"));
+      toast.error("数值溢出了，已自动重置视野");
       this.speed = Vector.getZero();
       this.reset();
       return;

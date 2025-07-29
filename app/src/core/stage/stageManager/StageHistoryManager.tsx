@@ -1,6 +1,6 @@
+import toast from "react-hot-toast";
 import { Serialized } from "../../../types/node";
 import { Project, service } from "../../Project";
-import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 
 /**
@@ -79,15 +79,9 @@ export class HistoryManager {
       this.currentIndex--;
       this.project.stageManager.destroy();
       FileLoader.loadStageByData(this.historyList[this.currentIndex], Stage.path.getFilePath());
-      this.project.effects.addEffect(
-        TextRiseEffect.default(`当前进度：${this.currentIndex + 1} / ${this.historyList.length}`),
-      );
+      toast(`当前进度：${this.currentIndex + 1} / ${this.historyList.length}`);
     } else {
-      this.project.effects.addEffect(
-        TextRiseEffect.default(
-          `已到撤回到底！${this.currentIndex + 1} / ${this.historyList.length}，默认 ctrl + y 反撤销`,
-        ),
-      );
+      toast(`已到撤回到底！${this.currentIndex + 1} / ${this.historyList.length}，默认 ctrl + y 反撤销`);
     }
   }
 
@@ -99,13 +93,9 @@ export class HistoryManager {
       this.currentIndex++;
       this.project.stageManager.destroy();
       FileLoader.loadStageByData(this.historyList[this.currentIndex], Stage.path.getFilePath());
-      this.project.effects.addEffect(
-        TextRiseEffect.default(`当前进度：${this.currentIndex + 1} / ${this.historyList.length}`),
-      );
+      toast(`当前进度：${this.currentIndex + 1} / ${this.historyList.length}`);
     } else {
-      this.project.effects.addEffect(
-        TextRiseEffect.default(`已到最新状态！${this.currentIndex + 1} / ${this.historyList.length}`),
-      );
+      toast(`已到最新状态！${this.currentIndex + 1} / ${this.historyList.length}`);
     }
   }
 }

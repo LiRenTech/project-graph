@@ -3,12 +3,12 @@
  */
 
 import { LimitLengthQueue, Vector } from "@graphif/data-structures";
+import toast from "react-hot-toast";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isIpad, isMac } from "../../../../../utils/platform";
 import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
-import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 import { ControllerCameraMac } from "./ControllerCamera/mac";
@@ -259,10 +259,6 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     if (isMac) {
-      if (this.project.renderer.isShowDebug) {
-        // 是debug模式，显示滚动时的缩放系数
-        this.project.effects.addEffect(TextRiseEffect.default(`event.deltaY: ${event.deltaY}`));
-      }
       // 检测一下是否是双指缩放
       if (this.mac.isTouchPadTwoFingerScale(event)) {
         // 双指缩放
@@ -472,15 +468,11 @@ export class ControllerCameraClass extends ControllerClass {
       if (event.deltaX < 0) {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth + 1;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+        toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
       } else {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth - 1;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
-        );
+        toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
       }
     }
   }
