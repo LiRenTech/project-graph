@@ -35,7 +35,6 @@ import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEn
 import { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
-import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
 import { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
 import { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
@@ -92,7 +91,6 @@ export function loadAllServices(project: Project): void {
   project.loadService(Camera);
   project.loadService(Effects);
   project.loadService(AutoCompute);
-  project.loadService(SecretKeys);
   project.loadService(HistoryManager);
   project.loadService(RectangleSelect);
   project.loadService(StageNodeRotate);

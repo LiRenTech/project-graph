@@ -1,4 +1,6 @@
-import { Color, Vector } from "@graphif/data-structures";
+import { averageColors, Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { v4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
 import FindWindow from "../../../../pages/_sub_window/FindWindow";
@@ -13,10 +15,14 @@ import { Project, service } from "../../../Project";
 import { PenStrokeMethods } from "../../../stage/stageManager/basicMethods/PenStrokeMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { CollisionBox } from "../../../stage/stageObject/collisionBox/collisionBox";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { Settings } from "../../Settings";
+import { MouseLocation } from "../MouseLocation";
 
 /**
  * 快捷键注册函数
@@ -556,6 +562,318 @@ export class KeyBindsRegistrar {
       for (const entity of entities) {
         this.project.keyboardOnlyTreeEngine.adjustTreeNode(entity);
       }
+    });
+
+    await this.project.keyBinds.create(
+      "screenFlashEffect",
+      "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a",
+      () => {
+        this.project.effects.addEffect(ViewFlashEffect.SaveFile());
+      },
+    );
+
+    await this.project.keyBinds.create("alignNodesToInteger", "i n t j", () => {
+      const entities = this.project.stageManager.getConnectableEntity();
+      for (const entity of entities) {
+        const leftTopLocation = entity.collisionBox.getRectangle().location;
+        const IntLocation = new Vector(Math.round(leftTopLocation.x), Math.round(leftTopLocation.y));
+        entity.moveTo(IntLocation);
+      }
+    });
+
+    await this.project.keyBinds.create("toggleCheckmarkOnTextNodes", "o k k", () => {
+      const selectedTextNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof TextNode);
+      for (const node of selectedTextNodes) {
+        if (node.color.equals(new Color(59, 114, 60))) {
+          node.rename(node.text.replace("✅ ", ""));
+          node.color = Color.Transparent;
+        } else {
+          node.rename("✅ " + node.text);
+          node.color = new Color(59, 114, 60);
+        }
+      }
+      this.project.stageManager.updateReferences();
+    });
+
+    await this.project.keyBinds.create("switchToDarkTheme", "b l a c k k", () => {
+      Settings.set("theme", "dark");
+    });
+
+    await this.project.keyBinds.create("switchToLightTheme", "w h i t e e", () => {
+      Settings.set("theme", "light");
+    });
+
+    await this.project.keyBinds.create("switchToParkTheme", "p a r k k", () => {
+      Settings.set("theme", "park");
+    });
+
+    await this.project.keyBinds.create("switchToMacaronTheme", "m k l", () => {
+      Settings.set("theme", "macaron");
+    });
+
+    await this.project.keyBinds.create("switchToMorandiTheme", "m l d", () => {
+      Settings.set("theme", "morandi");
+    });
+
+    await this.project.keyBinds.create("increasePenAlpha", "p s a + +", async () => {
+      this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(0.1);
+    });
+
+    await this.project.keyBinds.create("decreasePenAlpha", "p s a - -", async () => {
+      this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(-0.1);
+    });
+
+    await this.project.keyBinds.create("alignTop", "8 8", () => {
+      this.project.layoutManualAlign.alignTop();
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Up, true);
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Down);
+    });
+
+    await this.project.keyBinds.create("alignBottom", "2 2", () => {
+      this.project.layoutManualAlign.alignBottom();
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Down, true);
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Up);
+    });
+
+    await this.project.keyBinds.create("alignLeft", "4 4", () => {
+      this.project.layoutManualAlign.alignLeft();
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Left, true);
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Right);
+    });
+
+    await this.project.keyBinds.create("alignRight", "6 6", () => {
+      this.project.layoutManualAlign.alignRight();
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Right, true);
+      this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Left);
+    });
+
+    await this.project.keyBinds.create("alignHorizontalSpaceBetween", "4 6 4 6", () => {
+      this.project.layoutManualAlign.alignHorizontalSpaceBetween();
+    });
+
+    await this.project.keyBinds.create("alignVerticalSpaceBetween", "8 2 8 2", () => {
+      this.project.layoutManualAlign.alignVerticalSpaceBetween();
+    });
+
+    await this.project.keyBinds.create("alignCenterHorizontal", "5 4 6", () => {
+      this.project.layoutManualAlign.alignCenterHorizontal();
+    });
+
+    await this.project.keyBinds.create("alignCenterVertical", "5 8 2", () => {
+      this.project.layoutManualAlign.alignCenterVertical();
+    });
+
+    await this.project.keyBinds.create("alignLeftToRightNoSpace", "4 5 6", () => {
+      this.project.layoutManualAlign.alignLeftToRightNoSpace();
+    });
+
+    await this.project.keyBinds.create("alignTopToBottomNoSpace", "8 5 2", () => {
+      this.project.layoutManualAlign.alignTopToBottomNoSpace();
+    });
+
+    await this.project.keyBinds.create("connectAllSelectedEntities", "- - a l l", () => {
+      const selectedNodes = this.project.stageManager.getSelectedEntities();
+      for (let i = 0; i < selectedNodes.length; i++) {
+        for (let j = 0; j < selectedNodes.length; j++) {
+          const fromNode = selectedNodes[i];
+          const toNode = selectedNodes[j];
+          if (fromNode === toNode) continue;
+          if (fromNode instanceof ConnectableEntity && toNode instanceof ConnectableEntity) {
+            this.project.stageManager.connectEntity(fromNode, toNode, false);
+          }
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("connectLeftToRight", "- - r i g h t", () => {
+      const selectedNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((entity) => entity instanceof ConnectableEntity);
+      if (selectedNodes.length <= 1) return;
+      selectedNodes.sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
+      for (let i = 0; i < selectedNodes.length - 1; i++) {
+        const fromNode = selectedNodes[i];
+        const toNode = selectedNodes[i + 1];
+        if (fromNode === toNode) continue;
+        this.project.stageManager.connectEntity(fromNode, toNode, false);
+      }
+    });
+
+    await this.project.keyBinds.create("connectTopToBottom", "- - d o w n", () => {
+      const selectedNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((entity) => entity instanceof ConnectableEntity);
+      if (selectedNodes.length <= 1) return;
+      selectedNodes.sort((a, b) => a.collisionBox.getRectangle().location.y - b.collisionBox.getRectangle().location.y);
+      for (let i = 0; i < selectedNodes.length - 1; i++) {
+        const fromNode = selectedNodes[i];
+        const toNode = selectedNodes[i + 1];
+        if (fromNode === toNode) continue;
+        this.project.stageManager.connectEntity(fromNode, toNode, false);
+      }
+    });
+
+    await this.project.keyBinds.create("selectAllEdges", "+ e d g e", () => {
+      const selectedEdges = this.project.stageManager.getAssociations();
+      const viewRect = this.project.renderer.getCoverWorldRectangle();
+      for (const edge of selectedEdges) {
+        if (this.project.renderer.isOverView(viewRect, edge)) continue;
+        edge.isSelected = true;
+      }
+    });
+
+    await this.project.keyBinds.create("colorSelectedRed", "; r e d", () => {
+      const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
+      for (const obj of selectedStageObject) {
+        if (obj instanceof TextNode) {
+          obj.color = new Color(239, 68, 68);
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("increaseBrightness", "b .", () => {
+      const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
+      for (const obj of selectedStageObject) {
+        if (obj instanceof TextNode) {
+          if (obj.color.a === 0) continue;
+          obj.color = new Color(
+            Math.min(255, obj.color.r + 20),
+            Math.min(255, obj.color.b + 20),
+            Math.min(255, obj.color.g + 20),
+            obj.color.a,
+          );
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("decreaseBrightness", "b ,", () => {
+      const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
+      for (const obj of selectedStageObject) {
+        if (obj instanceof TextNode) {
+          if (obj.color.a === 0) continue;
+          obj.color = new Color(
+            Math.max(0, obj.color.r - 20),
+            Math.max(0, obj.color.b - 20),
+            Math.max(0, obj.color.g - 20),
+            obj.color.a,
+          );
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("gradientColor", "; ,", () => {
+      const selectedStageObject = this.project.stageManager.getStageObjects().filter((obj) => obj.isSelected);
+      for (const obj of selectedStageObject) {
+        if (obj instanceof TextNode) {
+          if (obj.color.a === 0) continue;
+          const oldColor = obj.color.clone();
+          obj.color = new Color(Math.max(oldColor.a - 20, 0), Math.min(255, oldColor.g + 20), oldColor.b, oldColor.a);
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("toggleTextNodeSizeMode", "t t t", () => {
+      const selectedTextNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof TextNode);
+      for (const node of selectedTextNodes) {
+        if (node.sizeAdjust === "auto") {
+          node.sizeAdjust = "manual";
+          node.resizeHandle(Vector.getZero());
+        } else if (node.sizeAdjust === "manual") {
+          node.sizeAdjust = "auto";
+          node.forceAdjustSizeByText();
+        }
+      }
+    });
+
+    await this.project.keyBinds.create("splitTextNodes", "k e i", () => {
+      const selectedTextNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof TextNode);
+      selectedTextNodes.forEach((node) => {
+        node.isSelected = false;
+      });
+      for (const node of selectedTextNodes) {
+        const text = node.text;
+        const seps = [" ", "\n", "\t", ".", ",", "，", "。", "、", "；", "：", "？", "！"];
+        const escapedSeps = seps.map((sep) => sep.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+        const regex = new RegExp(escapedSeps.join("|"), "g");
+        const splitedTextList = text.split(regex).filter((item) => item !== "");
+        const putLocation = node.collisionBox.getRectangle().location.clone();
+        const newNodes = [];
+        for (const splitedText of splitedTextList) {
+          const newTextNode = new TextNode(this.project, {
+            uuid: v4(),
+            text: splitedText,
+            collisionBox: new CollisionBox([new Rectangle(new Vector(putLocation.x, putLocation.y), new Vector(1, 1))]),
+            color: node.color.clone(),
+          });
+          newNodes.push(newTextNode);
+          this.project.stageManager.add(newTextNode);
+          putLocation.y += 100;
+        }
+        newNodes.forEach((newNode) => {
+          newNode.isSelected = true;
+        });
+        this.project.layoutManualAlign.alignTopToBottomNoSpace();
+        newNodes.forEach((newNode) => {
+          newNode.isSelected = false;
+        });
+      }
+      this.project.stageManager.deleteEntities(selectedTextNodes);
+    });
+
+    await this.project.keyBinds.create("mergeTextNodes", "r u a", () => {
+      let selectedTextNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof TextNode);
+      if (selectedTextNodes.length <= 1) {
+        setTimeout(() => {
+          this.project.effects.addEffect(TextRiseEffect.default("rua的节点数量不能小于2"));
+        }, 500);
+        return;
+      }
+      selectedTextNodes = selectedTextNodes.sort(
+        (a, b) => a.collisionBox.getRectangle().location.y - b.collisionBox.getRectangle().location.y,
+      );
+      let mergeText = "";
+      let mergeDetails = "";
+      for (const textNode of selectedTextNodes) {
+        mergeText += textNode.text + "\n";
+        mergeDetails += textNode.details;
+      }
+      mergeText = mergeText.trim();
+      const leftTop = Rectangle.getBoundingRectangle(
+        selectedTextNodes.map((node) => node.collisionBox.getRectangle()),
+      ).leftTop;
+      const avgColor = averageColors(selectedTextNodes.map((node) => node.color));
+      const newTextNode = new TextNode(this.project, {
+        uuid: v4(),
+        text: mergeText,
+        collisionBox: new CollisionBox([new Rectangle(new Vector(leftTop.x, leftTop.y), new Vector(400, 1))]),
+        color: avgColor.clone(),
+        sizeAdjust: "manual",
+        details: mergeDetails,
+      });
+      this.project.stageManager.add(newTextNode);
+      this.project.stageManager.deleteEntities(selectedTextNodes);
+    });
+
+    await this.project.keyBinds.create("swapTextAndDetails", "e e e e e", () => {
+      const selectedTextNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof TextNode);
+      for (const node of selectedTextNodes) {
+        const details = node.details;
+        const text = node.text;
+        node.details = text;
+        node.text = details;
+        node.forceAdjustSizeByText();
+      }
+      this.project.historyManager.recordStep();
     });
   }
 }

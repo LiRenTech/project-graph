@@ -38,7 +38,6 @@ import type { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardO
 import type { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import type { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
 import type { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
-import type { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
 import type { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
 import type { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import type { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
@@ -340,7 +339,6 @@ declare module "./Project" {
     camera: Camera;
     effects: Effects;
     autoCompute: AutoCompute;
-    secretKeys: SecretKeys;
     rectangleSelect: RectangleSelect;
     stageNodeRotate: StageNodeRotate;
     complexityDetector: ComplexityDetector;

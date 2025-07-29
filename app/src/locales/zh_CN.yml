@@ -1375,3 +1375,99 @@ keyBinds:
   penStrokeWidthDecrease:
     title: 涂鸦笔画变细
     description: 按下后，笔画变细
+  screenFlashEffect:
+    title: 屏幕闪黑特效
+    description: 类似于秘籍键中的hello world，测试出现黑屏的效果时则证明秘籍键系统正常运行了
+  alignNodesToInteger:
+    title: 将所有可连接节点的坐标位置对齐到整数
+    description: 可以大幅度减小json文件的体积
+  toggleCheckmarkOnTextNodes:
+    title: 将选中的文本节点都打上对勾✅，并标为绿色
+    description: 仅对文本节点生效，选中后再输入一次可以取消对勾
+  switchToDarkTheme:
+    title: 切换成黑色主题
+    description: 切换后需要在舞台上划一刀才生生效
+  switchToLightTheme:
+    title: 切换成白色主题
+    description: 切换后需要在舞台上划一刀才生生效
+  switchToParkTheme:
+    title: 切换成公园主题
+    description: 切换后需要在舞台上划一刀才生生效
+  switchToMacaronTheme:
+    title: 切换成马卡龙主题
+    description: 切换后需要在舞台上划一刀才生生效
+  switchToMorandiTheme:
+    title: 切换成莫兰迪主题
+    description: 切换后需要在舞台上划一刀才生生效
+  increasePenAlpha:
+    title: 增加笔刷不透明度通道值
+    description: ""
+  decreasePenAlpha:
+    title: 减少笔刷不透明度通道值
+    description: ""
+  alignTop:
+    title: 将选中实体顶部对齐，选中的连线从源实体的顶边缘射出，到目标实体底边缘结束
+    description: 小键盘的向上
+  alignBottom:
+    title: 将选中实体底部对齐，选中的连线从源实体的底边缘射出，到目标实体顶边缘结束
+    description: 小键盘的向下
+  alignLeft:
+    title: 将选中实体左侧对齐，选中的连线从源实体的左边缘射出，到目标实体右边缘结束
+    description: 小键盘的向左
+  alignRight:
+    title: 将选中实体右侧对齐，选中的连线从源实体的右边缘射出，到目标实体左边缘结束
+    description: 小键盘的向右
+  alignHorizontalSpaceBetween:
+    title: 相等间距水平对齐
+    description: 小键盘的左右左右，晃一晃就等间距了
+  alignVerticalSpaceBetween:
+    title: 相等间距垂直对齐
+    description: 小键盘的上下上下，晃一晃就等间距了
+  alignCenterHorizontal:
+    title: 中心水平对齐
+    description: 小键盘：先中，然后左右
+  alignCenterVertical:
+    title: 中心垂直对齐
+    description: 小键盘：先中，然后上下
+  alignLeftToRightNoSpace:
+    title: 向右紧密堆积一排
+    description: 小键盘横着从左到右穿一串
+  alignTopToBottomNoSpace:
+    title: 向下紧密堆积一列
+    description: 小键盘竖着从上到下穿一串
+  connectAllSelectedEntities:
+    title: 将所有选中实体进行全连接
+    description: 用于特殊教学场景或图论教学，“- -”开头表示连线相关
+  connectLeftToRight:
+    title: 将所有选中实体按照从左到右的摆放位置进行连接
+    description: ""
+  connectTopToBottom:
+    title: 将所有选中实体按照从上到下的摆放位置进行连接
+    description: ""
+  selectAllEdges:
+    title: 选中所有连线
+    description: 仅选择所有视野内的连线
+  colorSelectedRed:
+    title: 将所有选中物体染色为纯红色
+    description: 具体为：(239, 68, 68)，仅作快速标注用
+  increaseBrightness:
+    title: 将所选实体的颜色亮度增加
+    description: 不能对没有上色的或者透明的实体使用，b是brightness，句号键也是>键，可以看成往右走，数值增大
+  decreaseBrightness:
+    title: 将所选实体的颜色亮度减少
+    description: 不能对没有上色的或者透明的实体使用，b是brightness，逗号键也是<键，可以看成往左走，数值减小
+  gradientColor:
+    title: 将所选实体的颜色渐变
+    description: 后续打算做成更改色相环，目前还不完善
+  toggleTextNodeSizeMode:
+    title: 将选中的文本节点，切换大小调整模式
+    description: 仅对文本节点生效，auto模式：输入文字不能自动换行，manual模式：宽度为框的宽度，宽度超出自动换行
+  splitTextNodes:
+    title: 将选中的文本节点，剋(kēi)成小块
+    description: 仅对文本节点生效，根据标点符号，空格、换行符等进行分割，将其分割成小块
+  mergeTextNodes:
+    title: 将选中的多个文本节点，挼ruá (合并)成一个文本节点，颜色也会取平均值
+    description: 仅对文本节点生效，顺序按从上到下排列，节点的位置按节点矩形左上角顶点坐标为准
+  swapTextAndDetails:
+    title: 详略交换
+    description: 将所有选中的文本节点的详细信息和实际内容进行交换，连按5次e，主要用于直接粘贴进来的文本内容想写入详细信息
