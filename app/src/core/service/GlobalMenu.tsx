@@ -6,7 +6,6 @@ import {
   Axe,
   Bot,
   CircleAlert,
-  Earth,
   ExternalLink,
   File,
   FileCode,
@@ -41,12 +40,14 @@ import { ReactNode } from "react";
 import { URI } from "vscode-uri";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
-import { activeProjectAtom, projectsAtom, store } from "../../state";
+import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "../../state";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
 import { Dialog } from "../../components/dialog";
 import { appCacheDir, dataDir } from "@tauri-apps/api/path";
 import { PathString } from "../../utils/pathString";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { Settings } from "./Settings";
 
 export namespace GlobalMenu {
   export class Menu {
@@ -126,10 +127,26 @@ export namespace GlobalMenu {
       }),
     ]),
     new Menu("视野", <View />, [
-      new MenuItem("根据全部内容重制视野", <Fullscreen />, () => {}),
-      new MenuItem("根据选中内容重制视野", <SquareDashedMousePointer />, () => {}),
-      new MenuItem("仅重制视野缩放到标准大小", <Scaling />, () => {}),
-      new MenuItem("移动视野到坐标轴原点", <MapPin />, () => {}),
+      new MenuItem("根据全部内容重制视野", <Fullscreen />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.camera.reset();
+      }),
+      new MenuItem("根据选中内容重制视野", <SquareDashedMousePointer />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.camera.resetBySelected();
+      }),
+      new MenuItem("仅重制视野缩放到标准大小", <Scaling />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.camera.resetScale();
+      }),
+      new MenuItem("移动视野到坐标轴原点", <MapPin />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.camera.resetLocationToZero();
+      }),
     ]),
     new Menu("操作", <Axe />, [
       new MenuItem("刷新", <RefreshCcwDot />, () => {}),
@@ -156,16 +173,38 @@ export namespace GlobalMenu {
       }),
     ]),
     new Menu("视图", <AppWindow />, [
-      new MenuItem("全屏", <Fullscreen />, () => {}),
-      new MenuItem("专注模式", <Airplay />, () => {}),
-      new MenuItem("隐私模式", <VenetianMask />, () => {}),
+      new MenuItem("全屏", <Fullscreen />, () => {
+        getCurrentWindow()
+          .isFullscreen()
+          .then((res) => getCurrentWindow().setFullscreen(!res));
+      }),
+      new MenuItem("专注模式", <Airplay />, async () => {
+        const isClassroomMode = store.get(isClassroomModeAtom);
+        if (!isClassroomMode) {
+          Dialog.show({
+            title: "恢复方法",
+            content: "左上角菜单按钮仅仅是透明了，并没有消失",
+          });
+        }
+        const newValue = !isClassroomMode;
+        Settings.set("isClassroomMode", newValue);
+        store.set(isClassroomModeAtom, newValue);
+      }),
+      new MenuItem("隐私模式", <VenetianMask />, async () => {
+        await Dialog.show({
+          title: "还在开发中",
+          content: "还在开发中",
+          type: "warning",
+        });
+      }),
     ]),
     new Menu("关于", <CircleAlert />, [
       new MenuItem("关于", <MessageCircleWarning />, () => {
         SettingsWindow.open("about");
       }),
-      new MenuItem("新手引导", <PersonStanding />, () => {}),
-      new MenuItem("进入官网", <Earth />, () => {}),
+      new MenuItem("新手引导", <PersonStanding />, () => {
+        // 有多标签页了，可以新建一个空的文件并在里面写东西了
+      }),
     ]),
   ];
 }

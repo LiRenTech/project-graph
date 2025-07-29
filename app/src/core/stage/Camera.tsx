@@ -424,4 +424,8 @@ export class Camera {
     this.currentScale = 1;
     this.targetScale = 1;
   }
+
+  resetLocationToZero() {
+    this.bombMove(Vector.getZero());
+  }
 }
