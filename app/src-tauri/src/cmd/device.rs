@@ -1,4 +1,4 @@
-use std::io::Read;
+use std::{io::Read, process::Command};
 
 #[tauri::command]
 pub fn get_device_id() -> Result<String, String> {
@@ -6,7 +6,7 @@ pub fn get_device_id() -> Result<String, String> {
     match os_name {
         "windows" => {
             // wmic csproduct get uuid
-            let output = std::process::Command::new("wmic")
+            let output = Command::new("wmic")
                 .arg("csproduct")
                 .arg("get")
                 .arg("uuid")
@@ -17,21 +17,26 @@ pub fn get_device_id() -> Result<String, String> {
         }
         "macos" => {
             // system_profiler SPHardwareDataType | awk '/Serial/ {print $4}'
-            let output = std::process::Command::new("system_profiler")
+            let output = Command::new("system_profiler")
                 .arg("SPHardwareDataType")
-                .output();
-            let stdout = String::from_utf8(output.unwrap().stdout).unwrap();
-            let uuid = stdout
-                .trim()
-                .split("\n")
-                .last()
-                .unwrap()
-                .split(":")
-                .last()
-                .unwrap()
-                .trim()
-                .to_string();
-            Ok(uuid)
+                .output()
+                .expect("Failed to execute system_profiler");
+            if !output.status.success() {
+                eprintln!("Error running system_profiler");
+                return Err("Failed to get device id".to_string())
+            }
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            for line in stdout.lines() {
+                if line.trim().starts_with("Hardware UUID") {
+                    let parts: Vec<&str> = line.split(':').collect();
+                    if parts.len() > 1 {
+                        let uuid = parts[1].trim();
+                        println!("Hardware UUID: {}", uuid);
+                        return Ok(uuid.to_string())
+                    }
+                }
+            }
+            Err("Failed to get device id".to_string())
         }
         "linux" => {
             // read file /etc/machine-id
