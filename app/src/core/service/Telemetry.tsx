@@ -1,13 +1,14 @@
+import { fetch } from "@tauri-apps/plugin-http";
 import { getDeviceId } from "../../utils/otherApi";
 import { FeatureFlags } from "./FeatureFlags";
+import { Settings } from "./Settings";
 
 export namespace Telemetry {
   let deviceId = "";
 
-  export async function event(event: string, data: any) {
-    if (!FeatureFlags.TELEMETRY) {
-      return;
-    }
+  export async function event(event: string, data: any = {}) {
+    if (!FeatureFlags.TELEMETRY) return;
+    if (!Settings.sync.allowTelemetry) return;
     if (!deviceId) {
       deviceId = await getDeviceId();
     }
@@ -17,7 +18,7 @@ export namespace Telemetry {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type: event,
+        event,
         user: deviceId,
         data,
       }),

@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
+import { getVersion } from "@tauri-apps/api/app";
+import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dialog } from "../components/dialog";
 import { GlobalMenu } from "../core/service/GlobalMenu";
 import { Settings } from "../core/service/Settings";
+import { Telemetry } from "../core/service/Telemetry";
 import { Themes } from "../core/service/Themes";
 import { activeProjectAtom, projectsAtom } from "../state";
 import { cn } from "../utils/cn";
@@ -29,6 +31,7 @@ export default function App() {
   const [isWindowCollapsing, setIsWindowCollapsing] = useState(false);
   const [isClassroomMode, setIsClassroomMode] = Settings.use("isClassroomMode");
   const [isWide, setIsWide] = useState(false);
+  const [telemetryEventSent, setTelemetryEventSent] = useState(false);
 
   const { t } = useTranslation("app");
 
@@ -68,30 +71,32 @@ export default function App() {
       e.preventDefault();
       // 保存窗口位置
       await saveWindowState(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
-      await Dialog.show({
-        title: "是否保存更改？",
-        buttons: [
-          {
-            text: "保存",
-          },
-          {
-            text: "暂存",
-          },
-          {
-            text: "放弃更改",
-          },
-          {
-            text: "帮助",
-            onClick: async () => {
-              await Dialog.show({
-                title: "暂存是什么东西？",
-                content:
-                  "在 2.0 以后的版本中，应用会定时将文件内容暂存到缓存目录中，防止应用意外关闭造成的文件丢失。您可以在“最近打开”中找回暂存的文件。",
-              });
-            },
-          },
-        ],
-      });
+      // await Dialog.show({
+      //   title: "是否保存更改？",
+      //   buttons: [
+      //     {
+      //       text: "保存",
+      //     },
+      //     {
+      //       text: "暂存",
+      //     },
+      //     {
+      //       text: "放弃更改",
+      //     },
+      //     {
+      //       text: "帮助",
+      //       onClick: async () => {
+      //         await Dialog.show({
+      //           title: "暂存是什么东西？",
+      //           content:
+      //             "在 2.0 以后的版本中，应用会定时将文件内容暂存到缓存目录中，防止应用意外关闭造成的文件丢失。您可以在“最近打开”中找回暂存的文件。",
+      //         });
+      //       },
+      //     },
+      //   ],
+      // });
+      Telemetry.event("关闭应用");
+      await getCurrentWindow().destroy();
     });
 
     // 监听主题样式切换
@@ -120,6 +125,19 @@ export default function App() {
       }
       setIsWide(window.innerWidth / window.innerHeight > 1.8);
     });
+
+    if (!telemetryEventSent) {
+      setTelemetryEventSent(true);
+      (async () => {
+        await Telemetry.event("启动应用", {
+          version: await getVersion(),
+          os: platform(),
+          arch: arch(),
+          osVersion: version(),
+        });
+      })();
+    }
+
     return () => {
       unlisten1?.then((f) => f());
     };
