@@ -1,5 +1,6 @@
+import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";
-import React, { startTransition, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Settings } from "../core/service/Settings";
 import { Telemetry } from "../core/service/Telemetry";
@@ -32,36 +33,26 @@ export function SettingField({
   kind?: "file" | "directory";
   extra?: React.ReactNode;
 }) {
-  const [value, setValue] = React.useState<any>(Settings.defaultSettings[settingKey]);
+  const [value, setValue] = React.useState<any>(Settings.sync[settingKey]);
   const { t, i18n } = useTranslation("settings");
 
   React.useEffect(() => {
-    Settings.get(settingKey).then((val) => {
-      startTransition(() => {
-        setValue(val);
-      });
-    });
-
-    return () => {
-      // 如果修改过设置就发送事件
-      if (value !== Settings.defaultSettings[settingKey] && settingKey !== "aiApiKey") {
-        Telemetry.event("修改设置", {
-          key: settingKey,
-          value,
-        });
-      }
-    };
-  }, [settingKey]);
-
-  React.useEffect(() => {
-    if (value !== undefined) {
+    if (value !== Settings.sync[settingKey]) {
       Settings.set(settingKey, value);
+      postTelemetryEvent();
+    }
 
-      if (settingKey === "language") {
-        i18n.changeLanguage(value);
-      }
+    if (settingKey === "language") {
+      i18n.changeLanguage(value);
     }
   }, [value]);
+
+  const postTelemetryEvent = _.debounce(() => {
+    Telemetry.event("修改设置", {
+      key: settingKey,
+      value,
+    });
+  }, 1000);
 
   return (
     <Field
