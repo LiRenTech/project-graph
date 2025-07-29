@@ -1,4 +1,5 @@
 import { open } from "@tauri-apps/plugin-dialog";
+import { open as openFilePath } from "@tauri-apps/plugin-shell";
 import {
   Airplay,
   AppWindow,
@@ -43,6 +44,9 @@ import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, projectsAtom, store } from "../../state";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
+import { Dialog } from "../../components/dialog";
+import { appCacheDir, dataDir } from "@tauri-apps/api/path";
+import { PathString } from "../../utils/pathString";
 
 export namespace GlobalMenu {
   export class Menu {
@@ -97,9 +101,29 @@ export namespace GlobalMenu {
       new MenuItem("导出 纯文本格式", <TextQuote />, () => {}),
     ]),
     new Menu("位置", <Folder />, [
-      new MenuItem("打开软件配置文件夹", <FolderCog />, () => {}),
-      new MenuItem("打开软件缓存文件夹", <FolderClock />, () => {}),
-      new MenuItem("打开当前项目文件夹", <FolderOpen />, () => {}),
+      new MenuItem("打开软件配置文件夹", <FolderCog />, async () => {
+        const path = (await dataDir()) + PathString.getSep() + "liren.project-graph";
+        openFilePath(path);
+      }),
+      new MenuItem("打开软件缓存文件夹", <FolderClock />, async () => {
+        const path = await appCacheDir();
+        openFilePath(path);
+      }),
+      new MenuItem("打开当前项目文件夹", <FolderOpen />, async () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        if (project.isDraft) {
+          await Dialog.show({
+            title: "草稿没有位置",
+            content: "草稿没有位置，请先保存草稿。",
+            type: "warning",
+          });
+          return;
+        }
+        const absPath = project.uri.fsPath;
+        console.log("正在打开路径", absPath);
+        openFilePath(absPath);
+      }),
     ]),
     new Menu("视野", <View />, [
       new MenuItem("根据全部内容重制视野", <Fullscreen />, () => {}),

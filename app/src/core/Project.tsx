@@ -279,6 +279,7 @@ export class Project {
     this._uri = uri;
     this._state = ProjectState.Unsaved;
   }
+
   get state() {
     return this._state;
   }
