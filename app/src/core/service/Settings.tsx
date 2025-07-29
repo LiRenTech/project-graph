@@ -271,7 +271,7 @@ export namespace Settings {
     aiShowTokenCount: false,
   };
 
-  export const sync = defaultSettings;
+  export const sync = { ...defaultSettings };
 
   export async function init() {
     if (store) return;
@@ -314,7 +314,6 @@ export namespace Settings {
   } = {};
 
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
-    // console.log(key, value);
     store.set(key, value);
     store.save();
     sync[key] = value;
@@ -371,5 +370,18 @@ export namespace Settings {
     }, [value, inited]);
 
     return [value, setValue];
+  }
+
+  export function getChangedSettings(): Partial<Settings> {
+    // 获取修改过的设置项
+    const changed: Partial<Settings> = {};
+    for (const key in defaultSettings) {
+      // @ts-expect-error fuck ts
+      if (sync[key] !== defaultSettings[key]) {
+        // @ts-expect-error fuck ts
+        changed[key] = sync[key];
+      }
+    }
+    return changed;
   }
 }

@@ -2,6 +2,7 @@ import { ChevronRight, RotateCw } from "lucide-react";
 import React, { startTransition, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Settings } from "../core/service/Settings";
+import { Telemetry } from "../core/service/Telemetry";
 import { cn } from "../utils/cn";
 import Button from "./Button";
 import FileChooser from "./FileChooser";
@@ -40,6 +41,16 @@ export function SettingField({
         setValue(val);
       });
     });
+
+    return () => {
+      // 如果修改过设置就发送事件
+      if (value !== Settings.defaultSettings[settingKey] && settingKey !== "aiApiKey") {
+        Telemetry.event("修改设置", {
+          key: settingKey,
+          value,
+        });
+      }
+    };
   }, [settingKey]);
 
   React.useEffect(() => {
