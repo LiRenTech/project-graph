@@ -1,15 +1,15 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, SymmetryCurve } from "@graphif/shapes";
-import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
-import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
-// import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
-import { Project, service } from "../../../../../Project";
-import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
-import { SvgUtils } from "../../../../svg/SvgUtils";
-import { Renderer } from "../../../renderer";
-import { EdgeRendererClass } from "../EdgeRendererClass";
+import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+// import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { SvgUtils } from "@/core/render/svg/SvgUtils";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { EdgeRendererClass } from "@/core/render/canvas2d/entityRenderer/edge/EdgeRendererClass";
 
 /**
  * 贝塞尔曲线

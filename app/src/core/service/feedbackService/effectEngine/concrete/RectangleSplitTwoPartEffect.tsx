@@ -1,8 +1,8 @@
 import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 一个矩形被一刀切成两半，两个多边形的的特效

@@ -1,5 +1,5 @@
 import { Color } from "@graphif/data-structures";
-import { service } from "../../../Project";
+import { service } from "@/core/Project";
 
 @service("generateFromFolder")
 export class GenerateFromFolder {

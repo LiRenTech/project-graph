@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import React from "react";
-import { SubWindow } from "../core/service/SubWindow";
-import { cn } from "../utils/cn";
-import Input from "./Input";
+import { SubWindow } from "@/core/service/SubWindow";
+import { cn } from "@/utils/cn";
+import Input from "@/components/Input";
 
 export namespace Dialog {
   export type DialogButton = {

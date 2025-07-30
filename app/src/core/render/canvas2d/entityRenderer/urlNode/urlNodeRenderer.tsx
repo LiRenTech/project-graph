@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../../Project";
-import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
-import { Renderer } from "../../renderer";
+import { Project, service } from "@/core/Project";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 @service("urlNodeRenderer")
 export class UrlNodeRenderer {

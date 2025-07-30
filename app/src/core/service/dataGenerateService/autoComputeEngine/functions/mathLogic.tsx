@@ -1,5 +1,5 @@
-import { NumberFunctions } from "../../../../algorithm/numberFunctions";
-import { Random } from "../../../../algorithm/random";
+import { NumberFunctions } from "@/core/algorithm/numberFunctions";
+import { Random } from "@/core/algorithm/random";
 import { Decimal } from "decimal.js";
 
 /**

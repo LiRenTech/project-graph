@@ -1,16 +1,16 @@
 import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line } from "@graphif/shapes";
-import { CursorNameEnum } from "../../../../../types/cursors";
-import { Direction } from "../../../../../types/directions";
-import { isMac } from "../../../../../utils/platform";
-import { Project } from "../../../../Project";
-import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
-import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
-import { SoundService } from "../../../feedbackService/SoundService";
-import { Settings } from "../../../Settings";
-import { MouseLocation } from "../../MouseLocation";
-import { ControllerClass } from "../ControllerClass";
+import { CursorNameEnum } from "@/types/cursors";
+import { Direction } from "@/types/directions";
+import { isMac } from "@/utils/platform";
+import { Project } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { Settings } from "@/core/service/Settings";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 连线控制器

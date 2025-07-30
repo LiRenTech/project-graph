@@ -1,9 +1,9 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Line } from "@graphif/shapes";
-import { ConvexHull } from "../../../../algorithm/geometry/convexHull";
-import { Project, service } from "../../../../Project";
-import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { Renderer } from "../../renderer";
+import { ConvexHull } from "@/core/algorithm/geometry/convexHull";
+import { Project, service } from "@/core/Project";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 @service("multiTargetUndirectedEdgeRenderer")
 export class MultiTargetUndirectedEdgeRenderer {

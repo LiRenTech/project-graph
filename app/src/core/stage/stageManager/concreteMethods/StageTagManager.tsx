@@ -1,17 +1,17 @@
 import { Color, ProgressNumber } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { RectangleNoteEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { StageObject } from "../../stageObject/abstract/StageObject";
-import { Edge } from "../../stageObject/association/Edge";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Project, service } from "@/core/Project";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
 
 @service("tagManager")
 export class TagManager {

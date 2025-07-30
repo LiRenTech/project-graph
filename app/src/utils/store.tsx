@@ -1,5 +1,5 @@
 import { load, Store } from "@tauri-apps/plugin-store";
-import { isWeb } from "./platform";
+import { isWeb } from "@/utils/platform";
 
 export async function createStore(name: string): Promise<Store> {
   if (isWeb) {

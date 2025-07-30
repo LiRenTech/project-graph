@@ -23,7 +23,12 @@
     // 其他
     "experimentalDecorators": true, // 开启装饰器
     "emitDecoratorMetadata": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]

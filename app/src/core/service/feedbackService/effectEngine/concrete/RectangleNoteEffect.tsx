@@ -1,9 +1,9 @@
 import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
-import { reverseAnimate } from "../mathTools/animateFunctions";
-import { easeOutQuint } from "../mathTools/easings";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { reverseAnimate } from "@/core/service/feedbackService/effectEngine/mathTools/animateFunctions";
+import { easeOutQuint } from "@/core/service/feedbackService/effectEngine/mathTools/easings";
 
 /**
  * 用于提示某个矩形区域的效果

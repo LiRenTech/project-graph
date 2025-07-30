@@ -1,7 +1,7 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { Bug, MessageCircleCode, Tag, X } from "lucide-react";
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/utils/cn";
 
 export default function ErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);

@@ -1,8 +1,8 @@
 import { Color, LruCache, Vector } from "@graphif/data-structures";
 import md5 from "md5";
-import { FONT, getTextSize, replaceTextWhenProtect } from "../../../../utils/font";
-import { Project, service } from "../../../Project";
-import { Settings } from "../../../service/Settings";
+import { FONT, getTextSize, replaceTextWhenProtect } from "@/utils/font";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
 
 /**
  * 专门用于在Canvas上渲染文字

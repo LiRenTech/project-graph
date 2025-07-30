@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
-import { EntityJumpMoveEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
-import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { Entity } from "../../stageObject/abstract/StageEntity";
+import { Project, service } from "@/core/Project";
+import { EntityJumpMoveEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
+import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 管理节点的位置移动

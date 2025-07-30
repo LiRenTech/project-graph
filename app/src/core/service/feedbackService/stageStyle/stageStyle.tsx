@@ -1,6 +1,6 @@
 import { Color } from "@graphif/data-structures";
-import { Settings } from "../../Settings";
-import { Themes } from "../../Themes";
+import { Settings } from "@/core/service/Settings";
+import { Themes } from "@/core/service/Themes";
 
 export interface EffectColors {
   /** 闪光线，切割线等白光刃的白色 */

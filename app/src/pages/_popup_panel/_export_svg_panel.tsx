@@ -1,13 +1,10 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";
-import Button from "../../components/Button";
-import { Dialog } from "../../components/dialog";
-import Select from "../../components/Select";
-import {
-  StageExportSvg,
-  SvgExportConfig,
-} from "../../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
-import { isWeb } from "../../utils/platform";
+import Button from "@/components/Button";
+import { Dialog } from "@/components/dialog";
+import Select from "@/components/Select";
+import { StageExportSvg, SvgExportConfig } from "@/core/service/dataGenerateService/stageExportEngine/StageExportSvg";
+import { isWeb } from "@/utils/platform";
 
 export default function ExportSvgPanel() {
   const onSaveSVGNew = async () => {

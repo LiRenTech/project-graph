@@ -1,6 +1,6 @@
 import { isNumber } from "lodash";
-import { CountResultObject } from "../../core/service/dataManageService/ComplexityDetector";
-import { cn } from "../../utils/cn";
+import { CountResultObject } from "@/core/service/dataManageService/ComplexityDetector";
+import { cn } from "@/utils/cn";
 
 /**
  * 复杂度结果面板

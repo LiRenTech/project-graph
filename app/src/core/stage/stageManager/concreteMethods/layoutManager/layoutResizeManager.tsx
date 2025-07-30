@@ -1,4 +1,4 @@
-import { TextNode } from "../../../stageObject/entity/TextNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 /**
  * 统一修改大小的布局管理器

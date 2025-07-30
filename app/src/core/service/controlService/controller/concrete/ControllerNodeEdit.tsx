@@ -1,15 +1,15 @@
 import { Vector } from "@graphif/data-structures";
 import { open } from "@tauri-apps/plugin-shell";
-import { Dialog } from "../../../../../components/dialog";
-import { Path } from "../../../../../utils/path";
-import { PathString } from "../../../../../utils/pathString";
-import { isMac, isWeb } from "../../../../../utils/platform";
-import { Project } from "../../../../Project";
-import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
+import { Dialog } from "@/components/dialog";
+import { Path } from "@/utils/path";
+import { PathString } from "@/utils/pathString";
+import { isMac, isWeb } from "@/utils/platform";
+import { Project } from "@/core/Project";
+import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *

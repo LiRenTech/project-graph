@@ -1,15 +1,15 @@
 import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
-import { CursorNameEnum } from "../../../../../types/cursors";
-import { isMac } from "../../../../../utils/platform";
-import { Project } from "../../../../Project";
-import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
-import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
-import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { Project } from "@/core/Project";
+import { PenStroke, PenStrokeSegment } from "@/core/stage/stageObject/entity/PenStroke";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { CircleChangeRadiusEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
+import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { EntityCreateFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 涂鸦功能

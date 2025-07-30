@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { Field } from "../../../components/Field";
-import Switch from "../../../components/Switch";
-import { Settings } from "../../../core/service/Settings";
-import { Themes } from "../../../core/service/Themes";
+import { Field } from "@/components/Field";
+import Switch from "@/components/Switch";
+import { Settings } from "@/core/service/Settings";
+import { Themes } from "@/core/service/Themes";
 
 export default function ThemesPage() {
   const { i18n } = useTranslation();

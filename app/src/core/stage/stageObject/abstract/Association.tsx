@@ -1,6 +1,6 @@
 import { Color } from "@graphif/data-structures";
-import { ConnectableEntity } from "./ConnectableEntity";
-import { StageObject } from "./StageObject";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 
 /**
  * 一切连接关系的抽象

@@ -1,17 +1,17 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line } from "@graphif/shapes";
-import { Project, service } from "../../../../../Project";
-import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
-import { EdgeCutEffect } from "../../../../../service/feedbackService/effectEngine/concrete/EdgeCutEffect";
-import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
-import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
-import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
-import { Section } from "../../../../../stage/stageObject/entity/Section";
-import { SvgUtils } from "../../../../svg/SvgUtils";
-import { Renderer } from "../../../renderer";
-import { EdgeRendererClass } from "../EdgeRendererClass";
+import { Project, service } from "@/core/Project";
+import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { EdgeCutEffect } from "@/core/service/feedbackService/effectEngine/concrete/EdgeCutEffect";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { SvgUtils } from "@/core/render/svg/SvgUtils";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { EdgeRendererClass } from "@/core/render/canvas2d/entityRenderer/edge/EdgeRendererClass";
 
 /**
  * 直线渲染器

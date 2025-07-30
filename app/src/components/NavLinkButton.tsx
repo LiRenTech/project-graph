@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useMatch } from "react-router-dom";
-import { SoundService } from "../core/service/feedbackService/SoundService";
-import { cn } from "../utils/cn";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { cn } from "@/utils/cn";
 
 export default function NavLink({
   children,

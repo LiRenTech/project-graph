@@ -1,5 +1,5 @@
 import { Vector } from "@graphif/data-structures";
-import { Entity } from "./StageEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 一切可被Edge连接的东西，且会算入图分析算法的东西

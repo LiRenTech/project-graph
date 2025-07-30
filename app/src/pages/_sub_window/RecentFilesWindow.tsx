@@ -3,17 +3,17 @@ import { Rectangle } from "@graphif/shapes";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { CircleHelp, Delete, DoorOpen, File, FolderInput, LoaderPinwheel, Radiation, Star } from "lucide-react";
 import React, { useEffect } from "react";
-import Button from "../../components/Button";
-import { Dialog } from "../../components/dialog";
-import IconButton from "../../components/IconButton";
-import Input from "../../components/Input";
-import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
-import { StartFilesManager } from "../../core/service/dataFileService/StartFilesManager";
-import { SubWindow } from "../../core/service/SubWindow";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { cn } from "../../utils/cn";
-import { PathString } from "../../utils/pathString";
-import { isDesktop } from "../../utils/platform";
+import Button from "@/components/Button";
+import { Dialog } from "@/components/dialog";
+import IconButton from "@/components/IconButton";
+import Input from "@/components/Input";
+import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
+import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
+import { SubWindow } from "@/core/service/SubWindow";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { cn } from "@/utils/cn";
+import { PathString } from "@/utils/pathString";
+import { isDesktop } from "@/utils/platform";
 
 /**
  * 最近文件面板按钮

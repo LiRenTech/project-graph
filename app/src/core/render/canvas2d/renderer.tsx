@@ -1,14 +1,14 @@
 import { Color, mixColors, Vector } from "@graphif/data-structures";
 import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
-import { getTextSize } from "../../../utils/font";
-import { isFrame } from "../../../utils/platform";
-import { Project, service } from "../../Project";
-import { Settings } from "../../service/Settings";
-import { MouseLocation } from "../../service/controlService/MouseLocation";
-import { StageObject } from "../../stage/stageObject/abstract/StageObject";
-import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
-import { LineEdge } from "../../stage/stageObject/association/LineEdge";
-import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { getTextSize } from "@/utils/font";
+import { isFrame } from "@/utils/platform";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
+import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 
 /**
  * 渲染器

@@ -1,6 +1,6 @@
 // import { Vector } from "@graphif/data-structures";
-// import { Entity } from "../abstract/StageEntity";
-// import { CollisionBox } from "../collisionBox/collisionBox";
+// import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+// import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 // /**
 //  * 用于表示未知实体的类型

@@ -1,11 +1,11 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { Section } from "../../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 实体收缩消失特效

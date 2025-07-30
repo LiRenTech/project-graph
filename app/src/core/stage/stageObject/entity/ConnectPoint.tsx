@@ -1,10 +1,10 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "../../../../types/node";
-import { Project } from "../../../Project";
-import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { Project } from "@/core/Project";
+import { CircleChangeRadiusEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 // TODO: 这里继承了ConnectableEntity的话，TextNode模块就会报错，原因未知
 // Uncaught ReferenceError: can't access lexical declaration 'ConnectableEntity' before initialization

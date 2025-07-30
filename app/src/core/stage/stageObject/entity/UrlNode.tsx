@@ -1,12 +1,12 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "../../../../types/node";
-import { getTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { getTextSize } from "@/utils/font";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { NodeMoveShadowEffect } from "@/core/service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 网页链接节点

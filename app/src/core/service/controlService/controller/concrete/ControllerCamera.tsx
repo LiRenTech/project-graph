@@ -4,14 +4,14 @@
 
 import { LimitLengthQueue, Vector } from "@graphif/data-structures";
 import toast from "react-hot-toast";
-import { CursorNameEnum } from "../../../../../types/cursors";
-import { isIpad, isMac } from "../../../../../utils/platform";
-import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
-import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
-import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
-import { ControllerCameraMac } from "./ControllerCamera/mac";
+import { CursorNameEnum } from "@/types/cursors";
+import { isIpad, isMac } from "@/utils/platform";
+import { ArrayFunctions } from "@/core/algorithm/arrayFunctions";
+import { EntityCreateFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { MouseTipFeedbackEffect } from "@/core/service/feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { ControllerCameraMac } from "@/core/service/controlService/controller/concrete/ControllerCamera/mac";
 
 /**
  * 处理键盘按下事件

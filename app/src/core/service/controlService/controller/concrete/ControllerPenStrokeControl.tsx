@@ -1,6 +1,6 @@
 import { Vector } from "@graphif/data-structures";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 所有和笔迹控制特定的逻辑都在这里

@@ -1,8 +1,8 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import OpenAI from "openai";
-import { Project, service } from "../../../Project";
-import { Settings } from "../../Settings";
-import { AITools } from "./AITools";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { AITools } from "@/core/service/dataManageService/aiEngine/AITools";
 
 @service("aiEngine")
 export class AIEngine {

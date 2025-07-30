@@ -1,9 +1,9 @@
 import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { EffectParticle } from "../effectElements/effectParticle";
-import { Effect } from "../effectObject";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { EffectParticle } from "@/core/service/feedbackService/effectEngine/effectElements/effectParticle";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 export class EntityDashTipEffect extends Effect {
   constructor(

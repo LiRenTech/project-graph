@@ -1,8 +1,8 @@
 import { Queue } from "@graphif/data-structures";
 import { Store } from "@tauri-apps/plugin-store";
-import { matchEmacsKey } from "../../../../utils/emacs";
-import { createStore } from "../../../../utils/store";
-import { Project, service } from "../../../Project";
+import { matchEmacsKey } from "@/utils/emacs";
+import { createStore } from "@/utils/store";
+import { Project, service } from "@/core/Project";
 
 /**
  * 用于管理快捷键绑定

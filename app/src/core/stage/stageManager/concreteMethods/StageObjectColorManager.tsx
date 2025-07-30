@@ -1,5 +1,5 @@
 import { Color } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Project, service } from "@/core/Project";
 
 /**
  * 管理所有 节点/连线 的颜色

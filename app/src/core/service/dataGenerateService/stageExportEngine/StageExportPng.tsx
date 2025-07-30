@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
-import { sleep } from "../../../../utils/sleep";
-import { Project, service } from "../../../Project";
-import { Settings } from "../../Settings";
+import { sleep } from "@/utils/sleep";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
 
 @service("stageExportPng")
 export class StageExportPng {

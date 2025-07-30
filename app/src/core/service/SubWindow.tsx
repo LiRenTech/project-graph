@@ -2,7 +2,7 @@ import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { atom, useAtomValue } from "jotai";
 import { startTransition } from "react";
-import { store } from "../../state";
+import { store } from "@/state";
 
 export namespace SubWindow {
   // export enum IdEnum {}

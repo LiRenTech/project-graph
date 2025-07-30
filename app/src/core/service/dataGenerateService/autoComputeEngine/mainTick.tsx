@@ -1,16 +1,19 @@
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { RectangleLittleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleLittleNoteEffect";
-import { TextRaiseEffectLocated } from "../../feedbackService/effectEngine/concrete/TextRaiseEffectLocated";
-import { CompareFunctions } from "./functions/compareLogic";
-import { MathFunctions } from "./functions/mathLogic";
-import { NodeLogic } from "./functions/nodeLogic";
-import { ProgramFunctions } from "./functions/programLogic";
-import { StringFunctions } from "./functions/stringLogic";
-import { LogicNodeNameEnum, LogicNodeSimpleOperatorEnum } from "./logicNodeNameEnum";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { RectangleLittleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleLittleNoteEffect";
+import { TextRaiseEffectLocated } from "@/core/service/feedbackService/effectEngine/concrete/TextRaiseEffectLocated";
+import { CompareFunctions } from "@/core/service/dataGenerateService/autoComputeEngine/functions/compareLogic";
+import { MathFunctions } from "@/core/service/dataGenerateService/autoComputeEngine/functions/mathLogic";
+import { NodeLogic } from "@/core/service/dataGenerateService/autoComputeEngine/functions/nodeLogic";
+import { ProgramFunctions } from "@/core/service/dataGenerateService/autoComputeEngine/functions/programLogic";
+import { StringFunctions } from "@/core/service/dataGenerateService/autoComputeEngine/functions/stringLogic";
+import {
+  LogicNodeNameEnum,
+  LogicNodeSimpleOperatorEnum,
+} from "@/core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 
 type MathFunctionType = (args: number[]) => number[];
 type StringFunctionType = (args: string[]) => string[];

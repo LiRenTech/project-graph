@@ -1,9 +1,9 @@
 import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
-import { RateFunctions } from "../mathTools/rateFunctions";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { RateFunctions } from "@/core/service/feedbackService/effectEngine/mathTools/rateFunctions";
 
 /**
  * 实体创建时粉尘凝聚特效

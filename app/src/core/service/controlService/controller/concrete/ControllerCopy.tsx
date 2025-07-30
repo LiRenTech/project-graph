@@ -1,5 +1,5 @@
 import { Vector } from "@graphif/data-structures";
-import { ControllerClass } from "../ControllerClass";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 关于复制相关的功能

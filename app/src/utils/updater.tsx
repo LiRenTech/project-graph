@@ -1,5 +1,5 @@
 import { check } from "@tauri-apps/plugin-updater";
-import { isMobile } from "./platform";
+import { isMobile } from "@/utils/platform";
 
 export async function checkUpdate() {
   if (isMobile) return null;

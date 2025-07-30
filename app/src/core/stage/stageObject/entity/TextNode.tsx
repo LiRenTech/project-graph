@@ -1,15 +1,15 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
 import { Rectangle } from "@graphif/shapes";
-import { getMultiLineTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { Entity } from "../abstract/StageEntity";
-import { ResizeAble } from "../abstract/StageObjectInterface";
-import { CollisionBox } from "../collisionBox/collisionBox";
-import { Section } from "./Section";
+import { getMultiLineTextSize } from "@/utils/font";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { NodeMoveShadowEffect } from "@/core/service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { ResizeAble } from "@/core/stage/stageObject/abstract/StageObjectInterface";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Section } from "@/core/stage/stageObject/entity/Section";
 
 /**
  *

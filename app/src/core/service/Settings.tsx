@@ -1,6 +1,6 @@
 import { Store } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
-import { createStore } from "../../utils/store";
+import { createStore } from "@/utils/store";
 
 /**
  * 设置相关的操作

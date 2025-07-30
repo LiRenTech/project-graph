@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../types/node";
+import { Serialized } from "@/types/node";
 
 export namespace ProjectUpgrader {
   export function upgrade(data: Record<string, any>): Record<string, any> {

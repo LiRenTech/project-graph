@@ -1,13 +1,13 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Line, Rectangle, Shape } from "@graphif/shapes";
 import { v4 } from "uuid";
-import { Serialized } from "../../../../types/node";
-import { getMultiLineTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { ConnectableAssociation } from "../abstract/Association";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { getMultiLineTextSize } from "@/utils/font";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { ConnectableAssociation } from "@/core/stage/stageObject/abstract/Association";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 多端无向边

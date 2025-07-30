@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Popin from "../components/Popin";
+import Popin from "@/components/Popin";
 
 export default function FloatingOutlet() {
   const navigate = useNavigate();

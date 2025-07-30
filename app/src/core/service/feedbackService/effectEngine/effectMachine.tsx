@@ -1,7 +1,7 @@
 import { getOriginalNameOf } from "virtual:original-class-name";
-import { Project, service } from "../../../Project";
-import { Settings } from "../../Settings";
-import { Effect } from "./effectObject";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 特效机器

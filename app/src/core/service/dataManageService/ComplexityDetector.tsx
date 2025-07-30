@@ -1,11 +1,11 @@
-import { Project, service } from "../../Project";
-import { LineEdge } from "../../stage/stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
-import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
-import { Section } from "../../stage/stageObject/entity/Section";
-import { TextNode } from "../../stage/stageObject/entity/TextNode";
-import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
+import { Project, service } from "@/core/Project";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
 
 export interface CountResultObject {
   textNodeWordCount: number;

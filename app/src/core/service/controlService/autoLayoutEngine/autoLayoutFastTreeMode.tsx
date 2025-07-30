@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 瞬间树形布局算法

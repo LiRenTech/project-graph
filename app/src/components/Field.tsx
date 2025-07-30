@@ -2,15 +2,15 @@ import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Settings } from "../core/service/Settings";
-import { Telemetry } from "../core/service/Telemetry";
-import { cn } from "../utils/cn";
-import Button from "./Button";
-import FileChooser from "./FileChooser";
-import Input from "./Input";
-import Select from "./Select";
-import Slider from "./Slider";
-import Switch from "./Switch";
+import { Settings } from "@/core/service/Settings";
+import { Telemetry } from "@/core/service/Telemetry";
+import { cn } from "@/utils/cn";
+import Button from "@/components/Button";
+import FileChooser from "@/components/FileChooser";
+import Input from "@/components/Input";
+import Select from "@/components/Select";
+import Slider from "@/components/Slider";
+import Switch from "@/components/Switch";
 
 export function SettingField({
   settingKey,

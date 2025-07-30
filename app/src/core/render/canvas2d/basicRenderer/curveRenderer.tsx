@@ -1,7 +1,7 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { CubicBezierCurve, SymmetryCurve } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { PenStrokeSegment } from "../../../stage/stageObject/entity/PenStroke";
+import { Project, service } from "@/core/Project";
+import { PenStrokeSegment } from "@/core/stage/stageObject/entity/PenStroke";
 
 /**
  * 关于各种曲线和直线的渲染

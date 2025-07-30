@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "./Input";
+import Input from "@/components/Input";
 
 /**
  * 一个滑块组件，可以设置最小值、最大值、步长、当前值、值变化回调函数。

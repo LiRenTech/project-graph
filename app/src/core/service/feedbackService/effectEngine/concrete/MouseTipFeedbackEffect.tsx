@@ -1,7 +1,7 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { MouseLocation } from "../../../controlService/MouseLocation";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 type MouseTipType =
   | "shrink"

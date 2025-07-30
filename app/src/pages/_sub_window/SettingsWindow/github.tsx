@@ -3,10 +3,10 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { open } from "@tauri-apps/plugin-shell";
 import { LogIn, User } from "lucide-react";
 import React from "react";
-import { Dialog } from "../../../components/dialog";
-import { ButtonField } from "../../../components/Field";
-import { Settings } from "../../../core/service/Settings";
-import { isMobile } from "../../../utils/platform";
+import { Dialog } from "@/components/dialog";
+import { ButtonField } from "@/components/Field";
+import { Settings } from "@/core/service/Settings";
+import { isMobile } from "@/utils/platform";
 
 export default function GithubPage() {
   const [logining, setLogining] = React.useState(false);

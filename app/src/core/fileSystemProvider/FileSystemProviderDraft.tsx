@@ -3,8 +3,8 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { writeFile } from "@tauri-apps/plugin-fs";
 import { Uint8ArrayReader, Uint8ArrayWriter, ZipWriter } from "@zip.js/zip.js";
 import { URI } from "vscode-uri";
-import { FileSystemProvider } from "../interfaces/Service";
-import { Project } from "../Project";
+import { FileSystemProvider } from "@/core/interfaces/Service";
+import { Project } from "@/core/Project";
 
 export class FileSystemProviderDraft implements FileSystemProvider {
   constructor(private readonly project: Project) {}

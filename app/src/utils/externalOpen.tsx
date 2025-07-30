@@ -1,6 +1,4 @@
 import { open } from "@tauri-apps/plugin-shell";
-import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
-import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 
 // TODO: 工具栏中的地球仪图标
 export async function openBrowserOrFile() {
@@ -13,15 +11,15 @@ export async function openBrowserOrFile() {
   // }
 }
 
-function openOneEntity(node: Entity) {
-  let targetUrl = node.details;
-  if (node.details.trim() !== "") {
-    const firstLine = node.details.trim().split("\n")[0].trim();
-    targetUrl = firstLine;
-  }
-  targetUrl = splitDoubleQuote(targetUrl);
-  myOpen(targetUrl);
-}
+// function openOneEntity(node: Entity) {
+//   let targetUrl = node.details;
+//   if (node.details.trim() !== "") {
+//     const firstLine = node.details.trim().split("\n")[0].trim();
+//     targetUrl = firstLine;
+//   }
+//   targetUrl = splitDoubleQuote(targetUrl);
+//   myOpen(targetUrl);
+// }
 
 /**
  * 打开一个文本节点url
@@ -29,41 +27,41 @@ function openOneEntity(node: Entity) {
  * 如果不符合，就根据内容打开
  * @param node
  */
-function openOneTextNode(node: TextNode) {
-  let targetUrl = node.text;
-  if (node.details.trim() !== "") {
-    const firstLine = node.details.trim().split("\n")[0].trim();
-    targetUrl = firstLine;
-  }
-  targetUrl = splitDoubleQuote(targetUrl);
-  myOpen(targetUrl);
-  // 2025年1月4日——有自动备份功能了，好像不需要再加验证了
+// function openOneTextNode(node: TextNode) {
+//   let targetUrl = node.text;
+//   if (node.details.trim() !== "") {
+//     const firstLine = node.details.trim().split("\n")[0].trim();
+//     targetUrl = firstLine;
+//   }
+//   targetUrl = splitDoubleQuote(targetUrl);
+//   myOpen(targetUrl);
+//   // 2025年1月4日——有自动备份功能了，好像不需要再加验证了
 
-  // if (PathString.isValidURL(nodeText)) {
-  //   // 是网址
-  //   myOpen(nodeText);
-  // } else {
-  //   const isExists = await exists(nodeText);
-  //   if (isExists) {
-  //     // 是文件
-  //     myOpen(nodeText);
-  //   } else {
-  //     // 不是网址也不是文件，不做处理
-  //     this.project.effects.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
-  //   }
-  // }
-}
+//   // if (PathString.isValidURL(nodeText)) {
+//   //   // 是网址
+//   //   myOpen(nodeText);
+//   // } else {
+//   //   const isExists = await exists(nodeText);
+//   //   if (isExists) {
+//   //     // 是文件
+//   //     myOpen(nodeText);
+//   //   } else {
+//   //     // 不是网址也不是文件，不做处理
+//   //     this.project.effects.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
+//   //   }
+//   // }
+// }
 
 /**
  * 去除字符串两端的引号
  * @param str
  */
-function splitDoubleQuote(str: string) {
-  if (str.startsWith('"') && str.endsWith('"')) {
-    return str.slice(1, -1);
-  }
-  return str;
-}
+// function splitDoubleQuote(str: string) {
+//   if (str.startsWith('"') && str.endsWith('"')) {
+//     return str.slice(1, -1);
+//   }
+//   return str;
+// }
 
 // TODO: 打开图片节点文件路径
 export function openSelectedImageNode() {

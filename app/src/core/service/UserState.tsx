@@ -1,6 +1,6 @@
 import { Store } from "@tauri-apps/plugin-store";
-import { createStore } from "../../utils/store";
-import { FeatureFlags } from "./FeatureFlags";
+import { createStore } from "@/utils/store";
+import { FeatureFlags } from "@/core/service/FeatureFlags";
 
 export namespace UserState {
   let store: Store;

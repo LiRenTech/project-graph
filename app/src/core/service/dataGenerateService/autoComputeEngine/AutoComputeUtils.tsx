@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { ProgramFunctions } from "./functions/programLogic";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { ProgramFunctions } from "@/core/service/dataGenerateService/autoComputeEngine/functions/programLogic";
 
 /**
  * 一些在自动计算引擎中

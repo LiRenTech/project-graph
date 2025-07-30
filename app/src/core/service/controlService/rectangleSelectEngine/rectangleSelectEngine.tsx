@@ -1,11 +1,11 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { isMac } from "../../../../utils/platform";
-import { Project, service } from "../../../Project";
-import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
-import { Edge } from "../../../stage/stageObject/association/Edge";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { Settings } from "../../Settings";
+import { isMac } from "@/utils/platform";
+import { Project, service } from "@/core/Project";
+import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { Settings } from "@/core/service/Settings";
 
 /**
  * 框选引擎

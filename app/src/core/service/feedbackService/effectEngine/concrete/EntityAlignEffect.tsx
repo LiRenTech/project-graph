@@ -1,7 +1,7 @@
 import { mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 实体对齐特效

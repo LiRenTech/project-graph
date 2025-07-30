@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
-import { Direction } from "../../../../types/directions";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { Direction } from "@/types/directions";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎

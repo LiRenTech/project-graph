@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
-import { isMac } from "../../../../../utils/platform";
-import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
-import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
-import { ControllerClass } from "../ControllerClass";
+import { isMac } from "@/utils/platform";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 export class ControllerImageScale extends ControllerClass {
   mousewheel = (event: WheelEvent) => {

@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
-import { Edge } from "../../../stage/stageObject/association/Edge";
-import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { Section } from "../../../stage/stageObject/entity/Section";
+import { Project, service } from "@/core/Project";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { Section } from "@/core/stage/stageObject/entity/Section";
 
 @service("mouseInteraction")
 export class MouseInteraction {

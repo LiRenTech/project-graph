@@ -1,8 +1,8 @@
 import { Color, ProgressNumber } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
-import { LineCuttingEffect } from "./LineCuttingEffect";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 
 /**
  * 用于某个节点进入了某个Section内部，四个角连向了父Section矩形的四个角

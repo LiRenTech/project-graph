@@ -1,9 +1,9 @@
 import { List } from "lucide-react";
-import { Dialog } from "../../../components/dialog";
-import { SettingField } from "../../../components/Field";
-import IconButton from "../../../components/IconButton";
-import { Project } from "../../../core/Project";
-import { AIEngine } from "../../../core/service/dataManageService/aiEngine/AIEngine";
+import { Dialog } from "@/components/dialog";
+import { SettingField } from "@/components/Field";
+import IconButton from "@/components/IconButton";
+import { Project } from "@/core/Project";
+import { AIEngine } from "@/core/service/dataManageService/aiEngine/AIEngine";
 
 export default function AISettings() {
   return (

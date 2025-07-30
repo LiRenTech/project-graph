@@ -1,5 +1,5 @@
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 计算一个节点的半径，半径是一个矩形中心到对角线的距离

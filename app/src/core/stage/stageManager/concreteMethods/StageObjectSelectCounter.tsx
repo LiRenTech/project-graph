@@ -1,12 +1,12 @@
-import { Project, service } from "../../../Project";
-import { Association } from "../../stageObject/abstract/Association";
-import { Entity } from "../../stageObject/abstract/StageEntity";
-import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
-import { Edge } from "../../stageObject/association/Edge";
-import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
+import { Project, service } from "@/core/Project";
+import { Association } from "@/core/stage/stageObject/abstract/Association";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 /**
  * 实时记录选中的各种类型的对象的数量

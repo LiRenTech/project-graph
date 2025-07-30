@@ -1,8 +1,8 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
-import { FONT, getTextSize } from "../../../utils/font";
-import { Renderer } from "../canvas2d/renderer";
+import { FONT, getTextSize } from "@/utils/font";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 /**
  * 专门存放生成svg的东西

@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { cn } from "../utils/cn";
-import Button from "./Button";
+import { cn } from "@/utils/cn";
+import Button from "@/components/Button";
 
 export default function IconButton({
   children,

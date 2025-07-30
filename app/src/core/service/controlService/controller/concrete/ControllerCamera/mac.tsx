@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
-import { isMac } from "../../../../../../utils/platform";
-import { Project } from "../../../../../Project";
-import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
-import { Settings } from "../../../../Settings";
+import { isMac } from "@/utils/platform";
+import { Project } from "@/core/Project";
+import { MouseTipFeedbackEffect } from "@/core/service/feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
+import { Settings } from "@/core/service/Settings";
 
 export class ControllerCameraMac {
   private macTrackpadScaleSensitivity = 0.5;

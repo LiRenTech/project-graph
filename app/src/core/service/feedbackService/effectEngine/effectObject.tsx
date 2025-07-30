@@ -1,5 +1,5 @@
 import { ProgressNumber } from "@graphif/data-structures";
-import { Project } from "../../../Project";
+import { Project } from "@/core/Project";
 
 /**
  * 一次性特效类

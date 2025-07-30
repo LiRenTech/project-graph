@@ -1,6 +1,6 @@
 import { exists, mkdir, readDir, readFile, remove, rename, writeFile } from "@tauri-apps/plugin-fs";
 import { URI } from "vscode-uri";
-import { FileSystemProvider } from "../interfaces/Service";
+import { FileSystemProvider } from "@/core/interfaces/Service";
 
 export class FileSystemProviderFile implements FileSystemProvider {
   async read(uri: URI) {

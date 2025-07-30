@@ -1,4 +1,4 @@
-import { Project } from "../core/Project";
+import { Project } from "@/core/Project";
 
 // version 在 StageDumper里
 export namespace Serialized {

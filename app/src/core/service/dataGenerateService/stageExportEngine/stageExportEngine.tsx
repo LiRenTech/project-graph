@@ -1,8 +1,8 @@
 import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 /**
  * 专注于导出各种格式内容的引擎

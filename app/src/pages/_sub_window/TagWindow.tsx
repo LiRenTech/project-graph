@@ -2,10 +2,10 @@ import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lucide-react";
 import React from "react";
-import { Dialog } from "../../components/dialog";
-import IconButton from "../../components/IconButton";
-import { SubWindow } from "../../core/service/SubWindow";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { Dialog } from "@/components/dialog";
+import IconButton from "@/components/IconButton";
+import { SubWindow } from "@/core/service/SubWindow";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
 
 /**
  * 标签相关面板

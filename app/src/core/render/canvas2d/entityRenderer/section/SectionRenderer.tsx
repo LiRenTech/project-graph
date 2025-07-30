@@ -1,10 +1,10 @@
 import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures";
 import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
-import { getTextSize } from "../../../../../utils/font";
-import { Project, service } from "../../../../Project";
-import { Settings } from "../../../../service/Settings";
-import { Section } from "../../../../stage/stageObject/entity/Section";
-import { Renderer } from "../../renderer";
+import { getTextSize } from "@/utils/font";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 @service("sectionRenderer")
 export class SectionRenderer {

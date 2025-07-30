@@ -1,5 +1,5 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import { Dialog } from "../../../../components/dialog";
+import { Dialog } from "@/components/dialog";
 
 export namespace CollaborationEngine {
   export async function openStartCollaborationPanel() {

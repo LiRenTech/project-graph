@@ -1,5 +1,5 @@
-import { camelCaseToDashCase } from "../../utils/font";
-import { parseYamlWithFrontmatter } from "../../utils/yaml";
+import { camelCaseToDashCase } from "@/utils/font";
+import { parseYamlWithFrontmatter } from "@/utils/yaml";
 
 export namespace Themes {
   export type Metadata = {

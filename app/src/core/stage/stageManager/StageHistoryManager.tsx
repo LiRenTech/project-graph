@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
-import { Serialized } from "../../../types/node";
-import { Project, service } from "../../Project";
-import { Settings } from "../../service/Settings";
+import { Serialized } from "@/types/node";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
 
 /**
  * 专门管理历史记录

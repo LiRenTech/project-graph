@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { MouseLocation } from "../../core/service/controlService/MouseLocation";
-import { GlobalMenu } from "../../core/service/GlobalMenu";
-import { SubWindow } from "../../core/service/SubWindow";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { GlobalMenu } from "@/core/service/GlobalMenu";
+import { SubWindow } from "@/core/service/SubWindow";
 
 export default function MenuWindow({ menu, winId = "" }: { menu: GlobalMenu.Menu; winId?: string }) {
   return (

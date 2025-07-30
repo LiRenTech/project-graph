@@ -1,27 +1,27 @@
 import { Vector } from "@graphif/data-structures";
-// import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+// import { ControllerKeyboardOnly } from "@/core/service/controlService/controller/concrete/ControllerKeyboardOnly";
 // ...
-import { CursorNameEnum } from "../../../../types/cursors";
-import { isMac } from "../../../../utils/platform";
-import { Project, service } from "../../../Project";
-import { ControllerAssociationReshapeClass } from "./concrete/ControllerAssociationReshape";
-import { ControllerCameraClass } from "./concrete/ControllerCamera";
-import { ControllerChildCamera } from "./concrete/ControllerChildCamera";
-import { ControllerCopy } from "./concrete/ControllerCopy";
-import { ControllerCuttingClass } from "./concrete/ControllerCutting";
-import { ControllerDragFileClass } from "./concrete/ControllerDragFile";
-import { ControllerEdgeEditClass } from "./concrete/ControllerEdgeEdit";
-import { ControllerEntityClickSelectAndMoveClass } from "./concrete/ControllerEntityClickSelectAndMove";
-import { ControllerEntityCreateClass } from "./concrete/ControllerEntityCreate";
-import { ControllerLayerMovingClass } from "./concrete/ControllerEntityLayerMoving";
-import { ControllerEntityResizeClass } from "./concrete/ControllerEntityResize";
-import { ControllerImageScale } from "./concrete/ControllerImageScale";
-import { ControllerNodeConnectionClass } from "./concrete/ControllerNodeConnection";
-import { ControllerNodeEditClass } from "./concrete/ControllerNodeEdit";
-import { ControllerPenStrokeControlClass } from "./concrete/ControllerPenStrokeControl";
-import { ControllerPenStrokeDrawingClass } from "./concrete/ControllerPenStrokeDrawing";
-import { ControllerRectangleSelectClass } from "./concrete/ControllerRectangleSelect";
-import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { Project, service } from "@/core/Project";
+import { ControllerAssociationReshapeClass } from "@/core/service/controlService/controller/concrete/ControllerAssociationReshape";
+import { ControllerCameraClass } from "@/core/service/controlService/controller/concrete/ControllerCamera";
+import { ControllerChildCamera } from "@/core/service/controlService/controller/concrete/ControllerChildCamera";
+import { ControllerCopy } from "@/core/service/controlService/controller/concrete/ControllerCopy";
+import { ControllerCuttingClass } from "@/core/service/controlService/controller/concrete/ControllerCutting";
+import { ControllerDragFileClass } from "@/core/service/controlService/controller/concrete/ControllerDragFile";
+import { ControllerEdgeEditClass } from "@/core/service/controlService/controller/concrete/ControllerEdgeEdit";
+import { ControllerEntityClickSelectAndMoveClass } from "@/core/service/controlService/controller/concrete/ControllerEntityClickSelectAndMove";
+import { ControllerEntityCreateClass } from "@/core/service/controlService/controller/concrete/ControllerEntityCreate";
+import { ControllerLayerMovingClass } from "@/core/service/controlService/controller/concrete/ControllerEntityLayerMoving";
+import { ControllerEntityResizeClass } from "@/core/service/controlService/controller/concrete/ControllerEntityResize";
+import { ControllerImageScale } from "@/core/service/controlService/controller/concrete/ControllerImageScale";
+import { ControllerNodeConnectionClass } from "@/core/service/controlService/controller/concrete/ControllerNodeConnection";
+import { ControllerNodeEditClass } from "@/core/service/controlService/controller/concrete/ControllerNodeEdit";
+import { ControllerPenStrokeControlClass } from "@/core/service/controlService/controller/concrete/ControllerPenStrokeControl";
+import { ControllerPenStrokeDrawingClass } from "@/core/service/controlService/controller/concrete/ControllerPenStrokeDrawing";
+import { ControllerRectangleSelectClass } from "@/core/service/controlService/controller/concrete/ControllerRectangleSelect";
+import { ControllerSectionEdit } from "@/core/service/controlService/controller/concrete/ControllerSectionEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件

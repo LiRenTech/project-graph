@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 
 /**
  * 集成所有连线相关的功能

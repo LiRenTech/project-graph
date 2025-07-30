@@ -3,12 +3,12 @@ import { Rectangle } from "@graphif/shapes";
 import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer, Telescope } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import IconButton from "../../components/IconButton";
-import Input from "../../components/Input";
-import { SubWindow } from "../../core/service/SubWindow";
-import { Camera } from "../../core/stage/Camera";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { cn } from "../../utils/cn";
+import IconButton from "@/components/IconButton";
+import Input from "@/components/Input";
+import { SubWindow } from "@/core/service/SubWindow";
+import { Camera } from "@/core/stage/Camera";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { cn } from "@/utils/cn";
 
 /**
  * 搜索内容的面板

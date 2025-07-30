@@ -1,6 +1,6 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
-import { isWeb } from "./platform";
+import { isWeb } from "@/utils/platform";
 
 export async function writeStdout(content: string): Promise<void> {
   if (!isWeb) {

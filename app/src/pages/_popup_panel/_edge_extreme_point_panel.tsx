@@ -1,7 +1,7 @@
 import { ArrowRightFromLine, ArrowUpToLine, SquareDot } from "lucide-react";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { Direction } from "../../types/directions";
-import { ToolbarItem } from "../_toolbar";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { Direction } from "@/types/directions";
+import { ToolbarItem } from "@/pages/_toolbar";
 
 /**
  * 设置连线的端点

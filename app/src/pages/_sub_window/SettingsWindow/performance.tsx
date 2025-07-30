@@ -15,7 +15,7 @@ import {
   Ungroup,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { FieldGroup, SettingField } from "../../../components/Field";
+import { FieldGroup, SettingField } from "@/components/Field";
 
 export default function Performance() {
   const { t } = useTranslation("performanceSettingsGroup");

@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
-import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { ControllerClass } from "../ControllerClass";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 export class ControllerEntityResizeClass extends ControllerClass {
   private changeSizeEntity: Entity | null = null;

@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "../../../../types/node";
-import { Project } from "../../../Project";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { Project } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 一个图片节点

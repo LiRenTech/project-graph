@@ -1,6 +1,6 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { SubWindow } from "../../core/service/SubWindow";
+import { SubWindow } from "@/core/service/SubWindow";
 
 export default function AutoCompleteWindow({
   // winId = "",

@@ -1,8 +1,8 @@
 import { Color, mixColors, ProgressNumber } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 export class RectangleRenderEffect extends Effect {
   constructor(

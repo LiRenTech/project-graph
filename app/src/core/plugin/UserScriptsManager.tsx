@@ -1,10 +1,10 @@
 import { exists, readTextFile } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
-import { Dialog } from "../../components/dialog";
-import { createStore } from "../../utils/store";
-import { parsePluginCode, PluginCodeParseData } from "./PluginCodeParseData";
-import { PluginWorker } from "./PluginWorker";
-import { getAllAPIMethods } from "./types";
+import { Dialog } from "@/components/dialog";
+import { createStore } from "@/utils/store";
+import { parsePluginCode, PluginCodeParseData } from "@/core/plugin/PluginCodeParseData";
+import { PluginWorker } from "@/core/plugin/PluginWorker";
+import { getAllAPIMethods } from "@/core/plugin/types";
 
 /**
  * 用户脚本管理器

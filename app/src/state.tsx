@@ -1,5 +1,5 @@
 import { atom, createStore } from "jotai";
-import { Project } from "./core/Project";
+import { Project } from "@/core/Project";
 /**
  * 全局状态管理
  */

@@ -7,6 +7,7 @@ import ViteYaml from "@modyfi/vite-plugin-yaml";
 import reactScan from "@react-scan/vite-plugin-react-scan";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-oxc";
+import path from "node:path";
 import { createLogger, defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
@@ -77,6 +78,12 @@ export default defineConfig({
     include: ["./tests/**/*.test.tsx"],
     env: {
       LR_VITEST: "true",
+    },
+  },
+
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 });

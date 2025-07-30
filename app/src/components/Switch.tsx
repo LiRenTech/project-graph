@@ -1,5 +1,5 @@
-import { SoundService } from "../core/service/feedbackService/SoundService";
-import { cn } from "../utils/cn";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { cn } from "@/utils/cn";
 
 /**
  * 手机上那种 滑动圆球的 小开关按钮

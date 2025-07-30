@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 export class ControllerRectangleSelectClass extends ControllerClass {
   private _isUsing: boolean = false;

@@ -2,15 +2,15 @@ import { Color, colorInvert, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { Path } from "../../../../utils/path";
-import { Project, service } from "../../../Project";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { SvgUtils } from "../../../render/svg/SvgUtils";
-import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
-import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
-import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { Path } from "@/utils/path";
+import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { SvgUtils } from "@/core/render/svg/SvgUtils";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 export interface SvgExportConfig {
   imageMode: "absolutePath" | "relativePath" | "base64";

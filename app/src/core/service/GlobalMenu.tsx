@@ -41,13 +41,13 @@ import {
 import { ReactNode } from "react";
 import toast from "react-hot-toast";
 import { URI } from "vscode-uri";
-import { Dialog } from "../../components/dialog";
-import AIWindow from "../../pages/_sub_window/AIWindow";
-import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
-import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "../../state";
-import { loadAllServices } from "../loadAllServices";
-import { Project } from "../Project";
-import { Settings } from "./Settings";
+import { Dialog } from "@/components/dialog";
+import AIWindow from "@/pages/_sub_window/AIWindow";
+import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
+import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
+import { loadAllServices } from "@/core/loadAllServices";
+import { Project } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
 
 export namespace GlobalMenu {
   export class Menu {

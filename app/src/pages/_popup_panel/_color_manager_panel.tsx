@@ -1,13 +1,13 @@
 import { Color } from "@graphif/data-structures";
 import { ArrowRightLeft, Pipette } from "lucide-react";
 import { useEffect, useState } from "react";
-import Button from "../../components/Button";
-import { Dialog } from "../../components/dialog";
-import { ColorManager } from "../../core/service/feedbackService/ColorManager";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { LineEdge } from "../../core/stage/stageObject/association/LineEdge";
-import { Section } from "../../core/stage/stageObject/entity/Section";
-import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
+import Button from "@/components/Button";
+import { Dialog } from "@/components/dialog";
+import { ColorManager } from "@/core/service/feedbackService/ColorManager";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 
 /**
  * 自定义颜色设置面板

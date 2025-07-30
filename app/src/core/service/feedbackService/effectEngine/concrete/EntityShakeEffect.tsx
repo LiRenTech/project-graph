@@ -1,10 +1,10 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { Effect } from "../effectObject";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 实体抖动特效

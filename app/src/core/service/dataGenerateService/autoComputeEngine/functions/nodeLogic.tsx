@@ -1,15 +1,15 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { v4 } from "uuid";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
-import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
-import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { MouseLocation } from "../../../controlService/MouseLocation";
-import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
-import { SoundService } from "../../../feedbackService/SoundService";
-import { AutoComputeUtils } from "../AutoComputeUtils";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Camera } from "@/core/stage/Camera";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { PenStrokeDeletedEffect } from "@/core/service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { AutoComputeUtils } from "@/core/service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 
 /**
  * 直接获取输入节点和下游输出节点

@@ -1,14 +1,14 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "../../../../types/node";
-import { isMac } from "../../../../utils/platform";
-import { Project, service } from "../../../Project";
-import { SerializedDataAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
-import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
-import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { copyEnginePasteImage } from "./pasteImage";
-import { copyEnginePastePlainText } from "./pastePlainText";
+import { Serialized } from "@/types/node";
+import { isMac } from "@/utils/platform";
+import { Project, service } from "@/core/Project";
+import { SerializedDataAdder } from "@/core/stage/stageManager/concreteMethods/StageSerializedAdder";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { copyEnginePasteImage } from "@/core/service/dataManageService/copyEngine/pasteImage";
+import { copyEnginePastePlainText } from "@/core/service/dataManageService/copyEngine/pastePlainText";
 
 /**
  * 专门用来管理节点复制的引擎

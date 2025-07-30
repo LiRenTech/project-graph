@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
 import toast from "react-hot-toast";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
-import { NewTargetLocationSelector } from "./newTargetLocationSelector";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { KeyboardOnlyDirectionController } from "@/core/service/controlService/keyboardOnlyEngine/keyboardOnlyDirectionController";
+import { NewTargetLocationSelector } from "@/core/service/controlService/keyboardOnlyEngine/newTargetLocationSelector";
 
 /**
  * 纯键盘创建图论型的引擎

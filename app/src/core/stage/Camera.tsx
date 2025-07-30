@@ -1,14 +1,14 @@
 import { Queue, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import toast from "react-hot-toast";
-import { Dialog } from "../../components/dialog";
-import { Direction } from "../../types/directions";
-import { isMac } from "../../utils/platform";
-import { NumberFunctions } from "../algorithm/numberFunctions";
-import { Project, service } from "../Project";
-import { easeOutExpo } from "../service/feedbackService/effectEngine/mathTools/easings";
-import { Settings } from "../service/Settings";
-import { Entity } from "./stageObject/abstract/StageEntity";
+import { Dialog } from "@/components/dialog";
+import { Direction } from "@/types/directions";
+import { isMac } from "@/utils/platform";
+import { NumberFunctions } from "@/core/algorithm/numberFunctions";
+import { Project, service } from "@/core/Project";
+import { easeOutExpo } from "@/core/service/feedbackService/effectEngine/mathTools/easings";
+import { Settings } from "@/core/service/Settings";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 摄像机

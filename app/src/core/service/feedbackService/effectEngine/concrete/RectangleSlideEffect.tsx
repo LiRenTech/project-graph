@@ -1,9 +1,9 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
-import { LineEffect } from "./LineEffect";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { LineEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineEffect";
 
 /**
  * 专门处理矩形水平和垂直移动效果

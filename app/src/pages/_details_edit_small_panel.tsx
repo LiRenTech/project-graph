@@ -1,11 +1,11 @@
 import React from "react";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import { Renderer } from "../core/render/canvas2d/renderer";
-import { editTextNodeHookGlobal } from "../core/service/controlService/controller/concrete/utilsControl";
-import { Controller } from "../core/service/controlService/controller/Controller";
-import { Camera } from "../core/stage/Camera";
-import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { editTextNodeHookGlobal } from "@/core/service/controlService/controller/concrete/utilsControl";
+import { Controller } from "@/core/service/controlService/controller/Controller";
+import { Camera } from "@/core/stage/Camera";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 2025年1月4日，这个打算被侧边栏取代 ——littlefean

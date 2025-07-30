@@ -1,17 +1,17 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { Settings } from "../../../service/Settings";
-import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
-import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
-import { PenStroke } from "../../../stage/stageObject/entity/PenStroke";
-import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
-import { Renderer } from "../renderer";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
+import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 /**
  * 处理节点相关的绘制

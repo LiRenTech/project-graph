@@ -1,15 +1,15 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle, Shape } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../../../types/node";
-import { getTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
-import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { Entity } from "../abstract/StageEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { getTextSize } from "@/utils/font";
+import { Project } from "@/core/Project";
+import { SectionRenderer } from "@/core/render/canvas2d/entityRenderer/section/SectionRenderer";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { NodeMoveShadowEffect } from "@/core/service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 export class Section extends ConnectableEntity {
   /**

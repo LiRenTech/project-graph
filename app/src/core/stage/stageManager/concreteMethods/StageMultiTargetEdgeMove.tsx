@@ -1,7 +1,7 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
+import { Project, service } from "@/core/Project";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 
 /**
  * 多源无向边移动中心点

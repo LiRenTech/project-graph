@@ -1,7 +1,7 @@
 import { fetch } from "@tauri-apps/plugin-http";
-import { getDeviceId } from "../../utils/otherApi";
-import { FeatureFlags } from "./FeatureFlags";
-import { Settings } from "./Settings";
+import { getDeviceId } from "@/utils/otherApi";
+import { FeatureFlags } from "@/core/service/FeatureFlags";
+import { Settings } from "@/core/service/Settings";
 
 export namespace Telemetry {
   let deviceId = "";

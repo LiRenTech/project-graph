@@ -1,5 +1,5 @@
 import { Vector } from "@graphif/data-structures";
-import { Project } from "../../../Project";
+import { Project } from "@/core/Project";
 
 /**
  * 专门用来处理文件拖拽的类

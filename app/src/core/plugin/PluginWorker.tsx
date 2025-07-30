@@ -1,5 +1,5 @@
-import { pluginApis } from "./apis";
-import { apiTypes, PluginManifest, WorkerMessage } from "./types";
+import { pluginApis } from "@/core/plugin/apis";
+import { apiTypes, PluginManifest, WorkerMessage } from "@/core/plugin/types";
 
 /**
  * 插件工作线程

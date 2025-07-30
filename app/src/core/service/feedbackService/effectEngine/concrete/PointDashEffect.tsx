@@ -1,7 +1,7 @@
 import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { EffectParticle } from "../effectElements/effectParticle";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { EffectParticle } from "@/core/service/feedbackService/effectEngine/effectElements/effectParticle";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 在一个点迸发一些粒子效果

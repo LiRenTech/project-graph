@@ -7,16 +7,16 @@ import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GlobalMenu } from "../core/service/GlobalMenu";
-import { Settings } from "../core/service/Settings";
-import { Telemetry } from "../core/service/Telemetry";
-import { Themes } from "../core/service/Themes";
-import { activeProjectAtom, projectsAtom } from "../state";
-import { cn } from "../utils/cn";
-import { getCurrentWindow, isDesktop } from "../utils/platform";
-import RenderSubWindows from "./_render_sub_windows";
-import MenuWindow from "./_sub_window/MenuWindow";
-import Welcome from "./_welcome";
+import { GlobalMenu } from "@/core/service/GlobalMenu";
+import { Settings } from "@/core/service/Settings";
+import { Telemetry } from "@/core/service/Telemetry";
+import { Themes } from "@/core/service/Themes";
+import { activeProjectAtom, projectsAtom } from "@/state";
+import { cn } from "@/utils/cn";
+import { getCurrentWindow, isDesktop } from "@/utils/platform";
+import RenderSubWindows from "@/pages/_render_sub_windows";
+import MenuWindow from "@/pages/_sub_window/MenuWindow";
+import Welcome from "@/pages/_welcome";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);

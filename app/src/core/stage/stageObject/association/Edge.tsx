@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
-import { ConnectableAssociation } from "../abstract/Association";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { ConnectableAssociation } from "@/core/stage/stageObject/abstract/Association";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 连接两个实体的有向边

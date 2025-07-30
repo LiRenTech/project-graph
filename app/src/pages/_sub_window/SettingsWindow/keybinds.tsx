@@ -2,10 +2,10 @@ import { useAtom } from "jotai";
 import { FileQuestion, Keyboard } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Field, FieldGroup } from "../../../components/Field";
-import KeyBind from "../../../components/KeyBind";
-import { shortcutKeysGroups } from "../../../core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
-import { activeProjectAtom } from "../../../state";
+import { Field, FieldGroup } from "@/components/Field";
+import KeyBind from "@/components/KeyBind";
+import { shortcutKeysGroups } from "@/core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
+import { activeProjectAtom } from "@/state";
 
 export default function KeyBindsPage() {
   const [activeProject] = useAtom(activeProjectAtom);

@@ -1,19 +1,19 @@
 import { Color } from "@graphif/data-structures";
 
 import { Vector } from "@graphif/data-structures";
-import { CubicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
-import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
-import { Section } from "../../../../stage/stageObject/entity/Section";
+import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { Section } from "@/core/stage/stageObject/entity/Section";
 
-import { Project, service } from "../../../../Project";
-import { Settings } from "../../../../service/Settings";
-import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { Edge } from "../../../../stage/stageObject/association/Edge";
-import { Renderer } from "../../renderer";
-import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
-import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
-import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
-import { EdgeRendererClass } from "./EdgeRendererClass";
+import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { StraightEdgeRenderer } from "@/core/render/canvas2d/entityRenderer/edge/concrete/StraightEdgeRenderer";
+import { SymmetryCurveEdgeRenderer } from "@/core/render/canvas2d/entityRenderer/edge/concrete/SymmetryCurveEdgeRenderer";
+import { VerticalPolyEdgeRenderer } from "@/core/render/canvas2d/entityRenderer/edge/concrete/VerticalPolyEdgeRenderer";
+import { EdgeRendererClass } from "@/core/render/canvas2d/entityRenderer/edge/EdgeRendererClass";
 
 /**
  * 边的总渲染器单例

@@ -1,10 +1,10 @@
 import { ProgressNumber } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project } from "../../../../Project";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { EffectColors } from "../../stageStyle/stageStyle";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { EffectColors } from "@/core/service/feedbackService/stageStyle/stageStyle";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 实体创建时闪光特效

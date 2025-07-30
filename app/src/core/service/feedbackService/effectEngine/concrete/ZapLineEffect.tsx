@@ -1,7 +1,7 @@
 import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Random } from "../../../../algorithm/random";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Random } from "@/core/algorithm/random";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 一条闪电线特效

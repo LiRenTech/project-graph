@@ -1,5 +1,5 @@
-import { Entity } from "../../../stageObject/abstract/StageEntity";
-import { Section } from "../../../stageObject/entity/Section";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Section } from "@/core/stage/stageObject/entity/Section";
 
 export namespace LayoutEntityManager {
   /**

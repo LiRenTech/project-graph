@@ -1,4 +1,4 @@
-import { family } from "./platform";
+import { family } from "@/utils/platform";
 
 export namespace PathString {
   /**

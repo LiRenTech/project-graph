@@ -1,15 +1,15 @@
 import { Color, colorInvert, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Random } from "../../../../algorithm/random";
-import { Project, service } from "../../../../Project";
+import { Random } from "@/core/algorithm/random";
+import { Project, service } from "@/core/Project";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
-} from "../../../../service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
-import { Settings } from "../../../../service/Settings";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { Renderer } from "../../renderer";
+} from "@/core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { Settings } from "@/core/service/Settings";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 @service("textNodeRenderer")
 export class TextNodeRenderer {

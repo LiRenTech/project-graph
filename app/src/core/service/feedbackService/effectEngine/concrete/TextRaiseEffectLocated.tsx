@@ -1,6 +1,6 @@
 import { ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 
 /**
  * 在特定的世界坐标系下渲染一个文字

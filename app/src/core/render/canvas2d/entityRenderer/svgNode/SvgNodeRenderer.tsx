@@ -1,5 +1,5 @@
-import { Project, service } from "../../../../Project";
-import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
+import { Project, service } from "@/core/Project";
+import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 
 /**
  * 渲染SVG节点

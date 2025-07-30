@@ -1,6 +1,6 @@
 import { Color } from "@graphif/data-structures";
 import { Store } from "@tauri-apps/plugin-store";
-import { createStore } from "../../../utils/store";
+import { createStore } from "@/utils/store";
 
 export namespace ColorManager {
   let store: Store;

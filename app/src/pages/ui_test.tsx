@@ -1,14 +1,14 @@
 import { Search } from "lucide-react";
-import Box from "../components/Box";
-import Button from "../components/Button";
-import FileChooser from "../components/FileChooser";
-import IconButton from "../components/IconButton";
-import Input from "../components/Input";
-import Select from "../components/Select";
-import Slider from "../components/Slider";
-import Switch from "../components/Switch";
-import { Dialog } from "../components/dialog";
-import { Panel } from "../components/panel";
+import Box from "@/components/Box";
+import Button from "@/components/Button";
+import FileChooser from "@/components/FileChooser";
+import IconButton from "@/components/IconButton";
+import Input from "@/components/Input";
+import Select from "@/components/Select";
+import Slider from "@/components/Slider";
+import Switch from "@/components/Switch";
+import { Dialog } from "@/components/dialog";
+import { Panel } from "@/components/panel";
 
 export default function UITestPage() {
   return (

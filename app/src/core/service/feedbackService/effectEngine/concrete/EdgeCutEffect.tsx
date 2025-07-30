@@ -1,7 +1,7 @@
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Project } from "../../../../Project";
-import { Effect } from "../effectObject";
-import { easeOutQuint } from "../mathTools/easings";
+import { Project } from "@/core/Project";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { easeOutQuint } from "@/core/service/feedbackService/effectEngine/mathTools/easings";
 
 /**
  * 直线连线被斩断的特效

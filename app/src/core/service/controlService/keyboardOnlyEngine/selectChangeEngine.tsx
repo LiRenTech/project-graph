@@ -1,8 +1,8 @@
 import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件

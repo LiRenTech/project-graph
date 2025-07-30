@@ -1,18 +1,18 @@
 import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../../../types/node";
-import { Project, service } from "../../../Project";
-import { Entity } from "../../stageObject/abstract/StageEntity";
-import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { PenStroke } from "../../stageObject/entity/PenStroke";
-import { PortalNode } from "../../stageObject/entity/PortalNode";
-import { Section } from "../../stageObject/entity/Section";
-import { SvgNode } from "../../stageObject/entity/SvgNode";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Serialized } from "@/types/node";
+import { Project, service } from "@/core/Project";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
+import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销

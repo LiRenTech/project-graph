@@ -1,13 +1,13 @@
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Dialog } from "../../../../components/dialog";
-import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
-import { Project, service } from "../../../Project";
-import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityAlignEffect";
-import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
-import { SoundService } from "../../../service/feedbackService/SoundService";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { Entity } from "../../stageObject/abstract/StageEntity";
+import { Dialog } from "@/components/dialog";
+import { ArrayFunctions } from "@/core/algorithm/arrayFunctions";
+import { Project, service } from "@/core/Project";
+import { EntityAlignEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityAlignEffect";
+import { RectangleRenderEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 自动对齐和布局管理器

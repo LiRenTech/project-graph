@@ -1,5 +1,5 @@
 import { Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../../Project";
+import { Project, service } from "@/core/Project";
 
 @service("layoutManualAlign")
 export class LayoutManualAlign {

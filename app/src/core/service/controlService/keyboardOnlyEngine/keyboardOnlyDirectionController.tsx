@@ -1,6 +1,6 @@
 import { Vector } from "@graphif/data-structures";
-import { Direction } from "../../../../types/directions";
-import { DirectionKeyUtilsEngine } from "../DirectionKeyUtilsEngine/directionKeyUtilsEngine";
+import { Direction } from "@/types/directions";
+import { DirectionKeyUtilsEngine } from "@/core/service/controlService/DirectionKeyUtilsEngine/directionKeyUtilsEngine";
 
 /**
  * 纯键盘控制引擎内部的 生成节点位置的方向控制内核

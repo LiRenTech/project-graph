@@ -1,5 +1,5 @@
-import { Project } from "../../../Project";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Project } from "@/core/Project";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 注：关于舞台上的东西的这一部分的

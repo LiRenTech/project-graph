@@ -1,9 +1,9 @@
-import Button from "../components/Button";
-import { Dialog } from "../components/dialog";
-import { SubWindow } from "../core/service/SubWindow";
-import { router } from "../main";
-import { DateChecker } from "../utils/dateChecker";
-import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
+import Button from "@/components/Button";
+import { Dialog } from "@/components/dialog";
+import { SubWindow } from "@/core/service/SubWindow";
+import { router } from "@/main";
+import { DateChecker } from "@/utils/dateChecker";
+import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "@/utils/platform";
 
 /**
  * 类似info界面，用于故障排查

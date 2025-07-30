@@ -1,15 +1,15 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../../../types/node";
-import { getMultiLineTextSize } from "../../../../utils/font";
-import { Project } from "../../../Project";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { ConnectableEntity } from "../abstract/ConnectableEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
-import { TextNode } from "../entity/TextNode";
-import { Edge } from "./Edge";
-import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
+import { Serialized } from "@/types/node";
+import { getMultiLineTextSize } from "@/utils/font";
+import { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { EdgeCollisionBoxGetter } from "@/core/stage/stageObject/association/EdgeCollisionBoxGetter";
 
 export class LineEdge extends Edge {
   public uuid: string;

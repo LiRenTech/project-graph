@@ -1,5 +1,5 @@
 import React, { ElementType, forwardRef } from "react";
-import { cn } from "../utils/cn";
+import { cn } from "@/utils/cn";
 
 // 定义 Box 组件的 props 类型
 type BoxProps<E extends ElementType> = {

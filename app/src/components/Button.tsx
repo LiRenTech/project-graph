@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { SoundService } from "../core/service/feedbackService/SoundService";
-import { cn } from "../utils/cn";
-import Box from "./Box";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { cn } from "@/utils/cn";
+import Box from "@/components/Box";
 
 export default function Button({
   children,

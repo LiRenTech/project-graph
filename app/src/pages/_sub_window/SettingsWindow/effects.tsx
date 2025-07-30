@@ -1,9 +1,9 @@
 import { Check, Stars, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getOriginalNameOf } from "virtual:original-class-name";
-import { ButtonField, Field } from "../../../components/Field";
-import Switch from "../../../components/Switch";
-import { Settings } from "../../../core/service/Settings";
+import { ButtonField, Field } from "@/components/Field";
+import Switch from "@/components/Switch";
+import { Settings } from "@/core/service/Settings";
 
 const effects = Object.values(
   import.meta.glob("../../../core/service/feedbackService/effectEngine/concrete/*.tsx", {

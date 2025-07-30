@@ -4,11 +4,11 @@ import { useAtom } from "jotai";
 import { Bot, FolderOpen, Loader2, Send, SettingsIcon, User } from "lucide-react";
 import OpenAI from "openai";
 import { useRef, useState } from "react";
-import Markdown from "../../components/Markdown";
-import { Settings } from "../../core/service/Settings";
-import { SubWindow } from "../../core/service/SubWindow";
-import { activeProjectAtom } from "../../state";
-import SettingsWindow from "./SettingsWindow";
+import Markdown from "@/components/Markdown";
+import { Settings } from "@/core/service/Settings";
+import { SubWindow } from "@/core/service/SubWindow";
+import { activeProjectAtom } from "@/state";
+import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 
 export default function AIWindow() {
   const [project] = useAtom(activeProjectAtom);

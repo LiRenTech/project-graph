@@ -2,8 +2,8 @@ import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
-import { SubWindow } from "../core/service/SubWindow";
-import { cn } from "../utils/cn";
+import { SubWindow } from "@/core/service/SubWindow";
+import { cn } from "@/utils/cn";
 
 export default function RenderSubWindows() {
   const subWindows = SubWindow.use();

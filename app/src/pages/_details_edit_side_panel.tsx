@@ -1,12 +1,12 @@
 import React from "react";
-import { editTextNodeHookGlobal } from "../core/service/controlService/controller/concrete/utilsControl";
-import { Controller } from "../core/service/controlService/controller/Controller";
-import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
+import { editTextNodeHookGlobal } from "@/core/service/controlService/controller/concrete/utilsControl";
+import { Controller } from "@/core/service/controlService/controller/Controller";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 // import "vditor/src/assets/scss/index.scss";
 import { driver } from "driver.js";
-import { Tourials } from "../core/service/Tourials";
-import MarkdownEditor from "./_vditor_panel";
-import { StageManager } from "../core/stage/stageManager/StageManager";
+import { Tourials } from "@/core/service/Tourials";
+import MarkdownEditor from "@/pages/_vditor_panel";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
 
 export default function DetailsEditSidePanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");

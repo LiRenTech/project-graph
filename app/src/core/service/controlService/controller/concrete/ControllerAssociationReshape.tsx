@@ -1,9 +1,9 @@
 import { Vector } from "@graphif/data-structures";
-import { CursorNameEnum } from "../../../../../types/cursors";
-import { isMac } from "../../../../../utils/platform";
-import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { Settings } from "../../../Settings";
-import { ControllerClass } from "../ControllerClass";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 关系的重新塑性控制器

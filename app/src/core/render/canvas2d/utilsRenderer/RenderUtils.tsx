@@ -1,5 +1,5 @@
 import { Color, Vector } from "@graphif/data-structures";
-import { Project, service } from "../../../Project";
+import { Project, service } from "@/core/Project";
 
 /**
  * 一些基础的渲染图形

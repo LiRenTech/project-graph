@@ -1,6 +1,6 @@
-import { Dialog } from "../../../../../components/dialog";
+import { Dialog } from "@/components/dialog";
 
-import { ControllerClass } from "../ControllerClass";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器

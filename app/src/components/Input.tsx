@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "../utils/cn";
-import Box from "./Box";
+import { cn } from "@/utils/cn";
+import Box from "@/components/Box";
 
 type InputProps<T extends boolean = false> = {
   className?: string;

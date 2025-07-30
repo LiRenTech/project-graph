@@ -1,6 +1,6 @@
-import { Project, service } from "../../../Project";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { Edge } from "../../stageObject/association/Edge";
+import { Project, service } from "@/core/Project";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
 
 @service("graphMethods")
 export class GraphMethods {

@@ -1,7 +1,7 @@
 import { Circle, Line, SymmetryCurve } from "@graphif/shapes";
-import { Settings } from "../../../service/Settings";
-import { CollisionBox } from "../collisionBox/collisionBox";
-import { LineEdge } from "./LineEdge";
+import { Settings } from "@/core/service/Settings";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
 
 export namespace EdgeCollisionBoxGetter {
   /**

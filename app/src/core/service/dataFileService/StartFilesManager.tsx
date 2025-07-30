@@ -1,6 +1,6 @@
 import { exists } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
-import { createStore } from "../../../utils/store";
+import { createStore } from "@/utils/store";
 
 export namespace StartFilesManager {
   let store: Store;

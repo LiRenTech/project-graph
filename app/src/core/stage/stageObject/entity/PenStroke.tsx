@@ -1,9 +1,9 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Line } from "@graphif/shapes";
-import { Serialized } from "../../../../types/node";
-import { Project } from "../../../Project";
-import { Entity } from "../abstract/StageEntity";
-import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { Project } from "@/core/Project";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 
 /**
  * 一笔画中的某一个小段

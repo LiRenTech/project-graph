@@ -1,10 +1,10 @@
 import hljs from "highlight.js";
 import MarkdownIt from "markdown-it";
 import { useEffect, useRef, useState } from "react";
-import { Settings } from "../core/service/Settings";
-import { Themes } from "../core/service/Themes";
+import { Settings } from "@/core/service/Settings";
+import { Themes } from "@/core/service/Themes";
 import "../css/markdown.css";
-import { cn } from "../utils/cn";
+import { cn } from "@/utils/cn";
 
 export default function Markdown({ source, className = "" }: { source: string; className?: string }) {
   Settings.get("theme").then((theme) => {

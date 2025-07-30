@@ -1,6 +1,6 @@
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { Entity } from "../../stageObject/abstract/StageEntity";
-import { PenStroke } from "../../stageObject/entity/PenStroke";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
 
 /**
  * 一切和涂鸦算法相关的内容

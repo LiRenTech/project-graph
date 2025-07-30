@@ -1,5 +1,5 @@
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 
 /**
  * 超图方法集合

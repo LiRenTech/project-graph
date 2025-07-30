@@ -1,8 +1,8 @@
 import { Vector } from "@graphif/data-structures";
-import { Effect } from "../../../../service/feedbackService/effectEngine/effectObject";
-import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
-import { Edge } from "../../../../stage/stageObject/association/Edge";
-import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
+import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
 
 /**
  * 不同类型的边的渲染器 基类

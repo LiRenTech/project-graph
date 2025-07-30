@@ -1,5 +1,5 @@
 import { Vector } from "@graphif/data-structures";
-import { Entity } from "../../../stageObject/abstract/StageEntity";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 
 export namespace LayoutToSquareManager {
   /**

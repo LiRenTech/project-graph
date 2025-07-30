@@ -1,5 +1,5 @@
 import { readFile } from "@tauri-apps/plugin-fs";
-import { Settings } from "../Settings";
+import { Settings } from "@/core/service/Settings";
 
 /**
  * 播放音效的服务

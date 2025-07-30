@@ -1,6 +1,6 @@
 import { Vector } from "@graphif/data-structures";
-import { Project } from "../../../Project";
-import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { Project } from "@/core/Project";
+import { ViewOutlineFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 
 /**
  * 控制器类，用于处理事件绑定和解绑

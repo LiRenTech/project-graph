@@ -1,5 +1,5 @@
-import { Dialog } from "../../components/dialog";
-import { PluginAPIMayAsync } from "./types";
+import { Dialog } from "@/components/dialog";
+import { PluginAPIMayAsync } from "@/core/plugin/types";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {

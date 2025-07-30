@@ -1,22 +1,22 @@
 import { colorInvert, Vector } from "@graphif/data-structures";
 import toast from "react-hot-toast";
-import AutoCompleteWindow from "../../../../../pages/_sub_window/AutoCompleteWindow";
-import { Direction } from "../../../../../types/directions";
-import { isDesktop } from "../../../../../utils/platform";
-import { Project, service } from "../../../../Project";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
-import { Edge } from "../../../../stage/stageObject/association/Edge";
-import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
-import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
-import { Section } from "../../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
-import { LogicNodeNameToRenderNameMap } from "../../../dataGenerateService/autoComputeEngine/logicNodeNameEnum";
-import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
-import { SubWindow } from "../../../SubWindow";
+import AutoCompleteWindow from "@/pages/_sub_window/AutoCompleteWindow";
+import { Direction } from "@/types/directions";
+import { isDesktop } from "@/utils/platform";
+import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
+import { Edge } from "@/core/stage/stageObject/association/Edge";
+import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { LogicNodeNameToRenderNameMap } from "@/core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { EntityCreateFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { SubWindow } from "@/core/service/SubWindow";
 
 /**
  * 这里是专门存放代码相同的地方

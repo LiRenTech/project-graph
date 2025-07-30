@@ -1,5 +1,5 @@
-import { Dialog } from "../../components/dialog";
-import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
+import { Dialog } from "@/components/dialog";
+import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
 
 export default function FoolsDayButton() {
   return (

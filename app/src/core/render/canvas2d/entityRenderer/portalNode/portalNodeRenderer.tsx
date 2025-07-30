@@ -1,8 +1,8 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Project, service } from "../../../../Project";
-import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
-import { Renderer } from "../../renderer";
+import { Project, service } from "@/core/Project";
+import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 
 @service("portalNodeRenderer")
 export class PortalNodeRenderer {
