@@ -1,6 +1,6 @@
+import { createStore } from "@/utils/store";
 import { Store } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
-import { createStore } from "@/utils/store";
 
 /**
  * 设置相关的操作
@@ -138,9 +138,6 @@ export namespace Settings {
     // github 相关
     githubToken: string;
     githubUser: string;
-    // 用户协议
-    agreeTerms: boolean;
-    allowTelemetry: boolean;
     // AI
     aiApiBaseUrl: string;
     aiApiKey: string;
@@ -261,9 +258,6 @@ export namespace Settings {
     // github 相关
     githubToken: "",
     githubUser: "",
-    // 用户协议
-    agreeTerms: false,
-    allowTelemetry: false,
     // AI
     aiApiBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
     aiApiKey: "",
