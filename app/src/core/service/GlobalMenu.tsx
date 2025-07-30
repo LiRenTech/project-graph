@@ -1,4 +1,4 @@
-import { appCacheDir, dataDir } from "@tauri-apps/api/path";
+import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-dialog";
 import { open as openFilePath } from "@tauri-apps/plugin-shell";
@@ -45,7 +45,6 @@ import { Dialog } from "../../components/dialog";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "../../state";
-import { PathString } from "../../utils/pathString";
 import { loadAllServices } from "../loadAllServices";
 import { Project } from "../Project";
 import { Settings } from "./Settings";
@@ -104,7 +103,7 @@ export namespace GlobalMenu {
     ]),
     new Menu("位置", <Folder />, [
       new MenuItem("打开软件配置文件夹", <FolderCog />, async () => {
-        const path = (await dataDir()) + PathString.getSep() + "liren.project-graph";
+        const path = await join(await dataDir(), "liren.project-graph");
         openFilePath(path);
       }),
       new MenuItem("打开软件缓存文件夹", <FolderClock />, async () => {
