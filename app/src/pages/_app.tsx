@@ -207,7 +207,12 @@ export default function App() {
                   const activeProjectIndex = projects.findIndex(
                     (p) => p.uri.toString() === activeProject?.uri.toString(),
                   );
-                  setActiveProject(result[Math.max(0, activeProjectIndex)]);
+                  if (activeProjectIndex === projects.length - 1) {
+                    // 关闭了最后一个标签页
+                    setActiveProject(result[activeProjectIndex - 1]);
+                  } else {
+                    setActiveProject(result[activeProjectIndex]);
+                  }
                 }
                 // 如果删除了唯一一个标签页，就显示欢迎页面
                 if (result.length === 0) {
