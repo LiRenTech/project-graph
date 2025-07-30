@@ -560,6 +560,8 @@ export class KeyBindsRegistrar {
       }
     });
 
+    // 以下是老秘籍键
+
     await this.project.keyBinds.create(
       "screenFlashEffect",
       "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a",
@@ -568,6 +570,7 @@ export class KeyBindsRegistrar {
       },
     );
 
+    // 减小体积
     await this.project.keyBinds.create("alignNodesToInteger", "i n t j", () => {
       const entities = this.project.stageManager.getConnectableEntity();
       for (const entity of entities) {
@@ -577,6 +580,7 @@ export class KeyBindsRegistrar {
       }
     });
 
+    // 做计划的功能
     await this.project.keyBinds.create("toggleCheckmarkOnTextNodes", "o k k", () => {
       const selectedTextNodes = this.project.stageManager
         .getSelectedEntities()
@@ -593,6 +597,7 @@ export class KeyBindsRegistrar {
       this.project.stageManager.updateReferences();
     });
 
+    // 主题切换相关功能
     await this.project.keyBinds.create("switchToDarkTheme", "b l a c k k", () => {
       Settings.set("theme", "dark");
     });
@@ -613,6 +618,7 @@ export class KeyBindsRegistrar {
       Settings.set("theme", "morandi");
     });
 
+    // 画笔相关快捷键
     await this.project.keyBinds.create("increasePenAlpha", "p s a + +", async () => {
       this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(0.1);
     });
@@ -621,6 +627,7 @@ export class KeyBindsRegistrar {
       this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(-0.1);
     });
 
+    // 对齐相关快捷键
     await this.project.keyBinds.create("alignTop", "8 8", () => {
       this.project.layoutManualAlign.alignTop();
       this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Up, true);
@@ -669,6 +676,7 @@ export class KeyBindsRegistrar {
       this.project.layoutManualAlign.alignTopToBottomNoSpace();
     });
 
+    // 全连接
     await this.project.keyBinds.create("connectAllSelectedEntities", "- - a l l", () => {
       const selectedNodes = this.project.stageManager.getSelectedEntities();
       for (let i = 0; i < selectedNodes.length; i++) {
@@ -683,6 +691,7 @@ export class KeyBindsRegistrar {
       }
     });
 
+    // 向右连接
     await this.project.keyBinds.create("connectLeftToRight", "- - r i g h t", () => {
       const selectedNodes = this.project.stageManager
         .getSelectedEntities()

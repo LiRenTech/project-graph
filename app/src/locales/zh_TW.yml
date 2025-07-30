@@ -1079,9 +1079,9 @@ keyBindsGroup:
   section:
     title: Section框
     description: "Section框相關功能\n"
-  createTextNode:
-    description: "按下後，在當前位置創建文本節點\n"
-    title: 創建文本節點
+  aboutTextNode:
+    description: "和文本节点相关的一切快捷键\n"
+    title: 文本節點相关
   generateTextNodeRoundedSelectedNode:
     description: "按下後，在選中節點周圍生成節點\n"
     title: 在選中節點周圍生成節點
@@ -1094,3 +1094,11 @@ keyBindsGroup:
   select:
     description: "使用鍵盤來切換選中的實體\n"
     title: 選擇
+  themes:
+    title: 主题切换
+    description: |
+      切换主题相关的快捷键
+  align:
+    title: 对齐相关
+    description: |
+      关于实体对齐的一些功能

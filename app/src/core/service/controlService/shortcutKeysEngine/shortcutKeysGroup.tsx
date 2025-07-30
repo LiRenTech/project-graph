@@ -17,6 +17,7 @@ import {
   Split,
   SquareDashed,
   SquareMenu,
+  SunMoon,
 } from "lucide-react";
 
 type ShortcutKeysGroup = {
@@ -139,9 +140,16 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
     ],
   },
   {
-    title: "createTextNode",
+    title: "aboutTextNode",
     icon: <SquareMenu />,
-    keys: ["createTextNodeFromCameraLocation", "createTextNodeFromMouseLocation"],
+    keys: [
+      "createTextNodeFromCameraLocation",
+      "createTextNodeFromMouseLocation",
+      "toggleTextNodeSizeMode",
+      "splitTextNodes",
+      "mergeTextNodes",
+      "swapTextAndDetails",
+    ],
   },
   {
     title: "section",
@@ -161,6 +169,41 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   {
     title: "edge",
     icon: <Spline />,
-    keys: ["reverseEdges", "reverseSelectedNodeEdge", "createUndirectedEdgeFromEntities"],
+    keys: [
+      "reverseEdges",
+      "reverseSelectedNodeEdge",
+      "createUndirectedEdgeFromEntities",
+      "connectAllSelectedEntities",
+      "connectLeftToRight",
+      "connectTopToBottom",
+      "selectAllEdges",
+    ],
+  },
+  {
+    title: "themes",
+    icon: <SunMoon />,
+    keys: [
+      "switchToDarkTheme",
+      "switchToLightTheme",
+      "switchToParkTheme",
+      "switchToMacaronTheme",
+      "switchToMorandiTheme",
+    ],
+  },
+  {
+    title: "align",
+    icon: <Spline />,
+    keys: [
+      "alignTop",
+      "alignBottom",
+      "alignLeft",
+      "alignRight",
+      "alignHorizontalSpaceBetween",
+      "alignVerticalSpaceBetween",
+      "alignCenterHorizontal",
+      "alignCenterVertical",
+      "alignLeftToRightNoSpace",
+      "alignTopToBottomNoSpace",
+    ],
   },
 ];

@@ -942,10 +942,10 @@ keyBindsGroup:
     title: 在选中节点周围生成节点
     description: |
       按下后，在选中节点周围生成节点
-  createTextNode:
-    title: 创建文本节点
+  aboutTextNode:
+    title: 关于文本节点
     description: |
-      按下后，在当前位置创建文本节点
+      和文本节点相关的一切快捷键，分割、合并、创建等
   section:
     title: Section框
     description: |
@@ -962,6 +962,14 @@ keyBindsGroup:
     title: 扩散选择
     description: |
       扩散选择节点相关的快捷键
+  themes:
+    title: 主题切换
+    description: |
+      切换主题相关的快捷键
+  align:
+    title: 对齐相关
+    description: |
+      关于实体对齐的一些功能
   
 
 keyBinds:

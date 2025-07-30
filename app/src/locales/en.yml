@@ -1173,9 +1173,9 @@ keyBindsGroup:
   generateTextNodeRoundedSelectedNode:
     title: Generate Text Node Around Selected Node
     description: "When pressed, generate a text node around the selected node.\n"
-  createTextNode:
-    description: "When pressed, create a text node in its current position.\n"
-    title: Create Text Node
+  aboutTextNode:
+    description: "About Text Node"
+    title: About Text Node
   basic:
     title: Basic Shortcut Keys
     description: "Basic shortcut keys for commonly used functions\n"
@@ -1194,6 +1194,14 @@ keyBindsGroup:
   section:
     description: "Functions about Section Box.\n"
     title: Section Box
+  themes:
+    title: thems Checkout
+    description: |
+      about thems checkout
+  align:
+    title: Align Shortcuts
+    description: |
+      Functions used for aligning entities
 controlSettingsGroup:
   mouse:
     title: Mouse Settings
