@@ -131,6 +131,11 @@ async function renderApp(cli: boolean = false) {
               shadow: "0 4px 8px var(--color-sub-window-shadow)",
               borderRadius: 12,
             },
+            blank: {
+              style: {
+                padding: "8px 4px",
+              },
+            },
           }}
         />
         <Routes />
