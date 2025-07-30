@@ -1,3 +1,10 @@
+import { Dialog } from "@/components/dialog";
+import { loadAllServices } from "@/core/loadAllServices";
+import { Project } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import AIWindow from "@/pages/_sub_window/AIWindow";
+import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
+import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -41,13 +48,7 @@ import {
 import { ReactNode } from "react";
 import toast from "react-hot-toast";
 import { URI } from "vscode-uri";
-import { Dialog } from "@/components/dialog";
-import AIWindow from "@/pages/_sub_window/AIWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
-import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
-import { loadAllServices } from "@/core/loadAllServices";
-import { Project } from "@/core/Project";
-import { Settings } from "@/core/service/Settings";
+import { Telemetry } from "./Telemetry";
 
 export namespace GlobalMenu {
   export class Menu {
@@ -82,9 +83,16 @@ export namespace GlobalMenu {
         });
         if (!path) return;
         const project = new Project(URI.file(path));
+        const t = performance.now();
         loadAllServices(project);
+        const loadServiceTime = performance.now() - t;
         await project.init();
+        const readFileTime = performance.now() - t;
         store.set(projectsAtom, [...store.get(projectsAtom), project]);
+        Telemetry.event("打开文件", {
+          loadServiceTime,
+          readFileTime,
+        });
       }),
       new Separator(),
       new MenuItem("保存", <Save />, () => {
