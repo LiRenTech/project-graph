@@ -34,7 +34,7 @@ export default function KeyBindsPage() {
   const { t } = useTranslation("keyBinds");
   const t2 = useTranslation("keyBindsGroup");
 
-  return (
+  return activeProject ? (
     <>
       {shortcutKeysGroups.map((group, i) => {
         return (
@@ -96,5 +96,7 @@ export default function KeyBindsPage() {
         ))}
       </FieldGroup>
     </>
+  ) : (
+    <Field color="warning" title="需要先打开一个工程文件才能编辑快捷键设置" />
   );
 }
