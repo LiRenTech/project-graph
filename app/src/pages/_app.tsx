@@ -197,7 +197,8 @@ export default function App() {
             size={16}
             strokeWidth={3}
             className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
-            onClick={async () => {
+            onClick={async (e) => {
+              e.stopPropagation();
               await project.dispose();
               setProjects((projects) => {
                 const result = projects.filter((p) => p.uri.toString() !== project.uri.toString());
@@ -206,7 +207,6 @@ export default function App() {
                   const activeProjectIndex = projects.findIndex(
                     (p) => p.uri.toString() === activeProject?.uri.toString(),
                   );
-                  console.log(activeProjectIndex);
                   setActiveProject(result[Math.max(0, activeProjectIndex)]);
                 }
                 // 如果删除了唯一一个标签页，就显示欢迎页面
