@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
+import { GlobalMenu } from "@/core/service/GlobalMenu";
+import { Settings } from "@/core/service/Settings";
+import { Telemetry } from "@/core/service/Telemetry";
+import { Themes } from "@/core/service/Themes";
+import RenderSubWindows from "@/pages/_render_sub_windows";
+import MenuWindow from "@/pages/_sub_window/MenuWindow";
+import Welcome from "@/pages/_welcome";
+import { activeProjectAtom, projectsAtom } from "@/state";
+import { cn } from "@/utils/cn";
+import { getCurrentWindow, isDesktop } from "@/utils/platform";
 import { getVersion } from "@tauri-apps/api/app";
 import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
@@ -7,16 +17,6 @@ import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GlobalMenu } from "@/core/service/GlobalMenu";
-import { Settings } from "@/core/service/Settings";
-import { Telemetry } from "@/core/service/Telemetry";
-import { Themes } from "@/core/service/Themes";
-import { activeProjectAtom, projectsAtom } from "@/state";
-import { cn } from "@/utils/cn";
-import { getCurrentWindow, isDesktop } from "@/utils/platform";
-import RenderSubWindows from "@/pages/_render_sub_windows";
-import MenuWindow from "@/pages/_sub_window/MenuWindow";
-import Welcome from "@/pages/_welcome";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);
@@ -160,6 +160,8 @@ export default function App() {
     if (!canvasWrapperRef.current) return;
     if (!activeProject) return;
     activeProject.canvas.mount(canvasWrapperRef.current);
+    activeProject.loop();
+    projects.filter((p) => p.uri.toString() !== activeProject.uri.toString()).forEach((p) => p.pause());
   }, [activeProject]);
 
   /**
@@ -182,8 +184,6 @@ export default function App() {
           })}
           onClick={() => {
             setActiveProject(project);
-            project.loop();
-            projects.filter((p) => p.uri.toString() !== project.uri.toString()).forEach((p) => p.pause());
           }}
         >
           <span className="text-sm">
@@ -199,7 +199,22 @@ export default function App() {
             className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
             onClick={async () => {
               await project.dispose();
-              setProjects((projects) => projects.filter((p) => p.uri.toString() !== project.uri.toString()));
+              setProjects((projects) => {
+                const result = projects.filter((p) => p.uri.toString() !== project.uri.toString());
+                // 如果删除了当前标签页，就切换到下一个标签页
+                if (activeProject?.uri.toString() === project.uri.toString() && result.length > 0) {
+                  const activeProjectIndex = projects.findIndex(
+                    (p) => p.uri.toString() === activeProject?.uri.toString(),
+                  );
+                  console.log(activeProjectIndex);
+                  setActiveProject(result[Math.max(0, activeProjectIndex)]);
+                }
+                // 如果删除了唯一一个标签页，就显示欢迎页面
+                if (result.length === 0) {
+                  setActiveProject(undefined);
+                }
+                return result;
+              });
             }}
           />
         </div>
