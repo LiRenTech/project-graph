@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
+import { ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
@@ -14,7 +15,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
-import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
+import { Copy, HardDriveDownload, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -193,10 +194,8 @@ export default function App() {
                 ? project.uri.path.split("/").pop()
                 : project.uri.toString()}
           </span>
-          <X
-            size={16}
-            strokeWidth={3}
-            className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
+          <div
+            className="overflow-hidden hover:opacity-75"
             onClick={async (e) => {
               e.stopPropagation();
               await project.dispose();
@@ -221,7 +220,11 @@ export default function App() {
                 return result;
               });
             }}
-          />
+          >
+            {project.state === ProjectState.Saved && <X size={16} strokeWidth={3} />}
+            {project.state === ProjectState.Stashed && <HardDriveDownload size={16} />}
+            {project.state === ProjectState.Unsaved && <div className="bg-tab-text mx-1 size-2 rounded-full" />}
+          </div>
         </div>
       ))}
     </div>
