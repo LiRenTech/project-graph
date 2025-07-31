@@ -160,8 +160,32 @@ export namespace GlobalMenu {
       new MenuItem("刷新", <RefreshCcwDot />, () => {}),
       new MenuItem("撤销", <Undo />, () => {}),
       new MenuItem("重做", <Redo />, () => {}),
-      new MenuItem("松开按键", <Keyboard />, () => {}),
-      new MenuItem("清空舞台", <Radiation />, () => {}),
+      new MenuItem("松开按键", <Keyboard />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        project.controller.pressingKeySet.clear();
+      }),
+      new MenuItem("清空舞台", <Radiation />, () => {
+        const project = store.get(activeProjectAtom);
+        if (!project) return;
+        // 确认
+        Dialog.show({
+          title: "确认清空舞台",
+          content: "确认清空舞台？",
+          type: "warning",
+          buttons: [
+            {
+              text: "确定",
+              color: "green",
+              onClick: () => {
+                // 清空舞台
+                project.stage = [];
+              },
+            },
+            { text: "取消", color: "red", onClick: () => {} },
+          ],
+        });
+      }),
     ]),
 
     new Menu("设置", <SettingsIcon />, [
