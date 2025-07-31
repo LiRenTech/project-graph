@@ -18,3 +18,4 @@ LICENSE
 
 app/src-tauri/gen
 app/src-tauri/target
+app/src/css/theme.pcss
