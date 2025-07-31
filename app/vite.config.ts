@@ -73,14 +73,6 @@ export default defineConfig({
   // import.meta.env.LR_xxx
   envPrefix: "LR_",
 
-  test: {
-    environment: "jsdom",
-    include: ["./tests/**/*.test.tsx"],
-    env: {
-      LR_VITEST: "true",
-    },
-  },
-
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

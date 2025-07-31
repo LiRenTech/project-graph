@@ -3,11 +3,9 @@ title: 自动计算引擎
 icon: Sigma
 ---
 
-import Frame from "@/app/components/Frame"
+import Frame from "@/app/components/Frame";
 
-<Callout>
-本页面中的示例都是可以交互的
-</Callout>
+<Callout>本页面中的示例都是可以交互的</Callout>
 
 当文本内容为特定的格式时，就会变成逻辑节点，例如 `#ADD#`
 
@@ -20,20 +18,303 @@ import Frame from "@/app/components/Frame"
 按住 x 键时，所有逻辑节点就会以屏幕刷新率的速度不停的执行。松开 x 键时，所有逻辑节点就会停止执行。
 
 <Callout>
-2025.1.19 日后的开发版中，以及 1.2.7+ 版本中，舞台上有多个逻辑节点交织在一起时，每一帧都会按照从上到下的顺序执行每个逻辑节点。
-如果两个逻辑节点y轴坐标恰好对齐，相等了，则按照从左到右的顺序执行，即x轴坐标靠左的节点先执行。 节点的坐标位置按左上角顶点位置来算
-请注意打开特效，能够看到执行顺序编号
+  2025.1.19 日后的开发版中，以及 1.2.7+
+  版本中，舞台上有多个逻辑节点交织在一起时，每一帧都会按照从上到下的顺序执行每个逻辑节点。
+  如果两个逻辑节点y轴坐标恰好对齐，相等了，则按照从左到右的顺序执行，即x轴坐标靠左的节点先执行。
+  节点的坐标位置按左上角顶点位置来算 请注意打开特效，能够看到执行顺序编号
 </Callout>
 
-<Callout>
-2025.1.19 日后的开发版中，以及 1.2.7+ 版本中，按住shift+x键，会以更慢的速度，每60帧执行一次。
-</Callout>
+<Callout>2025.1.19 日后的开发版中，以及 1.2.7+ 版本中，按住shift+x键，会以更慢的速度，每60帧执行一次。</Callout>
 
-<Frame data={{"version":14,"entities":[{"location":[-291,-161],"size":[47,76],"text":"5","uuid":"6d7cef8a-9053-4961-9094-0d77da63fe20","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-129,-161],"size":[47,76],"text":"6","uuid":"bf60e84b-df3b-46f5-b630-ad0b2bf50238","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-260,-49],"size":[142,76],"text":"#ADD#","uuid":"1ff4b853-d34d-4429-803c-b05d254ae96e","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-215,62],"size":[51,76],"text":"...","uuid":"91c8b223-0d56-47c0-9efc-3230f5982fae","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-42,24],"size":[366,76],"text":"此处节点内容为#ADD#","uuid":"2320fc17-c95a-47f0-8607-c37ffa6de3b0","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-112,-8],"uuid":"eb78dfcf-939d-45ee-a0fd-1b0e74521483","type":"core:connect_point","details":""}],"associations":[{"source":"6d7cef8a-9053-4961-9094-0d77da63fe20","target":"1ff4b853-d34d-4429-803c-b05d254ae96e","text":"","uuid":"b450a316-734c-48e9-9950-e8d0c66c31c1","type":"core:line_edge","color":[0,0,0,0]},{"source":"bf60e84b-df3b-46f5-b630-ad0b2bf50238","target":"1ff4b853-d34d-4429-803c-b05d254ae96e","text":"","uuid":"e8f9cbae-1280-4c6a-9384-86f54e6e14b0","type":"core:line_edge","color":[0,0,0,0]},{"source":"1ff4b853-d34d-4429-803c-b05d254ae96e","target":"91c8b223-0d56-47c0-9efc-3230f5982fae","text":"","uuid":"dd2a7131-a3e3-4983-81d2-14ca0c259e9c","type":"core:line_edge","color":[0,0,0,0]},{"source":"2320fc17-c95a-47f0-8607-c37ffa6de3b0","target":"eb78dfcf-939d-45ee-a0fd-1b0e74521483","text":"","uuid":"6d69c2a6-1b11-48b3-a563-fb7359194f7c","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-291, -161],
+        size: [47, 76],
+        text: "5",
+        uuid: "6d7cef8a-9053-4961-9094-0d77da63fe20",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-129, -161],
+        size: [47, 76],
+        text: "6",
+        uuid: "bf60e84b-df3b-46f5-b630-ad0b2bf50238",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-260, -49],
+        size: [142, 76],
+        text: "#ADD#",
+        uuid: "1ff4b853-d34d-4429-803c-b05d254ae96e",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-215, 62],
+        size: [51, 76],
+        text: "...",
+        uuid: "91c8b223-0d56-47c0-9efc-3230f5982fae",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-42, 24],
+        size: [366, 76],
+        text: "此处节点内容为#ADD#",
+        uuid: "2320fc17-c95a-47f0-8607-c37ffa6de3b0",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      { location: [-112, -8], uuid: "eb78dfcf-939d-45ee-a0fd-1b0e74521483", type: "core:connect_point", details: "" },
+    ],
+    associations: [
+      {
+        source: "6d7cef8a-9053-4961-9094-0d77da63fe20",
+        target: "1ff4b853-d34d-4429-803c-b05d254ae96e",
+        text: "",
+        uuid: "b450a316-734c-48e9-9950-e8d0c66c31c1",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "bf60e84b-df3b-46f5-b630-ad0b2bf50238",
+        target: "1ff4b853-d34d-4429-803c-b05d254ae96e",
+        text: "",
+        uuid: "e8f9cbae-1280-4c6a-9384-86f54e6e14b0",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "1ff4b853-d34d-4429-803c-b05d254ae96e",
+        target: "91c8b223-0d56-47c0-9efc-3230f5982fae",
+        text: "",
+        uuid: "dd2a7131-a3e3-4983-81d2-14ca0c259e9c",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "2320fc17-c95a-47f0-8607-c37ffa6de3b0",
+        target: "eb78dfcf-939d-45ee-a0fd-1b0e74521483",
+        text: "",
+        uuid: "6d69c2a6-1b11-48b3-a563-fb7359194f7c",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
 以上是一个加法的例子，可以将各种逻辑节点组合起来，构筑成一套逻辑
 
-<Frame data={{"version":14,"entities":[{"location":[-191,-121],"size":[46,76],"text":"2","uuid":"12aab6c5-3ce4-4882-8879-ddcab5568765","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-101,-121],"size":[46,76],"text":"3","uuid":"742197e4-bea9-4008-abda-0a1289ffe7c8","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-12,-121],"size":[46,76],"text":"2","uuid":"5c4dbd5b-fa0e-415c-b75d-f3d4df6d1c45","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-153,5],"size":[148,76],"text":"#POW#","uuid":"4b61e4a2-eddb-4a59-a70e-30f09cc64561","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-112,122],"size":[66,76],"text":"64","uuid":"6026904c-c1a2-486b-ac79-b4effd39ce1a","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[121,-261],"size":[46,76],"text":"2","uuid":"b4574baa-8fa7-4ee5-97b5-f2f1d2f23ce1","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[222,-261],"size":[46,76],"text":"3","uuid":"898dc0c4-9849-4c99-a3af-e8b62867281b","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[121,-149],"size":[148,76],"text":"#POW#","uuid":"3abb5fd4-43de-4fdf-9d7d-4ca6278695f0","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[171,5],"size":[48,76],"text":"8","uuid":"a01e30c9-a2ff-4606-92f5-86cbe1c28fe5","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[279,5],"size":[46,76],"text":"2","uuid":"a7e7be93-138a-40f6-b68b-d37a435338b0","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[177,122],"size":[148,76],"text":"#POW#","uuid":"5015ed73-748d-4e81-83e5-6fcab7cd0c2c","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[218,245],"size":[66,76],"text":"64","uuid":"efabba48-7fa4-456c-9dd6-3a46480a767d","details":"","color":[0,0,0,0],"type":"core:text_node"}],"associations":[{"source":"b4574baa-8fa7-4ee5-97b5-f2f1d2f23ce1","target":"3abb5fd4-43de-4fdf-9d7d-4ca6278695f0","text":"","uuid":"1e8b749c-6625-4b44-83de-24c7dc6439c7","type":"core:line_edge","color":[0,0,0,0]},{"source":"898dc0c4-9849-4c99-a3af-e8b62867281b","target":"3abb5fd4-43de-4fdf-9d7d-4ca6278695f0","text":"","uuid":"4c4936e8-68a7-4b11-a91a-381b85b19434","type":"core:line_edge","color":[0,0,0,0]},{"source":"12aab6c5-3ce4-4882-8879-ddcab5568765","target":"4b61e4a2-eddb-4a59-a70e-30f09cc64561","text":"","uuid":"eed34862-a6ed-4904-920a-61eccef2429a","type":"core:line_edge","color":[0,0,0,0]},{"source":"742197e4-bea9-4008-abda-0a1289ffe7c8","target":"4b61e4a2-eddb-4a59-a70e-30f09cc64561","text":"","uuid":"ab4739ee-1e69-4cbe-9551-f06496324746","type":"core:line_edge","color":[0,0,0,0]},{"source":"5c4dbd5b-fa0e-415c-b75d-f3d4df6d1c45","target":"4b61e4a2-eddb-4a59-a70e-30f09cc64561","text":"","uuid":"1ebff708-04cc-4021-897a-d0380787eb4e","type":"core:line_edge","color":[0,0,0,0]},{"source":"4b61e4a2-eddb-4a59-a70e-30f09cc64561","target":"6026904c-c1a2-486b-ac79-b4effd39ce1a","text":"","uuid":"b79cebf8-6a76-4d32-a567-486cb53f917e","type":"core:line_edge","color":[0,0,0,0]},{"source":"3abb5fd4-43de-4fdf-9d7d-4ca6278695f0","target":"a01e30c9-a2ff-4606-92f5-86cbe1c28fe5","text":"","uuid":"627908b5-0dfe-48f9-b04f-7977eacd7afe","type":"core:line_edge","color":[0,0,0,0]},{"source":"a01e30c9-a2ff-4606-92f5-86cbe1c28fe5","target":"5015ed73-748d-4e81-83e5-6fcab7cd0c2c","text":"","uuid":"0ecc1697-1dc2-4359-ad9d-09c6814b7acc","type":"core:line_edge","color":[0,0,0,0]},{"source":"a7e7be93-138a-40f6-b68b-d37a435338b0","target":"5015ed73-748d-4e81-83e5-6fcab7cd0c2c","text":"","uuid":"de3f0b4f-c926-4bee-958c-5f3beba78907","type":"core:line_edge","color":[0,0,0,0]},{"source":"5015ed73-748d-4e81-83e5-6fcab7cd0c2c","target":"efabba48-7fa4-456c-9dd6-3a46480a767d","text":"","uuid":"d0d772dd-3677-42ae-b4ee-33dbfd1daca1","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-191, -121],
+        size: [46, 76],
+        text: "2",
+        uuid: "12aab6c5-3ce4-4882-8879-ddcab5568765",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-101, -121],
+        size: [46, 76],
+        text: "3",
+        uuid: "742197e4-bea9-4008-abda-0a1289ffe7c8",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-12, -121],
+        size: [46, 76],
+        text: "2",
+        uuid: "5c4dbd5b-fa0e-415c-b75d-f3d4df6d1c45",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-153, 5],
+        size: [148, 76],
+        text: "#POW#",
+        uuid: "4b61e4a2-eddb-4a59-a70e-30f09cc64561",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-112, 122],
+        size: [66, 76],
+        text: "64",
+        uuid: "6026904c-c1a2-486b-ac79-b4effd39ce1a",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [121, -261],
+        size: [46, 76],
+        text: "2",
+        uuid: "b4574baa-8fa7-4ee5-97b5-f2f1d2f23ce1",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [222, -261],
+        size: [46, 76],
+        text: "3",
+        uuid: "898dc0c4-9849-4c99-a3af-e8b62867281b",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [121, -149],
+        size: [148, 76],
+        text: "#POW#",
+        uuid: "3abb5fd4-43de-4fdf-9d7d-4ca6278695f0",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [171, 5],
+        size: [48, 76],
+        text: "8",
+        uuid: "a01e30c9-a2ff-4606-92f5-86cbe1c28fe5",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [279, 5],
+        size: [46, 76],
+        text: "2",
+        uuid: "a7e7be93-138a-40f6-b68b-d37a435338b0",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [177, 122],
+        size: [148, 76],
+        text: "#POW#",
+        uuid: "5015ed73-748d-4e81-83e5-6fcab7cd0c2c",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [218, 245],
+        size: [66, 76],
+        text: "64",
+        uuid: "efabba48-7fa4-456c-9dd6-3a46480a767d",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+    ],
+    associations: [
+      {
+        source: "b4574baa-8fa7-4ee5-97b5-f2f1d2f23ce1",
+        target: "3abb5fd4-43de-4fdf-9d7d-4ca6278695f0",
+        text: "",
+        uuid: "1e8b749c-6625-4b44-83de-24c7dc6439c7",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "898dc0c4-9849-4c99-a3af-e8b62867281b",
+        target: "3abb5fd4-43de-4fdf-9d7d-4ca6278695f0",
+        text: "",
+        uuid: "4c4936e8-68a7-4b11-a91a-381b85b19434",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "12aab6c5-3ce4-4882-8879-ddcab5568765",
+        target: "4b61e4a2-eddb-4a59-a70e-30f09cc64561",
+        text: "",
+        uuid: "eed34862-a6ed-4904-920a-61eccef2429a",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "742197e4-bea9-4008-abda-0a1289ffe7c8",
+        target: "4b61e4a2-eddb-4a59-a70e-30f09cc64561",
+        text: "",
+        uuid: "ab4739ee-1e69-4cbe-9551-f06496324746",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "5c4dbd5b-fa0e-415c-b75d-f3d4df6d1c45",
+        target: "4b61e4a2-eddb-4a59-a70e-30f09cc64561",
+        text: "",
+        uuid: "1ebff708-04cc-4021-897a-d0380787eb4e",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "4b61e4a2-eddb-4a59-a70e-30f09cc64561",
+        target: "6026904c-c1a2-486b-ac79-b4effd39ce1a",
+        text: "",
+        uuid: "b79cebf8-6a76-4d32-a567-486cb53f917e",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "3abb5fd4-43de-4fdf-9d7d-4ca6278695f0",
+        target: "a01e30c9-a2ff-4606-92f5-86cbe1c28fe5",
+        text: "",
+        uuid: "627908b5-0dfe-48f9-b04f-7977eacd7afe",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "a01e30c9-a2ff-4606-92f5-86cbe1c28fe5",
+        target: "5015ed73-748d-4e81-83e5-6fcab7cd0c2c",
+        text: "",
+        uuid: "0ecc1697-1dc2-4359-ad9d-09c6814b7acc",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "a7e7be93-138a-40f6-b68b-d37a435338b0",
+        target: "5015ed73-748d-4e81-83e5-6fcab7cd0c2c",
+        text: "",
+        uuid: "de3f0b4f-c926-4bee-958c-5f3beba78907",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "5015ed73-748d-4e81-83e5-6fcab7cd0c2c",
+        target: "efabba48-7fa4-456c-9dd6-3a46480a767d",
+        text: "",
+        uuid: "d0d772dd-3677-42ae-b4ee-33dbfd1daca1",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
 以上是一个计算 `(2^3)^2 = 64` 的运算方法，既可以使用两个逻辑节点分步骤运算，也可以直接用一个逻辑节点来计算，至于是否能接收超过两个以上的输入值，需要看对应逻辑节点的具体说明。
 
@@ -102,8 +383,8 @@ import Frame from "@/app/components/Frame"
 - `#SPLIT#`: 根据第二个父节点文本作为分隔符，对第一个父节点文本进行分割，输出多个结果。
 
   <Callout>
-  `#SPLIT#` 逻辑节点 在 `1.4.34+` 版本更改为支持多个分隔符
-  
+`#SPLIT#` 逻辑节点 在 `1.4.34+` 版本更改为支持多个分隔符
+
   第二个参数及其后面的全部参数都可以作为分隔符
 
   例如:
@@ -111,6 +392,7 @@ import Frame from "@/app/components/Frame"
   参数1： `你好，世界！我是一个人` 参数2： `，`, 参数3： `!`
 
   返回值：`你好`, `世界`, `我是一个人`
+
   </Callout>
 
 - `#REPLACE#`: 将第一个父节点的文本中替换掉第二个父节点文本为第三个父节点的文本。
@@ -138,11 +420,325 @@ import Frame from "@/app/components/Frame"
 - `#GET_NODE_RGBA#`: 将一个节点连向此逻辑节点，会输出四个值，分别表示该输入节点的颜色，r，g，b，a
 - `#COLLECT_NODE_NAME_BY_RGBA#`: 输入四个值（r,g,b,a），运行后，该逻辑节点将收集全舞台上所有和该颜色完全相等的文本节点的内容，并依次输出成新的文本节点。注：在收集的过程中，直接和逻辑节点相连接的节点会被过滤。
 
-<Frame data={{"version":14,"entities":[{"location":[-170,-214],"size":[66,76],"text":"n0","uuid":"3b2e6369-ad58-4bea-bd10-345b8ac94193","details":"","color":[239,68,68,1],"type":"core:text_node"},{"location":[-66,-213],"size":[59,76],"text":"n1","uuid":"0511b26f-bbd0-4d18-8ccb-112215d0c45d","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[30,-213],"size":[64,76],"text":"n2","uuid":"173bb43c-40da-4552-a7e1-4a68895d8b6d","details":"","color":[239,68,68,1],"type":"core:text_node"},{"location":[-68,-104],"size":[65,76],"text":"n4","uuid":"37a055d0-3ff1-4ff9-b371-8f859e0b06a8","details":"","color":[239,68,68,1],"type":"core:text_node"},{"location":[-170,-104],"size":[65,76],"text":"n3","uuid":"aab1b54c-3fa5-4f3f-8021-0b39e3a4b013","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[29,-104],"size":[65,76],"text":"n5","uuid":"c15f1535-4c55-4fab-8505-ac7df8f1e36e","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-170,-2],"size":[65,76],"text":"n6","uuid":"c790b841-e014-4d45-8c86-81837ba9d8c1","details":"","color":[239,68,68,1],"type":"core:text_node"},{"location":[67,-2],"size":[62,76],"text":"n7","uuid":"9df36667-74a5-4d53-89c3-c87d222d7282","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[29,-2],"size":[66,76],"text":"n8","uuid":"3f0150d9-0511-4cf6-812d-4c02e86d28e2","details":"","color":[239,68,68,1],"type":"core:text_node"},{"location":[-216,139],"size":[84,76],"text":"239","uuid":"70eaac49-ac90-4e93-84b3-c525961a7538","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-93,139],"size":[67,76],"text":"68","uuid":"dfe0c17b-335a-4ae4-b5c3-0a638d3b8bbf","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[13,139],"size":[67,76],"text":"68","uuid":"f4eb15e2-bd4d-4be1-9ad2-76a7f86559f3","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[123,139],"size":[40,76],"text":"1","uuid":"b5877ba3-e484-4e39-b70b-8eaabf26aa89","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,269],"size":[584,76],"text":"#COLLECT_NODE_NAME_BY_RGBA#","uuid":"d75c83e3-a433-4f6a-a971-4c41058e96c7","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,369],"size":[66,76],"text":"n0","uuid":"ce86fcf4-5aaa-42e4-96aa-36b19cfffbb3","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,469],"size":[64,76],"text":"n2","uuid":"4950dc04-0211-4e04-a789-8fd0203154bf","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,569],"size":[65,76],"text":"n4","uuid":"5faf06fe-7188-4b44-9f07-318beab66a8e","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,669],"size":[65,76],"text":"n6","uuid":"57a6ddf2-b069-4681-8d37-ce68603345f8","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-328,769],"size":[66,76],"text":"n8","uuid":"e79f9386-8af3-4429-8a24-bfb2bc3744bd","details":"","color":[0,0,0,0],"type":"core:text_node"}],"associations":[{"source":"0511b26f-bbd0-4d18-8ccb-112215d0c45d","target":"3b2e6369-ad58-4bea-bd10-345b8ac94193","text":"","uuid":"88458190-8e8f-4fa8-816d-367e31e7f754","type":"core:line_edge","color":[0,0,0,0]},{"source":"0511b26f-bbd0-4d18-8ccb-112215d0c45d","target":"173bb43c-40da-4552-a7e1-4a68895d8b6d","text":"","uuid":"049e8303-1c39-4a00-a291-3501c1bd22be","type":"core:line_edge","color":[0,0,0,0]},{"source":"0511b26f-bbd0-4d18-8ccb-112215d0c45d","target":"37a055d0-3ff1-4ff9-b371-8f859e0b06a8","text":"","uuid":"995842d5-e16f-4e32-bc59-93f58d461de7","type":"core:line_edge","color":[0,0,0,0]},{"source":"37a055d0-3ff1-4ff9-b371-8f859e0b06a8","target":"aab1b54c-3fa5-4f3f-8021-0b39e3a4b013","text":"","uuid":"abf8305e-d290-4b73-8ae5-0b3724802af9","type":"core:line_edge","color":[0,0,0,0]},{"source":"37a055d0-3ff1-4ff9-b371-8f859e0b06a8","target":"c15f1535-4c55-4fab-8505-ac7df8f1e36e","text":"","uuid":"7364bcdf-d4cc-46a4-af1a-a61e040d2219","type":"core:line_edge","color":[0,0,0,0]},{"source":"aab1b54c-3fa5-4f3f-8021-0b39e3a4b013","target":"c790b841-e014-4d45-8c86-81837ba9d8c1","text":"","uuid":"ecc578c2-6360-419c-874a-ab7a291bcbec","type":"core:line_edge","color":[0,0,0,0]},{"source":"c790b841-e014-4d45-8c86-81837ba9d8c1","target":"9df36667-74a5-4d53-89c3-c87d222d7282","text":"","uuid":"288fe81e-1c1b-497d-a2e0-4007f0f3f767","type":"core:line_edge","color":[0,0,0,0]},{"source":"c15f1535-4c55-4fab-8505-ac7df8f1e36e","target":"3f0150d9-0511-4cf6-812d-4c02e86d28e2","text":"","uuid":"5dd29193-fdae-49b5-96f5-f536c69fe452","type":"core:line_edge","color":[0,0,0,0]},{"source":"70eaac49-ac90-4e93-84b3-c525961a7538","target":"d75c83e3-a433-4f6a-a971-4c41058e96c7","text":"","uuid":"4b4f9c46-d442-47a3-84bd-e20df4359883","type":"core:line_edge","color":[0,0,0,0]},{"source":"dfe0c17b-335a-4ae4-b5c3-0a638d3b8bbf","target":"d75c83e3-a433-4f6a-a971-4c41058e96c7","text":"","uuid":"953ce026-ab1f-4b02-af8c-5836719af404","type":"core:line_edge","color":[0,0,0,0]},{"source":"f4eb15e2-bd4d-4be1-9ad2-76a7f86559f3","target":"d75c83e3-a433-4f6a-a971-4c41058e96c7","text":"","uuid":"65b615ef-dc0e-463a-9539-59c7190601cf","type":"core:line_edge","color":[0,0,0,0]},{"source":"b5877ba3-e484-4e39-b70b-8eaabf26aa89","target":"d75c83e3-a433-4f6a-a971-4c41058e96c7","text":"","uuid":"ac9e6f5d-b5a5-4e3a-b2d7-12adf53f805a","type":"core:line_edge","color":[0,0,0,0]},{"source":"d75c83e3-a433-4f6a-a971-4c41058e96c7","target":"ce86fcf4-5aaa-42e4-96aa-36b19cfffbb3","text":"","uuid":"46728a9f-badc-44d7-92e8-ef604e70f365","type":"core:line_edge","color":[0,0,0,0]},{"source":"d75c83e3-a433-4f6a-a971-4c41058e96c7","target":"4950dc04-0211-4e04-a789-8fd0203154bf","text":"","uuid":"2200328a-b41a-4716-9f1c-4e1ba0d9cf79","type":"core:line_edge","color":[0,0,0,0]},{"source":"d75c83e3-a433-4f6a-a971-4c41058e96c7","target":"5faf06fe-7188-4b44-9f07-318beab66a8e","text":"","uuid":"f3128c1b-c913-4eed-9b0f-b894fed4bee9","type":"core:line_edge","color":[0,0,0,0]},{"source":"d75c83e3-a433-4f6a-a971-4c41058e96c7","target":"57a6ddf2-b069-4681-8d37-ce68603345f8","text":"","uuid":"4acfce7b-1937-4597-9c84-9ac03e0bdc39","type":"core:line_edge","color":[0,0,0,0]},{"source":"d75c83e3-a433-4f6a-a971-4c41058e96c7","target":"e79f9386-8af3-4429-8a24-bfb2bc3744bd","text":"","uuid":"4e6a7772-cbe5-4996-9d50-44e119d27bb4","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-170, -214],
+        size: [66, 76],
+        text: "n0",
+        uuid: "3b2e6369-ad58-4bea-bd10-345b8ac94193",
+        details: "",
+        color: [239, 68, 68, 1],
+        type: "core:text_node",
+      },
+      {
+        location: [-66, -213],
+        size: [59, 76],
+        text: "n1",
+        uuid: "0511b26f-bbd0-4d18-8ccb-112215d0c45d",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [30, -213],
+        size: [64, 76],
+        text: "n2",
+        uuid: "173bb43c-40da-4552-a7e1-4a68895d8b6d",
+        details: "",
+        color: [239, 68, 68, 1],
+        type: "core:text_node",
+      },
+      {
+        location: [-68, -104],
+        size: [65, 76],
+        text: "n4",
+        uuid: "37a055d0-3ff1-4ff9-b371-8f859e0b06a8",
+        details: "",
+        color: [239, 68, 68, 1],
+        type: "core:text_node",
+      },
+      {
+        location: [-170, -104],
+        size: [65, 76],
+        text: "n3",
+        uuid: "aab1b54c-3fa5-4f3f-8021-0b39e3a4b013",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [29, -104],
+        size: [65, 76],
+        text: "n5",
+        uuid: "c15f1535-4c55-4fab-8505-ac7df8f1e36e",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-170, -2],
+        size: [65, 76],
+        text: "n6",
+        uuid: "c790b841-e014-4d45-8c86-81837ba9d8c1",
+        details: "",
+        color: [239, 68, 68, 1],
+        type: "core:text_node",
+      },
+      {
+        location: [67, -2],
+        size: [62, 76],
+        text: "n7",
+        uuid: "9df36667-74a5-4d53-89c3-c87d222d7282",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [29, -2],
+        size: [66, 76],
+        text: "n8",
+        uuid: "3f0150d9-0511-4cf6-812d-4c02e86d28e2",
+        details: "",
+        color: [239, 68, 68, 1],
+        type: "core:text_node",
+      },
+      {
+        location: [-216, 139],
+        size: [84, 76],
+        text: "239",
+        uuid: "70eaac49-ac90-4e93-84b3-c525961a7538",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-93, 139],
+        size: [67, 76],
+        text: "68",
+        uuid: "dfe0c17b-335a-4ae4-b5c3-0a638d3b8bbf",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [13, 139],
+        size: [67, 76],
+        text: "68",
+        uuid: "f4eb15e2-bd4d-4be1-9ad2-76a7f86559f3",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [123, 139],
+        size: [40, 76],
+        text: "1",
+        uuid: "b5877ba3-e484-4e39-b70b-8eaabf26aa89",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 269],
+        size: [584, 76],
+        text: "#COLLECT_NODE_NAME_BY_RGBA#",
+        uuid: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 369],
+        size: [66, 76],
+        text: "n0",
+        uuid: "ce86fcf4-5aaa-42e4-96aa-36b19cfffbb3",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 469],
+        size: [64, 76],
+        text: "n2",
+        uuid: "4950dc04-0211-4e04-a789-8fd0203154bf",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 569],
+        size: [65, 76],
+        text: "n4",
+        uuid: "5faf06fe-7188-4b44-9f07-318beab66a8e",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 669],
+        size: [65, 76],
+        text: "n6",
+        uuid: "57a6ddf2-b069-4681-8d37-ce68603345f8",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-328, 769],
+        size: [66, 76],
+        text: "n8",
+        uuid: "e79f9386-8af3-4429-8a24-bfb2bc3744bd",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+    ],
+    associations: [
+      {
+        source: "0511b26f-bbd0-4d18-8ccb-112215d0c45d",
+        target: "3b2e6369-ad58-4bea-bd10-345b8ac94193",
+        text: "",
+        uuid: "88458190-8e8f-4fa8-816d-367e31e7f754",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "0511b26f-bbd0-4d18-8ccb-112215d0c45d",
+        target: "173bb43c-40da-4552-a7e1-4a68895d8b6d",
+        text: "",
+        uuid: "049e8303-1c39-4a00-a291-3501c1bd22be",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "0511b26f-bbd0-4d18-8ccb-112215d0c45d",
+        target: "37a055d0-3ff1-4ff9-b371-8f859e0b06a8",
+        text: "",
+        uuid: "995842d5-e16f-4e32-bc59-93f58d461de7",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "37a055d0-3ff1-4ff9-b371-8f859e0b06a8",
+        target: "aab1b54c-3fa5-4f3f-8021-0b39e3a4b013",
+        text: "",
+        uuid: "abf8305e-d290-4b73-8ae5-0b3724802af9",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "37a055d0-3ff1-4ff9-b371-8f859e0b06a8",
+        target: "c15f1535-4c55-4fab-8505-ac7df8f1e36e",
+        text: "",
+        uuid: "7364bcdf-d4cc-46a4-af1a-a61e040d2219",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "aab1b54c-3fa5-4f3f-8021-0b39e3a4b013",
+        target: "c790b841-e014-4d45-8c86-81837ba9d8c1",
+        text: "",
+        uuid: "ecc578c2-6360-419c-874a-ab7a291bcbec",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "c790b841-e014-4d45-8c86-81837ba9d8c1",
+        target: "9df36667-74a5-4d53-89c3-c87d222d7282",
+        text: "",
+        uuid: "288fe81e-1c1b-497d-a2e0-4007f0f3f767",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "c15f1535-4c55-4fab-8505-ac7df8f1e36e",
+        target: "3f0150d9-0511-4cf6-812d-4c02e86d28e2",
+        text: "",
+        uuid: "5dd29193-fdae-49b5-96f5-f536c69fe452",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "70eaac49-ac90-4e93-84b3-c525961a7538",
+        target: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        text: "",
+        uuid: "4b4f9c46-d442-47a3-84bd-e20df4359883",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "dfe0c17b-335a-4ae4-b5c3-0a638d3b8bbf",
+        target: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        text: "",
+        uuid: "953ce026-ab1f-4b02-af8c-5836719af404",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "f4eb15e2-bd4d-4be1-9ad2-76a7f86559f3",
+        target: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        text: "",
+        uuid: "65b615ef-dc0e-463a-9539-59c7190601cf",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "b5877ba3-e484-4e39-b70b-8eaabf26aa89",
+        target: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        text: "",
+        uuid: "ac9e6f5d-b5a5-4e3a-b2d7-12adf53f805a",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        target: "ce86fcf4-5aaa-42e4-96aa-36b19cfffbb3",
+        text: "",
+        uuid: "46728a9f-badc-44d7-92e8-ef604e70f365",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        target: "4950dc04-0211-4e04-a789-8fd0203154bf",
+        text: "",
+        uuid: "2200328a-b41a-4716-9f1c-4e1ba0d9cf79",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        target: "5faf06fe-7188-4b44-9f07-318beab66a8e",
+        text: "",
+        uuid: "f3128c1b-c913-4eed-9b0f-b894fed4bee9",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        target: "57a6ddf2-b069-4681-8d37-ce68603345f8",
+        text: "",
+        uuid: "4acfce7b-1937-4597-9c84-9ac03e0bdc39",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "d75c83e3-a433-4f6a-a971-4c41058e96c7",
+        target: "e79f9386-8af3-4429-8a24-bfb2bc3744bd",
+        text: "",
+        uuid: "4e6a7772-cbe5-4996-9d50-44e119d27bb4",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
-<Callout>
-例如上图的例子，可以将所有通过颜色标注的节点提取出来，统一看看
-</Callout>
+<Callout>例如上图的例子，可以将所有通过颜色标注的节点提取出来，统一看看</Callout>
 
 - `#COLLECT_NODE_DETAILS_BY_RGBA#`: 同上，只是收集的是所有目标颜色节点的详细信息并将他们输出成新的文本节点。
 
@@ -164,11 +760,181 @@ import Frame from "@/app/components/Frame"
 - `#SET_VAR#`: 输入两个节点，左节点是变量名，右节点是变量的值，相当于编程语言中最基础的赋值操作。
 - `#GET_VAR#`: 输入一个节点，当节点名称恰好是曾经赋值过的变量名时，会输出这个变量的值。
 
-<Frame data={{"version":14,"entities":[{"location":[-234.5191610915388,-239.28829721107098],"size":[45.28333282470703,76],"text":"a","uuid":"7b915d6c-08c4-4ef4-9416-99e1a7ed21e5","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-152.18665142646424,-239.28829721107098],"size":[59.816667556762695,76],"text":"14","uuid":"1ba845ba-7899-466a-936a-92fcb1bb11bf","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-266.144079581711,-113.18400617901315],"size":[205.4499969482422,76],"text":"#SET_VAR#","uuid":"a782416b-b2cd-48e7-9e99-50103027ae4d","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-234.860746757004,-3.8631007196321434],"size":[142.88333129882812,76],"text":"success","uuid":"b4771905-9259-4eb9-9b03-770049274886","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[98.70279125717038,-239.28829721107098],"size":[45.28333282470703,76],"text":"a","uuid":"bf35f854-95fa-49ec-ac47-306588f2912e","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[16.494459195402783,-113.18400617901315],"size":[209.6999969482422,76],"text":"#GET_VAR#","uuid":"cf418ad1-bbe4-47d3-898b-88253d3c0cae","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[91.1944580509936,-3.8631007196321434],"size":[59.816667556762695,76],"text":"14","uuid":"ba8bd238-b121-4b88-9140-63e272e5da63","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-137.2607482828829,121.1701882282209],"size":[45.28333282470703,76],"text":"a","uuid":"396e00ef-57b8-4f04-b192-c5916395242a","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[11.369455380705517,121.1701882282209],"size":[132.61666870117188,76],"text":"114500","uuid":"ad8b613a-2806-4c30-b355-34a5953670b9","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-72.90560814543284,229.0263799724529],"size":[142.18333435058594,76],"text":"#ADD#","uuid":"98479ba6-7ec4-42f6-9097-df695452c24c","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-63.747275320725805,346.3366329684542],"size":[123.86666870117188,76],"text":"114514","uuid":"98816e5d-95d5-45e5-b976-f4208e9f7692","details":"","color":[0,0,0,0],"type":"core:text_node"}],"associations":[{"source":"7b915d6c-08c4-4ef4-9416-99e1a7ed21e5","target":"a782416b-b2cd-48e7-9e99-50103027ae4d","text":"","uuid":"103ad333-cc40-44b0-a79b-8b70a219c9bc","type":"core:line_edge","color":[0,0,0,0]},{"source":"1ba845ba-7899-466a-936a-92fcb1bb11bf","target":"a782416b-b2cd-48e7-9e99-50103027ae4d","text":"","uuid":"d5935aa5-fb0a-48bf-9f46-05c9f9e53c17","type":"core:line_edge","color":[0,0,0,0]},{"source":"a782416b-b2cd-48e7-9e99-50103027ae4d","target":"b4771905-9259-4eb9-9b03-770049274886","text":"","uuid":"a77c6107-5819-4c44-97ad-f4d8860f7903","type":"core:line_edge","color":[0,0,0,0]},{"source":"bf35f854-95fa-49ec-ac47-306588f2912e","target":"cf418ad1-bbe4-47d3-898b-88253d3c0cae","text":"","uuid":"0b39cc27-5c48-439f-a66c-a47073e2cd84","type":"core:line_edge","color":[0,0,0,0]},{"source":"cf418ad1-bbe4-47d3-898b-88253d3c0cae","target":"ba8bd238-b121-4b88-9140-63e272e5da63","text":"","uuid":"f3abfe73-8545-4e96-b146-07b07e8686e5","type":"core:line_edge","color":[0,0,0,0]},{"source":"396e00ef-57b8-4f04-b192-c5916395242a","target":"98479ba6-7ec4-42f6-9097-df695452c24c","text":"","uuid":"51be11fc-52ed-49ed-8128-1aa8ac79409b","type":"core:line_edge","color":[0,0,0,0]},{"source":"ad8b613a-2806-4c30-b355-34a5953670b9","target":"98479ba6-7ec4-42f6-9097-df695452c24c","text":"","uuid":"7aac0b1a-0dbe-496f-850d-09c5ebf90621","type":"core:line_edge","color":[0,0,0,0]},{"source":"98479ba6-7ec4-42f6-9097-df695452c24c","target":"98816e5d-95d5-45e5-b976-f4208e9f7692","text":"","uuid":"3273c244-58cb-4375-bce0-15af72272b1b","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-234.5191610915388, -239.28829721107098],
+        size: [45.28333282470703, 76],
+        text: "a",
+        uuid: "7b915d6c-08c4-4ef4-9416-99e1a7ed21e5",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-152.18665142646424, -239.28829721107098],
+        size: [59.816667556762695, 76],
+        text: "14",
+        uuid: "1ba845ba-7899-466a-936a-92fcb1bb11bf",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-266.144079581711, -113.18400617901315],
+        size: [205.4499969482422, 76],
+        text: "#SET_VAR#",
+        uuid: "a782416b-b2cd-48e7-9e99-50103027ae4d",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-234.860746757004, -3.8631007196321434],
+        size: [142.88333129882812, 76],
+        text: "success",
+        uuid: "b4771905-9259-4eb9-9b03-770049274886",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [98.70279125717038, -239.28829721107098],
+        size: [45.28333282470703, 76],
+        text: "a",
+        uuid: "bf35f854-95fa-49ec-ac47-306588f2912e",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [16.494459195402783, -113.18400617901315],
+        size: [209.6999969482422, 76],
+        text: "#GET_VAR#",
+        uuid: "cf418ad1-bbe4-47d3-898b-88253d3c0cae",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [91.1944580509936, -3.8631007196321434],
+        size: [59.816667556762695, 76],
+        text: "14",
+        uuid: "ba8bd238-b121-4b88-9140-63e272e5da63",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-137.2607482828829, 121.1701882282209],
+        size: [45.28333282470703, 76],
+        text: "a",
+        uuid: "396e00ef-57b8-4f04-b192-c5916395242a",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [11.369455380705517, 121.1701882282209],
+        size: [132.61666870117188, 76],
+        text: "114500",
+        uuid: "ad8b613a-2806-4c30-b355-34a5953670b9",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-72.90560814543284, 229.0263799724529],
+        size: [142.18333435058594, 76],
+        text: "#ADD#",
+        uuid: "98479ba6-7ec4-42f6-9097-df695452c24c",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-63.747275320725805, 346.3366329684542],
+        size: [123.86666870117188, 76],
+        text: "114514",
+        uuid: "98816e5d-95d5-45e5-b976-f4208e9f7692",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+    ],
+    associations: [
+      {
+        source: "7b915d6c-08c4-4ef4-9416-99e1a7ed21e5",
+        target: "a782416b-b2cd-48e7-9e99-50103027ae4d",
+        text: "",
+        uuid: "103ad333-cc40-44b0-a79b-8b70a219c9bc",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "1ba845ba-7899-466a-936a-92fcb1bb11bf",
+        target: "a782416b-b2cd-48e7-9e99-50103027ae4d",
+        text: "",
+        uuid: "d5935aa5-fb0a-48bf-9f46-05c9f9e53c17",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "a782416b-b2cd-48e7-9e99-50103027ae4d",
+        target: "b4771905-9259-4eb9-9b03-770049274886",
+        text: "",
+        uuid: "a77c6107-5819-4c44-97ad-f4d8860f7903",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "bf35f854-95fa-49ec-ac47-306588f2912e",
+        target: "cf418ad1-bbe4-47d3-898b-88253d3c0cae",
+        text: "",
+        uuid: "0b39cc27-5c48-439f-a66c-a47073e2cd84",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "cf418ad1-bbe4-47d3-898b-88253d3c0cae",
+        target: "ba8bd238-b121-4b88-9140-63e272e5da63",
+        text: "",
+        uuid: "f3abfe73-8545-4e96-b146-07b07e8686e5",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "396e00ef-57b8-4f04-b192-c5916395242a",
+        target: "98479ba6-7ec4-42f6-9097-df695452c24c",
+        text: "",
+        uuid: "51be11fc-52ed-49ed-8128-1aa8ac79409b",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "ad8b613a-2806-4c30-b355-34a5953670b9",
+        target: "98479ba6-7ec4-42f6-9097-df695452c24c",
+        text: "",
+        uuid: "7aac0b1a-0dbe-496f-850d-09c5ebf90621",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "98479ba6-7ec4-42f6-9097-df695452c24c",
+        target: "98816e5d-95d5-45e5-b976-f4208e9f7692",
+        text: "",
+        uuid: "3273c244-58cb-4375-bce0-15af72272b1b",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
-<Callout>
-这里的设计思路是按照脚本语言python设计的，直接赋值即可完成声明。如果使用了不存在的变量，会输出NaN
-</Callout>
+<Callout>这里的设计思路是按照脚本语言python设计的，直接赋值即可完成声明。如果使用了不存在的变量，会输出NaN</Callout>
 
 ### 摄像机操作
 
@@ -188,13 +954,100 @@ import Frame from "@/app/components/Frame"
 
 ## 简化的运算方法
 
-<Frame data={{"version":14,"entities":[{"location":[-130.3251714592078,-51.93234173201536],"size":[40.89999961853027,76],"text":"1","uuid":"5540a567-736e-4774-8f47-3b522c16fe80","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[-3.827168796091925,-51.93234173201536],"size":[46.11666679382324,76],"text":"2","uuid":"2c12f5cd-f246-4290-baf5-c8f66880c033","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[100.03434917994,-51.93234173201536],"size":[46.95000076293945,76],"text":"3","uuid":"56d8ab61-1edb-452a-8f6f-cf827142a231","details":"","color":[0,0,0,0],"type":"core:text_node"}],"associations":[{"source":"5540a567-736e-4774-8f47-3b522c16fe80","target":"2c12f5cd-f246-4290-baf5-c8f66880c033","text":"+","uuid":"c42eee27-e4b5-42be-a8cc-5f1a31db83bf","type":"core:line_edge","color":[0,0,0,0]},{"source":"2c12f5cd-f246-4290-baf5-c8f66880c033","target":"56d8ab61-1edb-452a-8f6f-cf827142a231","text":"","uuid":"d10aa6c3-8dde-4a09-8e49-8704e2068ac8","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-130.3251714592078, -51.93234173201536],
+        size: [40.89999961853027, 76],
+        text: "1",
+        uuid: "5540a567-736e-4774-8f47-3b522c16fe80",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [-3.827168796091925, -51.93234173201536],
+        size: [46.11666679382324, 76],
+        text: "2",
+        uuid: "2c12f5cd-f246-4290-baf5-c8f66880c033",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [100.03434917994, -51.93234173201536],
+        size: [46.95000076293945, 76],
+        text: "3",
+        uuid: "56d8ab61-1edb-452a-8f6f-cf827142a231",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+    ],
+    associations: [
+      {
+        source: "5540a567-736e-4774-8f47-3b522c16fe80",
+        target: "2c12f5cd-f246-4290-baf5-c8f66880c033",
+        text: "+",
+        uuid: "c42eee27-e4b5-42be-a8cc-5f1a31db83bf",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+      {
+        source: "2c12f5cd-f246-4290-baf5-c8f66880c033",
+        target: "56d8ab61-1edb-452a-8f6f-cf827142a231",
+        text: "",
+        uuid: "d10aa6c3-8dde-4a09-8e49-8704e2068ac8",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
 可以直接把 + - \* / 等二元运算符号写在线上，然后按下`x`键直接生成计算结果
 
 甚至还可以进一步简化：
 
-<Frame data={{"version":14,"entities":[{"location":[-87.71531793057927,-45.27455211816715],"size":[40.89999961853027,76],"text":"1","uuid":"5540a567-736e-4774-8f47-3b522c16fe80","details":"","color":[0,0,0,0],"type":"core:text_node"},{"location":[38.78268473253657,-45.27455211816715],"size":[46.95000076293945,76],"text":"3","uuid":"2c12f5cd-f246-4290-baf5-c8f66880c033","details":"","color":[0,0,0,0],"type":"core:text_node"}],"associations":[{"source":"5540a567-736e-4774-8f47-3b522c16fe80","target":"2c12f5cd-f246-4290-baf5-c8f66880c033","text":"+2","uuid":"c42eee27-e4b5-42be-a8cc-5f1a31db83bf","type":"core:line_edge","color":[0,0,0,0]}],"tags":[]}} />
+<Frame
+  data={{
+    version: 14,
+    entities: [
+      {
+        location: [-87.71531793057927, -45.27455211816715],
+        size: [40.89999961853027, 76],
+        text: "1",
+        uuid: "5540a567-736e-4774-8f47-3b522c16fe80",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+      {
+        location: [38.78268473253657, -45.27455211816715],
+        size: [46.95000076293945, 76],
+        text: "3",
+        uuid: "2c12f5cd-f246-4290-baf5-c8f66880c033",
+        details: "",
+        color: [0, 0, 0, 0],
+        type: "core:text_node",
+      },
+    ],
+    associations: [
+      {
+        source: "5540a567-736e-4774-8f47-3b522c16fe80",
+        target: "2c12f5cd-f246-4290-baf5-c8f66880c033",
+        text: "+2",
+        uuid: "c42eee27-e4b5-42be-a8cc-5f1a31db83bf",
+        type: "core:line_edge",
+        color: [0, 0, 0, 0],
+      },
+    ],
+    tags: [],
+  }}
+/>
 
 将 `+2` 写在线上，然后按下 `x` 键，生成计算结果
 

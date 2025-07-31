@@ -15,3 +15,6 @@ dist
 out
 
 LICENSE
+
+app/src-tauri/gen
+app/src-tauri/target

@@ -271,15 +271,13 @@ export class Color {
     const r = this.r / 255;
     const g = this.g / 255;
     const b = this.b / 255;
-    const max = Math.max(r, g, b),
-      min = Math.min(r, g, b);
-    let h = (max + min) / 2,
-      s = h;
-    const l = h;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
 
-    if (max === min) {
-      h = s = 0; // achromatic
-    } else {
+    if (max !== min) {
       const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
       switch (max) {
@@ -334,23 +332,19 @@ export class Color {
 
   // 辅助方法：HSL转RGB
   private hslToRgb(hsl: { h: number; s: number; l: number }): { r: number; g: number; b: number } {
-    let k, r, g, b;
-    const h = hsl.h / 360,
-      s = hsl.s,
-      l = hsl.l;
+    let r, g, b;
+    const h = hsl.h / 360;
+    const s = hsl.s;
+    const l = hsl.l;
 
     if (s === 0) {
       r = g = b = l; // achromatic
     } else {
-      k = (n: number) => (n + h * 12) % 12;
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
-      r = k(0);
-      g = k(8);
-      b = k(4);
-      r = this.hueToRgb(p, q, r);
-      g = this.hueToRgb(p, q, g);
-      b = this.hueToRgb(p, q, b);
+      r = this.hueToRgb(p, q, h + 1 / 3);
+      g = this.hueToRgb(p, q, h);
+      b = this.hueToRgb(p, q, h - 1 / 3);
     }
 
     return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
@@ -366,19 +360,13 @@ export class Color {
   }
 
   /**
-   * 将此颜色的色相环绕到另一个颜色
-   * @param color 另一个颜色
-   * @param deHue 色相差值，正数表示顺时针，负数表示逆时针
+   * 改变色相
+   * @param deHue 色相差值(角度)，正数表示顺时针，负数表示逆时针
    */
   public changeHue(deHue: number): Color {
-    // 获取目标颜色和当前颜色的HSL值
-    const { h: currentHue, s: currentS, l: currentL } = this.rgbToHsl();
-    console.log(currentHue, currentS, currentL);
-    // 计算新的色相值（处理负值和360度环绕）
-    const newHue = (currentHue + deHue + 360) % 360;
-
-    // 创建并返回新的颜色对象，保持原有饱和度、亮度
-    const { r, g, b } = this.hslToRgb({ h: newHue, s: currentS, l: currentL });
+    const hsl = this.rgbToHsl();
+    hsl.h = (hsl.h + deHue + 360) % 360;
+    const { r, g, b } = this.hslToRgb(hsl);
     return new Color(r, g, b, this.a);
   }
 }

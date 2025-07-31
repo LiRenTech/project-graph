@@ -14,7 +14,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "test": "pnpm --filter @graphif/project-graph test",
+    "test": "vitest",
     "tauri": "pnpm --filter @graphif/project-graph tauri",
     "prepublish": "pnpm run build"
   },
@@ -33,7 +33,8 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "turbo": "^2.5.5-canary.1",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.38.0",
+    "vitest": "3.2.4"
   },
   "pnpm": {
     "peerDependencyRules": {

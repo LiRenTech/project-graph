@@ -35,12 +35,9 @@ pnpm build
 以下代码会在插件加载时弹窗显示当前摄像机位置
 
 ```js
-import { Camera, Dialog } from 'project-graph-api';
+import { Camera, Dialog } from "project-graph-api";
 
 (async () => {
-  await Dialog.show(
-    "Hello world",
-    JSON.stringify(await Camera.getLocation())
-  )
-})()
+  await Dialog.show("Hello world", JSON.stringify(await Camera.getLocation()));
+})();
 ```

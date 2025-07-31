@@ -13,8 +13,7 @@
     "tauri:dev": "tauri dev",
     "tauri:dev:android": "adb reverse tcp:1420 tcp:1420 && adb reverse tcp:1421 tcp:1421 && tauri android dev --host 0.0.0.0",
     "tauri:build": "node ./scripts/tauri_build.js",
-    "tauri:build:android": "tauri android build",
-    "test": "vitest"
+    "tauri:build:android": "tauri android build"
   },
   "dependencies": {
     "@generouted/react-router": "^1.20.0",
@@ -51,7 +50,6 @@
     "@types/react-dom": "^19.1.6",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-oxc": "^0.2.2",
-    "@vitest/runner": "^3.2.4",
     "@zip.js/zip.js": "^2.7.63",
     "bcrypt": "^6.0.0",
     "clsx": "^2.1.1",

@@ -57,7 +57,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       if (id === resolvedVirtualModuleId) {
         return `\
 export function getOriginalNameOf(class_) {
-  return class_.${options?.staticMethodName ?? "className"};
+  return class_.${options?.staticMethodName ?? "className"} ?? class_.name;
 }
 `;
       }

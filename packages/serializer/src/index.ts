@@ -57,6 +57,9 @@ export function serialize(obj: any): any {
     if (!className) {
       throw TypeError("[Serializer] Cannot find class name of", obj);
     }
+    if (className === "Object") {
+      return obj;
+    }
     const result: any = {
       _: className,
     };
@@ -65,8 +68,10 @@ export function serialize(obj: any): any {
       result[key] = serialize(obj[key]);
     }
     return result;
+  } else if (typeof obj === "undefined") {
+    return undefined;
   } else {
-    throw TypeError("[Serializer] Unsupported value type", obj);
+    throw TypeError(`[Serializer] Unsupported value type ${obj}`);
   }
 }
 
