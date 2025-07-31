@@ -426,6 +426,9 @@ export enum ProjectState {
  * @example
  * @service("renderer")
  * class Renderer {}
+ *
+ * 装饰了这个类之后，这个类会多一个id属性（静态属性），值为"renderer"
+ * 可以通过 Renderer.id 获取到这个值
  */
 export const service =
   (id: string) =>
