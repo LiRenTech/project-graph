@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
+import { Dialog } from "@/components/dialog";
 import { ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
@@ -17,6 +18,7 @@ import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/pl
 import { useAtom } from "jotai";
 import { Copy, HardDriveDownload, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
@@ -198,6 +200,19 @@ export default function App() {
             className="overflow-hidden hover:opacity-75"
             onClick={async (e) => {
               e.stopPropagation();
+              if (project.state === ProjectState.Stashed) {
+                toast("文件还没有保存，但已经暂存，在“最近打开的文件”中可恢复文件");
+              } else if (project.state === ProjectState.Unsaved) {
+                const response = await Dialog.show({
+                  title: "是否保存更改？",
+                  buttons: [{ text: "取消" }, { text: "不保存" }, { text: "保存" }],
+                });
+                if (response.button === "保存") {
+                  await project.save();
+                } else if (response.button === "取消") {
+                  return;
+                }
+              }
               await project.dispose();
               setProjects((projects) => {
                 const result = projects.filter((p) => p.uri.toString() !== project.uri.toString());
