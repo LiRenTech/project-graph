@@ -208,7 +208,11 @@ export default function App() {
                   buttons: [{ text: "取消" }, { text: "不保存" }, { text: "保存" }],
                 });
                 if (response.button === "保存") {
-                  await project.save();
+                  try {
+                    await project.save();
+                  } catch {
+                    return;
+                  }
                 } else if (response.button === "取消") {
                   return;
                 }
