@@ -1,8 +1,3 @@
-import { deserialize, serialize } from "@graphif/serializer";
-import { Decoder, Encoder } from "@msgpack/msgpack";
-import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
-import { URI } from "vscode-uri";
-import { projectsAtom, store } from "@/state";
 import { FileSystemProvider, Service } from "@/core/interfaces/Service";
 import type { CurveRenderer } from "@/core/render/canvas2d/basicRenderer/curveRenderer";
 import type { ImageRenderer } from "@/core/render/canvas2d/basicRenderer/ImageRenderer";
@@ -75,6 +70,11 @@ import type { TagManager } from "@/core/stage/stageManager/concreteMethods/Stage
 import { HistoryManager } from "@/core/stage/stageManager/StageHistoryManager";
 import type { StageManager } from "@/core/stage/stageManager/StageManager";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
+import { projectsAtom, store } from "@/state";
+import { deserialize, serialize } from "@graphif/serializer";
+import { Decoder, Encoder } from "@msgpack/msgpack";
+import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
+import { URI } from "vscode-uri";
 
 if (import.meta.hot) {
   import.meta.hot.accept();
@@ -117,7 +117,7 @@ export class Project {
   private readonly fileSystemProviders = new Map<string, FileSystemProvider>();
   private rafHandle = -1;
   private _uri: URI;
-  private _state: ProjectState = ProjectState.Unsaved;
+  public state: ProjectState = ProjectState.Unsaved;
   public stage: StageObject[] = [];
   /**
    * 创建Encoder对象比直接用encode()快
@@ -276,11 +276,7 @@ export class Project {
   }
   set uri(uri: URI) {
     this._uri = uri;
-    this._state = ProjectState.Unsaved;
-  }
-
-  get state() {
-    return this._state;
+    this.state = ProjectState.Unsaved;
   }
 
   /**

@@ -1,8 +1,3 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import toast from "react-hot-toast";
-import { Direction } from "@/types/directions";
-import { Serialized } from "@/types/node";
 import { Project, service } from "@/core/Project";
 import { EntityShrinkEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { PenStrokeDeletedEffect } from "@/core/service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
@@ -23,6 +18,11 @@ import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Direction } from "@/types/directions";
+import { Serialized } from "@/types/node";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -105,9 +105,7 @@ export class StageManager {
   }
 
   getStageObjects(): StageObject[] {
-    const result: StageObject[] = [];
-    result.push(...this.project.stage);
-    return result;
+    return this.project.stage;
   }
 
   /**

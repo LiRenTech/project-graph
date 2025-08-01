@@ -1,7 +1,3 @@
-import { Color, mixColors, Vector } from "@graphif/data-structures";
-import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
-import { getTextSize } from "@/utils/font";
-import { isFrame } from "@/utils/platform";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { MouseLocation } from "@/core/service/controlService/MouseLocation";
@@ -9,6 +5,10 @@ import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
 import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { getTextSize } from "@/utils/font";
+import { isFrame } from "@/utils/platform";
+import { Color, mixColors, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 
 /**
  * 渲染器
@@ -705,11 +705,11 @@ export class Renderer {
       `ConnectFromNodes: ${this.project.controller.nodeConnection.connectFromEntities}`,
       `lastSelectedNode: ${this.project.controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(this.project.copyEngine.copyBoardData)}`,
-      `历史: ${this.project.historyManager.statusText()}`,
       `fps: ${this.fps}`,
       `delta: ${this.deltaTime.toFixed(2)}`,
       `uri: ${this.project.uri}`,
       `isEnableEntityCollision: ${this.project.stageManager.isEnableEntityCollision}`,
+      ...this.project.historyManager.patches.map((patch, index) => `history#${index}: ${JSON.stringify(patch)}`),
     ];
     for (const [k, v] of Object.entries(this.timings)) {
       detailsData.push(`render time:${k}: ${v.toFixed(2)}`);

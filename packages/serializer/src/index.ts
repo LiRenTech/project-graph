@@ -75,7 +75,13 @@ export function serialize(obj: any): any {
   }
 }
 
-export function deserialize(json: Record<string, any>, extra?: any): any {
+export function deserialize(json: any, extra?: any): any {
+  if (json instanceof Array) {
+    return json.map((v) => deserialize(v, extra));
+  }
+  if (!isSerializedObject(json)) {
+    return json;
+  }
   const className = json._;
   const class_ = classes.get(className);
   if (!class_) {
@@ -85,15 +91,8 @@ export function deserialize(json: Record<string, any>, extra?: any): any {
   for (const key in json) {
     if (key === "_") continue;
     const value = json[key];
-    if (value !== null && typeof value === "object" && "_" in value) {
+    if (isSerializedObject(value) || value instanceof Array) {
       json[key] = deserialize(value, extra);
-    }
-    if (value !== null && value instanceof Array) {
-      for (let i = 0; i < value.length; i++) {
-        if (value[i] !== null && typeof value[i] === "object" && "_" in value[i]) {
-          value[i] = deserialize(value[i], extra);
-        }
-      }
     }
   }
   const args = [];
@@ -112,4 +111,8 @@ export function deserialize(json: Record<string, any>, extra?: any): any {
     args.push(extra);
   }
   return new class_(...args);
+}
+
+function isSerializedObject(obj: any): boolean {
+  return typeof obj === "object" && obj !== null && "_" in obj;
 }
