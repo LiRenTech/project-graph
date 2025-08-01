@@ -1,28 +1,30 @@
-import { averageColors, Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import toast from "react-hot-toast";
-import { v4 } from "uuid";
 import { Dialog } from "@/components/dialog";
-import ColorWindow from "@/pages/_sub_window/ColorWindow";
-import FindWindow from "@/pages/_sub_window/FindWindow";
-import RecentFilesWindow from "@/pages/_sub_window/RecentFilesWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
-import TagWindow from "@/pages/_sub_window/TagWindow";
-import { Direction } from "@/types/directions";
-import { openBrowserOrFile } from "@/utils/externalOpen";
-import { openDevtools, writeStdout } from "@/utils/otherApi";
-import { isMac } from "@/utils/platform";
 import { Project, service } from "@/core/Project";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { RectangleSlideEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleSlideEffect";
+import { ViewFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
+import { ViewOutlineFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { Settings } from "@/core/service/Settings";
 import { PenStrokeMethods } from "@/core/stage/stageManager/basicMethods/PenStrokeMethods";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import { RectangleSlideEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleSlideEffect";
-import { ViewFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { ViewOutlineFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
-import { Settings } from "@/core/service/Settings";
-import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import ColorWindow from "@/pages/_sub_window/ColorWindow";
+import FindWindow from "@/pages/_sub_window/FindWindow";
+import RecentFilesWindow from "@/pages/_sub_window/RecentFilesWindow";
+import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
+import TagWindow from "@/pages/_sub_window/TagWindow";
+import { activeProjectAtom, store } from "@/state";
+import { Direction } from "@/types/directions";
+import { openBrowserOrFile } from "@/utils/externalOpen";
+import { openDevtools, writeStdout } from "@/utils/otherApi";
+import { isMac } from "@/utils/platform";
+import { averageColors, Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import toast from "react-hot-toast";
+import { v4 } from "uuid";
+import { onNewDraft, onOpenFile } from "../../GlobalMenu";
 
 /**
  * 快捷键注册函数
@@ -346,8 +348,8 @@ export class KeyBindsRegistrar {
     await this.project.keyBinds.create("openColorPanel", "F6", () => {
       ColorWindow.open();
     });
-    await this.project.keyBinds.create("switchDebugShow", "F3", () => {
-      const currentValue = this.project.renderer.isShowDebug;
+    await this.project.keyBinds.create("switchDebugShow", "F3", async () => {
+      const currentValue = await Settings.get("showDebug");
       Settings.set("showDebug", !currentValue);
     });
 
@@ -362,8 +364,8 @@ export class KeyBindsRegistrar {
     await this.project.keyBinds.create("unpackEntityFromSection", "C-g", () => {
       this.project.sectionPackManager.unpackSelectedSections();
     });
-    await this.project.keyBinds.create("checkoutProtectPrivacy", "C-2", () => {
-      Settings.set("protectingPrivacy", !this.project.renderer.protectingPrivacy);
+    await this.project.keyBinds.create("checkoutProtectPrivacy", "C-2", async () => {
+      Settings.set("protectingPrivacy", !(await Settings.get("protectingPrivacy")));
     });
     await this.project.keyBinds.create("searchText", "C-f", () => {
       FindWindow.open();
@@ -395,13 +397,13 @@ export class KeyBindsRegistrar {
       }, 200);
     });
     await this.project.keyBinds.create("saveFile", "C-s", () => {
-      onSave();
+      store.get(activeProjectAtom)?.save();
     });
     await this.project.keyBinds.create("newDraft", "C-n", () => {
       onNewDraft();
     });
     await this.project.keyBinds.create("openFile", "C-o", () => {
-      onOpen();
+      onOpenFile();
     });
 
     await this.project.keyBinds.create("checkoutWindowOpacityMode", "C-0", async () => {

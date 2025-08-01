@@ -1,11 +1,6 @@
-import { loadAllServices } from "@/core/loadAllServices";
-import { Project } from "@/core/Project";
-import { Telemetry } from "@/core/service/Telemetry";
-import { activeProjectAtom, projectsAtom, store } from "@/state";
-import { open } from "@tauri-apps/plugin-dialog";
+import { onNewDraft, onOpenFile } from "@/core/service/GlobalMenu";
 import { open as shellOpen } from "@tauri-apps/plugin-shell";
 import { Earth, FilePlus, FolderOpen, Info, Settings } from "lucide-react";
-import { URI } from "vscode-uri";
 import SettingsWindow from "../_sub_window/SettingsWindow";
 
 export default function Welcome() {
@@ -19,7 +14,7 @@ export default function Welcome() {
         <div className="flex gap-16">
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2 *:flex *:w-max *:cursor-pointer *:gap-2 *:hover:opacity-75 *:active:scale-90">
-              <div onClick={onNewProject}>
+              <div onClick={onNewDraft}>
                 <FilePlus />
                 <span>新建文件</span>
               </div>
@@ -70,35 +65,3 @@ export default function Welcome() {
     </div>
   );
 }
-
-// 目前这两个函数是从GlobalMenu.tsx中复制过来的
-// 代码重复了，可能要优化一下
-
-// 创建新工程
-const onNewProject = async () => {
-  const project = Project.newDraft();
-  loadAllServices(project);
-  await project.init();
-  store.set(projectsAtom, [...store.get(projectsAtom), project]);
-  store.set(activeProjectAtom, project);
-};
-
-const onOpenFile = async () => {
-  const path = await open({
-    directory: false,
-    multiple: false,
-    filters: [{ name: "工程文件", extensions: ["prg"] }],
-  });
-  if (!path) return;
-  const project = new Project(URI.file(path));
-  const t = performance.now();
-  loadAllServices(project);
-  const loadServiceTime = performance.now() - t;
-  await project.init();
-  const readFileTime = performance.now() - t;
-  store.set(projectsAtom, [...store.get(projectsAtom), project]);
-  Telemetry.event("打开文件", {
-    loadServiceTime,
-    readFileTime,
-  });
-};

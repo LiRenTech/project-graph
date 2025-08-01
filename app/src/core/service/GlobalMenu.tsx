@@ -69,31 +69,8 @@ export namespace GlobalMenu {
 
   export const menus = [
     new Menu("文件", <File />, [
-      new MenuItem("新建", <FilePlus />, async () => {
-        const project = Project.newDraft();
-        loadAllServices(project);
-        await project.init();
-        store.set(projectsAtom, [...store.get(projectsAtom), project]);
-      }),
-      new MenuItem("打开", <FolderOpen />, async () => {
-        const path = await open({
-          directory: false,
-          multiple: false,
-          filters: [{ name: "工程文件", extensions: ["prg"] }],
-        });
-        if (!path) return;
-        const project = new Project(URI.file(path));
-        const t = performance.now();
-        loadAllServices(project);
-        const loadServiceTime = performance.now() - t;
-        await project.init();
-        const readFileTime = performance.now() - t;
-        store.set(projectsAtom, [...store.get(projectsAtom), project]);
-        Telemetry.event("打开文件", {
-          loadServiceTime,
-          readFileTime,
-        });
-      }),
+      new MenuItem("新建", <FilePlus />, onNewDraft),
+      new MenuItem("打开", <FolderOpen />, onOpenFile),
       new Separator(),
       new MenuItem("保存", <Save />, () => {
         const project = store.get(activeProjectAtom);
@@ -236,4 +213,30 @@ export namespace GlobalMenu {
       }),
     ]),
   ];
+}
+
+export async function onNewDraft() {
+  const project = Project.newDraft();
+  loadAllServices(project);
+  await project.init();
+  store.set(projectsAtom, [...store.get(projectsAtom), project]);
+}
+export async function onOpenFile() {
+  const path = await open({
+    directory: false,
+    multiple: false,
+    filters: [{ name: "工程文件", extensions: ["prg"] }],
+  });
+  if (!path) return;
+  const project = new Project(URI.file(path));
+  const t = performance.now();
+  loadAllServices(project);
+  const loadServiceTime = performance.now() - t;
+  await project.init();
+  const readFileTime = performance.now() - t;
+  store.set(projectsAtom, [...store.get(projectsAtom), project]);
+  Telemetry.event("打开文件", {
+    loadServiceTime,
+    readFileTime,
+  });
 }
