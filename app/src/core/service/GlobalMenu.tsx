@@ -220,6 +220,7 @@ export async function onNewDraft() {
   loadAllServices(project);
   await project.init();
   store.set(projectsAtom, [...store.get(projectsAtom), project]);
+  store.set(activeProjectAtom, project);
 }
 export async function onOpenFile() {
   const path = await open({
@@ -235,6 +236,7 @@ export async function onOpenFile() {
   await project.init();
   const readFileTime = performance.now() - t;
   store.set(projectsAtom, [...store.get(projectsAtom), project]);
+  store.set(activeProjectAtom, project);
   Telemetry.event("打开文件", {
     loadServiceTime,
     readFileTime,

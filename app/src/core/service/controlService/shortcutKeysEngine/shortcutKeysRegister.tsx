@@ -358,10 +358,10 @@ export class KeyBindsRegistrar {
       this.project.stageManager.selectAll();
       this.project.effects.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
     });
-    await this.project.keyBinds.create("textNodeToSection", "C-g", () => {
+    await this.project.keyBinds.create("textNodeToSection", "C-S-g", () => {
       this.project.sectionPackManager.textNodeToSection();
     });
-    await this.project.keyBinds.create("unpackEntityFromSection", "C-g", () => {
+    await this.project.keyBinds.create("unpackEntityFromSection", "C-S-g", () => {
       this.project.sectionPackManager.unpackSelectedSections();
     });
     await this.project.keyBinds.create("checkoutProtectPrivacy", "C-2", async () => {
@@ -501,7 +501,7 @@ export class KeyBindsRegistrar {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
       this.project.selectChangeEngine.expandSelect(false, false);
     });
-    await this.project.keyBinds.create("expandSelectEntityReversed", "C-w", () => {
+    await this.project.keyBinds.create("expandSelectEntityReversed", "C-S-w", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
       this.project.selectChangeEngine.expandSelect(false, true);
     });
@@ -552,7 +552,7 @@ export class KeyBindsRegistrar {
     //       this.project.keyboardOnlyGraphEngine.createFinished();
     //     }
     //   });
-    await this.project.keyBinds.create("treeGraphAdjust", "f", () => {
+    await this.project.keyBinds.create("treeGraphAdjust", "C-S-f", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
       const entities = this.project.stageManager
         .getSelectedEntities()
