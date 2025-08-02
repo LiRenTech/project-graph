@@ -1,6 +1,0 @@
-{
-  "title": "vite-plugin-pg-theme",
-  "description": "Generate theme for Tailwind CSS",
-  "root": true,
-  "icon": "Code"
-}

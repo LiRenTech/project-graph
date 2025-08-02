@@ -31,7 +31,7 @@ export namespace Themes {
    * @param theme getThemeById返回的theme对象中的content属性
    */
   export function convertThemeToCSS(theme: any) {
-    function generateCSSVariables(obj: any, prefix: string = "--color-", css: string = ""): string {
+    function generateCSSVariables(obj: any, prefix: string = "--", css: string = ""): string {
       for (const key in obj) {
         if (typeof obj[key] === "object") {
           // 如果值是对象，递归调用函数，并更新前缀

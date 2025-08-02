@@ -2,7 +2,6 @@
 
 import generouted from "@generouted/react-router/plugin";
 import originalClassName from "@graphif/unplugin-original-class-name/vite";
-import pgTheme from "@graphif/vite-plugin-pg-theme";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 import reactScan from "@react-scan/vite-plugin-react-scan";
 import tailwindcss from "@tailwindcss/vite";
@@ -18,11 +17,6 @@ export const viteLogger = createLogger("info", { prefix: "[project-graph]" });
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    pgTheme({
-      glob: "src/themes/*.pg-theme",
-      out: "src/css/theme.pcss",
-      defaultTheme: "dark",
-    }),
     originalClassName({
       staticMethodName: "className",
     }),

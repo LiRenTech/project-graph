@@ -9,159 +9,37 @@ name:
   en: Dark
   zh_CN: 黑夜
 ---
-colors:
-  text: &text "#fff"
-  surface1: &surface1 oklch(12% 0 0)
-  surface2: &surface2 oklch(26% 0 0)
-  surface3: &surface3 oklch(37% 0 0)
-  surface4: &surface4 oklch(55% 0 0)
-  primary: &primary oklch(65.7% 0.165 254.624)
-
-titlebar:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  control:
-    hover:
-      bg: *surface2
-  menu:
-    hover:
-      bg: *surface2
-
-tab:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  active:
-    bg: *surface2
-  selected:
-    bg: *surface2
-    text: *text
-    border: *surface3
-
-menu:
-  item:
-    hover:
-      bg: *surface2
-  separator:
-    bg: *surface3
-
-tooltip:
-  bg: *surface2
-  text: *text
-  border: *surface3
-
-button:
-  bg: *surface2
-  text: *text
-  border: *surface3
-
-dialog:
-  info:
-    bg: oklch(28.2% 0.091 267.935)
-  success:
-    bg: oklch(26.6% 0.065 152.934)
-  warning:
-    bg: oklch(28.6% 0.066 53.813)
-  error:
-    bg: oklch(25.8% 0.092 26.042)
-
-input:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  placeholder:
-    text: *surface4
-
-keybind:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  active-outline: *primary
-  modifiers-bg: "#ddd"
-  modifiers-text: "#000"
-
-select:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  popup:
-    bg: *surface2
-    border: *surface3
-    shadow: *surface1
-  option:
-    bg: transparent
-    text: *text
-    border: transparent
-    hover:
-      bg: *surface2
-      text: *text
-      border: transparent
-    selected:
-      bg: *surface3
-      text: *text
-      border: transparent
-      hover:
-        bg: *surface4
-        text: *text
-        border: transparent
-
-slider:
-  line:
-    bg: *surface3
-  handle:
-    bg: *primary
-
-switch:
-  false:
-    bg: *surface3
-    dot:
-      bg: *text
-  true:
-    bg: *primary
-    dot:
-      bg: *text
-  disabled:
-    bg: *surface3
-    dot:
-      bg: *surface4
-
-toolbar:
-  bg: *surface1
-  icon:
-    hover:
-      bg: *surface2
-  border: *surface3
-  tooltip:
-    bg: *surface2
-    text: *text
-    border: *surface3
-  collapsed-bg: *text
-  selected-item-bg: *surface4
-
-field-group:
-  bg: *surface2
-  hover-bg: *surface2
-
-sub-window:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  shadow: *surface1
-
-ai:
-  input:
-    border: *surface3
-    placeholder:
-      text: *surface4
-    button:
-      hover:
-        bg: *surface2
-    focus-within:
-      border: *primary
-  message:
-    user:
-      bg: *surface2
+background: oklch(0.145 0 0)
+foreground: oklch(0.985 0 0)
+card: oklch(0.205 0 0)
+card-foreground: oklch(0.985 0 0)
+popover: oklch(0.205 0 0)
+popover-foreground: oklch(0.985 0 0)
+primary: oklch(0.922 0 0)
+primary-foreground: oklch(0.205 0 0)
+secondary: oklch(0.269 0 0)
+secondary-foreground: oklch(0.985 0 0)
+muted: oklch(0.269 0 0)
+muted-foreground: oklch(0.708 0 0)
+accent: oklch(0.269 0 0)
+accent-foreground: oklch(0.985 0 0)
+destructive: oklch(0.704 0.191 22.216)
+border: oklch(1 0 0 / 10%)
+input: oklch(1 0 0 / 15%)
+ring: oklch(0.556 0 0)
+chart-1: oklch(0.488 0.243 264.376)
+chart-2: oklch(0.696 0.17 162.48)
+chart-3: oklch(0.769 0.188 70.08)
+chart-4: oklch(0.627 0.265 303.9)
+chart-5: oklch(0.645 0.246 16.439)
+sidebar: oklch(0.205 0 0)
+sidebar-foreground: oklch(0.985 0 0)
+sidebar-primary: oklch(0.488 0.243 264.376)
+sidebar-primary-foreground: oklch(0.985 0 0)
+sidebar-accent: oklch(0.269 0 0)
+sidebar-accent-foreground: oklch(0.985 0 0)
+sidebar-border: oklch(1 0 0 / 10%)
+sidebar-ring: oklch(0.556 0 0)
 
 stage:
   Background: "#000000"
