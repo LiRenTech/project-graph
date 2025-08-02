@@ -1,9 +1,9 @@
-import { List } from "lucide-react";
 import { Dialog } from "@/components/dialog";
 import { SettingField } from "@/components/Field";
-import IconButton from "@/components/IconButton";
+import { Button } from "@/components/ui/button";
 import { Project } from "@/core/Project";
 import { AIEngine } from "@/core/service/dataManageService/aiEngine/AIEngine";
+import { List } from "lucide-react";
 
 export default function AISettings() {
   return (
@@ -13,7 +13,8 @@ export default function AISettings() {
       <SettingField
         settingKey="aiModel"
         extra={
-          <IconButton
+          <Button
+            size="icon"
             onClick={async () => {
               await Dialog.show({
                 title: "模型列表",
@@ -22,7 +23,7 @@ export default function AISettings() {
             }}
           >
             <List />
-          </IconButton>
+          </Button>
         }
       />
       <SettingField settingKey="aiShowTokenCount" type="switch" />

@@ -1,12 +1,6 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
-import { CircleHelp, Delete, DoorOpen, File, FolderInput, LoaderPinwheel, Radiation, Star } from "lucide-react";
-import React, { useEffect } from "react";
-import Button from "@/components/Button";
 import { Dialog } from "@/components/dialog";
-import IconButton from "@/components/IconButton";
-import Input from "@/components/Input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
 import { SubWindow } from "@/core/service/SubWindow";
@@ -14,6 +8,11 @@ import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { cn } from "@/utils/cn";
 import { PathString } from "@/utils/pathString";
 import { isDesktop } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import { CircleHelp, Delete, DoorOpen, File, FolderInput, LoaderPinwheel, Radiation, Star } from "lucide-react";
+import React, { useEffect } from "react";
 
 /**
  * 最近文件面板按钮
@@ -219,7 +218,8 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
     <div className={cn("flex h-full flex-col items-center gap-2")}>
       {/* 顶部区域 */}
       <div className="flex items-center gap-2">
-        <IconButton
+        <Button
+          size="icon"
           onClick={() => {
             Dialog.show({
               title: "“最近打开的文件”界面说明",
@@ -230,8 +230,9 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
           tooltip="查看帮助"
         >
           <CircleHelp />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          size="icon"
           onClick={async () => {
             try {
               const path = await openFileDialog({
@@ -263,8 +264,9 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
           tooltip="从文件夹导入多个文件进入列表"
         >
           <FolderInput />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          size="icon"
           className="cursor-pointer rounded"
           onClick={() => {
             Dialog.show({
@@ -288,7 +290,7 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
           tooltip="清空全部记录"
         >
           <Radiation />
-        </IconButton>
+        </Button>
       </div>
       <Input placeholder="请输入要筛选的文件" onChange={onInputChange} value={searchString} autoFocus />
 

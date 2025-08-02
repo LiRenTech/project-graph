@@ -1,13 +1,12 @@
+import Box from "@/components/Box";
+import { Dialog } from "@/components/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ViewOutlineFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { Stage } from "@/core/stage/Stage";
 import { Color } from "@graphif/data-structures";
 import { CaseSensitive, CaseUpper, Search } from "lucide-react";
 import React, { useEffect } from "react";
-import Box from "@/components/Box";
-import Button from "@/components/Button";
-import { Dialog } from "@/components/dialog";
-import IconButton from "@/components/IconButton";
-import Input from "@/components/Input";
-import { ViewOutlineFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
-import { Stage } from "@/core/stage/Stage";
 
 export default function SearchingNodePanel() {
   // region 搜索相关
@@ -86,10 +85,11 @@ export default function SearchingNodePanel() {
           }}
           value={searchString}
         />
-        <IconButton className="search-btn ml-2" onClick={search}>
+        <Button size="icon" className="search-btn ml-2" onClick={search}>
           <Search />
-        </IconButton>
-        <IconButton
+        </Button>
+        <Button
+          size="icon"
           className="ml-2"
           onClick={() => {
             const currentResult = !isCaseSensitive;
@@ -98,7 +98,7 @@ export default function SearchingNodePanel() {
           }}
         >
           {isCaseSensitive ? <CaseSensitive /> : <CaseUpper />}
-        </IconButton>
+        </Button>
       </div>
       <div className="text-panel-details-text flex h-8 items-center justify-center text-xs">
         {isCaseSensitive ? "大小写敏感" : "大小写不敏感"}

@@ -1,3 +1,28 @@
+import Github from "@/assets/github.svg?react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import { SubWindow } from "@/core/service/SubWindow";
+import About from "@/pages/_sub_window/SettingsWindow/about";
+import AISettings from "@/pages/_sub_window/SettingsWindow/ai";
+import Automation from "@/pages/_sub_window/SettingsWindow/automation";
+import Control from "@/pages/_sub_window/SettingsWindow/control";
+import Effects from "@/pages/_sub_window/SettingsWindow/effects";
+import GithubPage from "@/pages/_sub_window/SettingsWindow/github";
+import Keybinds from "@/pages/_sub_window/SettingsWindow/keybinds";
+import Performance from "@/pages/_sub_window/SettingsWindow/performance";
+import Scripts from "@/pages/_sub_window/SettingsWindow/scripts";
+import Sounds from "@/pages/_sub_window/SettingsWindow/sounds";
+import Themes from "@/pages/_sub_window/SettingsWindow/themes";
+import Visual from "@/pages/_sub_window/SettingsWindow/visual";
+import { isMac } from "@/utils/platform";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import {
@@ -14,91 +39,74 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import { startTransition, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Github from "@/assets/github.svg?react";
-import Button from "@/components/Button";
-import { SubWindow } from "@/core/service/SubWindow";
-import { cn } from "@/utils/cn";
-import { isMac } from "@/utils/platform";
-import About from "@/pages/_sub_window/SettingsWindow/about";
-import AISettings from "@/pages/_sub_window/SettingsWindow/ai";
-import Automation from "@/pages/_sub_window/SettingsWindow/automation";
-import Control from "@/pages/_sub_window/SettingsWindow/control";
-import Effects from "@/pages/_sub_window/SettingsWindow/effects";
-import GithubPage from "@/pages/_sub_window/SettingsWindow/github";
-import Keybinds from "@/pages/_sub_window/SettingsWindow/keybinds";
-import Performance from "@/pages/_sub_window/SettingsWindow/performance";
-import Scripts from "@/pages/_sub_window/SettingsWindow/scripts";
-import Sounds from "@/pages/_sub_window/SettingsWindow/sounds";
-import Themes from "@/pages/_sub_window/SettingsWindow/themes";
-import Visual from "@/pages/_sub_window/SettingsWindow/visual";
 
 const pages = [
   {
     id: "about",
-    icon: <Info />,
-    children: <About />,
+    icon: Info,
+    Component: About,
   },
   {
     id: "visual",
-    icon: <Eye />,
-    children: <Visual />,
+    icon: Eye,
+    Component: Visual,
   },
   {
     id: "control",
-    icon: <Wrench />,
-    children: <Control />,
+    icon: Wrench,
+    Component: Control,
   },
   {
     id: "keybinds",
-    icon: isMac ? <Command /> : <Keyboard />,
-    children: <Keybinds />,
+    icon: isMac ? Command : Keyboard,
+    Component: Keybinds,
   },
   {
     id: "themes",
-    icon: <Palette />,
-    children: <Themes />,
+    icon: Palette,
+    Component: Themes,
   },
   {
     id: "performance",
-    icon: <Zap />,
-    children: <Performance />,
+    icon: Zap,
+    Component: Performance,
   },
   {
     id: "effects",
-    icon: <Sparkles />,
-    children: <Effects />,
+    icon: Sparkles,
+    Component: Effects,
   },
   {
     id: "automation",
-    icon: <Bot />,
-    children: <Automation />,
+    icon: Bot,
+    Component: Automation,
   },
   {
     id: "ai",
-    icon: <Brain />,
-    children: <AISettings />,
+    icon: Brain,
+    Component: AISettings,
   },
   {
     id: "github",
-    icon: <Github />,
-    children: <GithubPage />,
+    icon: Github,
+    Component: GithubPage,
   },
   {
     id: "sounds",
-    icon: <Speaker />,
-    children: <Sounds />,
+    icon: Speaker,
+    Component: Sounds,
   },
   // {
   //   id: "plugins",
   //   icon: <Plug />,
-  //   children: <Plugins />,
+  //   Component: <Plugins />,
   // },
   {
     id: "scripts",
-    icon: <CodeXml />,
-    children: <Scripts />,
+    icon: CodeXml,
+    Component: Scripts,
   },
 ] as const;
 type Page = (typeof pages)[number]["id"];
@@ -106,33 +114,34 @@ type Page = (typeof pages)[number]["id"];
 export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage?: Page }) {
   const { t } = useTranslation("settings");
   const [currentPage, setCurrentPage] = useState(defaultPage);
+  const Component = useMemo(() => pages.find((item) => item.id === currentPage)?.Component ?? Fragment, [currentPage]);
 
   return (
-    <div className="flex h-full w-full flex-col p-8">
-      <div className="flex flex-1 gap-8 overflow-hidden">
-        <div className="text-appmenu-item-text flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
-          {pages.map((page) => (
-            <Button
-              key={page.id}
-              onClick={() => {
-                startTransition(() => {
-                  setCurrentPage(page.id);
-                });
-              }}
-              className={cn(
-                page.id !== currentPage && "text-sub-window-text border-none bg-transparent hover:scale-125",
-              )}
-            >
-              {page.icon}
-              {t(`tabs.${page.id}`)}
-            </Button>
-          ))}
-        </div>
-        <div className="mx-auto max-w-[900px] flex-1 overflow-auto rounded-xl">
-          {pages.find((page) => page.id === currentPage)?.children}
-        </div>
+    <SidebarProvider className="h-full w-full overflow-hidden">
+      <Sidebar>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {pages.map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton asChild>
+                      <div onClick={() => setCurrentPage(item.id)}>
+                        <item.icon />
+                        <span>{t(`tabs.${item.id}`)}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <div className="flex w-full flex-col">
+        <Component />
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
 
@@ -140,6 +149,6 @@ SettingsWindow.open = (page: Page) => {
   SubWindow.create({
     title: "设置",
     children: <SettingsWindow defaultPage={page} />,
-    rect: Rectangle.inCenter(new Vector(window.innerWidth * 0.87, window.innerHeight * 0.88)),
+    rect: Rectangle.inCenter(new Vector(innerWidth > 1653 ? 1240 : innerWidth * 0.75, innerHeight * 0.875)),
   });
 };

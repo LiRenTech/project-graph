@@ -1,14 +1,14 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SubWindow } from "@/core/service/SubWindow";
+import { Camera } from "@/core/stage/Camera";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { cn } from "@/utils/cn";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer, Telescope } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import IconButton from "@/components/IconButton";
-import Input from "@/components/Input";
-import { SubWindow } from "@/core/service/SubWindow";
-import { Camera } from "@/core/stage/Camera";
-import { StageManager } from "@/core/stage/stageManager/StageManager";
-import { cn } from "@/utils/cn";
 
 /**
  * 搜索内容的面板
@@ -33,7 +33,8 @@ export default function FindWindow() {
   return (
     <div className="flex flex-col gap-2 p-4">
       <div className="my-1 flex flex-wrap gap-3">
-        <IconButton
+        <Button
+          size="icon"
           onClick={() => {
             const currentResult = !isCaseSensitive;
             setIsCaseSensitive(currentResult);
@@ -42,23 +43,25 @@ export default function FindWindow() {
           tooltip={isCaseSensitive ? "不区分大小写" : "区分大小写"}
         >
           {isCaseSensitive ? <CaseSensitive /> : <CaseUpper />}
-        </IconButton>
-        <IconButton onClick={selectAllResult} disabled={searchResults.length === 0} tooltip="将全部结果选中">
+        </Button>
+        <Button size="icon" onClick={selectAllResult} disabled={searchResults.length === 0} tooltip="将全部结果选中">
           <SquareDashedMousePointer />
-        </IconButton>
+        </Button>
 
         {searchResults.length >= 3 && (
-          <IconButton
+          <Button
+            size="icon"
             onClick={() => {
               setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
             }}
             tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
           >
             <Telescope />
-          </IconButton>
+          </Button>
         )}
 
-        <IconButton
+        <Button
+          size="icon"
           onClick={() => {
             setSearchString("");
             Stage.contentSearchEngine.startSearch("", false);
@@ -67,7 +70,7 @@ export default function FindWindow() {
           tooltip="取消"
         >
           <Delete />
-        </IconButton>
+        </Button>
       </div>
 
       <Input

@@ -1,5 +1,5 @@
-import Button from "@/components/Button";
 import { Dialog } from "@/components/dialog";
+import { Button } from "@/components/ui/button";
 import { SubWindow } from "@/core/service/SubWindow";
 import { router } from "@/main";
 import { DateChecker } from "@/utils/dateChecker";

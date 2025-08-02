@@ -11,7 +11,7 @@ import { UserState } from "@/core/service/UserState";
 import { EdgeCollisionBoxGetter } from "@/core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import { store } from "@/state";
 import { exit, writeStderr } from "@/utils/otherApi";
-import { getCurrentWindow, isDesktop, isWeb } from "@/utils/platform";
+import { getCurrentWindow, isDesktop, isMobile, isWeb } from "@/utils/platform";
 import { routes } from "@generouted/react-router";
 import { configureSerializer } from "@graphif/serializer";
 import { getMatches } from "@tauri-apps/plugin-cli";
@@ -28,7 +28,7 @@ import "./css/index.css";
 import "./polyfills/roundRect";
 
 configureSerializer(getOriginalNameOf);
-if (import.meta.env.DEV) {
+if (import.meta.env.DEV && isMobile) {
   new VConsole();
 }
 

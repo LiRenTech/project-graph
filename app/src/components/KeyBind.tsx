@@ -1,10 +1,10 @@
-import { Check, Delete } from "lucide-react";
-import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { formatEmacsKey, parseEmacsKey } from "@/utils/emacs";
 import { isLinux, isMac, isWindows } from "@/utils/platform";
-import Button from "@/components/Button";
+import { Check, Delete } from "lucide-react";
+import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * 绑定快捷键的组件

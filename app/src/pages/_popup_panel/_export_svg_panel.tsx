@@ -1,10 +1,18 @@
-import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
-import { useState } from "react";
-import Button from "@/components/Button";
 import { Dialog } from "@/components/dialog";
-import Select from "@/components/Select";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { StageExportSvg, SvgExportConfig } from "@/core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { isWeb } from "@/utils/platform";
+import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
+import { useState } from "react";
 
 export default function ExportSvgPanel() {
   const onSaveSVGNew = async () => {
@@ -55,23 +63,22 @@ export default function ExportSvgPanel() {
   return (
     <div className="bg-panel-bg text-panel-text p-4">
       <h2 className="mb-4 text-center text-2xl font-bold">导出SVG</h2>
-      {/* 导出图片的svg使用绝对路径，使用相对路径，使用base64编码 */}
-      <div className="mb-4">
-        <p>图片节点导出模式：</p>
-        <Select
-          value={configObject.imageMode}
-          options={[
-            { label: "绝对路径", value: "absolutePath" },
-            { label: "相对路径", value: "relativePath" },
-            // { label: "base64编码", value: "base64" },
-          ]}
-          onChange={(value) => {
-            if (value === "absolutePath" || value === "relativePath" || value === "base64") {
-              setConfigObject({ ...configObject, imageMode: value });
-            }
-          }}
-        ></Select>
-      </div>
+      <Select
+        value={configObject.imageMode}
+        onValueChange={(value) => setConfigObject({ ...configObject, imageMode: value as any })}
+      >
+        <SelectTrigger className="w-48">
+          <SelectValue placeholder="图片节点导出模式" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>图片节点导出模式</SelectLabel>
+            <SelectItem value="absolutePath">绝对路径</SelectItem>
+            <SelectItem value="relativePath">相对路径</SelectItem>
+            {/* <SelectItem value="base64">base64编码</SelectItem> */}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <div className="flex flex-col gap-2">
         <Button onClick={onSaveSVGNew}>导出全部内容为SVG</Button>
         <Button onClick={onSaveSVGSelected}>仅导出选中的内容为SVG</Button>

@@ -1,7 +1,4 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { v4 } from "uuid";
-import Button from "@/components/Button";
+import { Button } from "@/components/ui/button";
 import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,
@@ -11,6 +8,9 @@ import { SubWindow } from "@/core/service/SubWindow";
 import { Camera } from "@/core/stage/Camera";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { v4 } from "uuid";
 
 /**
  *

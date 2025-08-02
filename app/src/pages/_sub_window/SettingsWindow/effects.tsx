@@ -1,9 +1,9 @@
+import { ButtonField, Field } from "@/components/Field";
+import { Switch } from "@/components/ui/switch";
+import { Settings } from "@/core/service/Settings";
 import { Check, Stars, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getOriginalNameOf } from "virtual:original-class-name";
-import { ButtonField, Field } from "@/components/Field";
-import Switch from "@/components/Switch";
-import { Settings } from "@/core/service/Settings";
 
 const effects = Object.values(
   import.meta.glob("../../../core/service/feedbackService/effectEngine/concrete/*.tsx", {
@@ -57,8 +57,8 @@ export default function EffectsPage() {
           description={t(`${effectName}.description`)}
         >
           <Switch
-            value={effectsPerferences[effectName] ?? true}
-            onChange={(value) => {
+            checked={effectsPerferences[effectName] ?? true}
+            onCheckedChange={(value: boolean) => {
               setEffectsPerferences({
                 ...effectsPerferences,
                 [effectName]: value,

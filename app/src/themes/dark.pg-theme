@@ -55,8 +55,8 @@ stage:
   CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
-  flash: *text
-  dash: *text
-  windowFlash: *text
+  flash: "#fff"
+  dash: "#fff"
+  windowFlash: "#fff"
   warningShadow: "#f00"
   successShadow: "#0f0"

@@ -3,7 +3,6 @@
 import generouted from "@generouted/react-router/plugin";
 import originalClassName from "@graphif/unplugin-original-class-name/vite";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
-import reactScan from "@react-scan/vite-plugin-react-scan";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-oxc";
 import path from "node:path";
@@ -31,7 +30,7 @@ export default defineConfig({
     // 自动生成路由文件
     generouted(),
     // 分析组件性能
-    reactScan(),
+    // reactScan(),
   ],
 
   // 不清屏，方便看rust报错

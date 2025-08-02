@@ -9,159 +9,37 @@ description:
   en: A dark and colorful theme with a black and white feel.
   zh_CN: 兼具夜晚防刺眼的特性与一定的色彩
 ---
-colors:
-  text: &text "#e5e7eb"
-  surface1: &surface1 "#364153"
-  surface2: &surface2 "#4a5565"
-  surface3: &surface3 "#6b7280"
-  surface4: &surface4 "#94a3b8"
-  primary: &primary "#6a9a75"
-
-titlebar:
-  bg: *surface1
-  text: *text
-  border: *surface2
-  control:
-    hover:
-      bg: *surface2
-  menu:
-    hover:
-      bg: *surface2
-
-tab:
-  bg: *surface1
-  text: *text
-  border: *surface2
-  active:
-    bg: *surface2
-  selected:
-    bg: *surface2
-    text: *text
-    border: *surface2
-
-menu:
-  item:
-    hover:
-      bg: *surface2
-  separator:
-    bg: *surface3
-
-tooltip:
-  bg: *surface2
-  text: *text
-  border: *surface3
-
-button:
-  bg: *surface2
-  text: *text
-  border: *surface3
-
-dialog:
-  info:
-    bg: "#4a5565"
-  success:
-    bg: "#48604d"
-  warning:
-    bg: "#4f6252"
-  error:
-    bg: "#4a3f52"
-
-input:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  placeholder:
-    text: *surface4
-
-keybind:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  active-outline: *primary
-  modifiers-bg: "#1b2127"
-  modifiers-text: *text
-
-select:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  popup:
-    bg: *surface2
-    border: *surface3
-    shadow: "rgba(0,0,0,0.3)"
-  option:
-    bg: transparent
-    text: *text
-    border: transparent
-    hover:
-      bg: *surface1
-      text: *text
-      border: transparent
-    selected:
-      bg: *surface3
-      text: *text
-      border: transparent
-      hover:
-        bg: *surface4
-        text: *text
-        border: transparent
-
-slider:
-  line:
-    bg: *surface3
-  handle:
-    bg: *primary
-
-switch:
-  false:
-    bg: *surface3
-    dot:
-      bg: *surface2
-  true:
-    bg: *primary
-    dot:
-      bg: *surface2
-  disabled:
-    bg: *surface3
-    dot:
-      bg: *surface4
-
-toolbar:
-  bg: *surface1
-  icon:
-    hover:
-      bg: *surface2
-  border: *surface3
-  tooltip:
-    bg: *surface2
-    text: *text
-    border: *surface3
-  collapsed-bg: *text
-  selected-item-bg: *surface4
-
-field-group:
-  bg: *surface2
-  hover-bg: *surface2
-
-sub-window:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  shadow: *surface1
-
-ai:
-  input:
-    border: *surface3
-    placeholder:
-      text: *surface4
-    button:
-      hover:
-        bg: *surface2
-    focus-within:
-      border: *primary
-  message:
-    user:
-      bg: *surface2
+background: oklch(0.12 0.03 150)
+foreground: oklch(0.9 0.02 150)
+card: oklch(0.18 0.03 150)
+card-foreground: oklch(0.9 0.02 150)
+popover: oklch(0.18 0.03 150)
+popover-foreground: oklch(0.9 0.02 150)
+primary: oklch(0.45 0.15 150)
+primary-foreground: oklch(0.985 0 0)
+secondary: oklch(0.25 0.05 150)
+secondary-foreground: oklch(0.9 0.02 150)
+muted: oklch(0.25 0.05 150)
+muted-foreground: oklch(0.65 0.03 150)
+accent: oklch(0.25 0.05 150)
+accent-foreground: oklch(0.9 0.02 150)
+destructive: oklch(0.65 0.15 30)
+border: oklch(0.9 0 0 / 10%)
+input: oklch(0.9 0 0 / 15%)
+ring: oklch(0.45 0.15 150)
+chart-1: oklch(0.45 0.15 150)
+chart-2: oklch(0.696 0.17 162.48)
+chart-3: oklch(0.769 0.188 70.08)
+chart-4: oklch(0.627 0.265 303.9)
+chart-5: oklch(0.645 0.246 16.439)
+sidebar: oklch(0.18 0.03 150)
+sidebar-foreground: oklch(0.9 0.02 150)
+sidebar-primary: oklch(0.45 0.15 150)
+sidebar-primary-foreground: oklch(0.985 0 0)
+sidebar-accent: oklch(0.25 0.05 150)
+sidebar-accent-foreground: oklch(0.9 0.02 150)
+sidebar-border: oklch(0.9 0 0 / 10%)
+sidebar-ring: oklch(0.45 0.15 150)
 
 stage:
   Background: "#060710"

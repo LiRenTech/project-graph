@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { getDeviceId } from "@/utils/otherApi";
+import { useEffect, useState } from "react";
 // import { open } from "@tauri-apps/plugin-shell";
-// import Button from "@/components/Button";
+// import { Button } from "@/components/ui/button";
 
 /**
  * 彩蛋界面

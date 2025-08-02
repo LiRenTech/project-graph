@@ -1,11 +1,11 @@
+import { Dialog } from "@/components/dialog";
+import { Button } from "@/components/ui/button";
+import { SubWindow } from "@/core/service/SubWindow";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lucide-react";
 import React from "react";
-import { Dialog } from "@/components/dialog";
-import IconButton from "@/components/IconButton";
-import { SubWindow } from "@/core/service/SubWindow";
-import { StageManager } from "@/core/stage/stageManager/StageManager";
 
 /**
  * 标签相关面板
@@ -75,34 +75,37 @@ export default function TagWindow() {
   return (
     <div className="flex flex-col">
       <div className="flex justify-center gap-2">
-        <IconButton
+        <Button
+          size="icon"
           onClick={handleClickAddTag}
           tooltip="选中节点并添加到标签，如果选中了已经是标签的节点，则会移出标签"
         >
           <Tags />
-        </IconButton>
-        <IconButton onClick={refreshTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
+        </Button>
+        <Button size="icon" onClick={refreshTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
           <RefreshCcw />
-        </IconButton>
+        </Button>
         {tagNameList.length >= 3 && (
-          <IconButton
+          <Button
+            size="icon"
             onClick={() => {
               setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
             }}
             tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
           >
             {isMouseEnterMoveCameraAble ? <Telescope /> : <MousePointerClick />}
-          </IconButton>
+          </Button>
         )}
         {tagNameList.length > 0 && (
-          <IconButton
+          <Button
+            size="icon"
             onClick={() => {
               setIsPerspective(!isPerspective);
             }}
             tooltip={isPerspective ? "透视已开启" : "开启透视眼"}
           >
             {isPerspective ? <Angry /> : <Smile />}
-          </IconButton>
+          </Button>
         )}
       </div>
 

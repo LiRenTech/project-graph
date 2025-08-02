@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { isWeb } from "@/utils/platform";
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderOpen } from "lucide-react";
-import { isWeb } from "@/utils/platform";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
 
 export default function FileChooser({
   kind,

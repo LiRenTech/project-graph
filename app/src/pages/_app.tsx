@@ -7,7 +7,6 @@ import { Settings } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
 import { Themes } from "@/core/service/Themes";
 import RenderSubWindows from "@/pages/_render_sub_windows";
-import MenuWindow from "@/pages/_sub_window/MenuWindow";
 import Welcome from "@/pages/_welcome";
 import { activeProjectAtom, projectsAtom } from "@/state";
 import { cn } from "@/utils/cn";
@@ -256,23 +255,8 @@ export default function App() {
     >
       {/* 菜单 | 标签页 | ...移动窗口区域... | 窗口控制按钮 */}
       <div className="z-10 flex h-8 gap-2">
-        <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-xl border">
-          {/* <img src={icon} alt="logo" className="m-2 mr-4 size-6" /> */}
-          <div className="flex h-full items-center text-sm">
-            {GlobalMenu.menus.map((menu, i) => (
-              <div
-                key={i}
-                className="el-titlebar-menu flex h-full cursor-pointer items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
-                onMouseDown={() => {
-                  MenuWindow.open(menu);
-                }}
-              >
-                {menu.icon}
-                {menu.name}
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-xl border"></div> */}
+        <GlobalMenu />
         {isWide && <Tabs />}
         <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
         <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-xl border">

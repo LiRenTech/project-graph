@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import Button from "@/components/Button";
 import { Dialog } from "@/components/dialog";
-import Input from "@/components/Input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { DataTransferEngine } from "@/core/service/dataGenerateService/dataTransferEngine/dataTransferEngine";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { useEffect, useState } from "react";
 
 /**
  * 通过文本来生成节点的面板

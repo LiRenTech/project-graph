@@ -1,13 +1,12 @@
+import { Field } from "@/components/Field";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { UserScriptsManager } from "@/core/plugin/UserScriptsManager";
 import { open as openFile } from "@tauri-apps/plugin-dialog";
 import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, CodeXml, Delete, Eye, EyeClosed, FileCode2, PartyPopper } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Button from "@/components/Button";
-import { Field } from "@/components/Field";
-import IconButton from "@/components/IconButton";
-import Switch from "@/components/Switch";
-import { UserScriptsManager } from "@/core/plugin/UserScriptsManager";
 // import { Dialog } from "@/pages/components/dialog";
 
 export default function ScriptsPage() {
@@ -97,13 +96,14 @@ export default function ScriptsPage() {
               </div>
               <div className="flex flex-row items-center justify-center gap-2">
                 <Switch
-                  value={script.enabled}
-                  onChange={async (value) => {
+                  checked={script.enabled}
+                  onCheckedChange={async (value: boolean) => {
                     await UserScriptsManager.checkoutUserScriptEnabled(script.path, value);
                     updateUIList();
                   }}
                 />
-                <IconButton
+                <Button
+                  size="icon"
                   onClick={async () => {
                     await UserScriptsManager.removeUserScript(script.path);
                     updateUIList();
@@ -111,7 +111,7 @@ export default function ScriptsPage() {
                   tooltip={"仅从列表删除，不会影响脚本文件"}
                 >
                   <Delete />
-                </IconButton>
+                </Button>
               </div>
             </div>
           );

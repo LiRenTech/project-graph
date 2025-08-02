@@ -1,18 +1,19 @@
+import { SimpleCard } from "@/components/ui/card";
+import { SubWindow } from "@/core/service/SubWindow";
+import { cn } from "@/utils/cn";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
-import { SubWindow } from "@/core/service/SubWindow";
-import { cn } from "@/utils/cn";
 
 export default function RenderSubWindows() {
   const subWindows = SubWindow.use();
 
   return (
-    <div className="pointer-events-none fixed left-0 top-0 z-[10000] h-full w-full">
+    <div className="pointer-events-none fixed left-0 top-0 z-40 h-full w-full">
       {subWindows.map((win) => (
         <Transition key={win.id} appear={true} show={!win.closing}>
-          <div
+          <SimpleCard
             data-pg-window-id={win.id}
             style={{
               top: win.rect.top + "px",
@@ -22,7 +23,7 @@ export default function RenderSubWindows() {
               height: win.rect.height + "px",
             }}
             className={cn(
-              "el-sub-window pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border shadow-xl",
+              "pointer-events-auto absolute flex flex-col overflow-hidden transition",
               "data-closed:scale-90 data-closed:opacity-0",
             )}
             onClick={() => {
@@ -179,7 +180,7 @@ export default function RenderSubWindows() {
                 window.addEventListener("touchmove", onTouchMove);
               }}
             />
-          </div>
+          </SimpleCard>
         </Transition>
       ))}
     </div>

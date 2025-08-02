@@ -9,159 +9,37 @@ name:
   en: Light
   zh_CN: 明亮
 ---
-colors:
-  text: &text "#000"
-  surface1: &surface1 "rgb(255, 255, 255)"
-  surface2: &surface2 "rgb(248, 249, 250)"
-  surface3: &surface3 "rgb(225, 227, 229)"
-  surface4: &surface4 "rgb(200, 205, 212)"
-  primary: &primary "rgb(23, 114, 246)"
-
-titlebar:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  control:
-    hover:
-      bg: *surface2
-  menu:
-    hover:
-      bg: *surface2
-
-tab:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  active:
-    bg: *surface2
-  selected:
-    bg: *surface2
-    text: *text
-    border: *surface3
-
-menu:
-  item:
-    hover:
-      bg: *surface2
-  separator:
-    bg: *surface3
-
-tooltip:
-  bg: "rgb(255, 243, 205)"
-  text: "rgb(0, 0, 0)"
-  border: "rgb(225, 180, 126)"
-
-button:
-  bg: *surface2
-  text: *text
-  border: *surface3
-
-dialog:
-  info:
-    bg: "rgb(208, 228, 249)"
-  success:
-    bg: "rgb(212, 237, 218)"
-  warning:
-    bg: "rgb(255, 243, 205)"
-  error:
-    bg: "rgb(248, 215, 218)"
-
-input:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  placeholder:
-    text: *surface4
-
-keybind:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  active-outline: *primary
-  modifiers-bg: "#6c8095"
-  modifiers-text: "#fff"
-
-select:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  popup:
-    bg: *surface1
-    border: *surface3
-    shadow: "rgba(0, 0, 0, 0.1)"
-  option:
-    bg: transparent
-    text: *text
-    border: transparent
-    hover:
-      bg: *surface2
-      text: *text
-      border: transparent
-    selected:
-      bg: *surface3
-      text: *text
-      border: transparent
-      hover:
-        bg: *surface4
-        text: *text
-        border: transparent
-
-slider:
-  line:
-    bg: *surface3
-  handle:
-    bg: *primary
-
-switch:
-  false:
-    bg: *surface4
-    dot:
-      bg: *surface1
-  true:
-    bg: *primary
-    dot:
-      bg: *surface1
-  disabled:
-    bg: *surface3
-    dot:
-      bg: *surface4
-
-toolbar:
-  bg: *surface1
-  icon:
-    hover:
-      bg: *surface2
-  border: *surface3
-  tooltip:
-    bg: *surface2
-    text: *text
-    border: *surface3
-  collapsed-bg: *text
-  selected-item-bg: *surface4
-
-field-group:
-  bg: *surface2
-  hover-bg: *surface2
-
-sub-window:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  shadow: rgba(0, 0, 0, 0.1)
-
-ai:
-  input:
-    border: *surface3
-    placeholder:
-      text: *surface4
-    button:
-      hover:
-        bg: *surface2
-    focus-within:
-      border: *primary
-  message:
-    user:
-      bg: *surface2
+background: oklch(1 0 0)
+foreground: oklch(0.145 0 0)
+card: oklch(0.985 0 0)
+card-foreground: oklch(0.145 0 0)
+popover: oklch(0.985 0 0)
+popover-foreground: oklch(0.145 0 0)
+primary: oklch(0.205 0 0)
+primary-foreground: oklch(0.985 0 0)
+secondary: oklch(0.95 0 0)
+secondary-foreground: oklch(0.145 0 0)
+muted: oklch(0.95 0 0)
+muted-foreground: oklch(0.556 0 0)
+accent: oklch(0.95 0 0)
+accent-foreground: oklch(0.145 0 0)
+destructive: oklch(0.704 0.191 22.216)
+border: oklch(0.145 0 0 / 10%)
+input: oklch(0.145 0 0 / 15%)
+ring: oklch(0.708 0 0)
+chart-1: oklch(0.488 0.243 264.376)
+chart-2: oklch(0.696 0.17 162.48)
+chart-3: oklch(0.769 0.188 70.08)
+chart-4: oklch(0.627 0.265 303.9)
+chart-5: oklch(0.645 0.246 16.439)
+sidebar: oklch(0.985 0 0)
+sidebar-foreground: oklch(0.145 0 0)
+sidebar-primary: oklch(0.488 0.243 264.376)
+sidebar-primary-foreground: oklch(0.985 0 0)
+sidebar-accent: oklch(0.95 0 0)
+sidebar-accent-foreground: oklch(0.145 0 0)
+sidebar-border: oklch(0.145 0 0 / 10%)
+sidebar-ring: oklch(0.708 0 0)
 
 stage:
   Background: "#ffffff"

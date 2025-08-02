@@ -1,16 +1,16 @@
+import FileChooser from "@/components/FileChooser";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Settings } from "@/core/service/Settings";
+import { Telemetry } from "@/core/service/Telemetry";
+import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Settings } from "@/core/service/Settings";
-import { Telemetry } from "@/core/service/Telemetry";
-import { cn } from "@/utils/cn";
-import Button from "@/components/Button";
-import FileChooser from "@/components/FileChooser";
-import Input from "@/components/Input";
-import Select from "@/components/Select";
-import Slider from "@/components/Slider";
-import Switch from "@/components/Switch";
 
 export function SettingField({
   settingKey,
@@ -67,23 +67,39 @@ export function SettingField({
       {extra}
       {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
       {type === "password" && <Input value={value} onChange={setValue} placeholder={placeholder} type="password" />}
-      {type === "number" && <Input value={value} onChange={setValue} number />}
-      {type === "slider" && <Slider value={value} onChange={setValue} min={min} max={max} step={step} />}
-      {type === "switch" && <Switch value={value} onChange={setValue} />}
+      {type === "number" && <Input value={value} onChange={setValue} type="number" />}
+      {type === "slider" && (
+        <>
+          <Slider
+            value={[value]}
+            onValueChange={([v]) => setValue(v)}
+            min={min}
+            max={max}
+            step={step}
+            className="w-48"
+          />
+          <Input value={value} onChange={setValue} type="number" className="w-24" />
+        </>
+      )}
+      {type === "switch" && <Switch checked={value} onCheckedChange={setValue} />}
       {type === "select" && (
-        <Select
-          value={value}
-          onChange={setValue}
-          options={Object.entries(
-            t(`${settingKey}.options`, {
-              returnObjects: true,
-              defaultValue: { error: "Error: options not found" },
-            }),
-          ).map(([k, v]) => ({
-            label: v as string,
-            value: k,
-          }))}
-        ></Select>
+        <Select value={value} onValueChange={setValue}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(
+              t(`${settingKey}.options`, {
+                returnObjects: true,
+                defaultValue: { error: "Error: options not found" },
+              }),
+            ).map(([k, v]) => (
+              <SelectItem key={k} value={k}>
+                {v}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       )}
       {type === "file" && <FileChooser kind={kind} value={value} onChange={setValue} />}
     </Field>

@@ -1,3 +1,13 @@
+import { Dialog } from "@/components/dialog";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/Switch";
+import { FileLoader } from "@/core/service/dataFileService/fileLoader";
+import { StageSaveManager } from "@/core/service/dataFileService/StageSaveManager";
+import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { cn } from "@/utils/cn";
+import { PathString } from "@/utils/pathString";
+import { isDesktop } from "@/utils/platform";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { useAtom } from "jotai";
 import {
@@ -15,16 +25,6 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Dialog } from "@/components/dialog";
-import IconButton from "@/components/IconButton";
-import Switch from "@/components/Switch";
-import { FileLoader } from "@/core/service/dataFileService/fileLoader";
-import { StageSaveManager } from "@/core/service/dataFileService/StageSaveManager";
-import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
-import { StageManager } from "@/core/stage/stageManager/StageManager";
-import { cn } from "@/utils/cn";
-import { PathString } from "@/utils/pathString";
-import { isDesktop } from "@/utils/platform";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);
@@ -211,26 +211,26 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       </p>
       <p className="text-panel-warning-text mb-3 text-xs">不要自动加载重要且庞大的文件</p>
       <div className="mb-3 flex justify-between">
-        <IconButton onClick={onAddFile}>
+        <Button size="icon" onClick={onAddFile}>
           <span className="flex">
             <FilePlus2 />
             {t("buttons.addFile")}
           </span>
-        </IconButton>
-        <IconButton onClick={onClearList}>
+        </Button>
+        <Button size="icon" onClick={onClearList}>
           <span className="flex">
             <Trash2 />
             {t("buttons.clearList")}
           </span>
-        </IconButton>
-        <IconButton onClick={updateStartFiles}>
+        </Button>
+        <Button size="icon" onClick={updateStartFiles}>
           <span className="flex">
             <RefreshCw />
           </span>
-        </IconButton>
-        <IconButton onClick={() => setIsPanelTransparent(!isPanelTransparent)}>
+        </Button>
+        <Button size="icon" onClick={() => setIsPanelTransparent(!isPanelTransparent)}>
           {isPanelTransparent ? <Eye /> : <EyeClosed />}
-        </IconButton>
+        </Button>
       </div>
       <table className="bg-panel-bg overflow-hidden rounded-lg border border-gray-600 shadow-lg">
         <thead>
@@ -310,14 +310,14 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               <FolderTree />
               {t("buttons.showAbsolutePath")}
             </span>
-            <Switch value={isShowAbsolutePath} onChange={(v) => setIsShowAbsolutePath(v)} />
+            <Switch checked={isShowAbsolutePath} onCheckedChange={setIsShowAbsolutePath} />
           </div>
           <div className="flex flex-nowrap items-center justify-center">
             <span className="mr-2 flex">
               <FileClock />
               {t("buttons.showFileTime")}
             </span>
-            <Switch value={isShowTime} onChange={(v) => setIsShowTime(v)} />
+            <Switch checked={isShowTime} onCheckedChange={setIsShowTime} />
           </div>
         </div>
       </div>

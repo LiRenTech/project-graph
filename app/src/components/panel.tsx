@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
 import { X } from "lucide-react";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { cn } from "@/utils/cn";
-import Button from "@/components/Button";
 
 /**
  * @deprecated Remove in 2.0.0

@@ -9,159 +9,37 @@ name:
   en: Morandi
   zh_CN: 莫兰迪
 ---
-colors:
-  text: &text "oklch(0.25 0.03 240)"
-  surface1: &surface1 "#d6dbd5"
-  surface2: &surface2 "#e8e6e7"
-  surface3: &surface3 "#c9d2da"
-  surface4: &surface4 "#949cae"
-  primary: &primary "oklch(0.7 0.05 210)"
-
-titlebar:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  control:
-    hover:
-      bg: *surface2
-  menu:
-    hover:
-      bg: *surface2
-
-tab:
-  bg: *surface1
-  text: *text
-  border: *surface3
-  active:
-    bg: *surface2
-  selected:
-    bg: *surface2
-    text: *text
-    border: *surface3
-
-menu:
-  item:
-    hover:
-      bg: *surface2
-  separator:
-    bg: *surface3
-
-tooltip:
-  bg: "oklch(0.85 0.02 240)"
-  text: *text
-  border: "oklch(0.8 0.02 240)"
-
-button:
-  bg: "oklch(0.85 0.02 270)"
-  text: *text
-  border: "oklch(0.82 0.02 270)"
-
-dialog:
-  info:
-    bg: "oklch(0.9 0.02 240)"
-  success:
-    bg: "oklch(0.9 0.02 150)"
-  warning:
-    bg: "oklch(0.9 0.02 60)"
-  error:
-    bg: "oklch(0.85 0.03 25)"
-
-input:
-  bg: "oklch(0.96 0.02 240)"
-  text: *text
-  border: *surface3
-  placeholder:
-    text: *surface4
-
-keybind:
-  bg: "oklch(0.85 0.02 210)"
-  text: *text
-  border: "oklch(0.78 0.02 210)"
-  active-outline: *primary
-  modifiers-bg: "oklch(0.75 0.02 210)"
-  modifiers-text: *text
-
-select:
-  bg: "oklch(0.96 0.02 240)"
-  text: *text
-  border: *surface3
-  popup:
-    bg: "oklch(0.85 0.02 240)"
-    border: "oklch(0.8 0.02 240)"
-    shadow: "oklch(0.8 0.02 240 / 0.1)"
-  option:
-    bg: transparent
-    text: *text
-    border: transparent
-    hover:
-      bg: "oklch(0.88 0.02 240)"
-      text: *text
-      border: transparent
-    selected:
-      bg: "oklch(0.85 0.02 210)"
-      text: *text
-      border: transparent
-      hover:
-        bg: "oklch(0.85 0.02 240)"
-        text: *text
-        border: transparent
-
-slider:
-  line:
-    bg: *surface4
-  handle:
-    bg: "#666b75"
-
-switch:
-  false:
-    bg: *surface3
-    dot:
-      bg: "#dde7ef"
-  true:
-    bg: "#a4aaba"
-    dot:
-      bg: "oklch(1 0.02 240)"
-  disabled:
-    bg: "#d8dfe5"
-    dot:
-      bg: "#c9d2da"
-
-toolbar:
-  bg: "oklch(0.85 0.02 240)"
-  icon:
-    hover:
-      bg: "oklch(0.85 0.02 210)"
-  border: *text
-  tooltip:
-    bg: "oklch(0.85 0.02 240)"
-    text: *text
-    border: "oklch(0.8 0.02 240)"
-  collapsed-bg: "#14242f"
-  selected-item-bg: "rgb(142, 155, 166)"
-
-field-group:
-  bg: "#d8dfe5"
-  hover-bg: "#c9d2da"
-
-sub-window:
-  bg: *surface2
-  text: *text
-  border: *surface3
-  shadow: "rgba(0, 0, 0, 0.1)"
-
-ai:
-  input:
-    border: *surface3
-    placeholder:
-      text: *surface4
-    button:
-      hover:
-        bg: *surface2
-    focus-within:
-      border: *primary
-  message:
-    user:
-      bg: *surface2
+background: oklch(0.97 0.01 230)
+foreground: oklch(0.35 0.02 230)
+card: oklch(0.95 0.01 230)
+card-foreground: oklch(0.35 0.02 230)
+popover: oklch(0.95 0.01 230)
+popover-foreground: oklch(0.35 0.02 230)
+primary: oklch(0.75 0.06 230)
+primary-foreground: oklch(0.985 0 0)
+secondary: oklch(0.92 0.01 230)
+secondary-foreground: oklch(0.35 0.02 230)
+muted: oklch(0.92 0.01 230)
+muted-foreground: oklch(0.65 0.02 230)
+accent: oklch(0.92 0.01 230)
+accent-foreground: oklch(0.35 0.02 230)
+destructive: oklch(0.65 0.08 22)
+border: oklch(0.35 0 0 / 10%)
+input: oklch(0.35 0 0 / 15%)
+ring: oklch(0.75 0.06 230)
+chart-1: oklch(0.75 0.06 230)
+chart-2: oklch(0.696 0.17 162.48)
+chart-3: oklch(0.769 0.188 70.08)
+chart-4: oklch(0.627 0.265 303.9)
+chart-5: oklch(0.645 0.246 16.439)
+sidebar: oklch(0.95 0.01 230)
+sidebar-foreground: oklch(0.35 0.02 230)
+sidebar-primary: oklch(0.75 0.06 230)
+sidebar-primary-foreground: oklch(0.985 0 0)
+sidebar-accent: oklch(0.92 0.01 230)
+sidebar-accent-foreground: oklch(0.35 0.02 230)
+sidebar-border: oklch(0.35 0 0 / 10%)
+sidebar-ring: oklch(0.75 0.06 230)
 
 stage:
   Background: "#e8e6e7"
