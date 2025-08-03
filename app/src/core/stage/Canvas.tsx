@@ -13,7 +13,14 @@ export class Canvas {
     public element: HTMLCanvasElement = document.createElement("canvas"),
   ) {
     element.tabIndex = 0;
-    element.addEventListener("mousemove", () => element.focus());
+    element.addEventListener("mousemove", () => {
+      if (document.querySelector("[data-radix-popper-content-wrapper]")) {
+        // workaround: 解决菜单栏弹出后鼠标移动到canvas区域，导致菜单自动关闭的问题
+        return;
+      }
+      element.focus();
+      this.project.loop();
+    });
     this.ctx = element.getContext("2d", {
       alpha: Settings.sync.windowBackgroundAlpha !== 1,
     })!;

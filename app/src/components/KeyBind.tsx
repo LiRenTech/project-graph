@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/utils/cn";
 import { formatEmacsKey, parseEmacsKey } from "@/utils/emacs";
 import { isLinux, isMac, isWindows } from "@/utils/platform";
 import { Check, Delete } from "lucide-react";
@@ -66,29 +65,15 @@ export default function KeyBind({
 
   return (
     <>
-      <Button
-        onClick={startInput}
-        className={cn(
-          "bg-keybind-bg border-keybind-border max-w-1/3 flex flex-wrap items-center gap-2 outline-0 outline-red-400 hover:cursor-pointer",
-          {
-            "outline-4": choosing,
-          },
-        )}
-      >
-        {value ? (
-          parseEmacsKey(value.trim()).map((key, index) => (
-            <span key={index} className="flex gap-1">
-              <Modifiers modifiers={key} />
-              {key.key.startsWith("<") || key.key === "<MWU>" || key.key === "<MWD>" ? (
-                <MouseButton key_={key.key} />
-              ) : (
-                key.key
-              )}
-            </span>
-          ))
-        ) : (
-          <span className="text-keybind-text">{t("none")}</span>
-        )}
+      <Button onClick={startInput} variant={choosing ? "outline" : "default"} className="gap-0">
+        {value
+          ? parseEmacsKey(value.trim()).map((key, index) => (
+              <span key={index} className="not-first:before:content-[',_'] flex gap-1">
+                <Modifiers modifiers={key} />
+                {key.key.startsWith("<") ? <MouseButton key_={key.key} /> : key.key}
+              </span>
+            ))
+          : t("none")}
       </Button>
       {choosing && (
         <>
@@ -96,13 +81,12 @@ export default function KeyBind({
             onClick={() => {
               setValue((v) => v.trim().split(" ").slice(0, -1).join(" "));
             }}
+            size="icon"
           >
             <Delete />
-            删除一个按键
           </Button>
-          <Button onClick={endInput}>
+          <Button onClick={endInput} size="icon">
             <Check />
-            完成
           </Button>
         </>
       )}
@@ -166,19 +150,11 @@ function Modifiers({
       mods.push("meta");
     }
   }
-  return mods.map((modifier, index) => (
-    <span className="el-keybind-modifiers rounded" key={index}>
-      {modifier}
-    </span>
-  ));
+  return mods.map((modifier, index) => <span key={index}>{modifier}</span>);
 }
 
 function MouseButton({ key_ }: { key_: string }) {
   const button = key_.slice(1, -1);
 
-  return (
-    <span className="el-keybind-modifiers rounded">
-      {button === "MWU" ? "鼠标滚轮向上" : button === "MWD" ? "鼠标滚轮向下" : `鼠标按键${button}`}
-    </span>
-  );
+  return <span>{button === "MWU" ? "鼠标滚轮向上" : button === "MWD" ? "鼠标滚轮向下" : `鼠标按键${button}`}</span>;
 }

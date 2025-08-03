@@ -22,6 +22,7 @@ import Scripts from "@/pages/_sub_window/SettingsWindow/scripts";
 import Sounds from "@/pages/_sub_window/SettingsWindow/sounds";
 import Themes from "@/pages/_sub_window/SettingsWindow/themes";
 import Visual from "@/pages/_sub_window/SettingsWindow/visual";
+import { activeProjectAtom, store } from "@/state";
 import { isMac } from "@/utils/platform";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
@@ -138,7 +139,7 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col overflow-auto">
         <Component />
       </div>
     </SidebarProvider>
@@ -146,6 +147,7 @@ export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage
 }
 
 SettingsWindow.open = (page: Page) => {
+  store.get(activeProjectAtom)?.pause();
   SubWindow.create({
     title: "设置",
     children: <SettingsWindow defaultPage={page} />,
