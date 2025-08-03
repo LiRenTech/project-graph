@@ -1,10 +1,10 @@
+import Markdown from "@/components/markdown";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { cn } from "@/utils/cn";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { Check, Download, Loader2 } from "lucide-react";
-import MarkdownIt from "markdown-it";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Introduction() {
@@ -50,12 +50,6 @@ function CheckingUpdates({ isLatest }: { isLatest: boolean }) {
 }
 
 function UpdateAvailable({ update }: { update: Update | null }) {
-  const updateBodyHtml = useMemo(() => {
-    if (!update) return "";
-    return MarkdownIt({
-      breaks: true,
-    }).render(update.body ?? "");
-  }, [update]);
   const [downloading, setDownloading] = useState(false);
   const [downloadedSize, setDownloadedSize] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
@@ -95,12 +89,7 @@ function UpdateAvailable({ update }: { update: Update | null }) {
     >
       <h1 className="text-3xl font-bold">新版本可用</h1>
       <h2 className="text-xl">{update?.version}</h2>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: updateBodyHtml,
-        }}
-        className="flex-1 overflow-y-auto rounded-xl bg-black/20 p-4"
-      ></div>
+      <Markdown source={update?.body ?? ""} className="flex-1 overflow-y-auto rounded-xl bg-black/20 p-4" />
       <div className="flex flex-col items-center gap-2">
         {downloading ? (
           <>
