@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/ui/dialog";
 import { AutoLayoutFastTree } from "@/core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import { Settings } from "@/core/service/Settings";
 import { LayoutEntityManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 import { LayoutManualAlign } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutResizeManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
@@ -35,34 +35,23 @@ import {
   Square,
   SquareSquare,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 /**
  * 对齐面板
  * @returns
  */
 export default function AlignNodePanel() {
-  const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
-  const [isEnableDragToGridAutoAlign, setEnableDragToGridAutoAlign] = useState(false);
+  const [isEnableDragAutoAlign] = Settings.use("enableDragAutoAlign");
+  const [isEnableDragToGridAutoAlign] = Settings.use("enableDragAlignToGrid");
 
-  useEffect(() => {
-    Settings.watch("enableDragAutoAlign", (value) => {
-      setEnableDragAutoAlign(value);
-    });
-    Settings.watch("enableDragAlignToGrid", (value) => {
-      setEnableDragToGridAutoAlign(value);
-    });
-  }, []);
   const cell9ClassName = "border-1 bg-panel-bg grid grid-cols-3 grid-rows-3 rounded p-1 m-1";
 
   const isSelectedIsTreeRoot = (handleTreeRootFunc: (root: ConnectableEntity) => void) => {
     return () => {
       const selected = StageManager.getSelectedEntities();
       if (selected.length !== 1) {
-        Dialog.show({
-          title: "选择节点数量不正确",
-          content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-        });
+        toast.error("必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构");
         return;
       }
       const selectedEntity = selected[0];
@@ -70,16 +59,10 @@ export default function AlignNodePanel() {
         if (this.project.graphMethods.isTree(selectedEntity)) {
           handleTreeRootFunc(selectedEntity);
         } else {
-          Dialog.show({
-            title: "连接的节点必须符合树形结构",
-            content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
-          });
+          toast.error("连接的节点必须符合树形结构，不能有环路，不能有重叠指向");
         }
       } else {
-        Dialog.show({
-          title: "选择的对象必须是可连线的节点对象",
-          content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-        });
+        toast.error("必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构");
       }
     };
   };
@@ -222,10 +205,7 @@ export default function AlignNodePanel() {
           handleFunction={() => {
             const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
             if (selectedNodes.length !== 1) {
-              Dialog.show({
-                title: "选择节点数量不为1",
-                content: "必须只选择一个根节点才可以进行树形结构变成框嵌套结构",
-              });
+              toast.error("必须只选择一个根节点才可以进行树形结构变成框嵌套结构");
               return;
             }
             this.project.sectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
@@ -266,10 +246,7 @@ export default function AlignNodePanel() {
           handleFunction={() => {
             const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
             if (selectedNodes.length !== 1) {
-              Dialog.show({
-                title: "选择节点数量不为1",
-                content: "必须只选择一个根节点才可以进行树形结构变成框嵌套结构",
-              });
+              toast.error("必须只选择一个根节点才可以进行树形结构变成框嵌套结构");
               return;
             }
             this.project.sectionPackManager.textNodeTreeToSection(selectedNodes[0]);

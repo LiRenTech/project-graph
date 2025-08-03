@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
 import { ColorManager } from "@/core/service/feedbackService/ColorManager";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
@@ -8,6 +7,7 @@ import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { Color } from "@graphif/data-structures";
 import { ArrowRightLeft, Pipette } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 /**
  * 自定义颜色设置面板
@@ -69,10 +69,7 @@ export default function ColorManagerPanel() {
             ColorManager.addUserEntityFillColor(color).then((res) => {
               // setPreAddColor(Color.getRandom().toHexString());
               if (!res) {
-                Dialog.show({
-                  title: "添加失败",
-                  content: "不要添加重复的颜色",
-                });
+                toast.error("不能添加重复的颜色");
               }
             });
           }}
@@ -86,10 +83,7 @@ export default function ColorManagerPanel() {
           onClick={() => {
             const selectedStageObjects = StageManager.getSelectedStageObjects();
             if (selectedStageObjects.length === 0) {
-              Dialog.show({
-                title: "未选择对象",
-                content: "请先选择一个或多个有颜色的节点或连线",
-              });
+              toast.error("请先选择一个或多个有颜色的节点或连线");
               return;
             }
             selectedStageObjects.forEach((stageObject) => {

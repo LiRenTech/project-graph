@@ -18,7 +18,6 @@ import TagWindow from "@/pages/_sub_window/TagWindow";
 import { activeProjectAtom, store } from "@/state";
 import { Direction } from "@/types/directions";
 import { openBrowserOrFile } from "@/utils/externalOpen";
-import { openDevtools, writeStdout } from "@/utils/otherApi";
 import { isMac } from "@/utils/platform";
 import { averageColors, Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
@@ -39,27 +38,9 @@ export class KeyBindsRegistrar {
   async registerKeyBinds() {
     // 开始注册快捷键
     await this.project.keyBinds.create("test", "C-A-S-t", () =>
-      Dialog.show({
-        title: "自定义快捷键测试",
-        content: "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
-        buttons: [
-          {
-            text: "ok",
-          },
-          {
-            text: "open devtools",
-            onClick: () => {
-              openDevtools();
-            },
-          },
-          {
-            text: "write stdout",
-            onClick: () => {
-              writeStdout("test");
-            },
-          },
-        ],
-      }),
+      Dialog.buttons("测试快捷键", "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式", [
+        { id: "close", label: "关闭" },
+      ]),
     );
 
     await this.project.keyBinds.create("undo", "C-z", () => {
@@ -73,25 +54,16 @@ export class KeyBindsRegistrar {
     });
 
     // 危险操作，配置一个不容易触发的快捷键
-    await this.project.keyBinds.create("reload", "C-f5", () => {
-      Dialog.show({
-        title: "重新加载应用",
-        type: "warning",
-        content:
+    await this.project.keyBinds.create("reload", "C-f5", async () => {
+      if (
+        await Dialog.confirm(
+          "危险操作：重新加载应用",
           "此快捷键用于在废档了或软件卡住了的情况下重启，您按下了重新加载应用快捷键，是否要重新加载应用？这会导致您丢失所有未保存的工作。",
-        buttons: [
-          {
-            text: "是",
-            onClick: () => {
-              window.location.reload();
-            },
-          },
-          {
-            text: "否",
-            onClick: () => {},
-          },
-        ],
-      });
+          { destructive: true },
+        )
+      ) {
+        window.location.reload();
+      }
     });
 
     await this.project.keyBinds.create("checkoutClassroomMode", "F5", async () => {

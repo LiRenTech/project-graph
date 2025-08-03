@@ -1,8 +1,3 @@
-import { Color, colorInvert, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import { Path } from "@/utils/path";
 import { Project, service } from "@/core/Project";
 import { Renderer } from "@/core/render/canvas2d/renderer";
 import { SvgUtils } from "@/core/render/svg/SvgUtils";
@@ -11,6 +6,11 @@ import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Path } from "@/utils/path";
+import { Color, colorInvert, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
 
 export interface SvgExportConfig {
   imageMode: "absolutePath" | "relativePath" | "base64";
@@ -274,6 +274,6 @@ export class StageExportSvg {
    * @returns
    */
   dumpSelectedToSVGString(): string {
-    return ReactDOMServer.renderToString(this.dumpSelected());
+    return ReactDOMServer.renderToStaticMarkup(this.dumpSelected());
   }
 }

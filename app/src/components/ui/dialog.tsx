@@ -9,6 +9,8 @@ import { SubWindow } from "@/core/service/SubWindow";
 import { cn } from "@/utils/cn";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
+import { toast } from "sonner";
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -261,6 +263,55 @@ Dialog.buttons = <
                     {label}
                   </Button>
                 ))}
+              </DialogFooter>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
+    SubWindow.create({
+      titleBarOverlay: true,
+      closable: false,
+      rect: new Rectangle(Vector.same(100), Vector.same(-1)),
+      children: <Component />,
+    });
+  });
+};
+
+Dialog.copy = (title = "导出成功", description = "", value = ""): Promise<void> => {
+  return new Promise((resolve) => {
+    function Component({ winId }: { winId?: string }) {
+      const [open, setOpen] = React.useState(true);
+
+      return (
+        <Dialog open={open}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
+              <Textarea value={value} />
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    await writeText(value);
+                    toast.success("已复制到剪贴板");
+                  }}
+                >
+                  复制
+                </Button>
+                <Button
+                  onClick={() => {
+                    resolve();
+                    setOpen(false);
+                    setTimeout(() => {
+                      SubWindow.close(winId!);
+                    }, 500);
+                  }}
+                >
+                  确定
+                </Button>
               </DialogFooter>
             </DialogHeader>
           </DialogContent>

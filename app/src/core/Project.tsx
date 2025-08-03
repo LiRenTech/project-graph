@@ -387,7 +387,7 @@ declare module "./Project" {
     controller: Controller;
     stageExport: StageExport;
     stageExportPng: StageExportPng;
-    StageExportSvg: StageExportSvg;
+    stageExportSvg: StageExportSvg;
     generateFromFolder: GenerateFromFolder;
     serializedDataAdder: SerializedDataAdder;
     keyBindsRegistrar: KeyBindsRegistrar;

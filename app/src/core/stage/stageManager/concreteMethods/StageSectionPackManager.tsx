@@ -1,12 +1,12 @@
 // import { Section } from "@/core/stageObject/entity/Section";
 // import { Entity } from "@/core/stageObject/StageEntity";
-import { Dialog } from "@/components/ui/dialog";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { toast } from "sonner";
 import { v4 } from "uuid";
 
 /**
@@ -86,10 +86,7 @@ export class SectionPackManager {
    */
   textNodeTreeToSection(rootNode: TextNode): void {
     if (!this.project.graphMethods.isTree(rootNode)) {
-      Dialog.show({
-        title: "非树状结构",
-        content: "请选择一个树状结构的节点作为根节点",
-      });
+      toast.error("请选择一个树状结构的节点作为根节点");
       return;
     }
     const dfs = (node: TextNode): Section | TextNode => {
@@ -122,10 +119,7 @@ export class SectionPackManager {
    */
   textNodeTreeToSectionNoDeep(rootNode: TextNode): void {
     if (!this.project.graphMethods.isTree(rootNode)) {
-      Dialog.show({
-        title: "非树状结构",
-        content: "请选择一个树状结构的节点作为根节点",
-      });
+      toast.error("请选择一个树状结构的节点作为根节点");
       return;
     }
     const childNodes = this.project.graphMethods.nodeChildrenArray(rootNode).filter((node) => node instanceof TextNode);
@@ -213,10 +207,7 @@ export class SectionPackManager {
     // 目前先仅支持选中section后再进行拆包操作
     const sections = entities.filter((entity) => entity instanceof Section);
     if (sections.length === 0) {
-      Dialog.show({
-        title: "请选择一个section",
-        content: "请选择一个section",
-      });
+      toast.error("请选择一个section");
       return;
     }
     for (const section of sections) {
@@ -276,10 +267,7 @@ export class SectionPackManager {
 
       if (!isAllSameFather) {
         // 暂时不支持交叉section的创建
-        Dialog.show({
-          title: "选中的实体不在同一层级下",
-          content: "暂时不鼓励交叉section的直接打包型创建",
-        });
+        toast.error("选中的实体不在同一层级下，暂时不鼓励交叉section的直接打包型创建");
         return;
       }
     }

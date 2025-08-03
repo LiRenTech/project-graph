@@ -36,16 +36,11 @@ export class ControllerEdgeEditClass extends ControllerClass {
         return;
       }
 
-      Dialog.show({
-        title: "重命名边",
-        input: true,
-      }).then(({ button, value }) => {
-        if (button === "确定") {
-          if (value) {
-            for (const edge of this.project.stageManager.getLineEdges()) {
-              if (edge.isSelected) {
-                edge.rename(value);
-              }
+      Dialog.input("重命名边").then((value) => {
+        if (value) {
+          for (const edge of this.project.stageManager.getLineEdges()) {
+            if (edge.isSelected) {
+              edge.rename(value);
             }
           }
         }

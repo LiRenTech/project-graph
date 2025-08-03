@@ -199,17 +199,14 @@ export default function App() {
               if (project.state === ProjectState.Stashed) {
                 toast("文件还没有保存，但已经暂存，在“最近打开的文件”中可恢复文件");
               } else if (project.state === ProjectState.Unsaved) {
-                const response = await Dialog.show({
-                  title: "是否保存更改？",
-                  buttons: [{ text: "取消" }, { text: "不保存" }, { text: "保存" }],
-                });
-                if (response.button === "保存") {
-                  try {
-                    await project.save();
-                  } catch {
-                    return;
-                  }
-                } else if (response.button === "取消") {
+                const response = await Dialog.buttons("是否保存更改？", "", [
+                  { id: "cancel", label: "取消", variant: "ghost" },
+                  { id: "discard", label: "不保存", variant: "destructive" },
+                  { id: "save", label: "保存" },
+                ]);
+                if (response === "save") {
+                  await project.save();
+                } else if (response === "cancel") {
                   return;
                 }
               }

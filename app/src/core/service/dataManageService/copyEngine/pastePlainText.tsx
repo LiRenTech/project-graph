@@ -1,4 +1,3 @@
-import { Dialog } from "@/components/ui/dialog";
 import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
@@ -6,6 +5,7 @@ import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
 import { PathString } from "@/utils/pathString";
 import { Vector } from "@graphif/data-structures";
+import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -140,14 +140,9 @@ function isSvgString(str: string): boolean {
       const doc = parser.parseFromString(trimmed, "image/svg+xml");
       const svgElement = doc.documentElement;
       return svgElement.tagName.toLowerCase() === "svg" && svgElement.namespaceURI === "http://www.w3.org/2000/svg";
-    } catch (e) {
+    } catch {
       // 解析失败则直接失败
-      Dialog.show({
-        title: "错误",
-        content: "SVG 解析失败，请检查格式是否正确。",
-        code: JSON.stringify(e),
-        type: "error",
-      });
+      toast.error("SVG 解析失败");
       return false;
     }
   }

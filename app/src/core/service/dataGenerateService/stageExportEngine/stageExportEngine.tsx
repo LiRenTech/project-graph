@@ -1,5 +1,4 @@
-import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { service } from "@/core/Project";
+import { Project, service } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
@@ -10,25 +9,8 @@ import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
  */
 @service("stageExport")
 export class StageExport {
-  /**
-   *
-   * @param path
-   * @param string 已经转换好了的Svg字符串
-   */
-  public async saveSvgHandle(path: string, string: string) {
-    await writeTextFile(path, string);
-  }
+  constructor(private readonly project: Project) {}
 
-  /**
-   * 前置条件已经保证了树形结构
-   * @param path
-   * @param successCallback
-   * @param errorCallback
-   */
-  public async saveMarkdownHandle(path: string, textNode: TextNode) {
-    const content = this.getMarkdownStringByTextNode(textNode);
-    await writeTextFile(path, content);
-  }
   /**
    * 格式：
    * A

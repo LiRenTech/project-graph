@@ -1,4 +1,3 @@
-import { Dialog } from "@/components/ui/dialog";
 import { Project } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
@@ -7,9 +6,10 @@ import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
 import { Path } from "@/utils/path";
 import { PathString } from "@/utils/pathString";
-import { isMac, isWeb } from "@/utils/platform";
+import { isMac } from "@/utils/platform";
 import { Vector } from "@graphif/data-structures";
 import { open } from "@tauri-apps/plugin-shell";
+import { toast } from "sonner";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -64,19 +64,9 @@ export class ControllerNodeEditClass extends ControllerClass {
           clickedEntity.portalFilePath = newPortalFilePath;
         }
       } else {
-        if (isWeb) {
-          Dialog.show({
-            title: "网页版不支持传送门",
-            content: "网页版不支持传送门，请使用桌面版",
-          });
-          return;
-        }
         // 跳转链接
         if (this.project.isDraft) {
-          Dialog.show({
-            title: "草稿不支持传送门",
-            content: "请保存为本地文件后再传送门",
-          });
+          toast.error("草稿不支持传送门");
           return;
         } else {
           // 开新标签页

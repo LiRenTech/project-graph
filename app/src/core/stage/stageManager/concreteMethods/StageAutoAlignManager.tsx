@@ -1,4 +1,3 @@
-import { Dialog } from "@/components/ui/dialog";
 import { ArrayFunctions } from "@/core/algorithm/arrayFunctions";
 import { Project, service } from "@/core/Project";
 import { EntityAlignEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityAlignEffect";
@@ -8,6 +7,7 @@ import { ConnectableEntity } from "@/core/stage/stageObject/abstract/Connectable
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
+import { toast } from "sonner";
 
 /**
  * 自动对齐和布局管理器
@@ -270,10 +270,7 @@ export class AutoAlign {
     // 检测树形结构
     if (!this.project.graphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
-      Dialog.show({
-        title: "提示",
-        content: "选择的节点必须是树形结构的根节点",
-      });
+      toast.error("选择的节点必须是树形结构的根节点");
       return;
     }
     this.project.autoLayoutFastTree.autoLayoutFastTreeModeRight(selectedRootEntity);
@@ -283,10 +280,7 @@ export class AutoAlign {
     // 检测树形结构
     if (!this.project.graphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
-      Dialog.show({
-        title: "提示",
-        content: "选择的节点必须是树形结构的根节点",
-      });
+      toast.error("选择的节点必须是树形结构的根节点");
       return;
     }
     this.project.autoLayoutFastTree.autoLayoutFastTreeModeDown(selectedRootEntity);

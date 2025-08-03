@@ -1,3 +1,4 @@
+import { Dialog } from "@/components/ui/dialog";
 import { NumberFunctions } from "@/core/algorithm/numberFunctions";
 import { Project, service } from "@/core/Project";
 import { easeOutExpo } from "@/core/service/feedbackService/effectEngine/mathTools/easings";
@@ -8,6 +9,7 @@ import { isMac } from "@/utils/platform";
 import { Queue, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { toast } from "sonner";
+import { Telemetry } from "../service/Telemetry";
 
 /**
  * 摄像机
@@ -172,8 +174,12 @@ export class Camera {
         toast("您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野", {
           action: {
             label: "我有更好的idea",
-            onClick: () => {
-              // TODO: 弹窗让用户输入，然后发送遥测事件
+            onClick: async () => {
+              const idea = await Dialog.input("发送反馈：微观尽头彩蛋", "您输入的将发送到服务器，请勿包含敏感信息", {
+                multiline: true,
+              });
+              if (!idea) return;
+              Telemetry.event("微观尽头更好的idea", { idea });
             },
           },
         });

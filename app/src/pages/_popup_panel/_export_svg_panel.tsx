@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -13,6 +12,7 @@ import { StageExportSvg, SvgExportConfig } from "@/core/service/dataGenerateServ
 import { isWeb } from "@/utils/platform";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ExportSvgPanel() {
   const onSaveSVGNew = async () => {
@@ -37,23 +37,21 @@ export default function ExportSvgPanel() {
     try {
       await Stage.exportEngine.saveSvgHandle(path, data);
     } catch {
-      await Dialog.show({
-        title: "保存失败",
-        content: "保存失败，请重试",
-      });
+      toast.error("保存失败");
     }
   };
 
   const onSaveSVGSelected = () => {
-    StageExportSvg.setConfig(configObject);
-    const svgString = StageExportSvg.dumpSelectedToSVGString();
-    Dialog.show({
-      title: "导出SVG",
-      content:
-        "SVG的本质是一堆标签代码，如果您是在写markdown格式的博客，可以直接把下面的标签代码粘贴在您的文章中。如果您想保存成文件，可以把这段代码复制到txt中并改后缀名成svg",
-      code: svgString,
-      type: "info",
-    });
+    // StageExportSvg.setConfig(configObject);
+    // const svgString = StageExportSvg.dumpSelectedToSVGString();
+    // Dialog.show({
+    //   title: "导出SVG",
+    //   content:
+    //     "SVG的本质是一堆标签代码，如果您是在写markdown格式的博客，可以直接把下面的标签代码粘贴在您的文章中。如果您想保存成文件，可以把这段代码复制到txt中并改后缀名成svg",
+    //   code: svgString,
+    //   type: "info",
+    // });
+    // TODO: 实现导出选中的内容为SVG的功能
   };
 
   const [configObject, setConfigObject] = useState<SvgExportConfig>({

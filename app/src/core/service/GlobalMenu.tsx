@@ -17,7 +17,8 @@ import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { open } from "@tauri-apps/plugin-dialog";
+import { open, save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { open as openFilePath } from "@tauri-apps/plugin-shell";
 import { useAtom } from "jotai";
 import {
@@ -28,7 +29,9 @@ import {
   CircleAlert,
   ExternalLink,
   File,
+  FileClock,
   FileCode,
+  FileDigit,
   FileDown,
   FileImage,
   FileInput,
@@ -44,6 +47,7 @@ import {
   Keyboard,
   MapPin,
   MessageCircleWarning,
+  MousePointer2,
   PersonStanding,
   Radiation,
   Redo,
@@ -60,6 +64,15 @@ import { toast } from "sonner";
 import { URI } from "vscode-uri";
 import { Telemetry } from "./Telemetry";
 
+const Content = MenubarContent;
+const Item = MenubarItem;
+const Menu = MenubarMenu;
+const Separator = MenubarSeparator;
+const Sub = MenubarSub;
+const SubContent = MenubarSubContent;
+const SubTrigger = MenubarSubTrigger;
+const Trigger = MenubarTrigger;
+
 export function GlobalMenu() {
   // const [projects, setProjects] = useAtom(projectsAtom);
   const [activeProject] = useAtom(activeProjectAtom);
@@ -68,81 +81,158 @@ export function GlobalMenu() {
   return (
     <Menubar>
       {/* 文件 */}
-      <MenubarMenu>
-        <MenubarTrigger>
+      <Menu>
+        <Trigger>
           <File />
           文件
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem onClick={onNewDraft}>
+        </Trigger>
+        <Content>
+          <Item onClick={onNewDraft}>
             <FilePlus />
             新建
-          </MenubarItem>
-          <MenubarItem onClick={onOpenFile}>
+          </Item>
+          <Item onClick={onOpenFile}>
             <FolderOpen />
             打开
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem
+          </Item>
+          <Sub>
+            <SubTrigger>
+              <FileClock />
+              最近打开的文件
+            </SubTrigger>
+            <SubContent>
+              <Item>2.0保存测试.prg</Item>
+              <Item>file.prg</Item>
+              <Item>file.prg</Item>
+              <Item>file.prg</Item>
+              <Item>file.prg</Item>
+            </SubContent>
+          </Sub>
+          <Separator />
+          <Item
+            disabled={!activeProject}
             onClick={() => {
               activeProject?.save();
             }}
           >
             <Save />
             保存
-          </MenubarItem>
-          <MenubarItem>
+          </Item>
+          <Item
+            disabled={!activeProject}
+            onClick={async () => {
+              const path = await open({
+                title: "另存为",
+                directory: false,
+                multiple: false,
+                filters: [{ name: "Project Graph", extensions: ["prg"] }],
+              });
+              if (!path) return;
+              activeProject!.uri = URI.file(path);
+              await activeProject!.save();
+            }}
+          >
             <FileDown />
             另存为
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarSub>
-            <MenubarSubTrigger>
+          </Item>
+          <Separator />
+          <Sub>
+            <SubTrigger>
               <FileInput />
               导入
-            </MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>
+            </SubTrigger>
+            <SubContent>
+              <Item>
                 <FolderTree />
                 根据文件夹生成嵌套图
-              </MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-          <MenubarSub>
-            <MenubarSubTrigger>
+              </Item>
+            </SubContent>
+          </Sub>
+          <Sub>
+            <SubTrigger disabled={!activeProject}>
               <FileOutput />
               导出
-            </MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>
-                <FileCode />
-                SVG矢量图
-              </MenubarItem>
-              <MenubarItem>
+            </SubTrigger>
+            <SubContent>
+              <Sub>
+                <SubTrigger>
+                  <FileCode />
+                  SVG
+                </SubTrigger>
+                <SubContent>
+                  <Item
+                    onClick={async () => {
+                      const svg = activeProject!.stageExportSvg.dumpStageToSVGString();
+                      const path = await save({
+                        title: "导出为 SVG",
+                        filters: [{ name: "Scalable Vector Graphics", extensions: ["svg"] }],
+                      });
+                      if (!path) return;
+                      await writeTextFile(path, svg);
+                    }}
+                  >
+                    <FileDigit />
+                    导出全部内容
+                  </Item>
+                  <Item
+                    onClick={async () => {
+                      const svg = activeProject!.stageExportSvg.dumpSelectedToSVGString();
+                      const path = await save({
+                        title: "导出为 SVG",
+                        filters: [{ name: "Scalable Vector Graphics", extensions: ["svg"] }],
+                      });
+                      if (!path) return;
+                      await writeTextFile(path, svg);
+                    }}
+                  >
+                    <MousePointer2 />
+                    导出选中内容
+                  </Item>
+                </SubContent>
+              </Sub>
+              <Item>
                 <FileImage />
-                PNG图片
-              </MenubarItem>
-              <MenubarItem>
+                PNG
+              </Item>
+              <Item>
                 <FileType />
-                Markdown格式
-              </MenubarItem>
-              <MenubarItem>
-                <TextQuote />
-                纯文本格式
-              </MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-        </MenubarContent>
-      </MenubarMenu>
+                Markdown
+              </Item>
+              <Sub>
+                <SubTrigger>
+                  <TextQuote />
+                  纯文本
+                </SubTrigger>
+                <SubContent>
+                  <Item
+                    onClick={() => {
+                      const entities = activeProject!.stageManager.getEntities();
+                      const result = activeProject!.stageExport.getPlainTextByEntities(entities);
+                      Dialog.copy("导出成功", "", result);
+                    }}
+                  >
+                    <FileDigit />
+                    导出全部内容
+                  </Item>
+                  <Item>
+                    <MousePointer2 />
+                    导出选中内容
+                  </Item>
+                </SubContent>
+              </Sub>
+            </SubContent>
+          </Sub>
+        </Content>
+      </Menu>
 
       {/* 位置 */}
-      <MenubarMenu>
-        <MenubarTrigger>
+      <Menu>
+        <Trigger>
           <Folder />
           位置
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem
+        </Trigger>
+        <Content>
+          <Item
             onClick={async () => {
               const path = await join(await dataDir(), "liren.project-graph");
               openFilePath(path);
@@ -150,8 +240,8 @@ export function GlobalMenu() {
           >
             <FolderCog />
             打开软件配置文件夹
-          </MenubarItem>
-          <MenubarItem
+          </Item>
+          <Item
             onClick={async () => {
               const path = await appCacheDir();
               openFilePath(path);
@@ -159,8 +249,8 @@ export function GlobalMenu() {
           >
             <FolderClock />
             打开软件缓存文件夹
-          </MenubarItem>
-          <MenubarItem
+          </Item>
+          <Item
             disabled={!activeProject || activeProject.isDraft}
             onClick={async () => {
               const absPath = activeProject!.uri.fsPath;
@@ -169,80 +259,88 @@ export function GlobalMenu() {
           >
             <FolderOpen />
             打开当前项目文件夹
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
 
       {/* 视野 */}
-      <MenubarMenu>
-        <MenubarTrigger disabled={!activeProject}>
+      <Menu>
+        <Trigger disabled={!activeProject}>
           <View />
           视野
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem
+        </Trigger>
+        <Content>
+          <Item
             onClick={() => {
               activeProject?.camera.reset();
             }}
           >
             <Fullscreen />
-            根据全部内容重制视野
-          </MenubarItem>
-          <MenubarItem
+            根据全部内容重置视野
+          </Item>
+          <Item
             onClick={() => {
               activeProject?.camera.resetBySelected();
             }}
           >
             <SquareDashedMousePointer />
-            根据选中内容重制视野
-          </MenubarItem>
-          <MenubarItem
+            根据选中内容重置视野
+          </Item>
+          <Item
             onClick={() => {
               activeProject?.camera.resetScale();
             }}
           >
             <Scaling />
-            仅重制视野缩放到标准大小
-          </MenubarItem>
-          <MenubarItem
+            重置视野缩放到标准大小
+          </Item>
+          <Item
             onClick={() => {
               activeProject?.camera.resetLocationToZero();
             }}
           >
             <MapPin />
             移动视野到坐标轴原点
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
 
       {/* 操作 */}
-      <MenubarMenu>
-        <MenubarTrigger disabled={!activeProject}>
+      <Menu>
+        <Trigger disabled={!activeProject}>
           <Axe />
           操作
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
+        </Trigger>
+        <Content>
+          <Item>
             <RefreshCcwDot />
             刷新
-          </MenubarItem>
-          <MenubarItem>
+          </Item>
+          <Item
+            onClick={() => {
+              activeProject?.historyManager.undo();
+            }}
+          >
             <Undo />
             撤销
-          </MenubarItem>
-          <MenubarItem>
+          </Item>
+          <Item
+            onClick={() => {
+              activeProject?.historyManager.redo();
+            }}
+          >
             <Redo />
             重做
-          </MenubarItem>
-          <MenubarItem
+          </Item>
+          <Item
             onClick={() => {
               activeProject?.controller.pressingKeySet.clear();
             }}
           >
             <Keyboard />
             松开按键
-          </MenubarItem>
-          <MenubarItem
+          </Item>
+          <Item
             onClick={async () => {
               if (await Dialog.confirm("确认清空舞台？", "此操作无法撤销！", { destructive: true })) {
                 activeProject!.stage = [];
@@ -251,46 +349,46 @@ export function GlobalMenu() {
           >
             <Radiation />
             清空舞台
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
 
       {/* 设置 */}
-      <MenubarMenu>
-        <MenubarTrigger>
+      <Menu>
+        <Trigger>
           <SettingsIcon />
           设置
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem onClick={() => SettingsWindow.open("visual")}>
+        </Trigger>
+        <Content>
+          <Item onClick={() => SettingsWindow.open("visual")}>
             <SettingsIcon />
             设置
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
 
       {/* AI */}
-      <MenubarMenu>
-        <MenubarTrigger disabled={!activeProject}>
+      <Menu>
+        <Trigger disabled={!activeProject}>
           <Bot />
           AI
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem onClick={() => AIWindow.open()}>
+        </Trigger>
+        <Content>
+          <Item onClick={() => AIWindow.open()}>
             <ExternalLink />
             打开 AI 面板
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
 
       {/* 视图 */}
-      <MenubarMenu>
-        <MenubarTrigger>
+      <Menu>
+        <Trigger>
           <AppWindow />
           视图
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem
+        </Trigger>
+        <Content>
+          <Item
             onClick={() =>
               getCurrentWindow()
                 .isFullscreen()
@@ -299,8 +397,8 @@ export function GlobalMenu() {
           >
             <Fullscreen />
             全屏
-          </MenubarItem>
-          <MenubarItem
+          </Item>
+          <Item
             onClick={async () => {
               if (!isClassroomMode) {
                 toast.info("左上角菜单按钮仅仅是透明了，并没有消失");
@@ -311,32 +409,32 @@ export function GlobalMenu() {
           >
             <Airplay />
             专注模式
-          </MenubarItem>
+          </Item>
           {/* TODO: 隐私模式 */}
-          {/* <MenubarItem>
+          {/* <Item>
             <VenetianMask />
             隐私模式
-          </MenubarItem> */}
-        </MenubarContent>
-      </MenubarMenu>
+          </Item> */}
+        </Content>
+      </Menu>
 
       {/* 关于 */}
-      <MenubarMenu>
-        <MenubarTrigger>
+      <Menu>
+        <Trigger>
           <CircleAlert />
           关于
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem onClick={() => SettingsWindow.open("about")}>
+        </Trigger>
+        <Content>
+          <Item onClick={() => SettingsWindow.open("about")}>
             <MessageCircleWarning />
             关于
-          </MenubarItem>
-          <MenubarItem>
+          </Item>
+          <Item>
             <PersonStanding />
             新手引导
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+          </Item>
+        </Content>
+      </Menu>
     </Menubar>
   );
 }

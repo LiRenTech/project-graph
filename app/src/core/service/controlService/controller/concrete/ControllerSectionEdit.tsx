@@ -38,16 +38,11 @@ export class ControllerSectionEdit extends ControllerClass {
       if (!isHaveSectionSelected) {
         return;
       }
-      Dialog.show({
-        title: "重命名",
-        input: true,
-      }).then(({ button, value }) => {
-        if (button === "确定") {
-          if (value) {
-            for (const section of this.project.stageManager.getSections()) {
-              if (section.isSelected) {
-                section.rename(value);
-              }
+      Dialog.input("重命名 Section").then((value) => {
+        if (value) {
+          for (const section of this.project.stageManager.getSections()) {
+            if (section.isSelected) {
+              section.rename(value);
             }
           }
         }

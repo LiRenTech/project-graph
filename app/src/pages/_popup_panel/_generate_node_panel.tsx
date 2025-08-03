@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { DataTransferEngine } from "@/core/service/dataGenerateService/dataTransferEngine/dataTransferEngine";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 /**
  * 通过文本来生成节点的面板
@@ -36,16 +37,7 @@ export default function GenerateNodePanel() {
         >
           根据纯文本生成网结构
         </Button>
-        <Button
-          onClick={() => {
-            Dialog.show({
-              title: "帮助",
-              content: "网状格式和“导出为纯文本-网状格式”相同，详见官网",
-            });
-          }}
-        >
-          疑问
-        </Button>
+        网状格式和“导出为纯文本-网状格式”相同，详见官网
       </div>
       <div>
         <span className="text-panel-text">缩进数量</span>
@@ -55,11 +47,7 @@ export default function GenerateNodePanel() {
       <Button
         onClick={() => {
           if (inputValue.trim() === "") {
-            Dialog.show({
-              title: "提示",
-              type: "warning",
-              content: "请在文本输入框中粘贴缩进格式的文本内容",
-            });
+            toast.error("请在文本输入框中粘贴缩进格式的文本内容");
             return;
           }
           StageManager.generateNodeTreeByText(inputValue, indention);
@@ -73,11 +61,7 @@ export default function GenerateNodePanel() {
           className="flex-1"
           onClick={() => {
             if (inputValue.trim() === "") {
-              Dialog.show({
-                title: "提示",
-                type: "warning",
-                content: "请在文本输入框中粘贴markdown格式字符串",
-              });
+              toast.error("请在文本输入框中粘贴markdown格式字符串");
               return;
             }
             StageManager.generateNodeByMarkdown(inputValue);
