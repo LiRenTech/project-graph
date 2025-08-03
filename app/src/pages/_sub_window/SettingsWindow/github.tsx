@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { ButtonField } from "@/components/field";
+import { Dialog } from "@/components/ui/dialog";
 import { Settings } from "@/core/service/Settings";
 import { isMobile } from "@/utils/platform";
 import { Octokit } from "@octokit/rest";

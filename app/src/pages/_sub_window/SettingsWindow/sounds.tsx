@@ -1,7 +1,7 @@
 import Github from "@/assets/github.svg?react";
-import { Dialog } from "@/components/dialog";
 import { SettingField } from "@/components/field";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { PathString } from "@/utils/pathString";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { exists } from "@tauri-apps/plugin-fs";

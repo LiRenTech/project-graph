@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,

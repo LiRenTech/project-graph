@@ -1,13 +1,13 @@
 // import { Section } from "@/core/stageObject/entity/Section";
 // import { Entity } from "@/core/stageObject/StageEntity";
-import { v4 } from "uuid";
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { v4 } from "uuid";
 
 /**
  * 管理所有东西进出StageSection的逻辑

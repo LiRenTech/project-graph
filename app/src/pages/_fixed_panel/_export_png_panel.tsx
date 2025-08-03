@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { StageExportPng } from "@/core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { Camera } from "@/core/stage/Camera";
 import { StageManager } from "@/core/stage/stageManager/StageManager";

@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { cn } from "@/utils/cn";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { Check, Download, Loader2 } from "lucide-react";

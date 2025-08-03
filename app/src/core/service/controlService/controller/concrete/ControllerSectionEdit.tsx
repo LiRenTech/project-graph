@@ -1,7 +1,7 @@
-import { Vector } from "@graphif/data-structures";
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Project } from "@/core/Project";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器

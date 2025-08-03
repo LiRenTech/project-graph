@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Project, service } from "@/core/Project";
 import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { RectangleSlideEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleSlideEffect";

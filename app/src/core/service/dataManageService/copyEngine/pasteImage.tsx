@@ -1,9 +1,9 @@
+import { Dialog } from "@/components/ui/dialog";
+import { Settings } from "@/core/service/Settings";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { PathString } from "@/utils/pathString";
 import { Vector } from "@graphif/data-structures";
 import { v4 as uuidv4 } from "uuid";
-import { Dialog } from "@/components/dialog";
-import { PathString } from "@/utils/pathString";
-import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
-import { Settings } from "@/core/service/Settings";
 
 /**
  * 把粘贴板中的PNG图片读取并写入到磁盘和舞台上

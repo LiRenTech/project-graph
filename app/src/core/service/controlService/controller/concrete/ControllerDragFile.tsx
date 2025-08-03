@@ -1,13 +1,12 @@
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { ControllerClassDragFile } from "@/core/service/controlService/controller/ControllerClassDragFile";
 import { CircleChangeRadiusEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
-import { ViewFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { Path } from "@/utils/path";
 import { PathString } from "@/utils/pathString";
-import { Color, Vector } from "@graphif/data-structures";
+import { Vector } from "@graphif/data-structures";
 import { writeFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
@@ -80,39 +79,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
           });
         } else if (file.type.includes("image/png")) {
           if (this.project.isDraft) {
-            Dialog.show({
-              title: "提示",
-              content: "当前处于草稿状态，请先保存草稿，再拖入图片。",
-              type: "warning",
-              buttons: [
-                { text: "确定" },
-                {
-                  text: "为什么？",
-                  onClick: () => {
-                    Dialog.show({
-                      title: "解释",
-                      content: "因为草稿没有文件路径，图片是基于相对路径，放在工程文件同一文件夹下存储的",
-                      type: "info",
-                      buttons: [
-                        { text: "好" },
-                        {
-                          text: "抗议",
-                          onClick: () => {
-                            Dialog.show({
-                              title: "失败",
-                              // （？——？）
-                              content:
-                                "由于我们还没做发送网络请求的后端接口，所以暂时无法直接倾听您的声音，如果需要请在github或QQ群联系我们。",
-                              type: "warning",
-                            });
-                          },
-                        },
-                      ],
-                    });
-                  },
-                },
-              ],
-            });
+            // TODO: 文件附件
           } else {
             await this.dealPngFileDrop(file, mouseWorldLocation);
           }
@@ -180,6 +147,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
    */
   async dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
     // 将鼠标位置整数化
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mouseWorldLocation = new Vector(Math.round(mouseWorldLocation.x), Math.round(mouseWorldLocation.y));
 
     const reader = new FileReader();
@@ -195,31 +163,9 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       } else {
         // 检测是否有图片节点
         if (dataString.includes("core:image_node")) {
-          Dialog.show({
-            title: "提示：json中含有图片节点",
-            content:
-              "您正在将一个含有图片节点的json文件附加到当前舞台中，这会导致图片的丢失，您需要手动将涉及到的所有图片复制到当前json的文件夹下",
-            type: "warning",
-          });
+          // TODO: 文件附件
         }
-        Dialog.show({
-          title: "确认追加",
-          content: `正在准备将json文件中的内容追加到舞台中的 ${mouseWorldLocation.toString()} 坐标位置上，是否继续？\n注意：拖动文件进入舞台不是打开，是追加！`,
-          type: "info",
-          buttons: [
-            {
-              text: "确定",
-              onClick: () => {
-                this.project.stageManager.add(
-                  ProjectFormatUpgrader.upgrade(JSON.parse(dataString)),
-                  mouseWorldLocation,
-                );
-                this.project.effects.addEffect(new ViewFlashEffect(Color.White));
-              },
-            },
-            { text: "取消" },
-          ],
-        });
+        Dialog.confirm("将文件内容追加到画布", "即将把拖入的文件内容【追加】到画布，注意不是打开文件！");
       }
     };
 

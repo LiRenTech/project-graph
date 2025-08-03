@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { ColorManager } from "@/core/service/feedbackService/ColorManager";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";

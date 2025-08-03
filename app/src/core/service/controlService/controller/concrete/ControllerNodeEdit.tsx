@@ -1,15 +1,15 @@
-import { Vector } from "@graphif/data-structures";
-import { open } from "@tauri-apps/plugin-shell";
-import { Dialog } from "@/components/dialog";
-import { Path } from "@/utils/path";
-import { PathString } from "@/utils/pathString";
-import { isMac, isWeb } from "@/utils/platform";
+import { Dialog } from "@/components/ui/dialog";
 import { Project } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import { Settings } from "@/core/service/Settings";
-import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { Path } from "@/utils/path";
+import { PathString } from "@/utils/pathString";
+import { isMac, isWeb } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
+import { open } from "@tauri-apps/plugin-shell";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *

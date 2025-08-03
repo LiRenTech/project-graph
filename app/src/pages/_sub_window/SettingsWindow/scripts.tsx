@@ -7,7 +7,7 @@ import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, CodeXml, Delete, Eye, EyeClosed, FileCode2, PartyPopper } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-// import { Dialog } from "@/pages/components/dialog";
+// import { Dialog } from "@/pages/components/ui/dialog";
 
 export default function ScriptsPage() {
   const { t } = useTranslation("plugins");

@@ -1,6 +1,6 @@
-import { Dialog } from "@/components/dialog";
 import { SettingField } from "@/components/field";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { Project } from "@/core/Project";
 import { AIEngine } from "@/core/service/dataManageService/aiEngine/AIEngine";
 import { List } from "lucide-react";

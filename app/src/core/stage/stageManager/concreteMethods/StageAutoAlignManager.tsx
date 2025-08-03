@@ -1,6 +1,4 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { ArrayFunctions } from "@/core/algorithm/arrayFunctions";
 import { Project, service } from "@/core/Project";
 import { EntityAlignEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityAlignEffect";
@@ -8,6 +6,8 @@ import { RectangleRenderEffect } from "@/core/service/feedbackService/effectEngi
 import { SoundService } from "@/core/service/feedbackService/SoundService";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 自动对齐和布局管理器

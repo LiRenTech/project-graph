@@ -1,9 +1,9 @@
-import { Vector } from "@graphif/data-structures";
 import tipsJson from "@/assets/projectGraphTips.json";
-import { Serialized } from "@/types/node";
 import { Camera } from "@/core/stage/Camera";
+import { Serialized } from "@/types/node";
+import { Vector } from "@graphif/data-structures";
 // import { getRectangleFromSerializedEntities } from "@/core/service/dataManageService/copyEngine/copyEngine";
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 
 /**
  * 专门为了帮助用户理解使用操作而服务的内容

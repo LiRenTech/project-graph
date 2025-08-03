@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/Switch";
 import { FileLoader } from "@/core/service/dataFileService/fileLoader";
 import { StageSaveManager } from "@/core/service/dataFileService/StageSaveManager";

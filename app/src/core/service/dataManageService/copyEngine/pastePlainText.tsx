@@ -1,12 +1,12 @@
-import { Vector } from "@graphif/data-structures";
-import { v4 as uuidv4 } from "uuid";
-import { Dialog } from "@/components/dialog";
-import { PathString } from "@/utils/pathString";
+import { Dialog } from "@/components/ui/dialog";
+import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
+import { PathString } from "@/utils/pathString";
+import { Vector } from "@graphif/data-structures";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * 复制粘贴引擎 粘贴各种各样的纯文本 处理函数

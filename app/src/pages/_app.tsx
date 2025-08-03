@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
@@ -10,13 +10,12 @@ import { Themes } from "@/core/service/Themes";
 import RenderSubWindows from "@/pages/_render_sub_windows";
 import Welcome from "@/pages/_welcome";
 import { activeProjectAtom, projectsAtom } from "@/state";
-import { cn } from "@/utils/cn";
 import { getCurrentWindow } from "@/utils/platform";
 import { getVersion } from "@tauri-apps/api/app";
 import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
-import { Copy, HardDriveDownload, Minus, Square, X } from "lucide-react";
+import { CloudUpload, Copy, Dot, Minus, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -177,13 +176,11 @@ export default function App() {
   // }, []);
 
   const Tabs = () => (
-    <div className="z-10 flex h-8 gap-2 overflow-x-auto">
+    <div className="z-10 flex h-full gap-2 overflow-x-auto">
       {projects.map((project) => (
-        <div
+        <Button
           key={project.uri.toString()}
-          className={cn("flex shrink-0 items-center gap-1 rounded-xl border p-2", {
-            "": activeProject?.uri.toString() === project.uri.toString(),
-          })}
+          variant={activeProject?.uri.toString() === project.uri.toString() ? "secondary" : "outline"}
           onClick={() => {
             setActiveProject(project);
           }}
@@ -239,11 +236,11 @@ export default function App() {
               });
             }}
           >
-            {project.state === ProjectState.Saved && <X size={16} strokeWidth={3} />}
-            {project.state === ProjectState.Stashed && <HardDriveDownload size={16} />}
-            {project.state === ProjectState.Unsaved && <div className="bg-tab-text mx-1 size-2 rounded-full" />}
+            {project.state === ProjectState.Saved && <X />}
+            {project.state === ProjectState.Stashed && <CloudUpload />}
+            {project.state === ProjectState.Unsaved && <Dot className="scale-300" />}
           </div>
-        </div>
+        </Button>
       ))}
     </div>
   );

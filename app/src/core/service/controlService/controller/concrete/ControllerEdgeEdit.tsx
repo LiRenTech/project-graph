@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 

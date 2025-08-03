@@ -1,13 +1,9 @@
-import { Dialog } from "@/components/dialog";
 import { PluginAPIMayAsync } from "@/core/plugin/types";
+import { toast } from "sonner";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
-    Dialog.show({
-      title: "插件调用成功",
-      content: `你好，${userString}`,
-      type: "success",
-    });
+    toast.success(`Hello ${userString}`);
     return "hello";
   },
 };

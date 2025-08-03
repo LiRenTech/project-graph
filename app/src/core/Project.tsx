@@ -305,6 +305,7 @@ export class Project {
     await writer.close();
     const fileContent = await uwriter.getData();
     await this.fs.write(this.uri, fileContent);
+    this.state = ProjectState.Saved;
   }
 
   registerFileSystemProvider(scheme: string, provider: { new (...args: any[]): FileSystemProvider }) {

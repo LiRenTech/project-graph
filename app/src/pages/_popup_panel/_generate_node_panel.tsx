@@ -1,5 +1,5 @@
-import { Dialog } from "@/components/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { DataTransferEngine } from "@/core/service/dataGenerateService/dataTransferEngine/dataTransferEngine";
 import { StageManager } from "@/core/stage/stageManager/StageManager";

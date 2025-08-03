@@ -1,10 +1,10 @@
-import { exists, readTextFile } from "@tauri-apps/plugin-fs";
-import { Store } from "@tauri-apps/plugin-store";
-import { Dialog } from "@/components/dialog";
-import { createStore } from "@/utils/store";
 import { parsePluginCode, PluginCodeParseData } from "@/core/plugin/PluginCodeParseData";
 import { PluginWorker } from "@/core/plugin/PluginWorker";
 import { getAllAPIMethods } from "@/core/plugin/types";
+import { createStore } from "@/utils/store";
+import { exists, readTextFile } from "@tauri-apps/plugin-fs";
+import { Store } from "@tauri-apps/plugin-store";
+import { toast } from "sonner";
 
 /**
  * 用户脚本管理器
@@ -99,11 +99,7 @@ export namespace UserScriptsManager {
         });
       } else {
         lostFiles.push(file.path);
-        Dialog.show({
-          title: "解析脚本失败",
-          content: `解析脚本失败：${error}`,
-          type: "error",
-        });
+        toast.error(`解析脚本失败：${file.path}\n${error}`);
       }
     }
 
@@ -135,11 +131,7 @@ export namespace UserScriptsManager {
     const code = await readTextFile(filePath);
     const { data, error, success } = parsePluginCode(code);
     if (!success) {
-      Dialog.show({
-        title: "解析脚本失败",
-        content: `解析脚本失败：${error}`,
-        type: "error",
-      });
+      toast.error(`解析脚本失败：${filePath}\n${error}`);
       return false;
     }
 
@@ -161,25 +153,14 @@ export namespace UserScriptsManager {
         if (enabled) {
           // 用户关闭了某个正在运行的脚本
           disableUserScript(filePath);
-          Dialog.show({
-            title: "脚本已关闭",
-            content: `脚本已关闭：${filePath}`,
-          });
+          toast.success(`脚本已关闭：${filePath}`);
         } else {
           // 用户开启了某个脚本
           if (runningScripts[filePath]) {
-            Dialog.show({
-              title: "此脚本已在运行中",
-              content: `${filePath}`,
-              type: "warning",
-            });
+            toast.warning(`脚本正在运行中，请先关闭：${filePath}`);
           } else {
             enableUserScript(filePath);
-            Dialog.show({
-              title: "脚本已开启",
-              content: `脚本已开启：${filePath}`,
-              type: "success",
-            });
+            toast.success(`脚本已开启：${filePath}`);
           }
         }
         break;

@@ -55,7 +55,6 @@ export function parsePluginCode(code: string): { data: PluginCodeParseData; erro
   }
   if (name !== "" && version !== "" && description !== "" && author !== "") {
     result.data = { name, version, description, author };
-    result.success = true;
   } else {
     result.error = "插件代码格式不正确\n";
     if (name === "") {

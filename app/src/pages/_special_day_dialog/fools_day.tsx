@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
 
 export default function FoolsDayButton() {

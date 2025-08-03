@@ -1,3 +1,16 @@
+import { Dialog } from "@/components/ui/dialog";
+import { AutoLayoutFastTree } from "@/core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import { LayoutEntityManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
+import { LayoutManualAlign } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { LayoutResizeManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
+import { LayoutToSquareManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
+import { LayoutToTightSquareManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
+import { AutoAlign } from "@/core/stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageManager } from "@/core/stage/stageManager/StageManager";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { ToolbarItem } from "@/pages/_toolbar";
+import { cn } from "@/utils/cn";
 import {
   AlignCenterHorizontal,
   AlignCenterVertical,
@@ -23,19 +36,6 @@ import {
   SquareSquare,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Dialog } from "@/components/dialog";
-import { AutoLayoutFastTree } from "@/core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
-import { LayoutEntityManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
-import { LayoutManualAlign } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { LayoutResizeManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
-import { LayoutToSquareManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
-import { LayoutToTightSquareManager } from "@/core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
-import { AutoAlign } from "@/core/stage/stageManager/concreteMethods/StageAutoAlignManager";
-import { StageManager } from "@/core/stage/stageManager/StageManager";
-import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
-import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import { cn } from "@/utils/cn";
-import { ToolbarItem } from "@/pages/_toolbar";
 
 /**
  * 对齐面板
