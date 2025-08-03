@@ -1,10 +1,10 @@
-import toast from "react-hot-toast";
-import { getEnterKey } from "@/utils/keyboardFunctions";
 import { Project, service } from "@/core/Project";
-import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { EntityDashTipEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { Settings } from "@/core/service/Settings";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { getEnterKey } from "@/utils/keyboardFunctions";
+import { toast } from "sonner";
 
 /**
  * 纯键盘控制的相关引擎

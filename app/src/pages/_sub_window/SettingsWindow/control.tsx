@@ -1,3 +1,5 @@
+import { FieldGroup, SettingField } from "@/components/field";
+import { isMac } from "@/utils/platform";
 import {
   AlignStartVertical,
   Crosshair,
@@ -28,8 +30,6 @@ import {
   Touchpad,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { FieldGroup, SettingField } from "@/components/Field";
-import { isMac } from "@/utils/platform";
 
 export default function Control() {
   const { t } = useTranslation("controlSettingsGroup");

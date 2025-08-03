@@ -1,14 +1,13 @@
-import { Queue, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import toast from "react-hot-toast";
-import { Dialog } from "@/components/dialog";
-import { Direction } from "@/types/directions";
-import { isMac } from "@/utils/platform";
 import { NumberFunctions } from "@/core/algorithm/numberFunctions";
 import { Project, service } from "@/core/Project";
 import { easeOutExpo } from "@/core/service/feedbackService/effectEngine/mathTools/easings";
 import { Settings } from "@/core/service/Settings";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Direction } from "@/types/directions";
+import { isMac } from "@/utils/platform";
+import { Queue, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { toast } from "sonner";
 
 /**
  * 摄像机
@@ -166,13 +165,18 @@ export class Camera {
       this.currentScale = 0.001;
       this.targetScale = 0.01;
       if (isMac) {
-        Dialog.show({
-          title: "视野已经放大到极限了",
-          content: "默认快捷键F可根据内容重置视野，mac在刚启动软件的若干秒内鼠标滚轮可能过于灵敏，导致缩放过快",
-          type: "info",
-        });
+        toast(
+          "视野已经放大到极限了！默认快捷键F可根据内容重置视野，mac在刚启动软件的若干秒内鼠标滚轮可能过于灵敏，导致缩放过快",
+        );
       } else {
-        toast("您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野");
+        toast("您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野", {
+          action: {
+            label: "我有更好的idea",
+            onClick: () => {
+              // TODO: 弹窗让用户输入，然后发送遥测事件
+            },
+          },
+        });
       }
     }
     // 冲击式移动

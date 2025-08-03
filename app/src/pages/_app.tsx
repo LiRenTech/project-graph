@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
 import { Dialog } from "@/components/dialog";
+import { Button } from "@/components/ui/button";
 import { ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
@@ -10,19 +11,18 @@ import RenderSubWindows from "@/pages/_render_sub_windows";
 import Welcome from "@/pages/_welcome";
 import { activeProjectAtom, projectsAtom } from "@/state";
 import { cn } from "@/utils/cn";
-import { getCurrentWindow, isDesktop } from "@/utils/platform";
+import { getCurrentWindow } from "@/utils/platform";
 import { getVersion } from "@tauri-apps/api/app";
 import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
-import { Copy, HardDriveDownload, Minus, Pin, PinOff, Square, X } from "lucide-react";
+import { Copy, HardDriveDownload, Minus, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);
-  const [alwaysOnTop, setAlwaysOnTop] = useState(false);
 
   // 面板状态
   // TODO: start file window
@@ -181,8 +181,8 @@ export default function App() {
       {projects.map((project) => (
         <div
           key={project.uri.toString()}
-          className={cn("el-tab flex shrink-0 items-center gap-1 rounded-xl border p-2", {
-            "el-tab-selected": activeProject?.uri.toString() === project.uri.toString(),
+          className={cn("flex shrink-0 items-center gap-1 rounded-xl border p-2", {
+            "": activeProject?.uri.toString() === project.uri.toString(),
           })}
           onClick={() => {
             setActiveProject(project);
@@ -254,51 +254,27 @@ export default function App() {
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* 菜单 | 标签页 | ...移动窗口区域... | 窗口控制按钮 */}
-      <div className="z-10 flex h-8 gap-2">
-        {/* <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-xl border"></div> */}
+      <div className="z-10 flex h-9 gap-2">
+        {/* <div className=" flex h-8 shrink-0 items-center overflow-hidden rounded-xl border"></div> */}
         <GlobalMenu />
         {isWide && <Tabs />}
         <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
-        <div className="el-titlebar flex h-8 shrink-0 items-center overflow-hidden rounded-xl border">
-          {isDesktop && (
-            <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
-              {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
-              {alwaysOnTop ? (
-                <div
-                  onClick={() => {
-                    getCurrentWindow().setAlwaysOnTop(false);
-                    setAlwaysOnTop(false);
-                  }}
-                >
-                  <PinOff size={14} strokeWidth={2} />
-                </div>
-              ) : (
-                <div
-                  onClick={() => {
-                    getCurrentWindow().setAlwaysOnTop(true);
-                    setAlwaysOnTop(true);
-                  }}
-                >
-                  <Pin size={14} strokeWidth={2} />
-                </div>
-              )}
-              <div onClick={() => getCurrentWindow().minimize()}>
-                <Minus size={14} strokeWidth={4} />
-              </div>
-              {maximized ? (
-                <div onClick={() => getCurrentWindow().unmaximize()}>
-                  <Copy size={12} strokeWidth={3} />
-                </div>
-              ) : (
-                <div onClick={() => getCurrentWindow().maximize()}>
-                  <Square size={10} strokeWidth={5} />
-                </div>
-              )}
-              <div onClick={() => getCurrentWindow().close()}>
-                <X size={14} strokeWidth={4} />
-              </div>
-            </div>
+        <div className="bg-background shadow-xs flex h-full items-center rounded-md border">
+          <Button variant="ghost" size="icon" onClick={() => getCurrentWindow().minimize()}>
+            <Minus strokeWidth={3} />
+          </Button>
+          {maximized ? (
+            <Button variant="ghost" size="icon" className="text-xs" onClick={() => getCurrentWindow().unmaximize()}>
+              <Copy className="size-3" strokeWidth={3} />
+            </Button>
+          ) : (
+            <Button variant="ghost" size="icon" onClick={() => getCurrentWindow().maximize()}>
+              <Square className="size-3" strokeWidth={4} />
+            </Button>
           )}
+          <Button variant="ghost" size="icon" onClick={() => getCurrentWindow().close()}>
+            <X strokeWidth={3} />
+          </Button>
         </div>
       </div>
 

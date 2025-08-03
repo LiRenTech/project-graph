@@ -1,5 +1,5 @@
 import { Dialog } from "@/components/dialog";
-import { SettingField } from "@/components/Field";
+import { SettingField } from "@/components/field";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/core/Project";
 import { AIEngine } from "@/core/service/dataManageService/aiEngine/AIEngine";

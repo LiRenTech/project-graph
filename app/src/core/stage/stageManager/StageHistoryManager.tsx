@@ -1,7 +1,7 @@
 import { Project, ProjectState, service } from "@/core/Project";
 import { deserialize, serialize } from "@graphif/serializer";
 import { applyPatch, compare, Operation } from "fast-json-patch";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 /**
  * 专门管理历史记录

@@ -3,8 +3,8 @@ id: dark
 author: Official
 type: dark
 description:
-  en: A dark theme for Project Graph. Intended for use in dark environments.
-  zh_CN: 主要用于夜间使用，防止刺眼
+  en: The default look of shadcn/ui
+  zh_CN: shadcn/ui 的默认外观
 name:
   en: Dark
   zh_CN: 黑夜

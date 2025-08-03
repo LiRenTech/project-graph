@@ -1,4 +1,4 @@
-import { Field } from "@/components/Field";
+import { Field } from "@/components/field";
 import { Switch } from "@/components/ui/switch";
 import { Settings } from "@/core/service/Settings";
 import { Themes } from "@/core/service/Themes";

@@ -22,7 +22,7 @@ import { openDevtools, writeStdout } from "@/utils/otherApi";
 import { isMac } from "@/utils/platform";
 import { averageColors, Color, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { v4 } from "uuid";
 import { onNewDraft, onOpenFile } from "../../GlobalMenu";
 

@@ -22,7 +22,7 @@ import { Direction } from "@/types/directions";
 import { Serialized } from "@/types/node";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开

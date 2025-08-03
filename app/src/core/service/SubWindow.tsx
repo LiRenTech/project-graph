@@ -1,8 +1,8 @@
+import { store } from "@/state";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { atom, useAtomValue } from "jotai";
 import { startTransition } from "react";
-import { store } from "@/state";
 
 export namespace SubWindow {
   // export enum IdEnum {}
@@ -26,7 +26,7 @@ export namespace SubWindow {
      */
     titleBarOverlay: boolean;
     /**
-     * 只是隐藏关闭按钮，不影响下面的closeWhen...
+     * 只是隐藏关闭按钮，不影响下面的closeWhen方法
      */
     closable: boolean;
     closing: boolean;

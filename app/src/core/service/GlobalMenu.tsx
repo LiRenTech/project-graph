@@ -1,4 +1,5 @@
 import { Dialog } from "@/components/dialog";
+import { Dialog as DialogNew } from "@/components/ui/dialog";
 import {
   Menubar,
   MenubarContent,
@@ -57,7 +58,7 @@ import {
   VenetianMask,
   View,
 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { URI } from "vscode-uri";
 import { Telemetry } from "./Telemetry";
 
@@ -289,7 +290,20 @@ export const GlobalMenu = () => (
           <SettingsIcon />
           设置
         </MenubarItem>
-        <MenubarItem onClick={() => toast.success("hello world")}>
+        <MenubarItem
+          onClick={async () => {
+            toast((await DialogNew.confirm("are you sure?", "114514")) ? "true" : "false");
+            toast(await DialogNew.input("请输入文本..", "123", { defaultValue: "456", placeholder: "..." }));
+            toast(await DialogNew.input("你有意见？", "aaa", { placeholder: "...", multiline: true }));
+            toast(
+              await DialogNew.buttons("1", "2", [
+                { id: "cancel", label: "取消", variant: "outline" },
+                { id: "discard", label: "不保存", variant: "destructive" },
+                { id: "save", label: "保存" },
+              ]),
+            );
+          }}
+        >
           <TestTube2 />
           test
         </MenubarItem>

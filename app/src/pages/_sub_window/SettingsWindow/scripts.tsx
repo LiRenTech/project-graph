@@ -1,4 +1,4 @@
-import { Field } from "@/components/Field";
+import { Field } from "@/components/field";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { UserScriptsManager } from "@/core/plugin/UserScriptsManager";

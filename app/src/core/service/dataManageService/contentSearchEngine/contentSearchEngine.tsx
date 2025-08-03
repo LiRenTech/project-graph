@@ -1,13 +1,13 @@
-import { Color, ProgressNumber } from "@graphif/data-structures";
-import toast from "react-hot-toast";
 import { Project, service } from "@/core/Project";
+import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { Color, ProgressNumber } from "@graphif/data-structures";
+import { toast } from "sonner";
 
 @service("contentSearch")
 export class ContentSearch {

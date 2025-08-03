@@ -17,7 +17,7 @@ export default function FileChooser({
     <div>网页版暂不支持文件选择</div>
   ) : (
     <div className="flex items-center gap-2">
-      <Input type="text" value={value} onChange={onChange} />
+      <Input type="text" value={value} onChange={(e) => onChange(e.target.value)} />
       <Button
         onClick={() => {
           open({

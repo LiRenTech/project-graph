@@ -1,4 +1,5 @@
 import { runCli } from "@/cli";
+import { Toaster } from "@/components/ui/sonner";
 import { UserScriptsManager } from "@/core/plugin/UserScriptsManager";
 import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
@@ -19,7 +20,6 @@ import "driver.js/dist/driver.css";
 import i18next from "i18next";
 import { Provider } from "jotai";
 import { createRoot } from "react-dom/client";
-import { Toaster } from "react-hot-toast";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import VConsole from "vconsole";
@@ -115,28 +115,7 @@ async function renderApp(cli: boolean = false) {
     // }
     root.render(
       <Provider store={store}>
-        <Toaster
-          position="top-right"
-          reverseOrder
-          containerStyle={{
-            top: 48,
-            right: 8,
-          }}
-          toastOptions={{
-            style: {
-              border: "1px solid var(--color-sub-window-border)",
-              background: "var(--color-sub-window-bg)",
-              color: "var(--color-sub-window-text)",
-              shadow: "0 4px 8px var(--color-sub-window-shadow)",
-              borderRadius: 12,
-            },
-            blank: {
-              style: {
-                padding: "8px 4px",
-              },
-            },
-          }}
-        />
+        <Toaster richColors />
         <Routes />
       </Provider>,
     );

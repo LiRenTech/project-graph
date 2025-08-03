@@ -1,5 +1,5 @@
+import { SettingField } from "@/components/field";
 import { Database, FileStack, Folder, HardDrive, HardDriveDownload, Hourglass, Tag } from "lucide-react";
-import { SettingField } from "@/components/Field";
 
 // 其实应该改成快捷操作相关
 export default function AutoNamer() {

@@ -1,10 +1,10 @@
-import { Vector } from "@graphif/data-structures";
-import toast from "react-hot-toast";
-import { getEnterKey } from "@/utils/keyboardFunctions";
 import { Project, service } from "@/core/Project";
 import { EntityDashTipEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { Settings } from "@/core/service/Settings";
+import { getEnterKey } from "@/utils/keyboardFunctions";
+import { Vector } from "@graphif/data-structures";
+import { toast } from "sonner";
 
 /**
  * 主要用于解决canvas上无法输入的问题，用临时生成的jsdom元素透明地贴在上面

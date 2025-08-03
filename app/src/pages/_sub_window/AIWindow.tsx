@@ -1,14 +1,14 @@
+import Markdown from "@/components/markdown";
+import { Settings } from "@/core/service/Settings";
+import { SubWindow } from "@/core/service/SubWindow";
+import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
+import { activeProjectAtom } from "@/state";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { useAtom } from "jotai";
 import { Bot, FolderOpen, Loader2, Send, SettingsIcon, User } from "lucide-react";
 import OpenAI from "openai";
 import { useRef, useState } from "react";
-import Markdown from "@/components/Markdown";
-import { Settings } from "@/core/service/Settings";
-import { SubWindow } from "@/core/service/SubWindow";
-import { activeProjectAtom } from "@/state";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 
 export default function AIWindow() {
   const [project] = useAtom(activeProjectAtom);
@@ -98,9 +98,7 @@ export default function AIWindow() {
         {messages.map((msg, i) =>
           msg.role === "user" ? (
             <div key={i} className="flex justify-end">
-              <div className="el-ai-message-user max-w-11/12 rounded-2xl rounded-br-none px-3 py-2">
-                {msg.content as string}
-              </div>
+              <div className="max-w-11/12 rounded-2xl rounded-br-none px-3 py-2">{msg.content as string}</div>
             </div>
           ) : msg.role === "assistant" ? (
             <div key={i}>
@@ -111,9 +109,9 @@ export default function AIWindow() {
           ),
         )}
       </div>
-      <div className="el-ai-input flex flex-col gap-2 rounded-xl border p-2">
+      <div className="flex flex-col gap-2 rounded-xl border p-2">
         <div className="flex gap-2">
-          <SettingsIcon className="el-ai-input-button cursor-pointer" onClick={() => SettingsWindow.open("ai")} />
+          <SettingsIcon className="cursor-pointer" onClick={() => SettingsWindow.open("ai")} />
           {showTokenCount && (
             <>
               <div className="flex-1"></div>
@@ -127,7 +125,7 @@ export default function AIWindow() {
           {requesting ? (
             <Loader2 className="animate-spin" />
           ) : (
-            <Send className="el-ai-input-button cursor-pointer" onClick={() => send()} />
+            <Send className="cursor-pointer" onClick={() => send()} />
           )}
         </div>
         <textarea
