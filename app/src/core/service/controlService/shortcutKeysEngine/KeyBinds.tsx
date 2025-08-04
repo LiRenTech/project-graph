@@ -13,7 +13,7 @@ export class KeyBinds {
 
   constructor(private readonly project: Project) {
     (async () => {
-      this.store = await createStore("keybinds.json");
+      this.store = await createStore("keybinds2.json");
       await this.project.keyBindsRegistrar.registerKeyBinds();
       if ((await this.store.values()).find((it) => typeof it !== "string")) {
         // 重置store
