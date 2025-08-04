@@ -457,12 +457,23 @@ export async function onOpenFile() {
   const t = performance.now();
   loadAllServices(project);
   const loadServiceTime = performance.now() - t;
-  await project.init();
-  const readFileTime = performance.now() - t;
-  store.set(projectsAtom, [...store.get(projectsAtom), project]);
-  store.set(activeProjectAtom, project);
-  Telemetry.event("打开文件", {
-    loadServiceTime,
-    readFileTime,
+  toast.promise(project.init(), {
+    loading: "正在打开文件...",
+    success: () => {
+      const readFileTime = performance.now() - t;
+      store.set(projectsAtom, [...store.get(projectsAtom), project]);
+      store.set(activeProjectAtom, project);
+      Telemetry.event("打开文件", {
+        loadServiceTime,
+        readFileTime,
+      });
+      return `耗时 ${readFileTime} ms，共 ${project.stage.length} 个舞台对象，${project.attachments.size} 个附件`;
+    },
+    error: (e) => {
+      Telemetry.event("打开文件失败", {
+        error: String(e),
+      });
+      return `读取时发生错误，已发送错误报告，可在群内联系开发者\n${String(e)}`;
+    },
   });
 }

@@ -85,7 +85,7 @@ export function deserialize(json: any, extra?: any): any {
   const className = json._;
   const class_ = classes.get(className);
   if (!class_) {
-    throw TypeError(`[Serializer] Cannot find class ${class_}`);
+    throw TypeError(`[Serializer] Cannot find class ${class_} of ${JSON.stringify(json)}`);
   }
   // 先把json中有_的值反序列化
   for (const key in json) {

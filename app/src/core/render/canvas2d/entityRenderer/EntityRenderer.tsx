@@ -246,7 +246,7 @@ export class EntityRenderer {
       );
     } else if (imageNode.state === "notFound") {
       this.project.textRenderer.renderTextFromCenter(
-        "not found",
+        `not found ${imageNode.attachmentId}`,
         this.project.renderer.transformWorld2View(imageNode.rectangle.center),
         20 * this.project.camera.currentScale,
         this.project.stageStyleManager.currentStyle.StageObjectBorder,
