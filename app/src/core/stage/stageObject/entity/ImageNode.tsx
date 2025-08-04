@@ -1,9 +1,9 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "@/types/node";
 import { Project } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Vector } from "@graphif/data-structures";
+import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 一个图片节点
@@ -19,16 +19,20 @@ import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox
  *   base64EncodeError
  *
  */
+@passExtraAtArg1
+@passObject
 export class ImageNode extends ConnectableEntity {
   isHiddenBySectionCollapse: boolean = false;
+  @serializable
   public uuid: string;
+  @serializable
   public collisionBox: CollisionBox;
+  @serializable
   details: string;
-  /**
-   * 这里的path是相对于工程文件的相对路径
-   * 例如："example.png"
-   */
-  public path: string;
+  @serializable
+  attachmentId: string;
+  @serializable
+  scale: number;
   /**
    * 节点是否被选中
    */
@@ -45,134 +49,51 @@ export class ImageNode extends ConnectableEntity {
     this._isSelected = value;
   }
 
-  private _base64String: string = "";
-
-  /**
-   * 图片的三种状态
-   */
-  public state: "loading" | "success" | "unknownError" | "encodingError" = "loading";
-
-  public errorDetails: string = "";
-
-  private _imageElement: HTMLImageElement = new Image();
-
-  public get imageElement(): HTMLImageElement {
-    return this._imageElement;
-  }
-  public scaleNumber: number = 1 / (window.devicePixelRatio || 1);
-  public originImageSize: Vector = new Vector(0, 0);
-  /** 左上角位置 */
-  private get currentLocation() {
-    return this.rectangle.location.clone();
-  }
+  bitmap: ImageBitmap | undefined;
+  state: "loading" | "success" | "notFound" = "loading";
 
   constructor(
     protected readonly project: Project,
     {
-      uuid,
-      location = [0, 0],
-      size = [100, 100],
-      scale = 1 / (window.devicePixelRatio || 1),
-      path = "",
+      uuid = crypto.randomUUID() as string,
+      collisionBox = new CollisionBox([new Rectangle(Vector.getZero(), Vector.getZero())]),
       details = "",
-    }: Partial<Serialized.ImageNode> & { uuid: string },
+      attachmentId = "",
+      scale = 1,
+    },
     public unknown = false,
   ) {
     super();
     this.uuid = uuid;
-    this.path = path;
+    this.collisionBox = collisionBox;
     this.details = details;
-    this.scaleNumber = scale;
-    this.originImageSize = new Vector(...size);
+    this.attachmentId = attachmentId;
+    this.scale = scale;
 
-    this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size).multiply(this.scaleNumber)),
-    ]);
-    this.state = "loading";
-    // 初始化创建的时候，开始获取base64String
-    // TODO: 读取图片
-    // if (!Stage.path.isDraft()) {
-    //   this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
-    // } else {
-    //   // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
-    //   // 所以这里只可能时初次打开文件时还是草稿的状态
-
-    //   setTimeout(() => {
-    //     this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
-    //   }, 1000);
-    // }
-  }
-
-  /**
-   *
-   * @param folderPath 工程文件所在路径文件夹，不加尾部斜杠
-   * @returns
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public updateBase64StringByPath(folderPath: string) {
-    if (this.path === "") {
+    const blob = project.attachments.get(attachmentId);
+    if (!blob) {
+      this.state = "notFound";
       return;
     }
-
-    // TODO: 读取图片
-    // join(folderPath, this.path)
-    //   .then((path) => readFileBase64(path))
-    //   .then((res) => {
-    //     // 获取base64String成功
-
-    //     this._base64String = res;
-    //     const imageElement = new Image();
-    //     this._imageElement = imageElement;
-    //     imageElement.src = `data:image/png;base64,${this._base64String}`;
-    //     imageElement.onload = () => {
-    //       // 图片加载成功
-
-    //       // 调整碰撞箱大小
-
-    //       this.rectangle.size = new Vector(
-    //         imageElement.width * this.scaleNumber,
-    //         imageElement.height * this.scaleNumber,
-    //       );
-    //       this.originImageSize = new Vector(imageElement.width, imageElement.height);
-    //       this.state = "success";
-    //     };
-    //     imageElement.onerror = () => {
-    //       this.state = "encodingError";
-    //       this.errorDetails = "图片编码错误";
-    //     };
-    //   })
-
-    //   .catch((_err) => {
-    //     // 获取base64String失败
-    //     // TODO: 图片上显示ErrorDetails信息
-    //     this.state = "unknownError";
-    //     this.errorDetails = _err.toString();
-    //   });
-  }
-
-  public get base64String() {
-    return this._base64String;
-  }
-
-  /**
-   * 刷新，这个方法用于重新从路径中加载图片
-   */
-  public refresh() {
-    // TODO: 读取图片
-    // this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
+    createImageBitmap(blob).then((bitmap) => {
+      this.bitmap = bitmap;
+      this.state = "success";
+      // 设置碰撞箱
+      this.scaleUpdate(0);
+    });
   }
 
   public scaleUpdate(scaleDiff: number) {
-    this.scaleNumber += scaleDiff;
-    if (this.scaleNumber < 0.1) {
-      this.scaleNumber = 0.1;
+    this.scale += scaleDiff;
+    if (this.scale < 0.1) {
+      this.scale = 0.1;
     }
-    if (this.scaleNumber > 10) {
-      this.scaleNumber = 10;
+    if (this.scale > 10) {
+      this.scale = 10;
     }
-
+    if (!this.bitmap) return;
     this.collisionBox = new CollisionBox([
-      new Rectangle(this.currentLocation, this.originImageSize.multiply(this.scaleNumber)),
+      new Rectangle(this.rectangle.location, new Vector(this.bitmap.width, this.bitmap.height).multiply(this.scale)),
     ]);
   }
 

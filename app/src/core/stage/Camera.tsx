@@ -175,9 +175,13 @@ export class Camera {
           action: {
             label: "我有更好的idea",
             onClick: async () => {
-              const idea = await Dialog.input("发送反馈：微观尽头彩蛋", "您输入的将发送到服务器，请勿包含敏感信息", {
-                multiline: true,
-              });
+              const idea = await Dialog.input(
+                "发送反馈：微观尽头彩蛋",
+                "您输入的内容将发送到服务器，请勿包含敏感信息",
+                {
+                  multiline: true,
+                },
+              );
               if (!idea) return;
               Telemetry.event("微观尽头更好的idea", { idea });
             },

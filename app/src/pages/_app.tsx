@@ -176,7 +176,7 @@ export default function App() {
   // }, []);
 
   const Tabs = () => (
-    <div className="z-10 flex h-full gap-2 overflow-x-auto">
+    <div className="z-10 flex h-9 gap-2 overflow-x-auto">
       {projects.map((project) => (
         <Button
           key={project.uri.toString()}

@@ -1,6 +1,5 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import { Settings } from "@/core/service/Settings";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
@@ -11,7 +10,8 @@ import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 处理节点相关的绘制
@@ -240,52 +240,16 @@ export class EntityRenderer {
       );
     } else if (imageNode.state === "success") {
       this.project.imageRenderer.renderImageElement(
-        imageNode.imageElement,
+        imageNode.bitmap!,
         this.project.renderer.transformWorld2View(imageNode.rectangle.location),
-        imageNode.scaleNumber,
+        imageNode.scale,
       );
-    } else if (imageNode.state === "encodingError" || imageNode.state === "unknownError") {
+    } else if (imageNode.state === "notFound") {
       this.project.textRenderer.renderTextFromCenter(
-        imageNode.uuid,
-        this.project.renderer.transformWorld2View(imageNode.rectangle.topCenter),
-        10 * this.project.camera.currentScale,
-        Color.Red,
-      );
-      this.project.textRenderer.renderTextFromCenter(
-        imageNode.errorDetails,
-        this.project.renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
-        10 * this.project.camera.currentScale,
-        Color.Red,
-      );
-      if (imageNode.state === "unknownError") {
-        this.project.textRenderer.renderTextFromCenter(
-          "未知错误，建议反馈",
-          this.project.renderer.transformWorld2View(imageNode.rectangle.center),
-          20 * this.project.camera.currentScale,
-          Color.Red,
-        );
-      } else if (imageNode.state === "encodingError") {
-        this.project.textRenderer.renderTextFromCenter(
-          "图片base64编码错误",
-          this.project.renderer.transformWorld2View(imageNode.rectangle.center),
-          20 * this.project.camera.currentScale,
-          Color.Red,
-        );
-      }
-    }
-    // 调试，缩放信息和位置信息
-    if (Settings.sync.showDebug) {
-      this.project.textRenderer.renderText(
-        "scale: " + imageNode.scaleNumber.toString(),
-        this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
-        3 * this.project.camera.currentScale,
-        Color.Gray,
-      );
-      this.project.textRenderer.renderText(
-        "origin size: " + imageNode.originImageSize.toString(),
-        this.project.renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
-        3 * this.project.camera.currentScale,
-        Color.Gray,
+        "not found",
+        this.project.renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * this.project.camera.currentScale,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
       );
     }
     this.renderEntityDetails(imageNode);

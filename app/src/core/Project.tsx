@@ -119,6 +119,7 @@ export class Project {
   private _uri: URI;
   public state: ProjectState = ProjectState.Unsaved;
   public stage: StageObject[] = [];
+  public attachments = new Map<string, Blob>();
   /**
    * 创建Encoder对象比直接用encode()快
    * @see https://github.com/msgpack/msgpack-javascript#reusing-encoder-and-decoder-instances
@@ -313,6 +314,12 @@ export class Project {
   }
   get fs(): FileSystemProvider {
     return this.fileSystemProviders.get(this.uri.scheme)!;
+  }
+
+  addAttachment(data: Blob) {
+    const uuid = crypto.randomUUID();
+    this.attachments.set(uuid, data);
+    return uuid;
   }
 }
 

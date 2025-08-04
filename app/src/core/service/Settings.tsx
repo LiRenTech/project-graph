@@ -78,8 +78,6 @@ export namespace Settings {
     autoBackupDraftPath: string;
     autoBackupLimitCount: number;
     generateTextNodeByStringTabCount: number; // 仅在生成节点面板中使用
-    compressPastedImages: boolean;
-    maxPastedImageSize: number;
     autoLayoutWhenTreeGenerate: boolean;
     // 控制相关
     enableCollision: boolean; // 暂无
@@ -186,8 +184,6 @@ export namespace Settings {
     ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
     showTextNodeBorder: true,
     autoRefreshStageByMouseAction: true,
-    compressPastedImages: true,
-    maxPastedImageSize: 1920,
     textCacheSize: 100,
     textScalingBehavior: "temp",
     antialiasing: "low",
