@@ -1,5 +1,6 @@
 mod cmd;
 
+use std::path::Path;
 use tauri::Manager;
 
 #[tauri::command]
@@ -24,8 +25,10 @@ pub fn run() {
     // 相同的bug: https://github.com/tauri-apps/tauri/issues/10702
     #[cfg(target_os = "linux")]
     {
-        std::env::set_var("__GL_THREADED_OPTIMIZATIONS", "0");
-        std::env::set_var("__NV_DISABLE_EXPLICIT_SYNC", "1");
+        if Path::new("/proc/driver/nvidia/gpus").exists() {
+            std::env::set_var("__GL_THREADED_OPTIMIZATIONS", "0");
+            std::env::set_var("__NV_DISABLE_EXPLICIT_SYNC", "1");
+        }
     }
 
     tauri::Builder::default()

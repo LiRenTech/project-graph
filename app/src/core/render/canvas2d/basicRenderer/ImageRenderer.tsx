@@ -1,5 +1,5 @@
-import { Vector } from "@graphif/data-structures";
 import { Project, service } from "@/core/Project";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 图片渲染器
@@ -16,16 +16,16 @@ export class ImageRenderer {
    * @param scale 1 表示正常，0.5 表示缩小一半，2 表示放大两倍
    */
   renderImageElement(
-    imageElement: HTMLImageElement,
+    source: Exclude<CanvasImageSource, VideoFrame | SVGElement>,
     location: Vector,
     scale: number = 1 / (window.devicePixelRatio || 1),
   ) {
     this.project.canvas.ctx.drawImage(
-      imageElement,
+      source,
       location.x,
       location.y,
-      imageElement.width * scale * this.project.camera.currentScale,
-      imageElement.height * scale * this.project.camera.currentScale,
+      source.width * scale * this.project.camera.currentScale,
+      source.height * scale * this.project.camera.currentScale,
     );
   }
 }

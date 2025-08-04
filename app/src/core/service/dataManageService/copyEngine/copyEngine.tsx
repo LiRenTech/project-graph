@@ -1,14 +1,19 @@
+import { Project, service } from "@/core/Project";
+import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
+import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Serialized } from "@/types/node";
+import { PathString } from "@/utils/pathString";
+import { isMac } from "@/utils/platform";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "@/types/node";
-import { isMac } from "@/utils/platform";
-import { Project, service } from "@/core/Project";
-import { SerializedDataAdder } from "@/core/stage/stageManager/concreteMethods/StageSerializedAdder";
-import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
-import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
-import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import { copyEnginePasteImage } from "@/core/service/dataManageService/copyEngine/pasteImage";
-import { copyEnginePastePlainText } from "@/core/service/dataManageService/copyEngine/pastePlainText";
+import { readImage, readText } from "@tauri-apps/plugin-clipboard-manager";
+import { toast } from "sonner";
+import { MouseLocation } from "../../controlService/MouseLocation";
+import { RectanglePushInEffect } from "../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 
 /**
  * 专门用来管理节点复制的引擎
@@ -146,9 +151,9 @@ export class CopyEngine {
   paste() {
     // 如果有虚拟粘贴板数据，则优先粘贴虚拟粘贴板上的东西
     if (this.isVirtualClipboardEmpty()) {
-      readClipboardItems(this.project.renderer.transformView2World(MouseLocation.vector()));
+      this.readClipboard();
     } else {
-      SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
+      // SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
     }
     if (isMac) {
       // mac下无法直接粘贴，还要点一个按钮，但这导致
@@ -161,7 +166,7 @@ export class CopyEngine {
   }
 
   pasteWithOriginLocation() {
-    SerializedDataAdder.addSerializedData(this.copyBoardData);
+    // SerializedDataAdder.addSerializedData(this.copyBoardData);
   }
 
   private updateRectangle() {
@@ -179,6 +184,128 @@ export class CopyEngine {
 
     const clipboardRect = Rectangle.getBoundingRectangle(rectangles);
     this.copyBoardDataRectangle = clipboardRect;
+  }
+
+  async readClipboard() {
+    try {
+      const text = await readText();
+      this.copyEnginePastePlainText(text);
+    } catch (err) {
+      console.warn("文本剪贴板是空的", err);
+    }
+    try {
+      // https://github.com/HuLaSpark/HuLa/blob/fe37c246777cde3325555ed2ba2fcf860888a4a8/src/utils/ImageUtils.ts#L121
+      const image = await readImage();
+      const imageData = await image.rgba();
+      const { width, height } = await image.size();
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d")!;
+      const canvasImageData = ctx.createImageData(width, height);
+      let uint8Array: Uint8Array;
+      if (imageData.buffer instanceof ArrayBuffer) {
+        uint8Array = new Uint8Array(imageData.buffer, imageData.byteOffset, imageData.byteLength);
+      } else {
+        uint8Array = new Uint8Array(imageData);
+      }
+      canvasImageData.data.set(uint8Array);
+      ctx.putImageData(canvasImageData, 0, 0);
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject();
+          } else {
+            resolve(blob);
+          }
+        }, "image/avif");
+      });
+      this.copyEnginePasteImage(blob);
+    } catch (err) {
+      console.warn("图片剪贴板是空的", err);
+    }
+  }
+
+  async copyEnginePastePlainText(item: string) {
+    let entity: Entity | null = null;
+    const collisionBox = new CollisionBox([
+      new Rectangle(this.project.renderer.transformView2World(MouseLocation.vector()), Vector.getZero()),
+    ]);
+
+    if (isSvgString(item)) {
+      // 是SVG类型
+      entity = new SvgNode(this.project, {
+        content: item,
+        collisionBox,
+      });
+    } else if (PathString.isValidURL(item)) {
+      // 是URL类型
+      entity = new UrlNode(this.project, {
+        title: "链接",
+        uuid: crypto.randomUUID(),
+        url: item,
+        location: [MouseLocation.x, MouseLocation.y],
+      });
+    } else if (isMermaidGraphString(item)) {
+      // 是Mermaid图表类型
+      entity = new TextNode(this.project, {
+        text: "mermaid图表",
+        details: "```mermaid\n" + item + "\n```",
+        collisionBox,
+      });
+    } else {
+      const { valid, text, url } = PathString.isMarkdownUrl(item);
+      if (valid) {
+        // 是Markdown链接类型
+        entity = new UrlNode(this.project, {
+          title: text,
+          uuid: crypto.randomUUID(),
+          url: url,
+          location: [MouseLocation.x, MouseLocation.y],
+        });
+      } else {
+        // 只是普通的文本
+        if (item.length > 3000) {
+          entity = new TextNode(this.project, {
+            text: "粘贴板文字过长",
+            collisionBox,
+            details: item,
+          });
+        } else {
+          entity = new TextNode(this.project, {
+            text: item,
+            collisionBox,
+          });
+          // entity.move(
+          //   new Vector(-entity.collisionBox.getRectangle().width / 2, -entity.collisionBox.getRectangle().height / 2),
+          // );
+        }
+      }
+    }
+
+    if (entity !== null) {
+      this.project.stageManager.add(entity);
+      // 添加到section
+      const mouseSections = this.project.sectionMethods.getSectionsByInnerLocation(MouseLocation);
+      if (mouseSections.length > 0) {
+        this.project.stageManager.goInSection([entity], mouseSections[0]);
+        this.project.effects.addEffect(
+          RectanglePushInEffect.sectionGoInGoOut(
+            entity.collisionBox.getRectangle(),
+            mouseSections[0].collisionBox.getRectangle(),
+          ),
+        );
+      }
+    }
+  }
+
+  async copyEnginePasteImage(item: Blob) {
+    const attachmentId = this.project.addAttachment(item);
+
+    const imageNode = new ImageNode(this.project, {
+      attachmentId,
+    });
+    this.project.stageManager.add(imageNode);
   }
 }
 
@@ -206,20 +333,46 @@ export function getRectangleFromSerializedEntities(serializedEntities: Serialize
   return Rectangle.getBoundingRectangle(rectangles);
 }
 
-async function readClipboardItems(mouseLocation: Vector) {
-  // test
-  try {
-    navigator.clipboard.read().then(async (items) => {
-      for (const item of items) {
-        if (item.types.includes("image/png")) {
-          copyEnginePasteImage(item, mouseLocation);
-        }
-        if (item.types.includes("text/plain")) {
-          copyEnginePastePlainText(item, mouseLocation);
-        }
-      }
-    });
-  } catch (err) {
-    console.error("Failed to read clipboard contents: ", err);
+function isSvgString(str: string): boolean {
+  const trimmed = str.trim();
+
+  // 基础结构检查
+  if (trimmed.startsWith("<svg") || trimmed.endsWith("</svg>")) {
+    return true;
   }
+
+  // 提取 <svg> 标签的属性部分
+  const openTagMatch = trimmed.match(/<svg/i);
+  if (!openTagMatch) return false; // 无有效属性则直接失败
+
+  // 检查是否存在 xmlns 命名空间声明
+  const xmlnsRegex = /xmlns\s*=\s*["']http:\/\/www\.w3\.org\/2000\/svg["']/i;
+  if (!xmlnsRegex.test(openTagMatch[1])) {
+    return false;
+  }
+
+  // 可选：通过 DOM 解析进一步验证（仅限浏览器环境）
+  // 若在 Node.js 等无 DOM 环境，可注释此部分
+  if (typeof DOMParser !== "undefined") {
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(trimmed, "image/svg+xml");
+      const svgElement = doc.documentElement;
+      return svgElement.tagName.toLowerCase() === "svg" && svgElement.namespaceURI === "http://www.w3.org/2000/svg";
+    } catch {
+      // 解析失败则直接失败
+      toast.error("SVG 解析失败");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isMermaidGraphString(str: string): boolean {
+  str = str.trim();
+  if (str.startsWith("graph TD;") && str.endsWith(";")) {
+    return true;
+  }
+  return false;
 }

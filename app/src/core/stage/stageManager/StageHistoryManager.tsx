@@ -87,9 +87,8 @@ export class HistoryManager {
     const data = patches.reduce((acc, patch) => {
       return applyPatch(acc, patch).newDocument;
     }, this.initialStage);
-    console.log(data);
     // 反序列化得到舞台对象
-    const stage = deserialize(data);
+    const stage = deserialize(data, this.project);
     return stage;
   }
 }

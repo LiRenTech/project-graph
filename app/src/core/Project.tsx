@@ -73,7 +73,8 @@ import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { projectsAtom, store } from "@/state";
 import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
-import { Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
+import { BlobReader, BlobWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
+import mime from "mime";
 import { URI } from "vscode-uri";
 
 if (import.meta.hot) {
@@ -119,6 +120,7 @@ export class Project {
   private _uri: URI;
   public state: ProjectState = ProjectState.Unsaved;
   public stage: StageObject[] = [];
+  public attachments = new Map<string, Blob>();
   /**
    * 创建Encoder对象比直接用encode()快
    * @see https://github.com/msgpack/msgpack-javascript#reusing-encoder-and-decoder-instances
@@ -208,16 +210,26 @@ export class Project {
       const fileContent = await this.fs.read(this.uri);
       const reader = new ZipReader(new Uint8ArrayReader(fileContent));
       const entries = await reader.getEntries();
+      let serializedStageObjects: any[] = [];
       for (const entry of entries) {
         if (entry.filename === "stage.msgpack") {
           const stageRawData = await entry.getData!(new Uint8ArrayWriter());
-          const decoded = this.decoder.decode(stageRawData) as any[];
-          for (const serializedStageObject of decoded) {
-            const stageObject = deserialize(serializedStageObject, this);
-            this.stage.push(stageObject);
+          serializedStageObjects = this.decoder.decode(stageRawData) as any[];
+        } else if (entry.filename.startsWith("attachments/")) {
+          const match = entry.filename.trim().match(/^attachments\/([a-zA-Z0-9-]+)\.([a-zA-Z0-9]+)$/);
+          if (!match) {
+            console.warn("[Project] 附件文件名不符合规范: %s", entry.filename);
+            continue;
           }
+          const uuid = match[1];
+          const ext = match[2];
+          const type = mime.getType(ext) || "application/octet-stream";
+          const attachment = await entry.getData!(new BlobWriter(type));
+          this.attachments.set(uuid, attachment);
         }
       }
+      this.stage = serializedStageObjects.map((it) => deserialize(it, this));
+      this.state = ProjectState.Saved;
     }
   }
 
@@ -302,6 +314,10 @@ export class Project {
     const uwriter = new Uint8ArrayWriter();
     const writer = new ZipWriter(uwriter);
     writer.add("stage.msgpack", new Uint8ArrayReader(encodedStage));
+    // 添加附件
+    for (const [uuid, attachment] of this.attachments.entries()) {
+      writer.add(`attachments/${uuid}.${mime.getExtension(attachment.type)}`, new BlobReader(attachment));
+    }
     await writer.close();
     const fileContent = await uwriter.getData();
     await this.fs.write(this.uri, fileContent);
@@ -313,6 +329,12 @@ export class Project {
   }
   get fs(): FileSystemProvider {
     return this.fileSystemProviders.get(this.uri.scheme)!;
+  }
+
+  addAttachment(data: Blob) {
+    const uuid = crypto.randomUUID();
+    this.attachments.set(uuid, data);
+    return uuid;
   }
 }
 

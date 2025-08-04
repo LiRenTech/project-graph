@@ -229,6 +229,9 @@ importers:
       md5:
         specifier: ^2.3.0
         version: 2.3.0
+      mime:
+        specifier: ^4.0.7
+        version: 4.0.7
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -6722,6 +6725,12 @@ packages:
     resolution:
       { integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg== }
     engines: { node: ">=4" }
+    hasBin: true
+
+  mime@4.0.7:
+    resolution:
+      { integrity: sha512-2OfDPL+e03E0LrXaGYOtTFIYhiuzep94NSsuhrNULq+stylcJedcHdzHtz0atMUuGwJfFYs0YL5xeC/Ca2x0eQ== }
+    engines: { node: ">=16" }
     hasBin: true
 
   mimic-fn@2.1.0:
@@ -14730,6 +14739,8 @@ snapshots:
 
   mime@1.6.0:
     optional: true
+
+  mime@4.0.7: {}
 
   mimic-fn@2.1.0: {}
 

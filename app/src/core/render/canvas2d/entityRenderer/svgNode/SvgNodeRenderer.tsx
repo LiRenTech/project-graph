@@ -25,18 +25,11 @@ export class SvgNodeRenderer {
         16 * this.project.camera.currentScale,
         this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
       );
-    } else if (svgNode.state === "loaded") {
+    } else if (svgNode.state === "success") {
       this.project.svgRenderer.renderSvgFromLeftTopWithoutSize(
         svgNode.content,
-        this.project.renderer.transformWorld2View(svgNode.location),
-        svgNode.scaleNumber,
-      );
-    } else if (svgNode.state === "error") {
-      this.project.textRenderer.renderTextFromCenter(
-        "Error",
-        svgNode.collisionBox.getRectangle().center,
-        16 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.effects.warningShadow,
+        this.project.renderer.transformWorld2View(svgNode.collisionBox.getRectangle().location),
+        svgNode.scale,
       );
     }
 
