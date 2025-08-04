@@ -115,11 +115,20 @@ export class Project {
 
   private readonly services = new Map<string, Service>();
   private readonly tickableServices: Service[] = [];
+  /**
+   * 工程文件的URI
+   * key: 服务ID
+   * value: 服务实例
+   */
   private readonly fileSystemProviders = new Map<string, FileSystemProvider>();
   private rafHandle = -1;
   private _uri: URI;
   public state: ProjectState = ProjectState.Unsaved;
   public stage: StageObject[] = [];
+  /**
+   * string：UUID
+   * value: Blob
+   */
   public attachments = new Map<string, Blob>();
   /**
    * 创建Encoder对象比直接用encode()快
@@ -206,31 +215,32 @@ export class Project {
    * 服务加载完成后再调用
    */
   async init() {
-    if (await this.fs.exists(this.uri)) {
-      const fileContent = await this.fs.read(this.uri);
-      const reader = new ZipReader(new Uint8ArrayReader(fileContent));
-      const entries = await reader.getEntries();
-      let serializedStageObjects: any[] = [];
-      for (const entry of entries) {
-        if (entry.filename === "stage.msgpack") {
-          const stageRawData = await entry.getData!(new Uint8ArrayWriter());
-          serializedStageObjects = this.decoder.decode(stageRawData) as any[];
-        } else if (entry.filename.startsWith("attachments/")) {
-          const match = entry.filename.trim().match(/^attachments\/([a-zA-Z0-9-]+)\.([a-zA-Z0-9]+)$/);
-          if (!match) {
-            console.warn("[Project] 附件文件名不符合规范: %s", entry.filename);
-            continue;
-          }
-          const uuid = match[1];
-          const ext = match[2];
-          const type = mime.getType(ext) || "application/octet-stream";
-          const attachment = await entry.getData!(new BlobWriter(type));
-          this.attachments.set(uuid, attachment);
-        }
-      }
-      this.stage = serializedStageObjects.map((it) => deserialize(it, this));
-      this.state = ProjectState.Saved;
+    if (!(await this.fs.exists(this.uri))) {
+      return;
     }
+    const fileContent = await this.fs.read(this.uri);
+    const reader = new ZipReader(new Uint8ArrayReader(fileContent));
+    const entries = await reader.getEntries();
+    let serializedStageObjects: any[] = [];
+    for (const entry of entries) {
+      if (entry.filename === "stage.msgpack") {
+        const stageRawData = await entry.getData!(new Uint8ArrayWriter());
+        serializedStageObjects = this.decoder.decode(stageRawData) as any[];
+      } else if (entry.filename.startsWith("attachments/")) {
+        const match = entry.filename.trim().match(/^attachments\/([a-zA-Z0-9-]+)\.([a-zA-Z0-9]+)$/);
+        if (!match) {
+          console.warn("[Project] 附件文件名不符合规范: %s", entry.filename);
+          continue;
+        }
+        const uuid = match[1];
+        const ext = match[2];
+        const type = mime.getType(ext) || "application/octet-stream";
+        const attachment = await entry.getData!(new BlobWriter(type));
+        this.attachments.set(uuid, attachment);
+      }
+    }
+    this.stage = serializedStageObjects.map((it) => deserialize(it, this));
+    this.state = ProjectState.Saved;
   }
 
   loop() {
@@ -312,21 +322,28 @@ export class Project {
     const serializedStage = this.stage.map((stageObject) => serialize(stageObject));
     const encodedStage = this.encoder.encodeSharedRef(serializedStage);
     const uwriter = new Uint8ArrayWriter();
-    const writer = new ZipWriter(uwriter);
+
+    const writer = new ZipWriter(uwriter); // zip writer用于把zip文件写入uint8array writer
     writer.add("stage.msgpack", new Uint8ArrayReader(encodedStage));
     // 添加附件
     for (const [uuid, attachment] of this.attachments.entries()) {
       writer.add(`attachments/${uuid}.${mime.getExtension(attachment.type)}`, new BlobReader(attachment));
     }
     await writer.close();
+
     const fileContent = await uwriter.getData();
     await this.fs.write(this.uri, fileContent);
     this.state = ProjectState.Saved;
   }
 
+  /**
+   * 注册一个文件管理器
+   * @param scheme 目前有 "file" | "draft"， 以后可能有其他的协议
+   */
   registerFileSystemProvider(scheme: string, provider: { new (...args: any[]): FileSystemProvider }) {
     this.fileSystemProviders.set(scheme, new provider(this));
   }
+
   get fs(): FileSystemProvider {
     return this.fileSystemProviders.get(this.uri.scheme)!;
   }
