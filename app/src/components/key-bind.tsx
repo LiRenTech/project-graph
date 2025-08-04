@@ -108,7 +108,7 @@ function Modifiers({
 
   if (modifiers.control) {
     if (isMac) {
-      mods.push("⌃control");
+      mods.push("⌃");
     } else if (isWindows) {
       mods.push("Ctrl");
     } else if (isLinux) {
@@ -119,7 +119,7 @@ function Modifiers({
   }
   if (modifiers.alt) {
     if (isMac) {
-      mods.push("⌥option");
+      mods.push("⌥");
     } else if (isWindows) {
       mods.push("Alt");
     } else if (isLinux) {
@@ -130,7 +130,7 @@ function Modifiers({
   }
   if (modifiers.shift) {
     if (isMac) {
-      mods.push("⇧shift");
+      mods.push("⇧");
     } else if (isWindows) {
       mods.push("Shift");
     } else if (isLinux) {
@@ -141,9 +141,9 @@ function Modifiers({
   }
   if (modifiers.meta) {
     if (isMac) {
-      mods.push("⌘command");
+      mods.push("⌘");
     } else if (isWindows) {
-      mods.push("❖Win");
+      mods.push("❖");
     } else if (isLinux) {
       mods.push("Super");
     } else {
