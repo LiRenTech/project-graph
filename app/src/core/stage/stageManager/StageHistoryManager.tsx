@@ -88,7 +88,7 @@ export class HistoryManager {
       return applyPatch(acc, patch).newDocument;
     }, this.initialStage);
     // 反序列化得到舞台对象
-    const stage = deserialize(data);
+    const stage = deserialize(data, this.project);
     return stage;
   }
 }

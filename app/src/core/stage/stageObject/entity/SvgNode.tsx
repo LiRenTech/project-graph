@@ -1,63 +1,59 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { Serialized } from "@/types/node";
 import { Project } from "@/core/Project";
-import { SvgRenderer } from "@/core/render/canvas2d/basicRenderer/svgRenderer";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Color, Vector } from "@graphif/data-structures";
+import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * Svg 节点
  */
+@passExtraAtArg1
+@passObject
 export class SvgNode extends ConnectableEntity {
+  @serializable
   color: Color = Color.Transparent;
+  @serializable
   uuid: string;
+  @serializable
   details: string;
-  scaleNumber: number;
-  public collisionBox: CollisionBox;
+  @serializable
+  scale: number;
+  @serializable
+  collisionBox: CollisionBox;
+  @serializable
   content: string;
-  location: Vector;
-  originSize: Vector;
-  state: "loading" | "loaded" | "error" = "loading";
+  state: "loading" | "success" = "loading";
   isHiddenBySectionCollapse: boolean = false;
+
+  originalSize: Vector = Vector.getZero();
 
   constructor(
     protected readonly project: Project,
     {
-      uuid,
+      uuid = crypto.randomUUID(),
       details = "",
       content = "",
-      location = [0, 0],
+      collisionBox = new CollisionBox([new Rectangle(Vector.getZero(), Vector.getZero())]),
       scale = 1,
-      color = [0, 0, 0, 0],
-    }: Partial<Serialized.SvgNode> & { uuid: string },
+      color = Color.Transparent,
+    },
   ) {
     super();
     this.uuid = uuid;
     this.details = details;
-    this.scaleNumber = scale;
+    this.scale = scale;
     this.content = content;
-    this.location = new Vector(...location);
-    this.color = new Color(...color);
-
-    this.originSize = new Vector(100, 100);
-    // 解析svg尺寸
-    SvgRenderer.getSvgOriginalSize(content)
-      .then((size) => {
-        this.originSize = size;
-        this.collisionBox = new CollisionBox([
-          new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
-        ]);
-        this.state = "loaded";
-      })
-      .catch((error) => {
-        this.state = "error";
-        console.error(error);
-      });
-
-    this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
-    ]);
+    this.collisionBox = collisionBox;
+    this.color = color;
+    // 获取SVG原始大小
+    this.project.svgRenderer.getSvgOriginalSize(content).then((size) => {
+      this.originalSize = size;
+      this.collisionBox = new CollisionBox([
+        new Rectangle(this.collisionBox.getRectangle().location, this.originalSize.multiply(this.scale)),
+      ]);
+      this.state = "success";
+    });
   }
 
   public get geometryCenter(): Vector {
@@ -65,22 +61,23 @@ export class SvgNode extends ConnectableEntity {
   }
 
   public scaleUpdate(scaleDiff: number) {
-    this.scaleNumber += scaleDiff;
-    if (this.scaleNumber < 0.1) {
-      this.scaleNumber = 0.1;
+    this.scale += scaleDiff;
+    if (this.scale < 0.1) {
+      this.scale = 0.1;
     }
-    if (this.scaleNumber > 10) {
-      this.scaleNumber = 10;
+    if (this.scale > 10) {
+      this.scale = 10;
     }
 
-    this.collisionBox = new CollisionBox([new Rectangle(this.location, this.originSize.multiply(this.scaleNumber))]);
+    this.collisionBox = new CollisionBox([
+      new Rectangle(this.collisionBox.getRectangle().location, this.originalSize.multiply(this.scale)),
+    ]);
   }
 
   move(delta: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = newRectangle.location.add(delta);
     this.collisionBox.shapes[0] = newRectangle;
-    this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }
 
@@ -88,7 +85,6 @@ export class SvgNode extends ConnectableEntity {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = location.clone();
     this.collisionBox.shapes[0] = newRectangle;
-    this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }
 

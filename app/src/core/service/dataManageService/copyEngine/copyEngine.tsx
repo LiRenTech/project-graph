@@ -1,5 +1,4 @@
 import { Project, service } from "@/core/Project";
-import { SerializedDataAdder } from "@/core/stage/stageManager/concreteMethods/StageSerializedAdder";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
@@ -154,7 +153,7 @@ export class CopyEngine {
     if (this.isVirtualClipboardEmpty()) {
       this.readClipboard();
     } else {
-      SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
+      // SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
     }
     if (isMac) {
       // mac下无法直接粘贴，还要点一个按钮，但这导致
@@ -167,7 +166,7 @@ export class CopyEngine {
   }
 
   pasteWithOriginLocation() {
-    SerializedDataAdder.addSerializedData(this.copyBoardData);
+    // SerializedDataAdder.addSerializedData(this.copyBoardData);
   }
 
   private updateRectangle() {
@@ -223,7 +222,7 @@ export class CopyEngine {
       });
       this.copyEnginePasteImage(blob);
     } catch (err) {
-      console.error("图片剪贴板是空的", err);
+      console.warn("图片剪贴板是空的", err);
     }
   }
 
@@ -236,11 +235,8 @@ export class CopyEngine {
     if (isSvgString(item)) {
       // 是SVG类型
       entity = new SvgNode(this.project, {
-        uuid: crypto.randomUUID(),
         content: item,
-        location: [MouseLocation.x, MouseLocation.y],
-        size: [400, 100],
-        color: [0, 0, 0, 0],
+        collisionBox,
       });
     } else if (PathString.isValidURL(item)) {
       // 是URL类型
@@ -341,15 +337,12 @@ function isSvgString(str: string): boolean {
   const trimmed = str.trim();
 
   // 基础结构检查
-  if (
-    !trimmed.startsWith("<svg") || // 是否以 <svg 开头
-    !trimmed.endsWith("</svg>") // 是否以 </svg> 结尾
-  ) {
-    return false;
+  if (trimmed.startsWith("<svg") || trimmed.endsWith("</svg>")) {
+    return true;
   }
 
   // 提取 <svg> 标签的属性部分
-  const openTagMatch = trimmed.match(/<svg\s+([^>]*)>/i);
+  const openTagMatch = trimmed.match(/<svg/i);
   if (!openTagMatch) return false; // 无有效属性则直接失败
 
   // 检查是否存在 xmlns 命名空间声明

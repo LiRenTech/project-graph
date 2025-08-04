@@ -1,5 +1,6 @@
-import { Vector } from "@graphif/data-structures";
 import { Project, service } from "@/core/Project";
+import { Base64 } from "@/utils/base64";
+import { Vector } from "@graphif/data-structures";
 
 @service("svgRenderer")
 export class SvgRenderer {
@@ -65,10 +66,7 @@ export class SvgRenderer {
       img.onerror = (error) => {
         reject(error);
       };
-      // img.src = "data:image/svg+xml;base64," + btoa(svg);
-      // 以上方法，出现汉字会报错，因此改用 encodeURIComponent
-      // 直接使用 URI 编码（无需 Base64）
-      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
+      img.src = "data:image/svg+xml;base64," + Base64.encode(svg);
     });
   }
 
