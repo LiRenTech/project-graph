@@ -62,12 +62,12 @@ export default async function Layout({ params, children }: { params: Promise<{ l
             </NavbarMenu>
           ),
         },
-        {
-          icon: <AlbumIcon />,
-          text: "博客",
-          url: "/blog",
-          active: "nested-url",
-        },
+        // {
+        //   icon: <AlbumIcon />,
+        //   text: "博客",
+        //   url: "/blog",
+        //   active: "nested-url",
+        // },
         {
           icon: <AlbumIcon />,
           text: "更新日志",

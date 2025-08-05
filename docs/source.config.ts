@@ -1,4 +1,4 @@
-import { defineCollections, defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
+import { defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { Pluggable } from "unified";
@@ -11,16 +11,6 @@ export const docs = defineDocs({
       relatedFile: z.string().optional(),
     }),
   },
-});
-
-export const blogPosts = defineCollections({
-  type: "doc",
-  dir: "content/blog",
-  // add required frontmatter properties
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-  }),
 });
 
 export default defineConfig({
