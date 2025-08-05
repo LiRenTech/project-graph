@@ -122,7 +122,7 @@ Dialog.confirm = (title = "你确定？", description = "", { destructive = fals
 
       return (
         <Dialog open={open}>
-          <DialogContent>
+          <DialogContent showCloseButton={false}>
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
@@ -180,7 +180,7 @@ Dialog.input = (
 
       return (
         <Dialog open={open}>
-          <DialogContent>
+          <DialogContent showCloseButton={false}>
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
@@ -243,7 +243,7 @@ Dialog.buttons = <
 
       return (
         <Dialog open={open}>
-          <DialogContent>
+          <DialogContent showCloseButton={false}>
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
@@ -286,7 +286,7 @@ Dialog.copy = (title = "导出成功", description = "", value = ""): Promise<vo
 
       return (
         <Dialog open={open}>
-          <DialogContent>
+          <DialogContent showCloseButton={false}>
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
