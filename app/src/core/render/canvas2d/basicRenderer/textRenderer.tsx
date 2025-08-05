@@ -1,8 +1,8 @@
-import { Color, LruCache, Vector } from "@graphif/data-structures";
-import md5 from "md5";
-import { FONT, getTextSize, replaceTextWhenProtect } from "@/utils/font";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
+import { FONT, getTextSize, replaceTextWhenProtect } from "@/utils/font";
+import { Color, LruCache, Vector } from "@graphif/data-structures";
+import md5 from "md5";
 
 /**
  * 专门用于在Canvas上渲染文字
@@ -56,7 +56,7 @@ export class TextRenderer {
     const textSize = getTextSize(text, size);
     // 这里用OffscreenCanvas而不是document.createElement("canvas")
     // 因为OffscreenCanvas有神秘优化，后续也方便移植到Worker中渲染
-    const canvas = new OffscreenCanvas(textSize.x, textSize.y);
+    const canvas = new OffscreenCanvas(textSize.x, textSize.y * 1.5);
     const ctx = canvas.getContext("2d")!;
     // 如果这里开了抗锯齿，并且外层的canvas也开了抗锯齿，会导致文字模糊
     ctx.imageSmoothingEnabled = false;
@@ -94,13 +94,7 @@ export class TextRenderer {
           const textSize = getTextSize(text, size);
           const nearestBitmap = this.getCacheNearestSize(text, size);
           if (nearestBitmap) {
-            this.project.canvas.ctx.drawImage(
-              nearestBitmap,
-              location.x,
-              location.y,
-              Math.round(textSize.x),
-              Math.round(textSize.y),
-            );
+            this.project.canvas.ctx.drawImage(nearestBitmap, location.x, location.y, textSize.x, textSize.y * 1.5);
             return;
           }
         } else if (Settings.sync.textScalingBehavior === "temp") {

@@ -1,5 +1,5 @@
-import { MaxSizeCache, Vector } from "@graphif/data-structures";
 import { isMac } from "@/utils/platform";
+import { MaxSizeCache, Vector } from "@graphif/data-structures";
 
 const _canvas = document.createElement("canvas");
 const _context = _canvas.getContext("2d");
