@@ -2,7 +2,7 @@
 // FIXME: 移除上面的disable注释
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { ProjectState } from "@/core/Project";
+import { Project, ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
@@ -66,41 +66,6 @@ export default function App() {
         event.clientY > window.innerHeight
       )
         event.preventDefault();
-    });
-
-    /**
-     * 关闭窗口时的事件监听
-     */
-    getCurrentWindow().onCloseRequested(async (e) => {
-      e.preventDefault();
-      // 保存窗口位置
-      await saveWindowState(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
-      // await Dialog.show({
-      //   title: "是否保存更改？",
-      //   buttons: [
-      //     {
-      //       text: "保存",
-      //     },
-      //     {
-      //       text: "暂存",
-      //     },
-      //     {
-      //       text: "放弃更改",
-      //     },
-      //     {
-      //       text: "帮助",
-      //       onClick: async () => {
-      //         await Dialog.show({
-      //           title: "暂存是什么东西？",
-      //           content:
-      //             "在 2.0 以后的版本中，应用会定时将文件内容暂存到缓存目录中，防止应用意外关闭造成的文件丢失。您可以在“最近打开”中找回暂存的文件。",
-      //         });
-      //       },
-      //     },
-      //   ],
-      // });
-      Telemetry.event("关闭应用");
-      await getCurrentWindow().destroy();
     });
 
     // 监听主题样式切换
@@ -216,6 +181,74 @@ export default function App() {
   //   }
   // }, []);
 
+  useEffect(() => {
+    let unlisten: () => void;
+    /**
+     * 关闭窗口时的事件监听
+     */
+    getCurrentWindow()
+      .onCloseRequested(async (e) => {
+        e.preventDefault();
+        try {
+          for (const project of projects) {
+            console.log("尝试关闭", project);
+            await closeProject(project);
+          }
+        } catch {
+          Telemetry.event("关闭应用提示是否保存文件选择了取消");
+          return;
+        }
+        Telemetry.event("关闭应用");
+        // 保存窗口位置
+        await saveWindowState(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
+        await getCurrentWindow().destroy();
+      })
+      .then((it) => {
+        unlisten = it;
+      });
+    return () => {
+      unlisten?.();
+    };
+  }, [projects]);
+
+  const closeProject = async (project: Project) => {
+    if (project.state === ProjectState.Stashed) {
+      toast("文件还没有保存，但已经暂存，在“最近打开的文件”中可恢复文件");
+    } else if (project.state === ProjectState.Unsaved) {
+      // 切换到这个文件
+      setActiveProject(project);
+      const response = await Dialog.buttons("是否保存更改？", project.uri.toString(), [
+        { id: "cancel", label: "取消", variant: "ghost" },
+        { id: "discard", label: "不保存", variant: "destructive" },
+        { id: "save", label: "保存" },
+      ]);
+      if (response === "save") {
+        await project.save();
+      } else if (response === "cancel") {
+        throw new Error("取消操作");
+      }
+    }
+    await project.dispose();
+    setProjects((projects) => {
+      const result = projects.filter((p) => p.uri.toString() !== project.uri.toString());
+      // 如果删除了当前标签页，就切换到下一个标签页
+      if (activeProject?.uri.toString() === project.uri.toString() && result.length > 0) {
+        const activeProjectIndex = projects.findIndex((p) => p.uri.toString() === activeProject?.uri.toString());
+        if (activeProjectIndex === projects.length - 1) {
+          // 关闭了最后一个标签页
+          setActiveProject(result[activeProjectIndex - 1]);
+        } else {
+          setActiveProject(result[activeProjectIndex]);
+        }
+      }
+      // 如果删除了唯一一个标签页，就显示欢迎页面
+      if (result.length === 0) {
+        setActiveProject(undefined);
+      }
+      return result;
+    });
+  };
+
   const Tabs = () => (
     <div ref={tabsContainerRef} className="hide-scrollbar z-10 flex h-9 gap-2 overflow-x-auto whitespace-nowrap">
       {projects.map((project) => (
@@ -237,41 +270,7 @@ export default function App() {
             className="overflow-hidden hover:opacity-75"
             onClick={async (e) => {
               e.stopPropagation();
-              if (project.state === ProjectState.Stashed) {
-                toast("文件还没有保存，但已经暂存，在“最近打开的文件”中可恢复文件");
-              } else if (project.state === ProjectState.Unsaved) {
-                const response = await Dialog.buttons("是否保存更改？", "", [
-                  { id: "cancel", label: "取消", variant: "ghost" },
-                  { id: "discard", label: "不保存", variant: "destructive" },
-                  { id: "save", label: "保存" },
-                ]);
-                if (response === "save") {
-                  await project.save();
-                } else if (response === "cancel") {
-                  return;
-                }
-              }
-              await project.dispose();
-              setProjects((projects) => {
-                const result = projects.filter((p) => p.uri.toString() !== project.uri.toString());
-                // 如果删除了当前标签页，就切换到下一个标签页
-                if (activeProject?.uri.toString() === project.uri.toString() && result.length > 0) {
-                  const activeProjectIndex = projects.findIndex(
-                    (p) => p.uri.toString() === activeProject?.uri.toString(),
-                  );
-                  if (activeProjectIndex === projects.length - 1) {
-                    // 关闭了最后一个标签页
-                    setActiveProject(result[activeProjectIndex - 1]);
-                  } else {
-                    setActiveProject(result[activeProjectIndex]);
-                  }
-                }
-                // 如果删除了唯一一个标签页，就显示欢迎页面
-                if (result.length === 0) {
-                  setActiveProject(undefined);
-                }
-                return result;
-              });
+              await closeProject(project);
             }}
           >
             {project.state === ProjectState.Saved && <X />}
