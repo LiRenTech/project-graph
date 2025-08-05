@@ -70,7 +70,7 @@ import type { TagManager } from "@/core/stage/stageManager/concreteMethods/Stage
 import { HistoryManager } from "@/core/stage/stageManager/StageHistoryManager";
 import type { StageManager } from "@/core/stage/stageManager/StageManager";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
-import { projectsAtom, store } from "@/state";
+import { store, nextProjectIdAtom, projectsAtom } from "@/state";
 import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { BlobReader, BlobWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
@@ -154,8 +154,11 @@ export class Project {
    * URI为draft:UUID
    */
   static newDraft(): Project {
-    const num = store.get(projectsAtom).filter((p) => p.isDraft).length + 1;
+    // const num = store.get(projectsAtom).filter((p) => p.isDraft).length + 1;
+    if (store.get(projectsAtom).length === 0) store.set(nextProjectIdAtom, 1);
+    const num = store.get(nextProjectIdAtom);
     const uri = URI.parse("draft:" + num);
+    store.set(nextProjectIdAtom, num + 1);
     return new Project(uri);
   }
 

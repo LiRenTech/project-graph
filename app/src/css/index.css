@@ -81,3 +81,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@utility hide-scrollbar {
+  /* 针对 Firefox 的隐藏 */
+  scrollbar-width: none;
+  /* 针对 IE/Edge 的隐藏 */
+  -ms-overflow-style: none;
+
+  /* 针对 Webkit 浏览器 (Chrome, Safari) 的隐藏 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -34,6 +34,9 @@ export default function App() {
   const [isWide, setIsWide] = useState(false);
   const [telemetryEventSent, setTelemetryEventSent] = useState(false);
 
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const scrollPositionRef = useRef(0); // 用于保存滚动位置的 ref，防止切换标签页时滚动位置丢失
+
   const { t } = useTranslation("app");
 
   useEffect(() => {
@@ -165,6 +168,44 @@ export default function App() {
     projects.filter((p) => p.uri.toString() !== activeProject.uri.toString()).forEach((p) => p.pause());
   }, [activeProject]);
 
+  useEffect(() => {
+    const el = tabsContainerRef.current; // tabs
+
+    const onWheel = (e: WheelEvent) => {
+      if (!el) return; // 再次检查 el 是否为 null
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      el.scrollTo({
+        left: el.scrollLeft + e.deltaY,
+        behavior: "smooth",
+      });
+      // 在滚轮事件中更新保存的滚动位置
+      scrollPositionRef.current = el.scrollLeft;
+    };
+
+    // 检查元素是否满足水平滚动条件
+    const isHorizontallyScrollable = el && el.scrollWidth > el.clientWidth;
+
+    if (el) {
+      // 先移除旧监听器
+      el.removeEventListener("wheel", onWheel);
+    }
+
+    if (el && isHorizontallyScrollable) {
+      el.addEventListener("wheel", onWheel, { passive: false });
+      // App重载后恢复滚动位置
+      el.scrollLeft = scrollPositionRef.current;
+    } else {
+      console.log("Element for wheel listener is null or not scrollable."); // 调试：如果 el 为 null 或 不满足水平滚动条件 时不可滚动
+    }
+
+    return () => {
+      if (el) {
+        el.removeEventListener("wheel", onWheel);
+      }
+    };
+  }, [projects.length, isWide, activeProject?.uri]);
+  // 根据标签页数量、是否宽屏、当前活动项目uri 设置滚动tabs
   /**
    * 首次启动时显示欢迎页面
    */
@@ -176,7 +217,7 @@ export default function App() {
   // }, []);
 
   const Tabs = () => (
-    <div className="z-10 flex h-9 gap-2 overflow-x-auto">
+    <div ref={tabsContainerRef} className="hide-scrollbar z-10 flex h-9 gap-2 overflow-x-auto whitespace-nowrap">
       {projects.map((project) => (
         <Button
           key={project.uri.toString()}
