@@ -79,7 +79,7 @@ export function GlobalMenu() {
   const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
 
   return (
-    <Menubar>
+    <Menubar className="shrink-0">
       {/* 文件 */}
       <Menu>
         <Trigger>
