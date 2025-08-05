@@ -38,7 +38,7 @@ export const passObject = Reflect.metadata(passObjectSymbol, true);
 const classes: Map<string, any> = new Map();
 
 export function serialize(originalObj: any): any {
-  const obj2path = new Map<any, string>();
+  const obj2path = new Map<string, string>();
   function _serialize(obj: any, path: string): any {
     if (obj instanceof Array) {
       return obj.map((v, i) => _serialize(v, `${path}/${i}`));
