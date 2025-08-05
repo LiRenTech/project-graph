@@ -15,6 +15,7 @@ import { Project } from "@/core/Project";
 import AIWindow from "@/pages/_sub_window/AIWindow";
 import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
+import { serialize } from "@graphif/serializer";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open, save } from "@tauri-apps/plugin-dialog";
@@ -62,6 +63,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { URI } from "vscode-uri";
+import { LineEdge } from "../stage/stageObject/association/LineEdge";
+import { TextNode } from "../stage/stageObject/entity/TextNode";
 import { Telemetry } from "./Telemetry";
 
 const Content = MenubarContent;
@@ -363,6 +366,17 @@ export function GlobalMenu() {
           <Item onClick={() => SettingsWindow.open("visual")}>
             <SettingsIcon />
             设置
+          </Item>
+          <Item
+            onClick={() => {
+              const tn1 = new TextNode(activeProject!, { text: "tn1" });
+              const tn2 = new TextNode(activeProject!, { text: "tn2" });
+              const le = LineEdge.fromTwoEntity(activeProject!, tn1, tn2);
+              console.log(serialize(le));
+            }}
+          >
+            <SettingsIcon />
+            test
           </Item>
         </Content>
       </Menu>

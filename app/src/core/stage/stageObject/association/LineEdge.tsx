@@ -1,23 +1,23 @@
-import { Color, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "@/types/node";
-import { getMultiLineTextSize } from "@/utils/font";
 import { Project } from "@/core/Project";
 import { Renderer } from "@/core/render/canvas2d/renderer";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
-import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
-import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
 import { EdgeCollisionBoxGetter } from "@/core/stage/stageObject/association/EdgeCollisionBoxGetter";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { getMultiLineTextSize } from "@/utils/font";
+import { Color, Vector } from "@graphif/data-structures";
+import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
+import { Rectangle } from "@graphif/shapes";
 
+@passExtraAtArg1
+@passObject
 export class LineEdge extends Edge {
+  @serializable
   public uuid: string;
+  @serializable
   public text: string;
+  @serializable
   public color: Color = Color.Transparent;
-
-  protected _source: ConnectableEntity;
-  protected _target: ConnectableEntity;
 
   get collisionBox(): CollisionBox {
     return EdgeCollisionBoxGetter.getCollisionBox(this);
@@ -37,18 +37,24 @@ export class LineEdge extends Edge {
 
   constructor(
     protected readonly project: Project,
-    { source, target, text, uuid, color, sourceRectRate, targetRectRate }: Serialized.LineEdge,
+    {
+      associationList = [] as ConnectableEntity[],
+      text = "",
+      uuid = crypto.randomUUID(),
+      color = Color.Transparent,
+      sourceRectangleRate = Vector.same(0.5),
+      targetRectangleRate = Vector.same(0.5),
+    },
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
     super();
-    this._source = new TextNode(this.project, { uuid: source }, true);
-    this._target = new TextNode(this.project, { uuid: target }, true);
-    this.text = text;
     this.uuid = uuid;
-    this.color = new Color(...color);
-    this.setSourceRectangleRate(new Vector(sourceRectRate[0], sourceRectRate[1]));
-    this.setTargetRectangleRate(new Vector(targetRectRate[0], targetRectRate[1]));
+    this.associationList = associationList;
+    this.text = text;
+    this.color = color;
+    this.sourceRectangleRate = sourceRectangleRate;
+    this.targetRectangleRate = targetRectangleRate;
 
     this.adjustSizeByText();
   }
@@ -56,14 +62,7 @@ export class LineEdge extends Edge {
   // warn: 暂时无引用
   static fromTwoEntity(project: Project, source: ConnectableEntity, target: ConnectableEntity): LineEdge {
     const result = new LineEdge(project, {
-      source: source.uuid,
-      target: target.uuid,
-      text: "",
-      uuid: uuidv4(),
-      sourceRectRate: [0.5, 0.5],
-      targetRectRate: [0.5, 0.5],
-      type: "core:line_edge",
-      color: [0, 0, 0, 0],
+      associationList: [source, target],
     });
     return result;
   }

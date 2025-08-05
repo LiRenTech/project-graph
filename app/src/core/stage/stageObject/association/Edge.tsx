@@ -1,8 +1,9 @@
-import { Vector } from "@graphif/data-structures";
-import { Line, Rectangle } from "@graphif/shapes";
 import { ConnectableAssociation } from "@/core/stage/stageObject/abstract/Association";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Vector } from "@graphif/data-structures";
+import { serializable } from "@graphif/serializer";
+import { Line, Rectangle } from "@graphif/shapes";
 
 /**
  * 连接两个实体的有向边
@@ -14,27 +15,11 @@ export abstract class Edge extends ConnectableAssociation {
    */
   public abstract text: string;
   abstract collisionBox: CollisionBox;
-  /** 连接两个实体的部分 */
 
-  protected abstract _source: ConnectableEntity;
-  protected abstract _target: ConnectableEntity;
-
-  get source(): ConnectableEntity {
-    return this._source;
-  }
-  set source(value: ConnectableEntity) {
-    this._source = value;
-  }
   get isHiddenBySectionCollapse(): boolean {
     return this.source.isHiddenBySectionCollapse && this.target.isHiddenBySectionCollapse;
   }
 
-  get target(): ConnectableEntity {
-    return this._target;
-  }
-  set target(value: ConnectableEntity) {
-    this._target = value;
-  }
   /** region 选中状态 */
   /**
    * 是否被选中
@@ -62,8 +47,8 @@ export abstract class Edge extends ConnectableAssociation {
     const targetRectangle = this.target.collisionBox.getRectangle();
 
     const edgeCenterLine = new Line(
-      sourceRectangle.getInnerLocationByRateVector(this._sourceRectangleRate),
-      targetRectangle.getInnerLocationByRateVector(this._targetRectangleRate),
+      sourceRectangle.getInnerLocationByRateVector(this.sourceRectangleRate),
+      targetRectangle.getInnerLocationByRateVector(this.targetRectangleRate),
     );
     const startPoint = sourceRectangle.getLineIntersectionPoint(edgeCenterLine);
     const endPoint = targetRectangle.getLineIntersectionPoint(edgeCenterLine);
@@ -74,31 +59,19 @@ export abstract class Edge extends ConnectableAssociation {
    * 获取该连线的起始点位置对应的世界坐标
    */
   get sourceLocation(): Vector {
-    return this.source.collisionBox.getRectangle().getInnerLocationByRateVector(this._sourceRectangleRate);
+    return this.source.collisionBox.getRectangle().getInnerLocationByRateVector(this.sourceRectangleRate);
   }
   /**
    * 获取该连线的终止点位置对应的世界坐标
    */
   get targetLocation(): Vector {
-    return this.target.collisionBox.getRectangle().getInnerLocationByRateVector(this._targetRectangleRate);
+    return this.target.collisionBox.getRectangle().getInnerLocationByRateVector(this.targetRectangleRate);
   }
 
-  public _targetRectangleRate: Vector = new Vector(0.5, 0.5);
-  public _sourceRectangleRate: Vector = new Vector(0.5, 0.5);
-
-  get targetRectangleRate(): Vector {
-    return this._targetRectangleRate;
-  }
-  get sourceRectangleRate(): Vector {
-    return this._sourceRectangleRate;
-  }
-  // 设置接头比率位置
-  setTargetRectangleRate(rateVector: Vector) {
-    this._targetRectangleRate = rateVector;
-  }
-  setSourceRectangleRate(rateVector: Vector) {
-    this._sourceRectangleRate = rateVector;
-  }
+  @serializable
+  public targetRectangleRate: Vector = new Vector(0.5, 0.5);
+  @serializable
+  public sourceRectangleRate: Vector = new Vector(0.5, 0.5);
 
   /**
    * 静态方法：
