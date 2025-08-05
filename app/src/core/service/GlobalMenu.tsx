@@ -372,7 +372,7 @@ export function GlobalMenu() {
               const tn1 = new TextNode(activeProject!, { text: "tn1" });
               const tn2 = new TextNode(activeProject!, { text: "tn2" });
               const le = LineEdge.fromTwoEntity(activeProject!, tn1, tn2);
-              console.log(serialize(le));
+              console.log(serialize([tn1, tn2, le]));
             }}
           >
             <SettingsIcon />

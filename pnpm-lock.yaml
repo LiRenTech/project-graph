@@ -475,10 +475,19 @@ importers:
 
   packages/serializer:
     dependencies:
+      "@msgpack/msgpack":
+        specifier: ^3.1.2
+        version: 3.1.2
+      js-md5:
+        specifier: ^0.8.3
+        version: 0.8.3
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
     devDependencies:
+      "@types/js-md5":
+        specifier: ^0.8.0
+        version: 0.8.0
       tsdown:
         specifier: ^0.12.9
         version: 0.12.9(typescript@5.8.3)
@@ -3690,6 +3699,10 @@ packages:
     resolution:
       { integrity: sha512-sdWoUajOB1cd0A8cRRQ1cfyWNbmFKLAqBB89Y8x5iYyG/mkJHc0YUH8pdWBy2omi9qtCpiIgGjuwO0dQST2l5w== }
 
+  "@types/js-md5@0.8.0":
+    resolution:
+      { integrity: sha512-gQkc1Felhyj+aB9jmz/ICLm1fDPQx7l/60JIBSSEC+j09JeaINlzd0Wj9LZlQkHnV5rJYkroOHE5wdbDgADJrw== }
+
   "@types/json-schema@7.0.15":
     resolution:
       { integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA== }
@@ -6108,6 +6121,10 @@ packages:
         optional: true
       react:
         optional: true
+
+  js-md5@0.8.3:
+    resolution:
+      { integrity: sha512-qR0HB5uP6wCuRMrWPTrkMaev7MJZwJuuw4fnwAzRgP4J4/F8RwtodOKpGp4XpqsLBFzzgqIO42efFAyz2Et6KQ== }
 
   js-tokens@4.0.0:
     resolution:
@@ -11691,6 +11708,8 @@ snapshots:
     dependencies:
       "@types/node": 24.1.0
 
+  "@types/js-md5@0.8.0": {}
+
   "@types/json-schema@7.0.15": {}
 
   "@types/katex@0.16.7": {}
@@ -13938,6 +13957,8 @@ snapshots:
     optionalDependencies:
       "@types/react": 19.1.8
       react: 19.1.0
+
+  js-md5@0.8.3: {}
 
   js-tokens@4.0.0: {}
 
