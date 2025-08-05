@@ -21,6 +21,9 @@ export class Canvas {
       element.focus();
       this.project.loop();
     });
+    element.addEventListener("blur", () => {
+      this.project.controller.pressingKeySet.clear();
+    });
     this.ctx = element.getContext("2d", {
       alpha: Settings.sync.windowBackgroundAlpha !== 1,
     })!;
