@@ -9,3 +9,5 @@ export const store = createStore();
 export const projectsAtom = atom<Project[]>([]);
 export const activeProjectAtom = atom<Project | undefined>(undefined);
 export const isClassroomModeAtom = atom(false);
+
+export const nextProjectIdAtom = atom(1);
