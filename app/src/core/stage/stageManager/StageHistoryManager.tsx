@@ -1,6 +1,7 @@
 import { Project, ProjectState, service } from "@/core/Project";
 import { deserialize, serialize } from "@graphif/serializer";
 import { applyPatch, compare, Operation } from "fast-json-patch";
+import _ from "lodash";
 import { toast } from "sonner";
 
 /**
@@ -39,9 +40,12 @@ export class HistoryManager {
     this.patches.splice(this.currentIndex + 1);
     // 上面一行的含义：删除从 currentIndex + 1 开始的所有元素。
     // 也就是撤回了好几步之后再做修改，后面的曾经历史就都删掉了，相当于重开了一个分支。
-    const patch = compare(serialize(this.get(this.currentIndex)), serialize(this.project.stage));
+    const prev = serialize(this.get(this.currentIndex));
+    const current = serialize(this.project.stage);
+    // console.log("prev %o current %o", prev, current);
+    const patch = compare(prev, current);
     if (patch.length === 0) return;
-    this.patches.push(patch);
+    this.patches.push(_.cloneDeep(patch));
     this.currentIndex++;
     if (this.patches.length > this.historySize) {
       // 数组长度超过最大值时，合并第一个和第二个patch
@@ -58,7 +62,7 @@ export class HistoryManager {
    * 撤销
    */
   undo() {
-    if (this.currentIndex > 0) {
+    if (this.currentIndex >= 0) {
       this.currentIndex--;
       this.project.stage = this.get(this.currentIndex);
       toast(`当前进度：${this.currentIndex + 1} / ${this.patches.length}`);
@@ -86,9 +90,10 @@ export class HistoryManager {
     // 从initialStage开始应用patch，得到在index时刻的舞台序列化数据
     const data = patches.reduce((acc, patch) => {
       return applyPatch(acc, patch).newDocument;
-    }, this.initialStage);
+    }, _.cloneDeep(this.initialStage));
     // 反序列化得到舞台对象
     const stage = deserialize(data, this.project);
+    console.log("get %d = %o (patches %o)", index, stage, patches);
     return stage;
   }
 }
