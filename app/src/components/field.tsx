@@ -65,9 +65,11 @@ export function SettingField({
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
       {extra}
-      {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
-      {type === "password" && <Input value={value} onChange={setValue} placeholder={placeholder} type="password" />}
-      {type === "number" && <Input value={value} onChange={setValue} type="number" />}
+      {type === "text" && <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} />}
+      {type === "password" && (
+        <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} type="password" />
+      )}
+      {type === "number" && <Input value={value} onChange={(e) => setValue(e.target.valueAsNumber)} type="number" />}
       {type === "slider" && (
         <>
           <Slider
