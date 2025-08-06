@@ -44,6 +44,7 @@ export class HistoryManager {
     const prev = serialize(this.get(this.currentIndex - 1));
     const current = serialize(this.project.stage);
     const patch = diff(prev, current);
+    if (!patch) return;
     this.deltas.push(patch);
     if (this.deltas.length > this.historySize) {
       // 数组长度超过最大值时，合并第一个和第二个patch
