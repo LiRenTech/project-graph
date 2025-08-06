@@ -1,7 +1,7 @@
-import { Color, Vector } from "@graphif/data-structures";
 import { Project, service } from "@/core/Project";
 import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { Settings } from "@/core/service/Settings";
+import { Color, Vector } from "@graphif/data-structures";
 
 /**
  * 绘画控制器
@@ -16,7 +16,7 @@ export class DrawingControllerRenderer {
   renderTempDrawing() {
     const currentStrokeColor = this.project.controller.penStrokeDrawing.getCurrentStrokeColor();
 
-    if (Settings.sync.mouseLeftMode === "draw") {
+    if (Settings.mouseLeftMode === "draw") {
       // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
       if (this.project.controller.penStrokeDrawing.currentStroke.length > 0) {
         const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;

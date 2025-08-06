@@ -54,17 +54,7 @@ export type ChildCameraData = {
  */
 @service("stageManager")
 export class StageManager {
-  isEnableEntityCollision: boolean = false;
-  isAllowAddCycleEdge: boolean = false;
-
-  constructor(private readonly project: Project) {
-    Settings.watch("isEnableEntityCollision", (value) => {
-      this.isEnableEntityCollision = value;
-    });
-    Settings.watch("allowAddCycleEdge", (value) => {
-      this.isAllowAddCycleEdge = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 
   get(uuid: string) {
     return this.project.stage.find((node) => node.uuid === uuid);
@@ -479,7 +469,7 @@ export class StageManager {
   }
 
   connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity, isCrEdge: boolean = false) {
-    if (fromNode === toNode && !this.isAllowAddCycleEdge) {
+    if (fromNode === toNode && !Settings.allowAddCycleEdge) {
       return false;
     }
     if (isCrEdge) {
@@ -510,7 +500,7 @@ export class StageManager {
       return false;
     }
     for (const fromNode of fromNodes) {
-      if (fromNode === toNode && !this.isAllowAddCycleEdge) {
+      if (fromNode === toNode && !Settings.allowAddCycleEdge) {
         continue;
       }
       if (isCrEdge) {

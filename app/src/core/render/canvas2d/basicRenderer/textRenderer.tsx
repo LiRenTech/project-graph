@@ -11,7 +11,7 @@ import md5 from "md5";
  */
 @service("textRenderer")
 export class TextRenderer {
-  private cache = new LruCache<string, ImageBitmap>(Settings.sync.textCacheSize);
+  private cache = new LruCache<string, ImageBitmap>(Settings.textCacheSize);
 
   constructor(private readonly project: Project) {}
 
@@ -77,19 +77,19 @@ export class TextRenderer {
    */
   renderText(text: string, location: Vector, size: number, color: Color = Color.White): void {
     if (text.trim().length === 0) return;
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     // 如果有缓存，直接渲染
     const cache = this.getCache(text, size);
     if (cache) {
       this.project.canvas.ctx.drawImage(cache, location.x, location.y);
       return;
     }
-    if (Settings.sync.textScalingBehavior !== "cacheEveryTick") {
+    if (Settings.textScalingBehavior !== "cacheEveryTick") {
       // 如果摄像机正在缩放，就找到大小最接近的缓存图片，然后位图缩放
       const currentScale = this.project.camera.currentScale.toFixed(2);
       const targetScale = this.project.camera.targetScale.toFixed(2);
       if (currentScale !== targetScale) {
-        if (Settings.sync.textScalingBehavior === "nearestCache") {
+        if (Settings.textScalingBehavior === "nearestCache") {
           // 文字应该渲染成什么大小
           const textSize = getTextSize(text, size);
           const nearestBitmap = this.getCacheNearestSize(text, size);
@@ -97,7 +97,7 @@ export class TextRenderer {
             this.project.canvas.ctx.drawImage(nearestBitmap, location.x, location.y, textSize.x, textSize.y * 1.5);
             return;
           }
-        } else if (Settings.sync.textScalingBehavior === "temp") {
+        } else if (Settings.textScalingBehavior === "temp") {
           this.renderTempText(text, location, size, color);
           return;
         }
@@ -110,7 +110,7 @@ export class TextRenderer {
    */
   renderTempText(text: string, location: Vector, size: number, color: Color = Color.White): void {
     if (text.trim().length === 0) return;
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     this.project.canvas.ctx.textBaseline = "middle";
     this.project.canvas.ctx.textAlign = "left";
     this.project.canvas.ctx.font = `${size}px normal ${FONT}`;
@@ -172,7 +172,7 @@ export class TextRenderer {
     limitLines: number = Infinity,
   ): void {
     if (text.trim().length === 0) return;
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, fontSize, limitWidth);
     // 限制行数
@@ -196,7 +196,7 @@ export class TextRenderer {
     limitLines: number = Infinity,
   ): void {
     if (text.trim().length === 0) return;
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, size, limitWidth);
     // 限制行数
@@ -224,7 +224,7 @@ export class TextRenderer {
     limitLines: number = Infinity,
   ): void {
     if (text.trim().length === 0) return;
-    text = Settings.sync.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    text = Settings.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = this.textToTextArrayWrapCache(text, size, limitWidth);
     // 限制行数

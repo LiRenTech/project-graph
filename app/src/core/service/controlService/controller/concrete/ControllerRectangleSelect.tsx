@@ -1,7 +1,7 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 export class ControllerRectangleSelectClass extends ControllerClass {
   private _isUsing: boolean = false;
@@ -32,7 +32,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
       // layer moving mode
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     const button = event.button;
@@ -62,7 +62,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (!this._isUsing) {
@@ -86,9 +86,9 @@ export class ControllerRectangleSelectClass extends ControllerClass {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Settings.sync.rectangleSelectWhenLeft;
+      return Settings.rectangleSelectWhenLeft;
     } else {
-      return Settings.sync.rectangleSelectWhenLeft;
+      return Settings.rectangleSelectWhenLeft;
     }
   }
 
@@ -96,7 +96,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     // 左键松开

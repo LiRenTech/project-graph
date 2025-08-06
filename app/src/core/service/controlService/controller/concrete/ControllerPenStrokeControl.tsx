@@ -1,6 +1,6 @@
-import { Vector } from "@graphif/data-structures";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 所有和笔迹控制特定的逻辑都在这里
@@ -17,7 +17,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
   public lastAdjustWidthLocation: Vector = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    if (!(event.button === 2 && Settings.sync.mouseLeftMode === "draw")) {
+    if (!(event.button === 2 && Settings.mouseLeftMode === "draw")) {
       return;
     }
     const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -30,7 +30,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Settings.sync.mouseLeftMode === "selectAndMove") {
+    if (Settings.mouseLeftMode === "selectAndMove") {
       // 检查鼠标是否悬浮在笔迹上
       const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
       for (const node of this.project.stageManager.getPenStrokes()) {
@@ -40,7 +40,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
         }
       }
     }
-    if (Settings.sync.mouseLeftMode === "draw") {
+    if (Settings.mouseLeftMode === "draw") {
       if (this.project.controller.pressingKeySet.has("alt") && this.project.controller.isMouseDown[2]) {
         this.onMouseMoveWhenAdjusting(event);
         return;
@@ -50,7 +50,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public mouseup: (event: MouseEvent) => void = (_event) => {
-    if (Settings.sync.mouseLeftMode === "draw") {
+    if (Settings.mouseLeftMode === "draw") {
       if (this.isAdjusting) {
         this.isAdjusting = false;
       }
@@ -58,7 +58,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
   };
 
   // public mousewheel: (event: WheelEvent) => void = (event) => {
-  //   if (Settings.sync.mouseLeftMode !== "draw") {
+  //   if (Settings.mouseLeftMode !== "draw") {
   //     return;
   //   }
   //   if (this.project.controller.pressingKeySet.has("control")) {

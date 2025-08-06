@@ -58,7 +58,7 @@ export abstract class Entity extends StageObject {
    * 此函数在move函数中被调用，更新
    */
   protected updateOtherEntityLocationByMove() {
-    if (!this.project.stageManager.isEnableEntityCollision) {
+    if (!Settings.isEnableEntityCollision) {
       return;
     }
     for (const entity of this.project.stageManager.getEntities()) {
@@ -74,7 +74,7 @@ export abstract class Entity extends StageObject {
    * @param other 其他实体
    */
   protected collideWithOtherEntity(other: Entity) {
-    if (!this.project.stageManager.isEnableEntityCollision) {
+    if (!Settings.isEnableEntityCollision) {
       return;
     }
     const selfRectangle = this.collisionBox.getRectangle();

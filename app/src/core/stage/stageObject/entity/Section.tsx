@@ -1,8 +1,3 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line, Rectangle, Shape } from "@graphif/shapes";
-import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "@/types/node";
-import { getTextSize } from "@/utils/font";
 import { Project } from "@/core/Project";
 import { SectionRenderer } from "@/core/render/canvas2d/entityRenderer/section/SectionRenderer";
 import { Renderer } from "@/core/render/canvas2d/renderer";
@@ -10,6 +5,11 @@ import { NodeMoveShadowEffect } from "@/core/service/feedbackService/effectEngin
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Serialized } from "@/types/node";
+import { getTextSize } from "@/utils/font";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, Rectangle, Shape } from "@graphif/shapes";
+import { v4 as uuidv4 } from "uuid";
 
 export class Section extends ConnectableEntity {
   /**
@@ -235,7 +235,7 @@ export class Section extends ConnectableEntity {
     this.updateOtherEntityLocationByMove();
   }
   protected override collideWithOtherEntity(other: Entity): void {
-    if (!this.project.stageManager.isEnableEntityCollision) {
+    if (!Settings.isEnableEntityCollision) {
       return;
     }
     if (other instanceof Section) {

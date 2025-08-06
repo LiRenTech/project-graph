@@ -198,7 +198,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   protected override collideWithOtherEntity(other: Entity): void {
-    if (!this.project.stageManager.isEnableEntityCollision) {
+    if (!Settings.isEnableEntityCollision) {
       return;
     }
     if (other instanceof Section) {

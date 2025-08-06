@@ -13,7 +13,7 @@ export default function GithubPage() {
   const [user, setUser] = React.useState("");
 
   React.useEffect(() => {
-    Settings.get("githubUser").then((v) => setUser(v || "未登录"));
+    Settings.githubUser.then((v) => setUser(v || "未登录"));
   }, []);
 
   const login = async () => {
@@ -76,8 +76,8 @@ export default function GithubPage() {
         auth: token.access_token,
       });
       const user = await octokit.users.getAuthenticated();
-      Settings.set("githubToken", token.access_token);
-      Settings.set("githubUser", user.data.login);
+      Settings.githubToken = token.access_token;
+      Settings.githubUser = user.data.login;
       setUser(user.data.login);
       await Dialog.show({
         title: "登录 Github",

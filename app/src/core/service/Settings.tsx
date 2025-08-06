@@ -1,377 +1,223 @@
-import { createStore } from "@/utils/store";
-import { Store } from "@tauri-apps/plugin-store";
+import { LazyStore } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
+import z from "zod";
 
-/**
- * 设置相关的操作
- * 有数据持久化机制
- *
- * windows 在路径 %APPDATA% 下
- */
-export namespace Settings {
-  let store: Store;
-  // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
-  export type Settings = {
-    language: "zh_CN" | "zh_TW" | "en";
-    // 视觉相关
-    lineStyle: "straight" | "bezier" | "vertical";
-    theme: string;
-    showTipsOnUI: boolean;
-    isClassroomMode: boolean;
-    isRenderCenterPointer: boolean;
-    showGrid: boolean; // 废弃
-    showBackgroundHorizontalLines: boolean;
-    showBackgroundVerticalLines: boolean;
-    showBackgroundDots: boolean;
-    showBackgroundCartesian: boolean;
-    windowBackgroundAlpha: number;
-    enableTagTextNodesBigDisplay: boolean;
-    showDebug: boolean;
-    alwaysShowDetails: boolean;
-    protectingPrivacy: boolean;
-    useNativeTitleBar: boolean;
-    entityDetailsFontSize: number;
-    entityDetailsLinesLimit: number;
-    entityDetailsWidthLimit: number;
-    nodeDetailsPanel: "small" | "vditor";
-    sectionBitTitleRenderType: "top" | "cover" | "none";
+export const settingsSchema = z.object({
+  language: z.union([z.literal("en"), z.literal("zh_CN"), z.literal("zh_TW")]).default("zh_CN"),
+  showTipsOnUI: z.boolean().default(true),
+  useNativeTitleBar: z.boolean().default(false),
+  isClassroomMode: z.boolean().default(false),
+  windowBackgroundAlpha: z.number().min(0).max(1).default(0.9),
+  isRenderCenterPointer: z.boolean().default(false),
+  showBackgroundHorizontalLines: z.boolean().default(true),
+  showBackgroundVerticalLines: z.boolean().default(true),
+  showBackgroundDots: z.boolean().default(false),
+  showBackgroundCartesian: z.boolean().default(true),
+  enableTagTextNodesBigDisplay: z.boolean().default(true),
+  showTextNodeBorder: z.boolean().default(true),
+  lineStyle: z.union([z.literal("straight"), z.literal("bezier"), z.literal("vertical")]).default("straight"),
+  sectionBitTitleRenderType: z.union([z.literal("none"), z.literal("top"), z.literal("cover")]).default("cover"),
+  nodeDetailsPanel: z.union([z.literal("small"), z.literal("vditor")]).default("vditor"),
+  alwaysShowDetails: z.boolean().default(false),
+  entityDetailsFontSize: z.number().min(18).max(36).int().default(18),
+  entityDetailsLinesLimit: z.number().min(1).max(200).int().default(4),
+  entityDetailsWidthLimit: z.number().min(200).max(2000).int().default(200),
+  showDebug: z.boolean().default(false),
+  protectingPrivacy: z.boolean().default(false),
+  windowCollapsingWidth: z.number().min(50).max(2000).int().default(300),
+  windowCollapsingHeight: z.number().min(25).max(2000).int().default(300),
+  limitCameraInCycleSpace: z.boolean().default(false),
+  cameraCycleSpaceSizeX: z.number().min(1000).max(10000).int().default(1000),
+  cameraCycleSpaceSizeY: z.number().min(1000).max(10000).int().default(1000),
+  historySize: z.number().min(1).max(1000).default(20),
+  autoRefreshStageByMouseAction: z.boolean().default(true),
+  isPauseRenderWhenManipulateOvertime: z.boolean().default(true),
+  renderOverTimeWhenNoManipulateTime: z.number().min(1).max(10).int().default(5),
+  ignoreTextNodeTextRenderLessThanCameraScale: z.number().min(0.01).max(0.3).default(0.065),
+  textCacheSize: z.number().default(100),
+  textScalingBehavior: z
+    .union([z.literal("temp"), z.literal("nearestCache"), z.literal("cacheEveryTick")])
+    .default("temp"),
+  antialiasing: z
+    .union([z.literal("disabled"), z.literal("low"), z.literal("medium"), z.literal("high")])
+    .default("low"),
+  compatibilityMode: z.boolean().default(false),
+  isEnableEntityCollision: z.boolean().default(false),
+  autoNamerTemplate: z.string().default("..."),
+  autoNamerSectionTemplate: z.string().default("Section_{{i}}"),
+  autoSaveWhenClose: z.boolean().default(false),
+  autoSave: z.boolean().default(true),
+  autoSaveInterval: z.number().min(1).max(60).int().default(10),
+  autoBackup: z.boolean().default(true),
+  autoBackupInterval: z.number().min(60).max(6000).int().default(600),
+  autoBackupLimitCount: z.number().min(1).max(500).int().default(10),
+  autoBackupDraftPath: z.string().default(""),
+  aiApiBaseUrl: z.string().default("https://generativelanguage.googleapis.com/v1beta/openai/"),
+  aiApiKey: z.string().default(""),
+  aiModel: z.string().default("gemini-2.5-flash"),
+  aiShowTokenCount: z.boolean().default(false),
+  mouseRightDragBackground: z.union([z.literal("cut"), z.literal("moveCamera")]).default("cut"),
+  enableDragAutoAlign: z.boolean().default(true),
+  mouseWheelMode: z
+    .union([z.literal("zoom"), z.literal("move"), z.literal("moveX"), z.literal("none")])
+    .default("zoom"),
+  mouseWheelWithShiftMode: z
+    .union([z.literal("zoom"), z.literal("move"), z.literal("moveX"), z.literal("none")])
+    .default("moveX"),
+  mouseWheelWithCtrlMode: z
+    .union([z.literal("zoom"), z.literal("move"), z.literal("moveX"), z.literal("none")])
+    .default("move"),
+  mouseWheelWithAltMode: z
+    .union([z.literal("zoom"), z.literal("move"), z.literal("moveX"), z.literal("none")])
+    .default("none"),
+  doubleClickMiddleMouseButton: z.union([z.literal("adjustCamera"), z.literal("none")]).default("adjustCamera"),
+  mouseSideWheelMode: z
+    .union([
+      z.literal("zoom"),
+      z.literal("move"),
+      z.literal("moveX"),
+      z.literal("none"),
+      z.literal("cameraMoveToMouse"),
+      z.literal("adjustWindowOpacity"),
+      z.literal("adjustPenStrokeWidth"),
+    ])
+    .default("cameraMoveToMouse"),
+  macMouseWheelIsSmoothed: z.boolean().default(false),
+  enableWindowsTouchPad: z.boolean().default(true),
+  macTrackpadAndMouseWheelDifference: z
+    .union([z.literal("trackpadIntAndWheelFloat"), z.literal("tarckpadFloatAndWheelInt")])
+    .default("trackpadIntAndWheelFloat"),
+  macTrackpadScaleSensitivity: z.number().min(0).max(1).multipleOf(0.001).default(0.5),
+  allowMoveCameraByWSAD: z.boolean().default(false),
+  cameraFollowsSelectedNodeOnArrowKeys: z.boolean().default(false),
+  cameraKeyboardMoveReverse: z.boolean().default(false),
+  moveAmplitude: z.number().min(0).max(10).default(2),
+  moveFriction: z.number().min(0).max(1).default(0.1),
+  scaleExponent: z.number().min(0).max(1).default(0.11),
+  cameraResetViewPaddingRate: z.number().min(1).max(2).default(1.5),
+  scaleCameraByMouseLocation: z.boolean().default(true),
+  cameraKeyboardScaleRate: z.number().min(0).max(3).default(0.2),
+  rectangleSelectWhenRight: z.union([z.literal("intersect"), z.literal("contain")]).default("intersect"),
+  rectangleSelectWhenLeft: z.union([z.literal("intersect"), z.literal("contain")]).default("contain"),
+  textNodeStartEditMode: z
+    .union([
+      z.literal("enter"),
+      z.literal("ctrlEnter"),
+      z.literal("altEnter"),
+      z.literal("shiftEnter"),
+      z.literal("space"),
+    ])
+    .default("enter"),
+  textNodeContentLineBreak: z
+    .union([z.literal("enter"), z.literal("ctrlEnter"), z.literal("altEnter"), z.literal("shiftEnter")])
+    .default("shiftEnter"),
+  textNodeExitEditMode: z
+    .union([z.literal("enter"), z.literal("ctrlEnter"), z.literal("altEnter"), z.literal("shiftEnter")])
+    .default("enter"),
+  textNodeSelectAllWhenStartEditByMouseClick: z.boolean().default(true),
+  textNodeSelectAllWhenStartEditByKeyboard: z.boolean().default(false),
+  allowAddCycleEdge: z.boolean().default(false),
+  autoLayoutWhenTreeGenerate: z.boolean().default(true),
+  gamepadDeadzone: z.number().min(0).max(1).default(0.1),
+  showGrid: z.boolean().default(true),
+  maxFps: z.number().default(60),
+  maxFpsUnfocused: z.number().default(30),
+  effectsPerferences: z.record(z.boolean()).default({}),
+  autoFillNodeColor: z.tuple([z.number(), z.number(), z.number(), z.number()]).default([0, 0, 0, 0]),
+  autoFillNodeColorEnable: z.boolean().default(true),
+  autoFillPenStrokeColor: z.tuple([z.number(), z.number(), z.number(), z.number()]).default([0, 0, 0, 0]),
+  autoFillPenStrokeColorEnable: z.boolean().default(true),
+  autoFillEdgeColor: z.tuple([z.number(), z.number(), z.number(), z.number()]).default([0, 0, 0, 0]),
+  autoOpenPath: z.string().default(""), // 废弃
+  generateTextNodeByStringTabCount: z.number().default(4),
+  enableCollision: z.boolean().default(true),
+  enableDragAlignToGrid: z.boolean().default(false),
+  mouseLeftMode: z
+    .union([z.literal("selectAndMove"), z.literal("draw"), z.literal("connectAndCut")])
+    .default("selectAndMove"),
+  soundEnabled: z.boolean().default(true),
+  cuttingLineStartSoundFile: z.string().default(""),
+  connectLineStartSoundFile: z.string().default(""),
+  connectFindTargetSoundFile: z.string().default(""),
+  cuttingLineReleaseSoundFile: z.string().default(""),
+  alignAndAttachSoundFile: z.string().default(""),
+  uiButtonEnterSoundFile: z.string().default(""),
+  uiButtonClickSoundFile: z.string().default(""),
+  uiSwitchButtonOnSoundFile: z.string().default(""),
+  uiSwitchButtonOffSoundFile: z.string().default(""),
+  githubToken: z.string().default(""),
+  githubUser: z.string().default(""),
+  theme: z.string().default("dark"),
+});
 
-    windowCollapsingWidth: number;
-    windowCollapsingHeight: number;
+export type Settings = z.infer<typeof settingsSchema>;
 
-    limitCameraInCycleSpace: boolean;
-    cameraCycleSpaceSizeX: number;
-    cameraCycleSpaceSizeY: number;
-    cameraResetViewPaddingRate: number;
-    // 性能相关
-    compatibilityMode: boolean;
-    historySize: number; // 暂无
-    autoRefreshStageByMouseAction: boolean;
-    textCacheSize: number;
-    textScalingBehavior: "temp" | "nearestCache" | "cacheEveryTick";
-    antialiasing: "disabled" | "low" | "medium" | "high";
-    maxFps: number;
-    maxFpsUnfocused: number;
-    // 特效开关列表
-    effectsPerferences: Record<string, boolean>;
-    isEnableEntityCollision: boolean;
-    isPauseRenderWhenManipulateOvertime: boolean;
-    renderOverTimeWhenNoManipulateTime: number;
-    ignoreTextNodeTextRenderLessThanCameraScale: number;
-    showTextNodeBorder: boolean;
-    // 自动化相关
-    autoNamerTemplate: string;
-    autoNamerSectionTemplate: string;
+const store = new LazyStore("settings.json");
+await store.init();
 
-    autoFillNodeColor: [number, number, number, number]; // 不在设置面板中
-    autoFillNodeColorEnable: boolean;
-    autoFillPenStrokeColor: [number, number, number, number];
-    autoFillPenStrokeColorEnable: boolean;
+const listeners: Record<string, ((value: any) => void)[]> = {};
 
-    autoFillEdgeColor: [number, number, number, number]; // 不在设置面板中
-    autoOpenPath: string; // 废弃
-    autoSaveWhenClose: boolean;
-    autoSave: boolean;
-    autoSaveInterval: number;
-    autoBackup: boolean;
-    autoBackupInterval: number;
-    autoBackupDraftPath: string;
-    autoBackupLimitCount: number;
-    generateTextNodeByStringTabCount: number; // 仅在生成节点面板中使用
-    autoLayoutWhenTreeGenerate: boolean;
-    // 控制相关
-    enableCollision: boolean; // 暂无
-    enableDragAutoAlign: boolean;
-    enableDragAlignToGrid: boolean;
-    enableWindowsTouchPad: boolean;
-    rectangleSelectWhenLeft: "intersect" | "contain";
-    rectangleSelectWhenRight: "intersect" | "contain";
-    scaleExponent: number;
-    allowMoveCameraByWSAD: boolean;
-    cameraFollowsSelectedNodeOnArrowKeys: boolean;
-    cameraKeyboardMoveReverse: boolean;
-    scaleCameraByMouseLocation: boolean;
-    cameraKeyboardScaleRate: number;
-    allowAddCycleEdge: boolean;
-    moveAmplitude: number;
-    moveFriction: number;
-    gamepadDeadzone: number;
-    mouseRightDragBackground: "cut" | "moveCamera";
-    textNodeContentLineBreak: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
-    textNodeExitEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
-    textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter" | "space";
-    textNodeSelectAllWhenStartEditByKeyboard: boolean;
-    textNodeSelectAllWhenStartEditByMouseClick: boolean;
-    // TODO: 把这个加进设置页面
-    mouseLeftMode: "selectAndMove" | "draw" | "connectAndCut";
-    mouseWheelMode: "zoom" | "move" | "moveX" | "none";
-    mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
-    mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
-    mouseWheelWithAltMode: "zoom" | "move" | "moveX" | "none";
-    mouseSideWheelMode:
-      | "zoom"
-      | "move"
-      | "moveX"
-      | "none"
-      | "cameraMoveToMouse"
-      | "adjustWindowOpacity"
-      | "adjustPenStrokeWidth";
-    doubleClickMiddleMouseButton: "none" | "adjustCamera";
-    // mac相关的特殊控制
-    // 触摸版和鼠标滚轮的区分逻辑
-    macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat" | "tarckpadFloatAndWheelInt";
-    macMouseWheelIsSmoothed: boolean; // mac 的鼠标滚轮是否开启了平滑滚动
-    macTrackpadScaleSensitivity: number; // mac 触控板缩放灵敏度，默认 0.5
-    // 音效相关
-    soundEnabled: boolean;
-    cuttingLineStartSoundFile: string;
-    connectLineStartSoundFile: string;
-    connectFindTargetSoundFile: string;
-    cuttingLineReleaseSoundFile: string;
-    alignAndAttachSoundFile: string;
-    uiButtonEnterSoundFile: string;
-    uiButtonClickSoundFile: string;
-    uiSwitchButtonOnSoundFile: string;
-    uiSwitchButtonOffSoundFile: string;
-    // github 相关
-    githubToken: string;
-    githubUser: string;
-    // AI
-    aiApiBaseUrl: string;
-    aiApiKey: string;
-    aiModel: string;
-    aiShowTokenCount: boolean;
-  };
-  export const defaultSettings: Settings = {
-    language: "zh_CN",
-    // 视觉相关
-    lineStyle: "straight",
-    theme: "dark",
-    showTipsOnUI: true,
-    isClassroomMode: false,
-    isRenderCenterPointer: false,
-    showGrid: true,
-    showBackgroundHorizontalLines: true,
-    showBackgroundVerticalLines: true,
-    showBackgroundDots: false,
-    showBackgroundCartesian: true, // 1.4.17 开始必须要默认显示坐标系，没有坐标系可能会让用户迷路
-    windowBackgroundAlpha: 0.9,
-    enableTagTextNodesBigDisplay: true,
-    showDebug: false, // 从1.4.7开始，以后用户安装软件后不默认显示调试信息，进而避免出现让用户感到困惑“这一大堆字是什么”
-    alwaysShowDetails: false,
-    protectingPrivacy: false,
-    useNativeTitleBar: false,
-    entityDetailsFontSize: 18,
-    entityDetailsLinesLimit: 4,
-    entityDetailsWidthLimit: 200,
-    nodeDetailsPanel: "vditor",
-    sectionBitTitleRenderType: "cover",
-
-    windowCollapsingWidth: 300,
-    windowCollapsingHeight: 300,
-
-    limitCameraInCycleSpace: false,
-    cameraCycleSpaceSizeX: 1000,
-    cameraCycleSpaceSizeY: 1000,
-    cameraResetViewPaddingRate: 1.5,
-    // 性能相关
-    compatibilityMode: false,
-    historySize: 20,
-    effectsPerferences: {},
-    isEnableEntityCollision: false,
-    isPauseRenderWhenManipulateOvertime: true,
-    renderOverTimeWhenNoManipulateTime: 5,
-    ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
-    showTextNodeBorder: true,
-    autoRefreshStageByMouseAction: true,
-    textCacheSize: 100,
-    textScalingBehavior: "temp",
-    antialiasing: "low",
-    maxFps: 60,
-    maxFpsUnfocused: 30,
-    // 自动相关
-    autoNamerTemplate: "...",
-    autoNamerSectionTemplate: "Section_{{i}}",
-    autoFillNodeColor: [0, 0, 0, 0],
-    autoFillNodeColorEnable: true,
-    autoFillEdgeColor: [0, 0, 0, 0],
-    autoFillPenStrokeColor: [0, 0, 0, 0],
-    autoFillPenStrokeColorEnable: true,
-    autoOpenPath: "", // 废弃
-    autoSaveWhenClose: false,
-    autoSave: true,
-    autoSaveInterval: 10,
-    autoBackup: true,
-    autoBackupInterval: 600,
-    autoBackupDraftPath: "",
-    autoBackupLimitCount: 10,
-    generateTextNodeByStringTabCount: 4,
-    autoLayoutWhenTreeGenerate: true,
-    // 控制相关
-    enableCollision: true,
-    enableDragAutoAlign: true,
-    enableDragAlignToGrid: false,
-    enableWindowsTouchPad: true,
-    rectangleSelectWhenLeft: "contain",
-    rectangleSelectWhenRight: "intersect",
-    scaleExponent: 0.11,
-    allowMoveCameraByWSAD: false,
-    cameraFollowsSelectedNodeOnArrowKeys: false,
-    cameraKeyboardMoveReverse: false,
-    scaleCameraByMouseLocation: true,
-    cameraKeyboardScaleRate: 0.2,
-    allowAddCycleEdge: false,
-    moveAmplitude: 2,
-    moveFriction: 0.1,
-    gamepadDeadzone: 0.1,
-    mouseRightDragBackground: "cut",
-    textNodeContentLineBreak: "shiftEnter",
-    textNodeExitEditMode: "enter",
-    textNodeStartEditMode: "enter",
-    textNodeSelectAllWhenStartEditByKeyboard: false,
-    textNodeSelectAllWhenStartEditByMouseClick: true,
-    mouseLeftMode: "selectAndMove",
-    mouseWheelMode: "zoom",
-    mouseWheelWithShiftMode: "moveX",
-    mouseWheelWithCtrlMode: "move",
-    mouseWheelWithAltMode: "none",
-    mouseSideWheelMode: "cameraMoveToMouse",
-    doubleClickMiddleMouseButton: "adjustCamera",
-    macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat",
-    macMouseWheelIsSmoothed: false,
-    macTrackpadScaleSensitivity: 0.5,
-    // 音效相关
-    soundEnabled: true,
-    cuttingLineStartSoundFile: "",
-    connectLineStartSoundFile: "",
-    connectFindTargetSoundFile: "",
-    cuttingLineReleaseSoundFile: "",
-    alignAndAttachSoundFile: "",
-    uiButtonEnterSoundFile: "",
-    uiButtonClickSoundFile: "",
-    uiSwitchButtonOnSoundFile: "",
-    uiSwitchButtonOffSoundFile: "",
-    // github 相关
-    githubToken: "",
-    githubUser: "",
-    // AI
-    aiApiBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
-    aiApiKey: "",
-    aiModel: "gemini-2.5-flash",
-    aiShowTokenCount: false,
-  };
-
-  export const sync = { ...defaultSettings };
-
-  export async function init() {
-    if (store) return;
-    store = await createStore("settings.json");
-    Object.assign(sync, Object.fromEntries(await store.entries())); // 调用所有watcher
-    Object.entries(callbacks).forEach(([key, callbacks]) => {
-      callbacks.forEach((callback) => {
-        get(key as keyof Settings).then((value) => {
-          callback(value);
-        });
-      });
-    });
-    // 兼容在旧版本保存的设置项
-    if (await has("uiTheme")) {
-      set("theme", "dark");
-      remove("uiTheme");
-    }
+export const Settings = new Proxy<
+  Settings & {
+    watch: (key: keyof Settings, callback: (value: any) => void) => () => void;
+    use: <T extends keyof Settings>(key: T) => [Settings[T], (newValue: Settings[T]) => void];
   }
-
-  export function has(key: string): Promise<boolean> {
-    return store.has(key);
-  }
-
-  export function remove(key: string) {
-    store.delete(key);
-    store.save();
-  }
-
-  export async function get<K extends keyof Settings>(key: K): Promise<Settings[K]> {
-    const res = await store.get<Settings[K]>(key);
-    if (typeof res === "undefined") {
-      return defaultSettings[key];
-    } else {
-      return res;
-    }
-  }
-
-  const callbacks: {
-    [key: string]: Array<(value: any) => void>;
-  } = {};
-
-  export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
-    store.set(key, value);
-    store.save();
-    sync[key] = value;
-
-    // 调用所有监听该键的回调函数
-    if (callbacks[key]) {
-      callbacks[key].forEach((callback) => callback(value));
-    }
-  }
-
-  /**
-   * 监听某个设置的变化，监听后会调用一次回调函数
-   * @param key 要监听的设置键
-   * @param callback 设置变化时的回调函数
-   */
-  export function watch<K extends keyof Settings>(key: K, callback: (value: Settings[K]) => void) {
-    if (!callbacks[key]) {
-      callbacks[key] = [];
-    }
-    callbacks[key].push(callback);
-    if (store) {
-      get(key).then((value) => {
-        callback(value);
-      });
-    }
-    return () => {
-      callbacks[key] = callbacks[key].filter((cb) => cb !== callback);
-    };
-  }
-
-  /**
-   * react hook
-   */
-  export function use<K extends keyof Settings>(key: K): [Settings[K], (value: Settings[K]) => void] {
-    const [value, setValue] = useState<Settings[K]>(defaultSettings[key]);
-    const [inited, setInited] = useState(false);
-
-    useEffect(() => {
-      get(key)
-        .then(setValue)
-        .then(() => setInited(true));
-      const unwatch = watch(key, (newValue) => {
-        setValue(newValue);
-      });
-      return () => {
-        unwatch();
-      };
-    }, []);
-
-    useEffect(() => {
-      if (inited) {
-        set(key, value);
+>(
+  {
+    ...settingsSchema.parse({}),
+    watch: () => () => {},
+    use: () => [undefined as any, () => {}],
+  },
+  {
+    set: (target, key, value, receiver) => {
+      if (typeof key === "symbol") {
+        throw new Error(`不能设置symbol属性: ${String(key)}`);
       }
-    }, [value, inited]);
-
-    return [value, setValue];
-  }
-
-  export function getChangedSettings(): Partial<Settings> {
-    // 获取修改过的设置项
-    const changed: Partial<Settings> = {};
-    for (const key in defaultSettings) {
-      // @ts-expect-error fuck ts
-      if (sync[key] !== defaultSettings[key]) {
-        // @ts-expect-error fuck ts
-        changed[key] = sync[key];
+      if (!(key in target)) {
+        throw new Error(`没有这个设置项: ${key}`);
       }
-    }
-    return changed;
-  }
-}
+      store.set(key, value);
+      return Reflect.set(target, key, value, receiver);
+    },
+    get: (target, key, receiver) => {
+      switch (key) {
+        case "watch": {
+          return (key: keyof Settings, callback: (value: any) => void) => {
+            if (!listeners[key]) {
+              listeners[key] = [];
+            }
+            listeners[key].push(callback);
+            callback(target[key]);
+            return () => {
+              listeners[key] = listeners[key].filter((cb) => cb !== callback);
+            };
+          };
+        }
+        case "use": {
+          return <T extends keyof Settings>(key: T) => {
+            const [value, setValue] = useState(target[key]);
+            useEffect(() => {
+              if (!listeners[key]) {
+                listeners[key] = [];
+              }
+              listeners[key].push(setValue);
+              return () => {
+                listeners[key] = listeners[key].filter((cb) => cb !== setValue);
+              };
+            }, []);
+            return [
+              value,
+              (newValue: Settings[T]) => {
+                store.set(key, newValue);
+                listeners[key].forEach((cb) => cb(newValue));
+              },
+            ];
+          };
+        }
+        default: {
+          return Reflect.get(target, key, receiver);
+        }
+      }
+    },
+  },
+);

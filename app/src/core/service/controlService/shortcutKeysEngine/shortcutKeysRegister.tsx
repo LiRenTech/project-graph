@@ -68,7 +68,7 @@ export class KeyBindsRegistrar {
 
     await this.project.keyBinds.create("checkoutClassroomMode", "F5", async () => {
       // F5 是PPT的播放快捷键
-      await Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
+      await Settings.set("isClassroomMode", !Settings.isClassroomMode);
     });
 
     await this.project.keyBinds.create("resetView", "F", () => {
@@ -321,8 +321,8 @@ export class KeyBindsRegistrar {
       ColorWindow.open();
     });
     await this.project.keyBinds.create("switchDebugShow", "F3", async () => {
-      const currentValue = await Settings.get("showDebug");
-      Settings.set("showDebug", !currentValue);
+      const currentValue = Settings.showDebug;
+      Settings.showDebug = !currentValue;
     });
 
     await this.project.keyBinds.create("selectAll", "C-a", () => {
@@ -337,7 +337,7 @@ export class KeyBindsRegistrar {
       this.project.sectionPackManager.unpackSelectedSections();
     });
     await this.project.keyBinds.create("checkoutProtectPrivacy", "C-2", async () => {
-      Settings.set("protectingPrivacy", !(await Settings.get("protectingPrivacy")));
+      Settings.protectingPrivacy = !Settings.protectingPrivacy;
     });
     await this.project.keyBinds.create("searchText", "C-f", () => {
       FindWindow.open();
@@ -380,45 +380,45 @@ export class KeyBindsRegistrar {
 
     await this.project.keyBinds.create("checkoutWindowOpacityMode", "C-0", async () => {
       // 切换窗口透明度模式
-      const currentValue = await Settings.get("windowBackgroundAlpha");
+      const currentValue = Settings.windowBackgroundAlpha;
       if (currentValue === 0) {
-        Settings.set("windowBackgroundAlpha", 1);
+        Settings.windowBackgroundAlpha = 1;
       } else {
-        Settings.set("windowBackgroundAlpha", 0);
+        Settings.windowBackgroundAlpha = 0;
       }
     });
     await this.project.keyBinds.create("windowOpacityAlphaIncrease", "C-A-S-+", async () => {
-      const currentValue = await Settings.get("windowBackgroundAlpha");
+      const currentValue = Settings.windowBackgroundAlpha;
       if (currentValue === 1) {
         // 已经不能再大了
         this.project.effects.addEffect(
           ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
         );
       } else {
-        Settings.set("windowBackgroundAlpha", Math.min(1, currentValue + 0.2));
+        Settings.windowBackgroundAlpha = Math.min(1, currentValue + 0.2);
       }
     });
     await this.project.keyBinds.create("windowOpacityAlphaDecrease", "C-A-S--", async () => {
-      const currentValue = await Settings.get("windowBackgroundAlpha");
+      const currentValue = Settings.windowBackgroundAlpha;
       if (currentValue === 0) {
         // 已经不能再小了
         this.project.effects.addEffect(
           ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
         );
       } else {
-        Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
+        Settings.windowBackgroundAlpha = Math.max(0, currentValue - 0.2);
       }
     });
 
     await this.project.keyBinds.create("penStrokeWidthIncrease", "=", async () => {
-      if (Settings.sync.mouseLeftMode === "draw") {
+      if (Settings.mouseLeftMode === "draw") {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth + 4;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
         toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
       }
     });
     await this.project.keyBinds.create("penStrokeWidthDecrease", "-", async () => {
-      if (Settings.sync.mouseLeftMode === "draw") {
+      if (Settings.mouseLeftMode === "draw") {
         const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth - 4;
         this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
         toast(`画笔粗细: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`);
@@ -456,7 +456,7 @@ export class KeyBindsRegistrar {
     });
 
     await this.project.keyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", async () => {
-      // lastMouseMode = Settings.sync.mouseLeftMode;
+      // lastMouseMode = Settings.mouseLeftMode;
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutConnectAndCuttingHook();
     });
@@ -503,7 +503,7 @@ export class KeyBindsRegistrar {
       // 看成汽车的手刹，按下一次就切换是否允许移动
       this.project.camera.clearMoveCommander();
       this.project.camera.speed = Vector.getZero();
-      Settings.set("allowMoveCameraByWSAD", !(await Settings.get("allowMoveCameraByWSAD")));
+      Settings.allowMoveCameraByWSAD = !Settings.allowMoveCameraByWSAD;
     });
 
     await this.project.keyBinds.create("generateNodeTreeWithBroadMode", "\\", async () => {
@@ -573,23 +573,23 @@ export class KeyBindsRegistrar {
 
     // 主题切换相关功能
     await this.project.keyBinds.create("switchToDarkTheme", "b l a c k k", () => {
-      Settings.set("theme", "dark");
+      Settings.theme = "dark";
     });
 
     await this.project.keyBinds.create("switchToLightTheme", "w h i t e e", () => {
-      Settings.set("theme", "light");
+      Settings.theme = "light";
     });
 
     await this.project.keyBinds.create("switchToParkTheme", "p a r k k", () => {
-      Settings.set("theme", "park");
+      Settings.theme = "park";
     });
 
     await this.project.keyBinds.create("switchToMacaronTheme", "m k l", () => {
-      Settings.set("theme", "macaron");
+      Settings.theme = "macaron";
     });
 
     await this.project.keyBinds.create("switchToMorandiTheme", "m l d", () => {
-      Settings.set("theme", "morandi");
+      Settings.theme = "morandi";
     });
 
     // 画笔相关快捷键

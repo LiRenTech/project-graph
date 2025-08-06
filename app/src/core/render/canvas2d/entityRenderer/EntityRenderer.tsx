@@ -19,13 +19,8 @@ import { Rectangle } from "@graphif/shapes";
 @service("entityRenderer")
 export class EntityRenderer {
   private sectionSortedZIndex: Section[] = [];
-  sectionBitTitleRenderType: Settings.Settings["sectionBitTitleRenderType"] = "cover";
 
-  constructor(private readonly project: Project) {
-    Settings.watch("sectionBitTitleRenderType", (value) => {
-      this.sectionBitTitleRenderType = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 
   /**
    * 对所有section排序一次
@@ -71,7 +66,7 @@ export class EntityRenderer {
    * 统一渲染全部框的大标题
    */
   renderAllSectionsBigTitle(viewRectangle: Rectangle) {
-    if (this.sectionBitTitleRenderType === "none") {
+    if (Settings.sectionBitTitleRenderType === "none") {
       return;
     }
     // 从最深层的最小框开始渲染
@@ -82,9 +77,9 @@ export class EntityRenderer {
       if (this.project.renderer.isOverView(viewRectangle, section)) {
         continue;
       }
-      if (this.sectionBitTitleRenderType === "cover") {
+      if (Settings.sectionBitTitleRenderType === "cover") {
         this.project.sectionRenderer.renderBigCoveredTitle(section);
-      } else if (this.sectionBitTitleRenderType === "top") {
+      } else if (Settings.sectionBitTitleRenderType === "top") {
         this.project.sectionRenderer.renderTopTitle(section);
       }
     }
@@ -156,7 +151,7 @@ export class EntityRenderer {
       this.project.svgNodeRenderer.render(entity);
     }
     // details右上角小按钮
-    if (this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale) {
+    if (this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale) {
       this.project.entityDetailsButtonRenderer.render(entity);
     }
   }
@@ -167,7 +162,7 @@ export class EntityRenderer {
    */
   renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
-      if (Settings.sync.alwaysShowDetails) {
+      if (Settings.alwaysShowDetails) {
         this._renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
       } else {
         if (entity.isMouseHover) {

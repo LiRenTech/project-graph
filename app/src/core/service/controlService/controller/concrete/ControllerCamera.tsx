@@ -39,7 +39,7 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     const key = event.key.toLowerCase();
-    if (ControllerCameraClass.keyMap[key] && this.project.camera.allowMoveCameraByWSAD) {
+    if (ControllerCameraClass.keyMap[key] && Settings.allowMoveCameraByWSAD) {
       if (this.project.controller.pressingKeySet.has("control")) {
         // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
         this.isPressingCtrl = true;
@@ -48,7 +48,7 @@ export class ControllerCameraClass extends ControllerClass {
 
       let addAccelerate = ControllerCameraClass.keyMap[key];
 
-      if (this.project.camera.cameraKeyboardMoveReverse) {
+      if (Settings.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
@@ -83,14 +83,14 @@ export class ControllerCameraClass extends ControllerClass {
     }
     // ------
 
-    if (ControllerCameraClass.keyMap[key] && this.project.camera.allowMoveCameraByWSAD) {
+    if (ControllerCameraClass.keyMap[key] && Settings.allowMoveCameraByWSAD) {
       if (this.isPressingCtrl) {
         // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
         return;
       }
       let addAccelerate = ControllerCameraClass.keyMap[key];
 
-      if (this.project.camera.cameraKeyboardMoveReverse) {
+      if (Settings.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当松开某一个方向的时候,相当于停止加速度
@@ -115,11 +115,11 @@ export class ControllerCameraClass extends ControllerClass {
       this.project.controller.setCursorNameHook(CursorNameEnum.Grabbing);
       this.isUsingMouseGrabMove = true;
     }
-    if (event.button === 1 && Settings.sync.mouseRightDragBackground !== "moveCamera") {
+    if (event.button === 1 && Settings.mouseRightDragBackground !== "moveCamera") {
       // 中键按下
       this.isUsingMouseGrabMove = true;
     }
-    if (Settings.sync.mouseRightDragBackground === "moveCamera" && event.button === 2) {
+    if (Settings.mouseRightDragBackground === "moveCamera" && event.button === 2) {
       // 右键按下
       this.isUsingMouseGrabMove = true;
     }
@@ -127,7 +127,7 @@ export class ControllerCameraClass extends ControllerClass {
     // 获取左右中键
     this.lastMousePressLocation[event.button] = pressWorldLocation;
 
-    if (this.isUsingMouseGrabMove && Settings.sync.autoRefreshStageByMouseAction) {
+    if (this.isUsingMouseGrabMove && Settings.autoRefreshStageByMouseAction) {
       // 开始刷新舞台
       this.project.stageManager.refreshAllStageObjects();
     }
@@ -159,7 +159,7 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     // 中键按下拖动视野
-    if (this.project.controller.isMouseDown[1] && Settings.sync.mouseRightDragBackground !== "moveCamera") {
+    if (this.project.controller.isMouseDown[1] && Settings.mouseRightDragBackground !== "moveCamera") {
       if (event.ctrlKey) {
         // ctrl键按下时,不允许移动视野
         return;
@@ -172,7 +172,7 @@ export class ControllerCameraClass extends ControllerClass {
       this.moveCameraByMouseMove(event.clientX, event.clientY, 4);
       this.project.controller.setCursorNameHook(CursorNameEnum.Grabbing);
     }
-    if (Settings.sync.mouseRightDragBackground === "moveCamera" && this.project.controller.isMouseDown[2]) {
+    if (Settings.mouseRightDragBackground === "moveCamera" && this.project.controller.isMouseDown[2]) {
       // 还要保证这个鼠标位置没有悬浮在什么东西上
       const mouseLocation = new Vector(event.clientX, event.clientY);
       const worldLocation = this.project.renderer.transformView2World(mouseLocation);
@@ -237,12 +237,12 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     // 涂鸦模式下的量角器，禁止滚动
-    if (Settings.sync.mouseLeftMode === "draw" && this.project.controller.pressingKeySet.has("shift")) {
+    if (Settings.mouseLeftMode === "draw" && this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
     // 禁用触控板在这里的滚动
     const isUsingTouchPad = !this.isMouseWheel(event);
-    if (!Settings.sync.enableWindowsTouchPad) {
+    if (!Settings.enableWindowsTouchPad) {
       if (isUsingTouchPad) {
         // 禁止使用触摸板
         // this.project.effects.addEffect(
@@ -283,13 +283,13 @@ export class ControllerCameraClass extends ControllerClass {
     this.project.camera.targetLocationByScale = worldLocation;
 
     if (this.project.controller.pressingKeySet.has("shift")) {
-      if (this.project.camera.mouseWheelWithShiftMode === "zoom") {
+      if (Settings.mouseWheelWithShiftMode === "zoom") {
         this.zoomCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithShiftMode === "move") {
+      } else if (Settings.mouseWheelWithShiftMode === "move") {
         this.moveYCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithShiftMode === "moveX") {
+      } else if (Settings.mouseWheelWithShiftMode === "moveX") {
         this.moveXCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithShiftMode === "none") {
+      } else if (Settings.mouseWheelWithShiftMode === "none") {
         return;
       }
     } else if (this.project.controller.pressingKeySet.has("control")) {
@@ -299,34 +299,34 @@ export class ControllerCameraClass extends ControllerClass {
         // 给这个entity一个特效
         this.project.effects.addEffect(EntityCreateFlashEffect.fromRectangle(entity.collisionBox.getRectangle()));
       } else {
-        if (this.project.camera.mouseWheelWithCtrlMode === "zoom") {
+        if (Settings.mouseWheelWithCtrlMode === "zoom") {
           this.zoomCameraByMouseWheel(event);
-        } else if (this.project.camera.mouseWheelWithCtrlMode === "move") {
+        } else if (Settings.mouseWheelWithCtrlMode === "move") {
           this.moveYCameraByMouseWheel(event);
-        } else if (this.project.camera.mouseWheelWithCtrlMode === "moveX") {
+        } else if (Settings.mouseWheelWithCtrlMode === "moveX") {
           this.moveXCameraByMouseWheel(event);
-        } else if (this.project.camera.mouseWheelWithCtrlMode === "none") {
+        } else if (Settings.mouseWheelWithCtrlMode === "none") {
           return;
         }
       }
     } else if (this.project.controller.pressingKeySet.has("alt")) {
-      if (this.project.camera.mouseWheelWithAltMode === "zoom") {
+      if (Settings.mouseWheelWithAltMode === "zoom") {
         this.zoomCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithAltMode === "move") {
+      } else if (Settings.mouseWheelWithAltMode === "move") {
         this.moveYCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithAltMode === "moveX") {
+      } else if (Settings.mouseWheelWithAltMode === "moveX") {
         this.moveXCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelWithAltMode === "none") {
+      } else if (Settings.mouseWheelWithAltMode === "none") {
         return;
       }
     } else {
-      if (this.project.camera.mouseWheelMode === "zoom") {
+      if (Settings.mouseWheelMode === "zoom") {
         this.zoomCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelMode === "move") {
+      } else if (Settings.mouseWheelMode === "move") {
         this.moveYCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelMode === "moveX") {
+      } else if (Settings.mouseWheelMode === "moveX") {
         this.moveXCameraByMouseWheel(event);
-      } else if (this.project.camera.mouseWheelMode === "none") {
+      } else if (Settings.mouseWheelMode === "none") {
         return;
       }
     }
@@ -340,7 +340,7 @@ export class ControllerCameraClass extends ControllerClass {
    * @param event - 鼠标事件
    */
   public mouseDoubleClick: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.doubleClickMiddleMouseButton === "none") {
+    if (Settings.doubleClickMiddleMouseButton === "none") {
       return;
     }
     if (event.button === 1 && !this.project.controller.isCameraLocked) {
@@ -376,9 +376,7 @@ export class ControllerCameraClass extends ControllerClass {
     }
     const dx = event.deltaX / 500;
     const dy = event.deltaY / 500;
-    const diffLocation = new Vector(dx, dy).multiply(
-      (this.project.camera.moveAmplitude * 50) / this.project.camera.currentScale,
-    );
+    const diffLocation = new Vector(dx, dy).multiply((Settings.moveAmplitude * 50) / this.project.camera.currentScale);
     this.project.effects.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
     this.project.camera.location = this.project.camera.location.add(diffLocation);
   }
@@ -387,7 +385,7 @@ export class ControllerCameraClass extends ControllerClass {
     if (isMac) {
       // mac电脑滚动一格滚轮会触发很多次事件。这个列表里是每个事件的deltaY
       // [7, 7, 7, 7, 6, 7, 7, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1]
-      if (Settings.sync.macMouseWheelIsSmoothed) {
+      if (Settings.macMouseWheelIsSmoothed) {
         // 盲猜是开了平滑滚动了
         const deltaY = event.deltaY;
         this.project.camera.targetScale *= 1 + deltaY / 500;
@@ -415,7 +413,7 @@ export class ControllerCameraClass extends ControllerClass {
   private moveYCameraByMouseWheel(event: WheelEvent) {
     this.project.camera.bombMove(
       this.project.camera.location.add(
-        new Vector(0, (this.project.camera.moveAmplitude * event.deltaY * 0.5) / this.project.camera.currentScale),
+        new Vector(0, (Settings.moveAmplitude * event.deltaY * 0.5) / this.project.camera.currentScale),
       ),
     );
     if (event.deltaY > 0) {
@@ -429,15 +427,15 @@ export class ControllerCameraClass extends ControllerClass {
     if (event.deltaX === 0) {
       return;
     }
-    if (this.project.camera.mouseSideWheelMode === "zoom") {
+    if (Settings.mouseSideWheelMode === "zoom") {
       this.zoomCameraByMouseSideWheel(event);
-    } else if (this.project.camera.mouseSideWheelMode === "move") {
+    } else if (Settings.mouseSideWheelMode === "move") {
       this.moveYCameraByMouseSideWheel(event);
-    } else if (this.project.camera.mouseSideWheelMode === "moveX") {
+    } else if (Settings.mouseSideWheelMode === "moveX") {
       this.moveXCameraByMouseSideWheel(event);
-    } else if (this.project.camera.mouseSideWheelMode === "none") {
+    } else if (Settings.mouseSideWheelMode === "none") {
       return;
-    } else if (this.project.camera.mouseSideWheelMode === "cameraMoveToMouse") {
+    } else if (Settings.mouseSideWheelMode === "cameraMoveToMouse") {
       // 先测试性的加一个，将准星向鼠标位置移动
       const mouseLocation = new Vector(event.clientX, event.clientY);
       const mouseWorldLocation = this.project.renderer.transformView2World(mouseLocation);
@@ -451,17 +449,15 @@ export class ControllerCameraClass extends ControllerClass {
       }
       const moveToLocation = this.project.camera.location.add(diffLocation);
       this.project.camera.bombMove(moveToLocation);
-    } else if (this.project.camera.mouseSideWheelMode === "adjustWindowOpacity") {
-      const currentValue = Settings.get("windowBackgroundAlpha");
-      currentValue.then((value) => {
-        if (event.deltaX < 0) {
-          Settings.set("windowBackgroundAlpha", Math.min(1, value + 0.1));
-        } else {
-          Settings.set("windowBackgroundAlpha", Math.max(0, value - 0.1));
-        }
-      });
-    } else if (this.project.camera.mouseSideWheelMode === "adjustPenStrokeWidth") {
-      if (Settings.sync.mouseLeftMode !== "draw") {
+    } else if (Settings.mouseSideWheelMode === "adjustWindowOpacity") {
+      const currentValue = Settings.windowBackgroundAlpha;
+      if (event.deltaX < 0) {
+        Settings.windowBackgroundAlpha = Math.min(1, currentValue + 0.1);
+      } else {
+        Settings.windowBackgroundAlpha = Math.max(0, currentValue - 0.1);
+      }
+    } else if (Settings.mouseSideWheelMode === "adjustPenStrokeWidth") {
+      if (Settings.mouseLeftMode !== "draw") {
         return;
       }
       // 调整笔画粗细
@@ -489,7 +485,7 @@ export class ControllerCameraClass extends ControllerClass {
 
   private moveYCameraByMouseSideWheel(event: WheelEvent) {
     this.project.camera.location = this.project.camera.location.add(
-      new Vector(0, (this.project.camera.moveAmplitude * event.deltaX * 0.5) / this.project.camera.currentScale),
+      new Vector(0, (Settings.moveAmplitude * event.deltaX * 0.5) / this.project.camera.currentScale),
     );
     if (event.deltaX > 0) {
       this.project.effects.addEffect(MouseTipFeedbackEffect.default("moveDown"));
@@ -501,7 +497,7 @@ export class ControllerCameraClass extends ControllerClass {
   private moveXCameraByMouseWheel(event: WheelEvent) {
     this.project.camera.bombMove(
       this.project.camera.location.add(
-        new Vector((this.project.camera.moveAmplitude * event.deltaY * 0.5) / this.project.camera.currentScale, 0),
+        new Vector((Settings.moveAmplitude * event.deltaY * 0.5) / this.project.camera.currentScale, 0),
       ),
     );
     if (event.deltaY > 0) {
@@ -514,7 +510,7 @@ export class ControllerCameraClass extends ControllerClass {
   private moveXCameraByMouseSideWheel(event: WheelEvent) {
     this.project.camera.bombMove(
       this.project.camera.location.add(
-        new Vector((this.project.camera.moveAmplitude * event.deltaX * 0.5) / this.project.camera.currentScale, 0),
+        new Vector((Settings.moveAmplitude * event.deltaX * 0.5) / this.project.camera.currentScale, 0),
       ),
     );
     if (event.deltaX > 0) {

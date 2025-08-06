@@ -1,65 +1,25 @@
 import { readFile } from "@tauri-apps/plugin-fs";
-import { Settings } from "@/core/service/Settings";
+import { Settings } from "../Settings";
 
 /**
  * 播放音效的服务
  * 这个音效播放服务是用户自定义的
  */
 export namespace SoundService {
-  let cuttingLineStartSoundFile = "";
-  let connectLineStartSoundFile = "";
-  let connectFindTargetSoundFile = "";
-  let cuttingLineReleaseSoundFile = "";
-  let alignAndAttachSoundFile = "";
-  let uiButtonEnterSoundFile = "";
-  let uiButtonClickSoundFile = "";
-  let uiSwitchButtonOnSoundFile = "";
-  let uiSwitchButtonOffSoundFile = "";
-
-  export function init() {
-    Settings.watch("cuttingLineStartSoundFile", (value) => {
-      cuttingLineStartSoundFile = value;
-    });
-    Settings.watch("connectLineStartSoundFile", (value) => {
-      connectLineStartSoundFile = value;
-    });
-    Settings.watch("connectFindTargetSoundFile", (value) => {
-      connectFindTargetSoundFile = value;
-    });
-    Settings.watch("cuttingLineReleaseSoundFile", (value) => {
-      cuttingLineReleaseSoundFile = value;
-    });
-    Settings.watch("alignAndAttachSoundFile", (value) => {
-      alignAndAttachSoundFile = value;
-    });
-    Settings.watch("uiButtonEnterSoundFile", (value) => {
-      uiButtonEnterSoundFile = value;
-    });
-    Settings.watch("uiButtonClickSoundFile", (value) => {
-      uiButtonClickSoundFile = value;
-    });
-    Settings.watch("uiSwitchButtonOnSoundFile", (value) => {
-      uiSwitchButtonOnSoundFile = value;
-    });
-    Settings.watch("uiSwitchButtonOffSoundFile", (value) => {
-      uiSwitchButtonOffSoundFile = value;
-    });
-  }
-
   export namespace play {
     // 开始切断
     export function cuttingLineStart() {
-      loadAndPlaySound(cuttingLineStartSoundFile);
+      loadAndPlaySound(Settings.cuttingLineStartSoundFile);
     }
 
     // 开始连接
     export function connectLineStart() {
-      loadAndPlaySound(connectLineStartSoundFile);
+      loadAndPlaySound(Settings.connectLineStartSoundFile);
     }
 
     // 连接吸附到目标点
     export function connectFindTarget() {
-      loadAndPlaySound(connectFindTargetSoundFile);
+      loadAndPlaySound(Settings.connectFindTargetSoundFile);
     }
 
     // 自动保存执行特效
@@ -69,26 +29,26 @@ export namespace SoundService {
 
     // 切断特效声音
     export function cuttingLineRelease() {
-      loadAndPlaySound(cuttingLineReleaseSoundFile);
+      loadAndPlaySound(Settings.cuttingLineReleaseSoundFile);
     }
     // 连接成功
 
     // 对齐吸附音效
     export function alignAndAttach() {
-      loadAndPlaySound(alignAndAttachSoundFile);
+      loadAndPlaySound(Settings.alignAndAttachSoundFile);
     }
     // 鼠标进入按钮区域的声音
     export function mouseEnterButton() {
-      loadAndPlaySound(uiButtonEnterSoundFile);
+      loadAndPlaySound(Settings.uiButtonEnterSoundFile);
     }
     export function mouseClickButton() {
-      loadAndPlaySound(uiButtonClickSoundFile);
+      loadAndPlaySound(Settings.uiButtonClickSoundFile);
     }
     export function mouseClickSwitchButtonOn() {
-      loadAndPlaySound(uiSwitchButtonOnSoundFile);
+      loadAndPlaySound(Settings.uiSwitchButtonOnSoundFile);
     }
     export function mouseClickSwitchButtonOff() {
-      loadAndPlaySound(uiSwitchButtonOffSoundFile);
+      loadAndPlaySound(Settings.uiSwitchButtonOffSoundFile);
     }
   }
 

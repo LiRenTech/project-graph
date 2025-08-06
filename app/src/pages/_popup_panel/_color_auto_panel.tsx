@@ -1,7 +1,7 @@
+import { cn } from "@/utils/cn";
 import { Color } from "@graphif/data-structures";
 import { ToggleLeft, ToggleRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { cn } from "@/utils/cn";
 
 /**
  * 自动设置颜色的面板
@@ -29,19 +29,19 @@ export default function ColorAutoPanel() {
   }, []);
 
   const handleClickSwitchNodeFillColor = () => {
-    Settings.set("autoFillNodeColorEnable", !autoFillNodeColorEnable);
+    Settings.autoFillNodeColorEnable = !autoFillNodeColorEnable;
   };
   const handleClickSwitchPenStrokeColor = () => {
-    Settings.set("autoFillPenStrokeColorEnable", !autoFillPenStrokeColorEnable);
+    Settings.autoFillPenStrokeColorEnable = !autoFillPenStrokeColorEnable;
   };
 
   const changeAutoFillNodeColor = (color: Color) => {
     setAutoFillNodeColor(color);
-    Settings.set("autoFillNodeColor", color.toArray());
+    Settings.autoFillNodeColor = color.toArray();
   };
   const changeAutoFillPenStrokeColor = (color: Color) => {
     setAutoFillPenStrokeColor(color);
-    Settings.set("autoFillPenStrokeColor", color.toArray());
+    Settings.autoFillPenStrokeColor = color.toArray();
   };
 
   return (

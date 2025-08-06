@@ -254,11 +254,11 @@ export class InputElement {
           // 使用event.isComposing和自定义isComposing双重检查
           if (!(event.isComposing || isComposing)) {
             const enterKeyDetail = getEnterKey(event);
-            if (this.textNodeExitEditMode === enterKeyDetail) {
+            if (Settings.textNodeExitEditMode === enterKeyDetail) {
               // 用户想退出编辑
               exitEditMode();
               this.addSuccessEffect();
-            } else if (this.textNodeContentLineBreak === enterKeyDetail) {
+            } else if (Settings.textNodeContentLineBreak === enterKeyDetail) {
               // 用户想换行
               breakLine();
             } else {
@@ -286,16 +286,5 @@ export class InputElement {
     toast("您可能记错了退出或换行的控制设置");
   }
 
-  private textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";
-
-  private textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] = "ctrlEnter";
-
-  constructor(private readonly project: Project) {
-    Settings.watch("textNodeContentLineBreak", (value) => {
-      this.textNodeContentLineBreak = value;
-    });
-    Settings.watch("textNodeExitEditMode", (value) => {
-      this.textNodeExitEditMode = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 }

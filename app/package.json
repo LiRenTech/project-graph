@@ -26,6 +26,7 @@
     "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@msgpack/msgpack": "^3.1.2",
     "@octokit/rest": "^22.0.0",
+    "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-menu": "^2.1.15",
     "@radix-ui/react-menubar": "^1.1.15",

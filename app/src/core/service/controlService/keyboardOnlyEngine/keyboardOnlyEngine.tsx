@@ -11,21 +11,8 @@ import { toast } from "sonner";
  */
 @service("keyboardOnlyEngine")
 export class KeyboardOnlyEngine {
-  private textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
-  private textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
-  autoLayoutWhenTreeGenerate: Settings.Settings["autoLayoutWhenTreeGenerate"] = true;
-
   constructor(private readonly project: Project) {
     this.bindKeyEvents();
-    Settings.watch("textNodeStartEditMode", (value) => {
-      this.textNodeStartEditMode = value;
-    });
-    Settings.watch("textNodeSelectAllWhenStartEditByKeyboard", (value) => {
-      this.textNodeSelectAllWhenStartEditByKeyboard = value;
-    });
-    Settings.watch("autoLayoutWhenTreeGenerate", (value) => {
-      this.autoLayoutWhenTreeGenerate = value;
-    });
   }
 
   /**
@@ -48,7 +35,7 @@ export class KeyboardOnlyEngine {
       event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
       this.addSuccessEffect();
       // 编辑节点
-      this.project.controllerUtils.editTextNode(selectedNode, this.textNodeSelectAllWhenStartEditByKeyboard);
+      this.project.controllerUtils.editTextNode(selectedNode, Settings.textNodeSelectAllWhenStartEditByKeyboard);
     };
 
     window.addEventListener("keydown", (event) => {
@@ -57,7 +44,7 @@ export class KeyboardOnlyEngine {
 
       if (event.key === "Enter") {
         const enterKeyDetail = getEnterKey(event);
-        if (this.textNodeStartEditMode === enterKeyDetail) {
+        if (Settings.textNodeStartEditMode === enterKeyDetail) {
           // 这个还必须在down的位置上，因为在up上会导致无限触发
           const selectedNode = this.project.stageManager.getTextNodes().find((node) => node.isSelected);
           if (!selectedNode) return;
@@ -67,7 +54,7 @@ export class KeyboardOnlyEngine {
           this.addFailEffect();
         }
       } else if (event.key === " ") {
-        if (this.textNodeStartEditMode === "space") {
+        if (Settings.textNodeStartEditMode === "space") {
           const selectedNode = this.project.stageManager.getTextNodes().find((node) => node.isSelected);
           if (!selectedNode) return;
           startEditNode(event, selectedNode);

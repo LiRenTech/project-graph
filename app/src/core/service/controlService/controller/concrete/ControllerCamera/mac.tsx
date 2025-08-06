@@ -1,16 +1,12 @@
-import { Vector } from "@graphif/data-structures";
-import { isMac } from "@/utils/platform";
 import { Project } from "@/core/Project";
 import { MouseTipFeedbackEffect } from "@/core/service/feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "@/core/service/Settings";
+import { isMac } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
 
 export class ControllerCameraMac {
-  private macTrackpadScaleSensitivity = 0.5;
-  constructor(protected readonly project: Project) {
-    Settings.watch("macTrackpadScaleSensitivity", (value) => {
-      this.macTrackpadScaleSensitivity = value;
-    });
-  }
+  constructor(protected readonly project: Project) {}
+
   /**
    * 在mac系统下，判断是否是鼠标滚轮事件
    * @param event 事件对象
@@ -35,7 +31,7 @@ export class ControllerCameraMac {
       // M4 mackbook实测：
       // 鼠标滚动一格，会显示一格数字 4.63535543
       // 反而是触摸版，会显示 (1, 4), (0, 3) .... 很多小整数向量
-      if (Settings.sync.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
+      if (Settings.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
         if (Number.isInteger(distance)) {
           // 整数距离，是鼠标滚轮
           return true;
@@ -43,7 +39,7 @@ export class ControllerCameraMac {
           // 小数距离，是触摸板
           return false;
         }
-      } else if (Settings.sync.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
+      } else if (Settings.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
         if (Number.isInteger(distance)) {
           return false;
         }
@@ -111,7 +107,7 @@ export class ControllerCameraMac {
 
     // 构建幂函数 y = a ^ x
     // const power = 1.02; // 1.05 有点敏感，1.01 有点迟钝
-    const power = this.macTrackpadScaleSensitivity * 0.14 + 1.01;
+    const power = Settings.macTrackpadScaleSensitivity * 0.14 + 1.01;
     // y 是 camera 的currentScale
     // 通过y反解x
     const currnetCameraScale = this.project.camera.currentScale;
@@ -140,9 +136,7 @@ export class ControllerCameraMac {
     }
     const dx = event.deltaX / 400;
     const dy = event.deltaY / 400;
-    const diffLocation = new Vector(dx, dy).multiply(
-      (this.project.camera.moveAmplitude * 50) / this.project.camera.currentScale,
-    );
+    const diffLocation = new Vector(dx, dy).multiply((Settings.moveAmplitude * 50) / this.project.camera.currentScale);
     this.project.camera.location = this.project.camera.location.add(diffLocation);
     this.project.effects.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
   }

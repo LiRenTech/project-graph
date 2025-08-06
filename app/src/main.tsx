@@ -5,7 +5,6 @@ import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { RecentFileManager } from "@/core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "@/core/service/feedbackService/ColorManager";
-import { SoundService } from "@/core/service/feedbackService/SoundService";
 import { Settings } from "@/core/service/Settings";
 import { Tourials } from "@/core/service/Tourials";
 import { UserState } from "@/core/service/UserState";
@@ -51,7 +50,6 @@ const el = document.getElementById("root")!;
   const matches = !isWeb && isDesktop ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
-    Settings.init(),
     RecentFileManager.init(),
     StartFilesManager.init(),
     ColorManager.init(),
@@ -76,14 +74,14 @@ const el = document.getElementById("root")!;
 /** 加载同步初始化的模块 */
 async function loadSyncModules() {
   EdgeCollisionBoxGetter.init();
-  SoundService.init();
+  // SoundService.init();
   MouseLocation.init();
 }
 
 /** 加载语言文件 */
 async function loadLanguageFiles() {
   i18next.use(initReactI18next).init({
-    lng: await Settings.get("language"),
+    lng: Settings.language,
     // debug会影响性能，并且没什么用，所以关掉
     // debug: import.meta.env.DEV,
     debug: false,

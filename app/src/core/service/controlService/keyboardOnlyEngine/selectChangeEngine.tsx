@@ -1,8 +1,8 @@
+import { Project, service } from "@/core/Project";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
-import { Project, service } from "@/core/Project";
-import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
-import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
@@ -174,7 +174,7 @@ export class SelectChangeEngine {
     this.lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
     const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
 
-    if (this.project.camera.cameraFollowsSelectedNodeOnArrowKeys) {
+    if (Settings.cameraFollowsSelectedNodeOnArrowKeys) {
       this.project.camera.bombMove(newSelectNodeRect.center);
     }
     if (clearOldSelect) {

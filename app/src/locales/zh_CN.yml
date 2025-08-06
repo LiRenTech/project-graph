@@ -73,21 +73,43 @@ about:
 
 settings:
   title: 设置
-  tabs:
-    about: 关于
-    visual: 显示
-    physical: 物理
-    performance: 性能
-    effects: 特效
-    automation: 自动化
-    control: 控制
-    keybinds: 快捷键
-    ai: AI
-    github: GitHub
-    sounds: 声音
-    plugins: 插件
-    scripts: 脚本
-    themes: 主题
+  categories:
+    ai:
+      title: AI
+      api: API
+    automation:
+      title: 自动化
+      autoNamer: 自动命名
+      autoSave: 自动保存
+      autoBackup: 自动备份
+    control:
+      title: 控制
+      mouse: 鼠标
+      touchpad: 触摸板
+      cameraMove: 视野移动
+      cameraZoom: 视野缩放
+      rectangleSelect: 框选
+      textNode: 文本节点
+      edge: 连线
+      generateNode: 通过键盘生长节点
+      gamepad: 游戏手柄
+    visual:
+      title: 视觉
+      basic: 基础
+      background: 背景
+      node: 节点样式
+      edge: 连线样式
+      section: “框”的样式
+      entityDetails: 实体详情
+      debug: 调试
+      miniWindow: 迷你窗口
+      experimental: 实验性功能
+    performance:
+      title: 性能
+      memory: 内存
+      cpu: CPU
+      render: 渲染
+      experimental: 开发中的功能
   language:
     title: 语言
     options:
@@ -700,66 +722,6 @@ startFilePanel:
     clearList: 清空列表
     showAbsolutePath: 显示绝对路径
     showFileTime: 显示文件时间
-
-controlSettingsGroup:
-  mouse:
-    title: 鼠标设置
-  touchpad:
-    title: 触摸板设置
-  cameraMove:
-    title: 视野移动设置
-  cameraZoom:
-    title: 视野缩放设置
-  rectangleSelect:
-    title: 框选设置
-  textNode:
-    title: 文本节点设置
-  edge:
-    title: 连线设置
-  generateNode:
-    title: 通过键盘生长节点设置
-  gamepad:
-    title: 游戏手柄设置
-
-visualSettingsGroup:
-  basic:
-    title: 基础设置
-  background:
-    title: 背景设置
-  node:
-    title: 节点样式设置
-  edge:
-    title: 连线样式设置
-  section:
-    title: “框”的样式设置
-  entityDetails:
-    title: 实体详情设置
-  help:
-    title: 遇到问题时相关的设置
-  miniWindow:
-    title: 迷你窗口设置
-  testingFunctions:
-    title: 实验性功能
-    description: |
-      如果您不了解下面的设置，请不要修改它们。否则您会感觉出现灵异事件
-
-performanceSettingsGroup:
-  memory:
-    title: 内存相关性能设置
-    description: |
-      以下设置项和内存有关，建议根据您的计算机配置进行调整
-  cpu:
-    title: CPU相关性能设置
-    description: |
-      以下设置项和CPU有关，建议根据您的计算机配置进行调整
-  render:
-    title: 渲染相关性能设置
-    description: |
-      以下设置项和渲染有关，建议根据您的计算机配置进行调整
-  dev:
-    title: 还在开发中的功能
-    description: |
-      以下设置项还在开发，不建议修改
 
 effects:
   CircleChangeRadiusEffect:

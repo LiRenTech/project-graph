@@ -1,11 +1,11 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { isMac } from "@/utils/platform";
 import { Project, service } from "@/core/Project";
+import { Settings } from "@/core/service/Settings";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
 import { Section } from "@/core/stage/stageObject/entity/Section";
-import { Settings } from "@/core/service/Settings";
+import { isMac } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 框选引擎
@@ -222,9 +222,9 @@ export class RectangleSelect {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Settings.sync.rectangleSelectWhenRight;
+      return Settings.rectangleSelectWhenRight;
     } else {
-      return Settings.sync.rectangleSelectWhenLeft;
+      return Settings.rectangleSelectWhenLeft;
     }
   }
 

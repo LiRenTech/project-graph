@@ -1,9 +1,10 @@
-import { Vector } from "@graphif/data-structures";
-import { v4 } from "uuid";
-import { Direction } from "@/types/directions";
 import { Project, service } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Direction } from "@/types/directions";
+import { Vector } from "@graphif/data-structures";
+import { v4 } from "uuid";
+import { Settings } from "../../Settings";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
@@ -71,7 +72,7 @@ export class KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (this.project.graphMethods.isTree(rootNodeParent)) {
-        if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+        if (Settings.autoLayoutWhenTreeGenerate) {
           this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态
@@ -145,7 +146,7 @@ export class KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (this.project.graphMethods.isTree(rootNodeParent)) {
-        if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+        if (Settings.autoLayoutWhenTreeGenerate) {
           this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态

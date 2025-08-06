@@ -40,10 +40,7 @@ export class ControllerNodeEditClass extends ControllerClass {
     }
 
     if (clickedEntity instanceof TextNode) {
-      this.project.controllerUtils.editTextNode(
-        clickedEntity,
-        Settings.sync.textNodeSelectAllWhenStartEditByMouseClick,
-      );
+      this.project.controllerUtils.editTextNode(clickedEntity, Settings.textNodeSelectAllWhenStartEditByMouseClick);
     } else if (clickedEntity instanceof UrlNode) {
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {

@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 export class ControllerLayerMovingClass extends ControllerClass {
   public get isEnabled(): boolean {
-    if (Settings.sync.mouseLeftMode === "draw") {
+    if (Settings.mouseLeftMode === "draw") {
       return false;
     }
     return true;

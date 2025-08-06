@@ -1,6 +1,6 @@
-import { Color } from "@graphif/data-structures";
 import { Settings } from "@/core/service/Settings";
 import { Themes } from "@/core/service/Themes";
+import { Color } from "@graphif/data-structures";
 
 export interface EffectColors {
   /** 闪光线，切割线等白光刃的白色 */
@@ -50,7 +50,7 @@ export class StageStyle {
   };
 
   // 其他风格的静态工厂方法可以按照类似的方式添加
-  static styleFromTheme(theme: Settings.Settings["theme"]): StageStyle {
+  static styleFromTheme(theme: Settings["theme"]): StageStyle {
     const themeObj = Themes.getThemeById(theme);
     if (!themeObj) {
       // 未知的主题

@@ -82,7 +82,6 @@
   }
 }
 
-
 @utility hide-scrollbar {
   /* 针对 Firefox 的隐藏 */
   scrollbar-width: none;
@@ -92,5 +91,32 @@
   /* 针对 Webkit 浏览器 (Chrome, Safari) 的隐藏 */
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@theme {
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+      opacity: 1;
+    }
+  }
+
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
   }
 }

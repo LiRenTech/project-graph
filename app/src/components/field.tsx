@@ -1,44 +1,26 @@
-import FileChooser from "@/components/file-chooser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { Settings } from "@/core/service/Settings";
+import { Settings, settingsSchema } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
+import { settingsIcons } from "@/pages/_sub_window/SettingsWindow/_icons";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export function SettingField({
-  settingKey,
-  type = "text",
-  min = 0,
-  max = 100,
-  step = 1,
-  placeholder = "",
-  icon = <></>,
-  kind = "file",
-  extra = <></>,
-}: {
-  settingKey: keyof Settings.Settings;
-  type?: "text" | "password" | "number" | "slider" | "switch" | "select" | "file";
-  min?: number;
-  max?: number;
-  step?: number;
-  placeholder?: string;
-  icon?: React.ReactNode;
-  kind?: "file" | "directory";
-  extra?: React.ReactNode;
-}) {
-  const [value, setValue] = React.useState<any>(Settings.sync[settingKey]);
+export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof Settings; extra?: React.ReactNode }) {
+  const [value, setValue] = React.useState<any>(Settings[settingKey]);
   const { t, i18n } = useTranslation("settings");
+  const schema = settingsSchema.shape[settingKey];
 
   React.useEffect(() => {
-    if (value !== Settings.sync[settingKey]) {
-      Settings.set(settingKey, value);
+    if (value !== Settings[settingKey]) {
+      // @ts-expect-error 不知道为什么Settings[settingKey]可能是never
+      Settings[settingKey] = value;
       postTelemetryEvent();
     }
 
@@ -54,56 +36,60 @@ export function SettingField({
     });
   }, 1000);
 
+  // @ts-expect-error fuck ts
+  const Icon = settingsIcons[settingKey] ?? Fragment;
+
   return (
     <Field
       title={t(`${settingKey}.title`)}
       description={t(`${settingKey}.description`, { defaultValue: "" })}
-      icon={icon}
+      icon={<Icon />}
     >
       <RotateCw
         className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 hover:rotate-180 group-hover/field:opacity-100"
-        onClick={() => setValue(Settings.defaultSettings[settingKey])}
+        onClick={() => setValue(schema._def.defaultValue)}
       />
       {extra}
-      {type === "text" && <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} />}
-      {type === "password" && (
-        <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} type="password" />
-      )}
-      {type === "number" && <Input value={value} onChange={(e) => setValue(e.target.valueAsNumber)} type="number" />}
-      {type === "slider" && (
+      {schema._def.innerType._def.typeName === "ZodString" ? (
+        <Input value={value} onChange={(e) => setValue(e.target.value)} className="w-64" />
+      ) : schema._def.innerType._def.typeName === "ZodNumber" &&
+        schema._def.innerType._def.checks.find((it) => it.kind === "min") &&
+        schema._def.innerType._def.checks.find((it) => it.kind === "max") ? (
         <>
           <Slider
             value={[value]}
             onValueChange={([v]) => setValue(v)}
-            min={min}
-            max={max}
-            step={step}
+            min={schema._def.innerType._def.checks.find((it) => it.kind === "min")?.value ?? 0}
+            max={schema._def.innerType._def.checks.find((it) => it.kind === "max")?.value ?? 1}
+            step={
+              schema._def.innerType._def.checks.find((it) => it.kind === "int")
+                ? 1
+                : (schema._def.innerType._def.checks.find((it) => it.kind === "multipleOf")?.value ?? 0.01)
+            }
             className="w-48"
           />
           <Input value={value} onChange={setValue} type="number" className="w-24" />
         </>
-      )}
-      {type === "switch" && <Switch checked={value} onCheckedChange={setValue} />}
-      {type === "select" && (
+      ) : schema._def.innerType._def.typeName === "ZodNumber" ? (
+        <Input value={value} onChange={(e) => setValue(e.target.valueAsNumber)} type="number" className="w-32" />
+      ) : schema._def.innerType._def.typeName === "ZodBoolean" ? (
+        <Switch checked={value} onCheckedChange={setValue} />
+      ) : schema._def.innerType._def.typeName === "ZodUnion" ? (
         <Select value={value} onValueChange={setValue}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {Object.entries(
-              t(`${settingKey}.options`, {
-                returnObjects: true,
-                defaultValue: { error: "Error: options not found" },
-              }),
-            ).map(([k, v]) => (
-              <SelectItem key={k} value={k}>
-                {v}
+            {schema._def.innerType._def.options.map(({ _def: { value: it } }) => (
+              <SelectItem key={it} value={it}>
+                {t(`${settingKey}.options.${it}`)}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
+      ) : (
+        <>unknown type</>
       )}
-      {type === "file" && <FileChooser kind={kind} value={value} onChange={setValue} />}
     </Field>
   );
 }

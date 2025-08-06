@@ -17,7 +17,7 @@ import {
   ToggleRight,
 } from "lucide-react";
 
-const SOUND_CONFIGS: { fileName: string; settingKey: keyof Settings.Settings; icon: React.ReactNode }[] = [
+const SOUND_CONFIGS: { fileName: string; settingKey: keyof Settings; icon: React.ReactNode }[] = [
   { fileName: "cuttingLineStart.mp3", settingKey: "cuttingLineStartSoundFile", icon: <Scissors /> },
   { fileName: "cuttingLineRelease.mp3", settingKey: "cuttingLineReleaseSoundFile", icon: <ScissorsLineDashed /> },
   { fileName: "connectLineStart.mp3", settingKey: "connectLineStartSoundFile", icon: <ArrowUpFromDot /> },

@@ -1,16 +1,16 @@
-import { ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line } from "@graphif/shapes";
-import { CursorNameEnum } from "@/types/cursors";
-import { Direction } from "@/types/directions";
-import { isMac } from "@/utils/platform";
 import { Project } from "@/core/Project";
-import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
-import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "@/core/service/feedbackService/SoundService";
 import { Settings } from "@/core/service/Settings";
-import { MouseLocation } from "@/core/service/controlService/MouseLocation";
-import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { CursorNameEnum } from "@/types/cursors";
+import { Direction } from "@/types/directions";
+import { isMac } from "@/utils/platform";
+import { ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 
 /**
  * 连线控制器
@@ -134,10 +134,10 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!(event.button == 2 || event.button == 0)) {
       return;
     }
-    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (event.button === 0 && Settings.mouseLeftMode === "connectAndCut") {
       // 把鼠标左键切换为连线模式的情况
       this.onMouseDown(event);
-    } else if (event.button === 0 && Settings.sync.mouseLeftMode !== "connectAndCut") {
+    } else if (event.button === 0 && Settings.mouseLeftMode !== "connectAndCut") {
       // 右键拖拽连线的时候点击左键
       const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
       this.createConnectPointWhenConnect(pressWorldLocation);
@@ -230,7 +230,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!this._isUsing) {
       return;
     }
-    if (this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (this.project.controller.isMouseDown[0] && Settings.mouseLeftMode === "connectAndCut") {
       this.mouseMove(event);
     }
     if (this.project.controller.isMouseDown[2]) {
@@ -276,7 +276,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!this.isConnecting()) {
       return;
     }
-    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (event.button === 0 && Settings.mouseLeftMode === "connectAndCut") {
       this.mouseUp(event);
     } else if (event.button === 2) {
       this.mouseUp(event);

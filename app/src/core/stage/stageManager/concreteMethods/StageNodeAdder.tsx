@@ -1,8 +1,3 @@
-import { Color, MonoStack, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { v4 as uuidv4 } from "uuid";
-import { Direction } from "@/types/directions";
-import { MarkdownNode, parseMarkdownToJSON } from "@/utils/markdownParse";
 import { Project, service } from "@/core/Project";
 import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Settings } from "@/core/service/Settings";
@@ -11,6 +6,11 @@ import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { Direction } from "@/types/directions";
+import { MarkdownNode, parseMarkdownToJSON } from "@/utils/markdownParse";
+import { Color, MonoStack, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * 包含增加节点的方法
@@ -135,15 +135,15 @@ export class NodeAdder {
   }
 
   private async getAutoName(): Promise<string> {
-    let template = await Settings.get("autoNamerTemplate");
+    let template = Settings.autoNamerTemplate;
     template = this.project.stageUtils.replaceAutoNameTemplate(template, this.project.stageManager.getTextNodes()[0]);
     return template;
   }
 
   private async getAutoColor(): Promise<Color> {
-    const isEnable = await Settings.get("autoFillNodeColorEnable");
+    const isEnable = Settings.autoFillNodeColorEnable;
     if (isEnable) {
-      const colorData = await Settings.get("autoFillNodeColor");
+      const colorData = Settings.autoFillNodeColor;
       return new Color(...colorData);
     } else {
       return Color.Transparent;

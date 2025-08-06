@@ -1,10 +1,10 @@
-import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures";
-import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
-import { getTextSize } from "@/utils/font";
 import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import { Settings } from "@/core/service/Settings";
 import { Section } from "@/core/stage/stageObject/entity/Section";
-import { Renderer } from "@/core/render/canvas2d/renderer";
+import { getTextSize } from "@/utils/font";
+import { Color, colorInvert, mixColors, Vector } from "@graphif/data-structures";
+import { CubicBezierCurve, Rectangle } from "@graphif/shapes";
 
 @service("sectionRenderer")
 export class SectionRenderer {
@@ -52,7 +52,7 @@ export class SectionRenderer {
     let borderWidth = 2 * this.project.camera.currentScale;
     if (this.project.entityRenderer.sectionBitTitleRenderType !== "none") {
       borderWidth =
-        this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale
+        this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale
           ? 2 * this.project.camera.currentScale
           : 2;
     }
@@ -69,7 +69,7 @@ export class SectionRenderer {
     );
 
     if (
-      this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale &&
+      this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale &&
       !section.isEditingTitle
     ) {
       // 正常显示标题
@@ -208,7 +208,7 @@ export class SectionRenderer {
       );
     }
     // debug: 绿色虚线 观察父子关系
-    if (Settings.sync.showDebug) {
+    if (Settings.showDebug) {
       for (const child of section.children) {
         const start = section.rectangle.topCenter;
         const end = child.collisionBox.getRectangle().leftTop;

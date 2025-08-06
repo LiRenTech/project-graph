@@ -15,13 +15,13 @@ export default function GenerateNodePanel() {
   const [indention, setIndention] = useState(4);
 
   useEffect(() => {
-    Settings.get("generateTextNodeByStringTabCount").then((indent) => {
+    Settings.generateTextNodeByStringTabCount.then((indent) => {
       setIndention(indent);
     });
   }, []);
 
   function onInputChange(value: number) {
-    Settings.set("generateTextNodeByStringTabCount", value);
+    Settings.generateTextNodeByStringTabCount = value;
     setIndention(value);
   }
 

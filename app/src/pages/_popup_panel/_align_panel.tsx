@@ -287,7 +287,7 @@ export default function AlignNodePanel() {
           description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
           icon={<Magnet className={cn(!isEnableDragAutoAlign && "text-panel-details-text", "transition-transform")} />}
           handleFunction={async () => {
-            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
+            Settings.enableDragAutoAlign = !Settings.enableDragAutoAlign;
           }}
         />
         <ToolbarItem
@@ -298,7 +298,7 @@ export default function AlignNodePanel() {
             />
           }
           handleFunction={async () => {
-            Settings.set("enableDragAlignToGrid", !(await Settings.get("enableDragAlignToGrid")));
+            Settings.enableDragAlignToGrid = !Settings.enableDragAlignToGrid;
           }}
         />
       </div>

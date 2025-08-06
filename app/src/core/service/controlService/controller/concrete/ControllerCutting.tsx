@@ -1,8 +1,12 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line } from "@graphif/shapes";
-import { CursorNameEnum } from "@/types/cursors";
-import { isMac } from "@/utils/platform";
 import { Project } from "@/core/Project";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { MouseLocation } from "@/core/service/controlService/MouseLocation";
+import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { PenStrokeDeletedEffect } from "@/core/service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
+import { RectangleSplitTwoPartEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
+import { SoundService } from "@/core/service/feedbackService/SoundService";
+import { Settings } from "@/core/service/Settings";
 import { Association } from "@/core/stage/stageObject/abstract/Association";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { Edge } from "@/core/stage/stageObject/association/Edge";
@@ -11,14 +15,10 @@ import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { PenStrokeDeletedEffect } from "@/core/service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
-import { RectangleSplitTwoPartEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
-import { SoundService } from "@/core/service/feedbackService/SoundService";
-import { Settings } from "@/core/service/Settings";
-import { MouseLocation } from "@/core/service/controlService/MouseLocation";
-import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line } from "@graphif/shapes";
 
 export class ControllerCuttingClass extends ControllerClass {
   private _controlKeyEventRegistered = false;
@@ -102,17 +102,17 @@ export class ControllerCuttingClass extends ControllerClass {
     }
 
     // 左键按下的
-    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
+    if (event.button === 0 && Settings.mouseLeftMode === "connectAndCut") {
       this.mouseDownEvent(event);
       return;
     }
     // 右键按下的
-    if (event.button === 2 && Settings.sync.mouseRightDragBackground === "cut") {
+    if (event.button === 2 && Settings.mouseRightDragBackground === "cut") {
       this.mouseDownEvent(event);
       return;
     }
     // 中键按下的
-    if (event.button === 1 && Settings.sync.mouseRightDragBackground === "moveCamera") {
+    if (event.button === 1 && Settings.mouseRightDragBackground === "moveCamera") {
       this.mouseDownEvent(event);
       return;
     }

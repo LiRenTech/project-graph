@@ -1,7 +1,6 @@
-import { Color, colorInvert, Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
 import { Random } from "@/core/algorithm/random";
 import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
@@ -9,31 +8,23 @@ import {
 } from "@/core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { Settings } from "@/core/service/Settings";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import { Renderer } from "@/core/render/canvas2d/renderer";
+import { Color, colorInvert, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 @service("textNodeRenderer")
 export class TextNodeRenderer {
-  private showTextNodeBorder = true;
-
   // 初始化时监听设置变化
-  constructor(private readonly project: Project) {
-    Settings.watch("showTextNodeBorder", (value) => {
-      this.showTextNodeBorder = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 
   renderTextNode(node: TextNode) {
     // 节点身体矩形
     let fillColor = node.color;
-    if (
-      this.project.camera.currentScale < Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale &&
-      fillColor.a === 0
-    ) {
+    if (this.project.camera.currentScale < Settings.ignoreTextNodeTextRenderLessThanCameraScale && fillColor.a === 0) {
       const color = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
       color.a = 0.2;
       fillColor = color;
     }
-    const borderColor = this.showTextNodeBorder
+    const borderColor = Settings.showTextNodeBorder
       ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : Color.Transparent;
     this.project.shapeRenderer.renderRect(
@@ -48,7 +39,7 @@ export class TextNodeRenderer {
     );
 
     // 视野缩放过小就不渲染内部文字
-    if (this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale) {
+    if (this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale) {
       this.renderTextNodeTextLayer(node);
     }
 
@@ -112,7 +103,7 @@ export class TextNodeRenderer {
       //   }
       // }
     }
-    if (this.project.camera.currentScale > Settings.sync.ignoreTextNodeTextRenderLessThanCameraScale) {
+    if (this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale) {
       this.project.entityRenderer.renderEntityDetails(node);
     }
   }

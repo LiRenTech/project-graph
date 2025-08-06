@@ -135,7 +135,7 @@ export class Renderer {
 
   // 是否超出了视野之外
   isOverView(viewRectangle: Rectangle, entity: StageObject): boolean {
-    if (!this.project.camera.limitCameraInCycleSpace) {
+    if (!Settings.limitCameraInCycleSpace) {
       // 如果没有开循环空间，就要看看是否超出了视野
       return !viewRectangle.isCollideWith(entity.collisionBox.getRectangle());
     }
@@ -145,7 +145,7 @@ export class Renderer {
 
   // 渲染中心准星
   private renderCenterPointer() {
-    if (!Settings.sync.isRenderCenterPointer) {
+    if (!Settings.isRenderCenterPointer) {
       return;
     }
     const viewCenterLocation = this.transformWorld2View(this.project.camera.location);
@@ -171,7 +171,7 @@ export class Renderer {
 
   private renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
-    if (Settings.sync.protectingPrivacy) {
+    if (Settings.protectingPrivacy) {
       this.project.shapeRenderer.renderRect(
         this.transformWorld2View(viewRectangle),
         Color.Transparent,
@@ -300,7 +300,7 @@ export class Renderer {
           this.project.edgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
-      if (Settings.sync.showDebug) {
+      if (Settings.showDebug) {
         // 调试模式下显示右键连线轨迹
         const points = this.project.controller.nodeConnection
           .getMouseLocationsPoints()
@@ -644,16 +644,16 @@ export class Renderer {
     } else {
       this.project.canvas.ctx.clearRect(0, 0, this.w, this.h);
     }
-    if (Settings.sync.showBackgroundDots) {
+    if (Settings.showBackgroundDots) {
       this.project.backgroundRenderer.renderDotBackground(rect);
     }
-    if (Settings.sync.showBackgroundHorizontalLines) {
+    if (Settings.showBackgroundHorizontalLines) {
       this.project.backgroundRenderer.renderHorizonBackground(rect);
     }
-    if (Settings.sync.showBackgroundVerticalLines) {
+    if (Settings.showBackgroundVerticalLines) {
       this.project.backgroundRenderer.renderVerticalBackground(rect);
     }
-    if (Settings.sync.showBackgroundCartesian) {
+    if (Settings.showBackgroundCartesian) {
       this.project.backgroundRenderer.renderCartesianBackground(rect);
     }
   }
@@ -679,7 +679,7 @@ export class Renderer {
 
   /** 画debug信息 */
   private renderDebugDetails() {
-    if (!Settings.sync.showDebug || isFrame) {
+    if (!Settings.showDebug || isFrame) {
       return;
     }
 
@@ -708,7 +708,7 @@ export class Renderer {
       `fps: ${this.fps}`,
       `delta: ${this.deltaTime.toFixed(2)}`,
       `uri: ${this.project.uri}`,
-      `isEnableEntityCollision: ${this.project.stageManager.isEnableEntityCollision}`,
+      `isEnableEntityCollision: ${Settings.isEnableEntityCollision}`,
       ...this.project.historyManager.deltas.map((patch, index) => `history#${index}: ${JSON.stringify(patch)}`),
     ];
     for (const [k, v] of Object.entries(this.timings)) {
@@ -749,7 +749,7 @@ export class Renderer {
       x += textSize.x + margin;
     }
     if (
-      !this.project.camera.allowMoveCameraByWSAD &&
+      !Settings.allowMoveCameraByWSAD &&
       (this.project.controller.pressingKeySet.has("w") ||
         this.project.controller.pressingKeySet.has("s") ||
         this.project.controller.pressingKeySet.has("a") ||

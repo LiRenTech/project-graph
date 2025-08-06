@@ -1,7 +1,7 @@
-import { getOriginalNameOf } from "virtual:original-class-name";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
+import { getOriginalNameOf } from "virtual:original-class-name";
 
 /**
  * 特效机器
@@ -11,18 +11,12 @@ import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject
  */
 @service("effects")
 export class Effects {
-  private effectsPerferences: Record<string, boolean> = {};
-
-  constructor(private readonly project: Project) {
-    Settings.watch("effectsPerferences", (value) => {
-      this.effectsPerferences = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 
   private effects: Effect[] = [];
 
   public addEffect(effect: Effect) {
-    if (!(this.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true)) {
+    if (!(Settings.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true)) {
       return;
     }
     this.effects.push(effect);
@@ -34,7 +28,7 @@ export class Effects {
 
   public addEffects(effects: Effect[]) {
     this.effects.push(
-      ...effects.filter((effect) => this.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true),
+      ...effects.filter((effect) => Settings.effectsPerferences[getOriginalNameOf(effect.constructor)] ?? true),
     );
   }
 

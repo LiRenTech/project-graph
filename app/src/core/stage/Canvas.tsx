@@ -25,12 +25,12 @@ export class Canvas {
       this.project.controller.pressingKeySet.clear();
     });
     this.ctx = element.getContext("2d", {
-      alpha: Settings.sync.windowBackgroundAlpha !== 1,
+      alpha: Settings.windowBackgroundAlpha !== 1,
     })!;
-    if (Settings.sync.antialiasing === "disabled") {
+    if (Settings.antialiasing === "disabled") {
       this.ctx.imageSmoothingEnabled = false;
     } else {
-      this.ctx.imageSmoothingQuality = Settings.sync.antialiasing;
+      this.ctx.imageSmoothingQuality = Settings.antialiasing;
     }
   }
 

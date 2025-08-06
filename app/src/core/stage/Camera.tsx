@@ -22,14 +22,6 @@ import { Telemetry } from "../service/Telemetry";
 @service("camera")
 export class Camera {
   /**
-   * 每个方向上的动力矢量大小
-   */
-  moveAmplitude = 2;
-  /**
-   * 空气摩擦力系数
-   */
-  frictionCoefficient = 0.1;
-  /**
    * 空气摩擦力速度指数
    * 指数=2，表示 f = -k * v^2
    * 指数=1，表示 f = -k * v
@@ -66,34 +58,12 @@ export class Camera {
   currentScale: number = 1;
   /** 目标镜头缩放比例 */
   targetScale: number = 1;
-  /**
-   * 逐渐逼近的速度倍率。
-   * 1表示瞬间就到达目标缩放比例，
-   * 0.5表示不断的以一半逼近目标
-   */
-  scaleExponent: number = 0.11;
 
   /**
    * 震动特效导致的位置偏移
    * 也就是当有震动特效的时候，不是舞台在震动，而是摄像机在震动
    */
   readonly shakeLocation: Vector = Vector.getZero();
-
-  allowMoveCameraByWSAD = false;
-  cameraKeyboardMoveReverse = false;
-  /** 是否缩放时根据鼠标位置缩放 */
-  scaleCameraByMouseLocation = true;
-  limitCameraInCycleSpace = false;
-  cameraCycleSpaceSizeX = 1000;
-  cameraCycleSpaceSizeY = 1000;
-  mouseWheelMode: Settings.Settings["mouseWheelMode"] = "zoom";
-  mouseWheelWithShiftMode: Settings.Settings["mouseWheelWithShiftMode"] = "zoom";
-  mouseWheelWithCtrlMode: Settings.Settings["mouseWheelWithCtrlMode"] = "zoom";
-  mouseWheelWithAltMode: Settings.Settings["mouseWheelWithAltMode"] = "zoom";
-  mouseSideWheelMode: Settings.Settings["mouseSideWheelMode"] = "moveX";
-  private cameraKeyboardScaleRate = 0.2;
-  private cameraResetViewPaddingRate = 1.5;
-  cameraFollowsSelectedNodeOnArrowKeys = false;
 
   // pageup / pagedown 爆炸式移动
 
@@ -206,13 +176,13 @@ export class Camera {
       friction = this.speed
         .normalize()
         .multiply(-1)
-        .multiply(this.frictionCoefficient * speedSize ** this.frictionExponent);
+        .multiply(Settings.moveFriction * speedSize ** this.frictionExponent);
     }
 
     // 计算动力
     const power = this.accelerateCommander
       /** 摄像机 >1放大 <1缩小，为了让放大的时候移动速度慢，所以取倒数 */
-      .multiply(this.moveAmplitude * (1 / this.currentScale));
+      .multiply(Settings.moveAmplitude * (1 / this.currentScale));
 
     // if (isFastMovingMode) {
     //   power = power.multiply(10);
@@ -228,13 +198,13 @@ export class Camera {
     /** 鼠标交互位置的view坐标系相对于画面左上角的坐标 */
     const diffViewVector = this.project.renderer.transformWorld2View(this.targetLocationByScale);
     this.dealCameraScaleInTick();
-    if (this.scaleCameraByMouseLocation) {
+    if (Settings.scaleCameraByMouseLocation) {
       if (this.tickNumber > this.allowScaleFollowMouseLocationTicks) {
         this.setLocationByOtherLocation(this.targetLocationByScale, diffViewVector);
       }
     }
     // 循环空间
-    if (this.limitCameraInCycleSpace) {
+    if (Settings.limitCameraInCycleSpace) {
       this.dealCycleSpace();
     }
     this.tickNumber++;
@@ -252,12 +222,12 @@ export class Camera {
   }
 
   zoomInByKeyboard() {
-    this.targetScale *= 1 + this.cameraKeyboardScaleRate;
+    this.targetScale *= 1 + Settings.cameraKeyboardScaleRate;
     this.allowScaleFollowMouseLocationTicks = this.tickNumber + 5 * 60;
   }
 
   zoomOutByKeyboard() {
-    this.targetScale *= 1 - this.cameraKeyboardScaleRate;
+    this.targetScale *= 1 - Settings.cameraKeyboardScaleRate;
     this.allowScaleFollowMouseLocationTicks = this.tickNumber + 5 * 60;
   }
 
@@ -265,8 +235,8 @@ export class Camera {
    * 处理循环空间
    */
   private dealCycleSpace() {
-    this.location.x = NumberFunctions.mod(this.location.x, this.cameraCycleSpaceSizeX);
-    this.location.y = NumberFunctions.mod(this.location.y, this.cameraCycleSpaceSizeY);
+    this.location.x = NumberFunctions.mod(this.location.x, Settings.cameraCycleSpaceSizeX);
+    this.location.y = NumberFunctions.mod(this.location.y, Settings.cameraCycleSpaceSizeY);
     // 限制缩放不能超过循环空间大小
   }
 
@@ -301,12 +271,12 @@ export class Camera {
 
     if (this.currentScale < this.targetScale) {
       newCurrentScale = Math.min(
-        this.currentScale + (this.targetScale - this.currentScale) * this.scaleExponent,
+        this.currentScale + (this.targetScale - this.currentScale) * Settings.scaleExponent,
         this.targetScale,
       );
     } else if (this.currentScale > this.targetScale) {
       newCurrentScale = Math.max(
-        this.currentScale - (this.currentScale - this.targetScale) * this.scaleExponent,
+        this.currentScale - (this.currentScale - this.targetScale) * Settings.scaleExponent,
         this.targetScale,
       );
     }
@@ -319,59 +289,7 @@ export class Camera {
   }
 
   // 确保这个函数在软件打开的那一次调用
-  constructor(private readonly project: Project) {
-    Settings.watch("scaleExponent", (value) => {
-      this.scaleExponent = value;
-    });
-    Settings.watch("moveAmplitude", (value) => {
-      this.moveAmplitude = value;
-    });
-    Settings.watch("moveFriction", (value) => {
-      this.frictionCoefficient = value;
-    });
-    Settings.watch("allowMoveCameraByWSAD", (value) => {
-      this.allowMoveCameraByWSAD = value;
-    });
-    Settings.watch("scaleCameraByMouseLocation", (value) => {
-      this.scaleCameraByMouseLocation = value;
-    });
-    Settings.watch("cameraKeyboardMoveReverse", (value) => {
-      this.cameraKeyboardMoveReverse = value;
-    });
-    Settings.watch("limitCameraInCycleSpace", (value) => {
-      this.limitCameraInCycleSpace = value;
-    });
-    Settings.watch("cameraCycleSpaceSizeX", (value) => {
-      this.cameraCycleSpaceSizeX = value;
-    });
-    Settings.watch("cameraCycleSpaceSizeY", (value) => {
-      this.cameraCycleSpaceSizeY = value;
-    });
-    Settings.watch("cameraKeyboardScaleRate", (value) => {
-      this.cameraKeyboardScaleRate = value;
-    });
-    Settings.watch("mouseSideWheelMode", (value) => {
-      this.mouseSideWheelMode = value;
-    });
-    Settings.watch("mouseWheelMode", (value) => {
-      this.mouseWheelMode = value;
-    });
-    Settings.watch("mouseWheelWithShiftMode", (value) => {
-      this.mouseWheelWithShiftMode = value;
-    });
-    Settings.watch("mouseWheelWithCtrlMode", (value) => {
-      this.mouseWheelWithCtrlMode = value;
-    });
-    Settings.watch("mouseWheelWithAltMode", (value) => {
-      this.mouseWheelWithAltMode = value;
-    });
-    Settings.watch("cameraResetViewPaddingRate", (value) => {
-      this.cameraResetViewPaddingRate = value;
-    });
-    Settings.watch("cameraFollowsSelectedNodeOnArrowKeys", (value) => {
-      this.cameraFollowsSelectedNodeOnArrowKeys = value;
-    });
-  }
+  constructor(private readonly project: Project) {}
 
   /**
    * 重置摄像机的缩放，让其画面刚好能容下舞台上所有内容的外接矩形
@@ -382,7 +300,7 @@ export class Camera {
     this.targetLocationByScale = this.location.clone();
     // this.currentScale = 0.01;
     const allEntitiesSize = this.project.stageManager.getSize();
-    allEntitiesSize.multiply(this.cameraResetViewPaddingRate);
+    allEntitiesSize.multiply(Settings.cameraResetViewPaddingRate);
     this.currentScale = Math.min(
       this.project.renderer.h / allEntitiesSize.y,
       this.project.renderer.w / allEntitiesSize.x,
@@ -405,11 +323,11 @@ export class Camera {
     this.location = center;
     this.targetLocationByScale = center.clone();
 
-    const selectedRectangleSize = viewRectangle.size.multiply(this.cameraResetViewPaddingRate);
+    const selectedRectangleSize = viewRectangle.size.multiply(Settings.cameraResetViewPaddingRate);
 
     // 再取max 1.5 是为了防止缩放过大
     this.currentScale = Math.min(
-      this.cameraResetViewPaddingRate,
+      Settings.cameraResetViewPaddingRate,
       Math.min(this.project.renderer.h / selectedRectangleSize.y, this.project.renderer.w / selectedRectangleSize.x),
     );
     this.targetScale = this.currentScale;

@@ -1,8 +1,8 @@
-import { Vector } from "@graphif/data-structures";
 import { Project } from "@/core/Project";
-import { Section } from "@/core/stage/stageObject/entity/Section";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { Section } from "@/core/stage/stageObject/entity/Section";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 创建节点的控制器
@@ -17,7 +17,7 @@ export class ControllerEntityCreateClass extends ControllerClass {
     if (!(event.button === 0)) {
       return;
     }
-    if (Settings.sync.mouseLeftMode === "draw") {
+    if (Settings.mouseLeftMode === "draw") {
       // 绘制模式不能使用创建节点
       return;
     }

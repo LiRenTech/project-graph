@@ -1,7 +1,7 @@
-import { Circle, Line, SymmetryCurve } from "@graphif/shapes";
 import { Settings } from "@/core/service/Settings";
-import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
+import { Circle, Line, SymmetryCurve } from "@graphif/shapes";
 
 export namespace EdgeCollisionBoxGetter {
   /**
@@ -11,9 +11,9 @@ export namespace EdgeCollisionBoxGetter {
     Settings.watch("lineStyle", updateState);
   }
 
-  let currentStyle: Settings.Settings["lineStyle"];
+  let currentStyle: Settings["lineStyle"];
 
-  function updateState(style: Settings.Settings["lineStyle"]) {
+  function updateState(style: Settings["lineStyle"]) {
     currentStyle = style;
   }
 

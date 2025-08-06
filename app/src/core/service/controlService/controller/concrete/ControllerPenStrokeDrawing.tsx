@@ -1,15 +1,15 @@
-import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
-import { v4 } from "uuid";
-import { CursorNameEnum } from "@/types/cursors";
-import { isMac } from "@/utils/platform";
 import { Project } from "@/core/Project";
-import { PenStroke, PenStrokeSegment } from "@/core/stage/stageObject/entity/PenStroke";
-import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 import { CircleChangeRadiusEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { EntityCreateFlashEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { Settings } from "@/core/service/Settings";
-import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { PenStroke, PenStrokeSegment } from "@/core/stage/stageObject/entity/PenStroke";
+import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { Color, mixColors, ProgressNumber, Vector } from "@graphif/data-structures";
+import { v4 } from "uuid";
 
 /**
  * 涂鸦功能
@@ -20,7 +20,6 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   /** 在移动的过程中，记录这一笔画的笔迹 */
   public currentStroke: PenStrokeSegment[] = [];
 
-  private autoFillPenStrokeColorEnable = false;
   private autoFillPenStrokeColor: Color = Color.Transparent;
 
   /**
@@ -40,12 +39,6 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
    */
   constructor(protected readonly project: Project) {
     super(project);
-    Settings.watch("autoFillPenStrokeColorEnable", (value) => {
-      this.autoFillPenStrokeColorEnable = value;
-    });
-    Settings.watch("autoFillPenStrokeColor", (value) => {
-      this.autoFillPenStrokeColor = new Color(...value);
-    });
   }
 
   /**
@@ -54,10 +47,10 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   private recordLocation: Vector[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.mouseLeftMode !== "draw") {
+    if (Settings.mouseLeftMode !== "draw") {
       return;
     }
-    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
+    if (!(event.button === 0 && Settings.mouseLeftMode === "draw")) {
       return;
     }
     this._isUsing = true;
@@ -76,7 +69,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
   public mousemove = (event: PointerEvent) => {
     if (!this._isUsing) return;
-    if (!this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "draw") {
+    if (!this.project.controller.isMouseDown[0] && Settings.mouseLeftMode === "draw") {
       return;
     }
     const events = event.getCoalescedEvents();
@@ -100,7 +93,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
+    if (!(event.button === 0 && Settings.mouseLeftMode === "draw")) {
       return;
     }
     const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -222,7 +215,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
     if (!this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "draw") {
+    if (Settings.mouseLeftMode !== "draw") {
       // 涂鸦模式下才能看到量角器，或者转动量角器
       return;
     }
@@ -234,18 +227,17 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   };
 
   public getCurrentStrokeColor() {
-    if (this.autoFillPenStrokeColorEnable) {
-      return this.autoFillPenStrokeColor;
+    if (Settings.autoFillPenStrokeColorEnable) {
+      return new Color(...Settings.autoFillPenStrokeColor);
     } else {
       return Color.Transparent;
     }
   }
 
   public changeCurrentStrokeColorAlpha(dAlpha: number) {
-    if (this.autoFillPenStrokeColorEnable) {
-      const newAlpha = Math.max(Math.min(this.autoFillPenStrokeColor.a + dAlpha, 1), 0.01);
-      this.autoFillPenStrokeColor = this.autoFillPenStrokeColor.toNewAlpha(newAlpha);
-      Settings.set("autoFillPenStrokeColor", this.autoFillPenStrokeColor.toArray());
+    if (Settings.autoFillPenStrokeColorEnable) {
+      const newAlpha = Math.max(Math.min(new Color(...Settings.autoFillPenStrokeColor).a + dAlpha, 1), 0.01);
+      Settings.autoFillPenStrokeColor = new Color(...Settings.autoFillPenStrokeColor).toNewAlpha(newAlpha).toArray();
     }
   }
 }

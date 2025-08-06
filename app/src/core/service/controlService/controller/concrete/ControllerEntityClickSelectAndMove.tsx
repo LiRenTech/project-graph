@@ -1,10 +1,10 @@
-import { Vector } from "@graphif/data-structures";
-import { Rectangle } from "@graphif/shapes";
-import { isMac } from "@/utils/platform";
+import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
 import { RectangleNoteEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { Settings } from "@/core/service/Settings";
-import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { isMac } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 
 /**
  * 拖拽节点使其移动的控制器
@@ -18,7 +18,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     this.mouseDownViewLocation = new Vector(event.clientX, event.clientY);
@@ -98,7 +98,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     ) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (!this.isMovingEntity) {
@@ -123,7 +123,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       }
 
       // 预瞄反馈
-      if (Settings.sync.enableDragAutoAlign) {
+      if (Settings.enableDragAutoAlign) {
         this.project.autoAlign.preAlignAllSelected();
       }
 
@@ -135,7 +135,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
 
@@ -145,10 +145,10 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 判定为有效吸附的拖拽操作
       if (this.isMovingEntity) {
         // 这个时候可以触发对齐吸附事件
-        if (Settings.sync.enableDragAutoAlign) {
+        if (Settings.enableDragAutoAlign) {
           this.project.autoAlign.alignAllSelected();
         }
-        if (Settings.sync.enableDragAlignToGrid) {
+        if (Settings.enableDragAlignToGrid) {
           this.project.autoAlign.alignAllSelectedToGrid();
         }
 

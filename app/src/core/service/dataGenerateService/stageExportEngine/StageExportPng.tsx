@@ -1,7 +1,7 @@
-import { Vector } from "@graphif/data-structures";
-import { sleep } from "@/utils/sleep";
 import { Project, service } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
+import { sleep } from "@/utils/sleep";
+import { Vector } from "@graphif/data-structures";
 
 @service("stageExportPng")
 export class StageExportPng {
@@ -102,18 +102,18 @@ export class StageExportPng {
     this.startRender();
 
     // 背景网格信息
-    const showBackgroundCartesian = await Settings.get("showBackgroundCartesian");
-    Settings.set("showBackgroundCartesian", false);
-    const showBackgroundDots = await Settings.get("showBackgroundDots");
-    Settings.set("showBackgroundDots", false);
-    const showBackgroundHorizontalLines = await Settings.get("showBackgroundHorizontalLines");
-    Settings.set("showBackgroundHorizontalLines", false);
-    const showBackgroundVerticalLines = await Settings.get("showBackgroundVerticalLines");
-    Settings.set("showBackgroundVerticalLines", false);
+    const showBackgroundCartesian = Settings.showBackgroundCartesian;
+    Settings.showBackgroundCartesian = false;
+    const showBackgroundDots = Settings.showBackgroundDots;
+    Settings.showBackgroundDots = false;
+    const showBackgroundHorizontalLines = Settings.showBackgroundHorizontalLines;
+    Settings.showBackgroundHorizontalLines = false;
+    const showBackgroundVerticalLines = Settings.showBackgroundVerticalLines;
+    Settings.showBackgroundVerticalLines = false;
 
     // 渲染问题
-    const isPauseRenderWhenManipulateOvertime = await Settings.get("isPauseRenderWhenManipulateOvertime");
-    Settings.set("isPauseRenderWhenManipulateOvertime", false);
+    const isPauseRenderWhenManipulateOvertime = Settings.isPauseRenderWhenManipulateOvertime;
+    Settings.isPauseRenderWhenManipulateOvertime = false;
     if (this.isHaveBackground) {
       this.project.renderer.isRenderBackground = true;
     }
@@ -130,11 +130,11 @@ export class StageExportPng {
     this.project.camera.currentScale = cameraScale;
 
     // 背景网格信息
-    Settings.set("showBackgroundCartesian", showBackgroundCartesian);
-    Settings.set("showBackgroundDots", showBackgroundDots);
-    Settings.set("showBackgroundHorizontalLines", showBackgroundHorizontalLines);
-    Settings.set("showBackgroundVerticalLines", showBackgroundVerticalLines);
-    Settings.set("isPauseRenderWhenManipulateOvertime", isPauseRenderWhenManipulateOvertime);
+    Settings.showBackgroundCartesian = showBackgroundCartesian;
+    Settings.showBackgroundDots = showBackgroundDots;
+    Settings.showBackgroundHorizontalLines = showBackgroundHorizontalLines;
+    Settings.showBackgroundVerticalLines = showBackgroundVerticalLines;
+    Settings.isPauseRenderWhenManipulateOvertime = isPauseRenderWhenManipulateOvertime;
 
     this.finishRender();
   }

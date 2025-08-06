@@ -1,9 +1,9 @@
-import { Vector } from "@graphif/data-structures";
-import { CursorNameEnum } from "@/types/cursors";
-import { isMac } from "@/utils/platform";
-import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
+import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 关系的重新塑性控制器
@@ -35,7 +35,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   public lastMoveLocation: Vector = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {
@@ -80,7 +80,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
@@ -115,7 +115,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   };
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
+    if (Settings.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {
