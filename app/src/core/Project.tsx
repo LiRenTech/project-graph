@@ -70,10 +70,11 @@ import type { TagManager } from "@/core/stage/stageManager/concreteMethods/Stage
 import { HistoryManager } from "@/core/stage/stageManager/StageHistoryManager";
 import type { StageManager } from "@/core/stage/stageManager/StageManager";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
-import { store, nextProjectIdAtom, projectsAtom } from "@/state";
+import { nextProjectIdAtom, projectsAtom, store } from "@/state";
 import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { BlobReader, BlobWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
+import { EventEmitter } from "events";
 import mime from "mime";
 import { URI } from "vscode-uri";
 
@@ -86,7 +87,9 @@ if (import.meta.hot) {
  * 一个标签页对应一个工程，一个工程只能对应一个URI
  * 一个工程可以加载不同的服务，类似vscode的扩展（Extensions）机制
  */
-export class Project {
+export class Project extends EventEmitter<{
+  "state-change": [state: ProjectState];
+}> {
   static readonly latestVersion = 18;
   /**
    * 仅开发环境有效，用于热重载服务
@@ -123,7 +126,7 @@ export class Project {
   private readonly fileSystemProviders = new Map<string, FileSystemProvider>();
   private rafHandle = -1;
   private _uri: URI;
-  public state: ProjectState = ProjectState.Unsaved;
+  private _state: ProjectState = ProjectState.Unsaved;
   public stage: StageObject[] = [];
   /**
    * string：UUID
@@ -147,6 +150,7 @@ export class Project {
      */
     uri: URI,
   ) {
+    super();
     this._uri = uri;
   }
   /**
@@ -355,6 +359,16 @@ export class Project {
     const uuid = crypto.randomUUID();
     this.attachments.set(uuid, data);
     return uuid;
+  }
+
+  set state(state: ProjectState) {
+    if (state === this._state) return;
+    this._state = state;
+    this.emit("state-change", state);
+  }
+
+  get state(): ProjectState {
+    return this._state;
   }
 }
 

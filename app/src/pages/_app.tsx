@@ -182,7 +182,7 @@ export default function App() {
   // }, []);
 
   useEffect(() => {
-    let unlisten: () => void;
+    let unlisten1: () => void;
     /**
      * 关闭窗口时的事件监听
      */
@@ -204,12 +204,23 @@ export default function App() {
         await getCurrentWindow().destroy();
       })
       .then((it) => {
-        unlisten = it;
+        unlisten1 = it;
       });
+
+    for (const project of projects) {
+      project.on("state-change", () => {
+        // 强制重新渲染一次
+        setProjects([...projects]);
+      });
+    }
+
     return () => {
-      unlisten?.();
+      unlisten1?.();
+      for (const project of projects) {
+        project.removeAllListeners("state-change");
+      }
     };
-  }, [projects]);
+  }, [projects.length]);
 
   const closeProject = async (project: Project) => {
     if (project.state === ProjectState.Stashed) {
