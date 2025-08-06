@@ -62,7 +62,7 @@ export class LineEdge extends Edge {
   // warn: 暂时无引用
   static fromTwoEntity(project: Project, source: ConnectableEntity, target: ConnectableEntity): LineEdge {
     const result = new LineEdge(project, {
-      associationList: [source, target],
+      associationList: [target, source],
     });
     return result;
   }

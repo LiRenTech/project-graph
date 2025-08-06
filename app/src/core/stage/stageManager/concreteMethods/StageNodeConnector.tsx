@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import { Project, service } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { CubicCatmullRomSplineEdge } from "@/core/stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 集成所有连线相关的功能
@@ -53,14 +53,10 @@ export class NodeConnector {
       return;
     }
     const newEdge = new LineEdge(this.project, {
-      source: fromNode.uuid,
-      target: toNode.uuid,
+      associationList: [toNode, fromNode],
       text,
-      uuid: uuidv4(),
-      type: "core:line_edge",
-      color: [0, 0, 0, 0],
-      targetRectRate: targetRectRate || [0.5, 0.5],
-      sourceRectRate: sourceRectRate || [0.5, 0.5],
+      targetRectangleRate: new Vector(...(targetRectRate || [0.5, 0.5])),
+      sourceRectangleRate: new Vector(...(sourceRectRate || [0.5, 0.5])),
     });
 
     this.project.stageManager.add(newEdge);
