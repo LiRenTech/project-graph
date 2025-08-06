@@ -17,21 +17,11 @@ export class SvgNodeRenderer {
         this.project.stageStyleManager.currentStyle.CollideBoxSelected,
       );
     }
-    if (svgNode.state === "loading") {
-      // 正在加载
-      this.project.textRenderer.renderTextFromCenter(
-        "Loading...",
-        svgNode.collisionBox.getRectangle().center,
-        16 * this.project.camera.currentScale,
-        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
-      );
-    } else if (svgNode.state === "success") {
-      this.project.svgRenderer.renderSvgFromLeftTopWithoutSize(
-        svgNode.content,
-        this.project.renderer.transformWorld2View(svgNode.collisionBox.getRectangle().location),
-        svgNode.scale,
-      );
-    }
+    this.project.imageRenderer.renderImageElement(
+      svgNode.image,
+      this.project.renderer.transformWorld2View(svgNode.collisionBox.getRectangle().location),
+      svgNode.scale,
+    );
 
     this.project.entityRenderer.renderEntityDetails(svgNode);
   }

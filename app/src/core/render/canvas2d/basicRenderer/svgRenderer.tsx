@@ -1,5 +1,4 @@
 import { Project, service } from "@/core/Project";
-import { Base64 } from "@/utils/base64";
 import { Vector } from "@graphif/data-structures";
 
 @service("svgRenderer")
@@ -55,19 +54,6 @@ export class SvgRenderer {
         this.svgCache[svg] = img;
       };
     }
-  }
-
-  async getSvgOriginalSize(svg: string): Promise<Vector> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        resolve(new Vector(img.naturalWidth, img.naturalHeight));
-      };
-      img.onerror = (error) => {
-        reject(error);
-      };
-      img.src = "data:image/svg+xml;base64," + Base64.encode(svg);
-    });
   }
 
   renderSvgFromCenterWithoutSize(svg: string, centerLocation: Vector): void {

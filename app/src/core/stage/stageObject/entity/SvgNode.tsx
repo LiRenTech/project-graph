@@ -22,18 +22,18 @@ export class SvgNode extends ConnectableEntity {
   @serializable
   collisionBox: CollisionBox;
   @serializable
-  content: string;
-  state: "loading" | "success" = "loading";
+  attachmentId: string;
   isHiddenBySectionCollapse: boolean = false;
 
   originalSize: Vector = Vector.getZero();
+  image: HTMLImageElement = new Image();
 
   constructor(
     protected readonly project: Project,
     {
       uuid = crypto.randomUUID(),
       details = "",
-      content = "",
+      attachmentId = "",
       collisionBox = new CollisionBox([new Rectangle(Vector.getZero(), Vector.getZero())]),
       scale = 1,
       color = Color.Transparent,
@@ -43,17 +43,23 @@ export class SvgNode extends ConnectableEntity {
     this.uuid = uuid;
     this.details = details;
     this.scale = scale;
-    this.content = content;
+    this.attachmentId = attachmentId;
     this.collisionBox = collisionBox;
     this.color = color;
-    // 获取SVG原始大小
-    this.project.svgRenderer.getSvgOriginalSize(content).then((size) => {
-      this.originalSize = size;
+
+    const blob = project.attachments.get(attachmentId);
+    if (!blob) {
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    this.image = new Image();
+    this.image.src = url;
+    this.image.onload = () => {
+      this.originalSize = new Vector(this.image.naturalWidth, this.image.naturalHeight);
       this.collisionBox = new CollisionBox([
         new Rectangle(this.collisionBox.getRectangle().location, this.originalSize.multiply(this.scale)),
       ]);
-      this.state = "success";
-    });
+    };
   }
 
   public get geometryCenter(): Vector {
@@ -92,14 +98,23 @@ export class SvgNode extends ConnectableEntity {
    * 修改SVG内容中的颜色
    * @param newColor 新颜色
    */
-  changeColor(newColor: Color): void {
+  async changeColor(newColor: Color) {
+    // 先释放原来的objecturl
+    URL.revokeObjectURL(this.image.src);
     this.color = newColor;
     const hexColor = newColor.toHexStringWithoutAlpha();
-
-    // 替换常见的颜色属性
-    this.content = this.content
-      .replace(/(fill|stroke|stop-color|flood-color)="([^"]*)"/g, `$1="${hexColor}"`)
-      .replace(/(fill|stroke|stop-color|flood-color):([^;"]*);/g, `$1:${hexColor};`)
-      .replace(/(fill|stroke|stop-color|flood-color):([^;"]*)$/g, `$1:${hexColor}`);
+    // 先转换回svg代码
+    const svgCode = await this.project.attachments.get(this.attachmentId)?.text();
+    if (!svgCode) {
+      return;
+    }
+    // 替换所有currentColor
+    const newSvgCode = svgCode.replace(/currentColor/g, hexColor);
+    // 重新创建image对象
+    const newBlob = new Blob([newSvgCode], { type: "image/svg+xml" });
+    const newUrl = URL.createObjectURL(newBlob);
+    this.image = new Image();
+    this.image.src = newUrl;
+    // 因为只是改了颜色所以不用重新计算大小
   }
 }
