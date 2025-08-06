@@ -709,7 +709,7 @@ export class Renderer {
       `delta: ${this.deltaTime.toFixed(2)}`,
       `uri: ${this.project.uri}`,
       `isEnableEntityCollision: ${this.project.stageManager.isEnableEntityCollision}`,
-      ...this.project.historyManager.patches.map((patch, index) => `history#${index}: ${JSON.stringify(patch)}`),
+      ...this.project.historyManager.deltas.map((patch, index) => `history#${index}: ${JSON.stringify(patch)}`),
     ];
     for (const [k, v] of Object.entries(this.timings)) {
       detailsData.push(`render time:${k}: ${v.toFixed(2)}`);

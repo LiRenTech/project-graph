@@ -168,8 +168,8 @@ function replaceRef(obj: any, refPathObj: any = obj): any {
       return getByPath(refPathObj, path);
     }
     for (const key in obj) {
-      if (key === "_") continue;
       obj[key] = replaceRef(obj[key], refPathObj);
     }
   }
+  return obj;
 }

@@ -109,7 +109,7 @@ export class ControllerUtils {
         SubWindow.close(lastAutoCompleteWindowId);
         clickedNode!.isEditing = false;
         this.project.controller.isCameraLocked = false;
-        this.project.historyManager.recordStep();
+        // this.project.historyManager.recordStep();
         // 更新选中内容的数量
         this.project.stageObjectSelectCounter.update();
       });
