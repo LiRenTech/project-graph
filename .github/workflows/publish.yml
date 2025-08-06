@@ -310,6 +310,83 @@ jobs:
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion
 
+  publish-tauri-linux-arm:
+    runs-on: ubuntu-22.04
+    needs: [create-release, build-frontend]
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        arch: [aarch64, armv7l]
+        include:
+          - arch: aarch64
+            cpu: cortex-a72
+            base_image: https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Bookworm.img.xz
+            deb: arm64
+            rpm: aarch64
+            appimage: aarch64
+          - arch: armv7l
+            cpu: cortex-a53
+            deb: armhfp
+            rpm: arm
+            appimage: armhf
+            base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv7-Bookworm.img.xz
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache rust build artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+          cache-on-failure: true
+
+      - name: Build app
+        uses: pguyot/arm-runner-action@v2.6.5
+        with:
+          base_image: ${{ matrix.base_image }}
+          cpu: ${{ matrix.cpu }}
+          bind_mount_repository: true
+          image_additional_mb: 10240
+          optimize_image: no
+          #exit_on_fail: no
+          commands: |
+            # Prevent Rust from complaining about $HOME not matching eid home
+            export HOME=/root
+
+            # Workaround to CI worker being stuck on Updating crates.io index
+            export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+
+            # Install setup prerequisites
+            apt-get update -y --allow-releaseinfo-change
+            apt-get autoremove -y
+            apt-get install -y --no-install-recommends --no-install-suggests curl libwebkit2gtk-4.1-dev build-essential libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2 file
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            . "$HOME/.cargo/env"
+
+            # Download and install nvm:
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+            # in lieu of restarting the shell
+            \. "$HOME/.nvm/nvm.sh"
+
+            # Install Node.js
+            nvm install 24
+
+            # Install frontend dependencies
+            npm i -g pnpm
+            pnpm i
+
+            # Build the application
+            pnpm tauri:build
+
+      - name: Upload
+        run: |
+          gh release upload ${{ inputs.release_tag }} app/src-tauri/target/release/bundle/*.{deb,rpm,AppImage} --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   bump-aur-version:
     needs: publish-tauri
     runs-on: ubuntu-latest
