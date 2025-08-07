@@ -57,6 +57,7 @@ import {
   Scaling,
   SettingsIcon,
   SquareDashedMousePointer,
+  TestTube2,
   TextQuote,
   Undo,
   View,
@@ -367,17 +368,33 @@ export function GlobalMenu() {
             <SettingsIcon />
             设置
           </Item>
-          <Item
-            onClick={() => {
-              const tn1 = new TextNode(activeProject!, { text: "tn1" });
-              const tn2 = new TextNode(activeProject!, { text: "tn2" });
-              const le = LineEdge.fromTwoEntity(activeProject!, tn1, tn2);
-              console.log(serialize([tn1, tn2, le]));
-            }}
-          >
-            <SettingsIcon />
-            test
-          </Item>
+          <Sub>
+            <SubTrigger disabled={!activeProject}>
+              <TestTube2 />
+              测试功能
+            </SubTrigger>
+            <SubContent>
+              <Item
+                onClick={() => {
+                  const tn1 = new TextNode(activeProject!, { text: "tn1" });
+                  const tn2 = new TextNode(activeProject!, { text: "tn2" });
+                  const le = LineEdge.fromTwoEntity(activeProject!, tn1, tn2);
+                  console.log(serialize([tn1, tn2, le]));
+                }}
+              >
+                序列化: 引用机制
+              </Item>
+              <Item
+                onClick={() => {
+                  activeProject!.renderer.tick = function () {
+                    throw new Error("test");
+                  };
+                }}
+              >
+                项目: 连带bug
+              </Item>
+            </SubContent>
+          </Sub>
         </Content>
       </Menu>
 
