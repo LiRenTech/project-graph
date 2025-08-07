@@ -184,7 +184,22 @@ Dialog.input = (
             <DialogHeader>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
-              <InputComponent value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} />
+              <InputComponent
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder={placeholder}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    resolve(value);
+                    setOpen(false);
+                    setTimeout(() => {
+                      SubWindow.close(winId!);
+                    }, 500);
+                  }
+                }}
+              />
               <DialogFooter>
                 <Button
                   variant="outline"
