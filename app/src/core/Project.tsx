@@ -274,14 +274,6 @@ export class Project extends EventEmitter<{
       } catch (e) {
         console.error("[%s] %o", service, e);
         this.tickableServices.splice(this.tickableServices.indexOf(service), 1);
-        toast.promise(
-          Telemetry.event("服务tick方法报错", { service: getOriginalNameOf(service.constructor), error: String(e) }),
-          {
-            loading: "正在上报错误",
-            success: "错误信息已发送给开发者",
-            error: "上报失败",
-          },
-        );
         Dialog.buttons(`${getOriginalNameOf(service.constructor)} 发生未知错误`, String(e), [
           { id: "cancel", label: "取消", variant: "ghost" },
           { id: "save", label: "保存文件" },
@@ -290,6 +282,17 @@ export class Project extends EventEmitter<{
             this.save();
           }
         });
+        if (e !== null && typeof e === "object" && "message" in e && e.message === "test") {
+          continue;
+        }
+        toast.promise(
+          Telemetry.event("服务tick方法报错", { service: getOriginalNameOf(service.constructor), error: String(e) }),
+          {
+            loading: "正在上报错误",
+            success: "错误信息已发送给开发者",
+            error: "上报失败",
+          },
+        );
       }
     }
   }
