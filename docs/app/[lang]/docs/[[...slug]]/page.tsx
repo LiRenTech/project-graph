@@ -12,7 +12,14 @@ export default async function Page(props: { params: Promise<{ lang: string; slug
   const MDXContent = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      tableOfContent={{
+        style: "clerk",
+        single: false,
+      }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <div className="flex flex-row items-center gap-2 border-b pb-6 pt-2">
