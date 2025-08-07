@@ -1,3 +1,4 @@
+import { Dialog } from "@/components/ui/dialog";
 import { FileSystemProvider, Service } from "@/core/interfaces/Service";
 import type { CurveRenderer } from "@/core/render/canvas2d/basicRenderer/curveRenderer";
 import type { ImageRenderer } from "@/core/render/canvas2d/basicRenderer/ImageRenderer";
@@ -76,7 +77,10 @@ import { Decoder, Encoder } from "@msgpack/msgpack";
 import { BlobReader, BlobWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
 import { EventEmitter } from "events";
 import mime from "mime";
+import { toast } from "sonner";
+import { getOriginalNameOf } from "virtual:original-class-name";
 import { URI } from "vscode-uri";
+import { Telemetry } from "./service/Telemetry";
 
 if (import.meta.hot) {
   import.meta.hot.accept();
@@ -270,6 +274,22 @@ export class Project extends EventEmitter<{
       } catch (e) {
         console.error("[%s] %o", service, e);
         this.tickableServices.splice(this.tickableServices.indexOf(service), 1);
+        toast.promise(
+          Telemetry.event("服务tick方法报错", { service: getOriginalNameOf(service.constructor), error: String(e) }),
+          {
+            loading: "正在上报错误",
+            success: "错误信息已发送给开发者",
+            error: "上报失败",
+          },
+        );
+        Dialog.buttons(`${getOriginalNameOf(service.constructor)} 发生未知错误`, String(e), [
+          { id: "cancel", label: "取消", variant: "ghost" },
+          { id: "save", label: "保存文件" },
+        ]).then((result) => {
+          if (result === "save") {
+            this.save();
+          }
+        });
       }
     }
   }

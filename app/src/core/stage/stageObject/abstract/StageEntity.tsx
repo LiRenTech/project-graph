@@ -1,3 +1,4 @@
+import { Settings } from "@/core/service/Settings";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { Vector } from "@graphif/data-structures";
 import { serializable } from "@graphif/serializer";

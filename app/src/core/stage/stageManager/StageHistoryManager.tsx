@@ -46,13 +46,13 @@ export class HistoryManager {
     const patch = diff(prev, current);
     if (!patch) return;
     this.deltas.push(patch);
-    if (this.deltas.length > this.historySize) {
-      // 数组长度超过最大值时，合并第一个和第二个patch
-      const second = this.get(1);
-      const merged = diff(this.initialStage, second);
-      this.deltas.splice(0, 2, merged);
-      this.currentIndex--;
-    }
+    // if (this.deltas.length > this.historySize) {
+    //   // 数组长度超过最大值时，合并第一个和第二个patch
+    //   const second = this.get(1);
+    //   const merged = diff(this.initialStage, second);
+    //   this.deltas.splice(0, 2, merged);
+    //   this.currentIndex--;
+    // }
     this.project.state = ProjectState.Unsaved;
   }
 
