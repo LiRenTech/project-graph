@@ -27,7 +27,7 @@ export class TextRaiseEffectLocated extends Effect {
         this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance)),
       ),
       this.textSize * project.camera.currentScale,
-      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+      project.stageStyleManager.currentStyle.CollideBoxPreSelected,
     );
   }
 
