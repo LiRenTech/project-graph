@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "fumadocs-ui/css/ocean.css";
+@import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
 
 @source '../node_modules/fumadocs-ui/dist/**/*.js';
@@ -8,7 +8,7 @@
   @apply hover:bg-fd-accent/80 cursor-pointer;
 }
 
-@layer utilities {
+@layer components {
   .prose blockquote {
     margin: 0;
     padding: 0 1em;

@@ -1,11 +1,17 @@
-import DynamicLink from "fumadocs-core/dynamic-link";
-import { PlayCircle } from "lucide-react";
+"use client";
+
+import ThemeProvider from "@/app/theme-provider";
+import { Hero } from "@primer/react-brand";
+import "@primer/react-brand/lib/css/main.css";
+import { ChevronRight, PlayCircle } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const translations = {
   "zh-CN": {
     news: "2.0 版本将在 8 月 21 日发布",
     slogan: ["笔起思涌", "图见真意"],
-    description: "次世代的节点图绘制工具",
+    description:
+      "一款强大的图形化思维工具，让知识管理变得优雅自然。通过直观的节点连接和智能布局，将你的想法转化为清晰的知识网络。基于现代桌面技术构建，注重性能与隐私，让你的创意畅通无阻。",
     start: "开始使用",
     video: "宣传片",
   },
@@ -18,8 +24,8 @@ const translations = {
   },
 };
 
-export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
+export default function Page() {
+  const { lang } = useParams() as { lang: string };
 
   if (!(lang in translations)) {
     return <></>;
@@ -32,39 +38,26 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
   }
 
   return (
-    <main className="container flex min-h-full flex-col items-center gap-8 py-28">
-      {/* news */}
-      <div className="flex rounded-full border border-blue-400 px-3 py-1 text-sm opacity-50 transition hover:scale-110 hover:opacity-100">
-        {t("news")}
-      </div>
-      {/* slogan */}
-      <h1 className="flex flex-col items-center bg-gradient-to-br from-blue-400 to-lime-500 bg-clip-text text-7xl font-semibold leading-tight text-transparent">
-        {t("slogan").map((word, index) => (
-          <span key={index}>{word}</span>
-        ))}
-      </h1>
-      {/* description */}
-      <h2 className="text-xl opacity-60">{t("description")}</h2>
-      {/* links */}
-      <DynamicLink
-        href="/docs/app"
-        className="rounded-xl border-t-2 border-white/50 bg-gradient-to-br from-blue-500 to-lime-700 px-4 py-3 transition hover:-translate-y-1"
-      >
-        {t("start")}
-      </DynamicLink>
-      {/* video */}
-      {lang === "zh-CN" && (
-        <div className="mt-8 flex w-full flex-col items-center gap-8">
-          <div className="flex items-center gap-2 text-lg opacity-75">
-            <PlayCircle />
+    <ThemeProvider>
+      <main className="[&_.lucide]:fill-none! container flex min-h-full flex-col items-center gap-8 py-28">
+        <Hero>
+          <Hero.Label>{t("news")}</Hero.Label>
+          <Hero.Heading className="leading-22!">
+            {t("slogan").map((line, index) => (
+              <span key={index} className="block">
+                {line}
+              </span>
+            ))}
+          </Hero.Heading>
+          <Hero.Description className="opacity-75">{t("description")}</Hero.Description>
+          <Hero.PrimaryAction variant="accent" href="/docs/app" trailingVisual={<ChevronRight />}>
+            {t("start")}
+          </Hero.PrimaryAction>
+          <Hero.SecondaryAction href="https://www.bilibili.com/BV1W4k7YqEgU" leadingVisual={<PlayCircle />}>
             {t("video")}
-          </div>
-          <iframe
-            src="https://player.bilibili.com/player.html?aid=113667215527700&poster=1&autoplay=0"
-            className="aspect-video w-96 rounded-3xl transition-all hover:w-full"
-          />
-        </div>
-      )}
-    </main>
+          </Hero.SecondaryAction>
+        </Hero>
+      </main>
+    </ThemeProvider>
   );
 }
