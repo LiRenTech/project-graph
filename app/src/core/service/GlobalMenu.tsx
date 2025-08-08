@@ -374,6 +374,7 @@ export function GlobalMenu() {
               测试功能
             </SubTrigger>
             <SubContent>
+              <Item variant="destructive">仅供测试使用！</Item>
               <Item
                 onClick={() => {
                   const tn1 = new TextNode(activeProject!, { text: "tn1" });
@@ -382,7 +383,7 @@ export function GlobalMenu() {
                   console.log(serialize([tn1, tn2, le]));
                 }}
               >
-                序列化: 引用机制
+                序列化引用机制
               </Item>
               <Item
                 onClick={() => {
@@ -391,7 +392,19 @@ export function GlobalMenu() {
                   };
                 }}
               >
-                项目: 连带bug
+                连带bug
+              </Item>
+              <Item
+                onClick={() => {
+                  activeProject!.stageManager
+                    .getSelectedEntities()
+                    .filter((it) => it instanceof TextNode)
+                    .forEach((it) => {
+                      it.text = "hello world";
+                    });
+                }}
+              >
+                编辑文本节点
               </Item>
             </SubContent>
           </Sub>

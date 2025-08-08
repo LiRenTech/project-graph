@@ -76,7 +76,7 @@ export class TextNodeRenderer {
       );
     }
     // 用户不建议放大标签，所以这里注释掉了，但又有用户觉得这个也挺好，所以加个设置项
-    if (this.project.renderer.enableTagTextNodesBigDisplay) {
+    if (Settings.enableTagTextNodesBigDisplay) {
       // TODO：标签待做，这里先注释掉
       // if (this.project.stageManager.TagOptions.getTagUUIDs().includes(node.uuid)) {
       //   if (this.project.camera.currentScale < 0.25) {

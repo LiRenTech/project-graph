@@ -11,7 +11,6 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     name: "unplugin-original-class-name",
     transform(code, id) {
       if (!id.endsWith(".ts") && !id.endsWith(".tsx")) return null;
-      console.log(id);
 
       const s = new MagicString(code);
       const classRegex = /(?:^|\s)(class\s+)(\w+)/g;

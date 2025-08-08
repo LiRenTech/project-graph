@@ -153,33 +153,12 @@ export class InputElement {
       const removeElement = () => {
         if (document.body.contains(textareaElement)) {
           try {
-            // 暂时关闭频繁弹窗报错。
-            document.body.removeEventListener("mousedown", onOutsideClick);
-            document.body.removeEventListener("wheel", onOutsideWheel);
             document.body.removeChild(textareaElement);
           } catch (error) {
             console.error(error);
           }
         }
       };
-
-      const onOutsideClick = (event: Event) => {
-        if (!textareaElement.contains(event.target as Node)) {
-          resolve(textareaElement.value);
-          onChange(textareaElement.value, textareaElement);
-          removeElement();
-        }
-      };
-      const onOutsideWheel = () => {
-        resolve(textareaElement.value);
-        onChange(textareaElement.value, textareaElement);
-        removeElement();
-      };
-      setTimeout(() => {
-        document.body.addEventListener("mousedown", onOutsideClick);
-        document.body.addEventListener("touchstart", onOutsideClick);
-        document.body.addEventListener("wheel", onOutsideWheel);
-      }, 10);
 
       // 自动调整textarea的高度和宽度
       const adjustSize = () => {
@@ -191,10 +170,6 @@ export class InputElement {
       setTimeout(() => {
         adjustSize(); // 初始化时调整大小
       }, 20);
-      textareaElement.addEventListener("input", () => {
-        onChange(textareaElement.value, textareaElement);
-        adjustSize();
-      });
       textareaElement.addEventListener("blur", () => {
         resolve(textareaElement.value);
         onChange(textareaElement.value, textareaElement);
