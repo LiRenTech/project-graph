@@ -44,6 +44,7 @@ export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof 
       title={t(`${settingKey}.title`)}
       description={t(`${settingKey}.description`, { defaultValue: "" })}
       icon={<Icon />}
+      className="border-accent not-hover:rounded-none hover:bg-accent border-b transition"
     >
       <RotateCw
         className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 hover:rotate-180 group-hover/field:opacity-100"
