@@ -6,13 +6,12 @@ import { RecentFileManager } from "@/core/service/dataFileService/RecentFileMana
 import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "@/core/service/feedbackService/ColorManager";
 import { Settings } from "@/core/service/Settings";
-import { Tourials } from "@/core/service/Tourials";
+import { Tutorials } from "@/core/service/Tourials";
 import { UserState } from "@/core/service/UserState";
 import { EdgeCollisionBoxGetter } from "@/core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import { store } from "@/state";
 import { exit, writeStderr } from "@/utils/otherApi";
 import { getCurrentWindow, isDesktop, isMobile, isWeb } from "@/utils/platform";
-import { routes } from "@generouted/react-router";
 import { configureSerializer } from "@graphif/serializer";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import "driver.js/dist/driver.css";
@@ -20,25 +19,16 @@ import i18next from "i18next";
 import { Provider } from "jotai";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import VConsole from "vconsole";
 import { getOriginalNameOf } from "virtual:original-class-name";
+import App from "./App";
 import "./css/index.css";
-import "./polyfills/roundRect";
 
 configureSerializer(getOriginalNameOf);
 if (import.meta.env.DEV && isMobile) {
   new VConsole();
 }
 
-/**
- * @private
- * 仅供不在组件里的页面跳转使用，在组件里面必须用useNavigate()
- * @example
- * router.navigate("/")
- */
-export const router = createMemoryRouter(routes);
-const Routes = () => <RouterProvider router={router} />;
 const el = document.getElementById("root")!;
 
 // 建议挂载根节点前的一系列操作统一写成函数，
@@ -53,7 +43,7 @@ const el = document.getElementById("root")!;
     RecentFileManager.init(),
     StartFilesManager.init(),
     ColorManager.init(),
-    Tourials.init(),
+    Tutorials.init(),
     UserScriptsManager.init(),
     UserState.init(),
   ]);
@@ -114,7 +104,7 @@ async function renderApp(cli: boolean = false) {
     root.render(
       <Provider store={store}>
         <Toaster richColors />
-        <Routes />
+        <App />
       </Provider>,
     );
   }

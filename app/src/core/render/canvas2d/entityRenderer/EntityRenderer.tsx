@@ -5,7 +5,6 @@ import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
-import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
@@ -50,13 +49,6 @@ export class EntityRenderer {
         continue;
       }
       this.project.sectionRenderer.renderBackgroundColor(section);
-    }
-    // 2 遍历所有传送门,渲染黑底
-    for (const portalNode of this.project.stageManager.getPortalNodes()) {
-      if (this.project.renderer.isOverView(viewRectangle, portalNode)) {
-        continue;
-      }
-      this.project.portalNodeRenderer.renderBackground(portalNode);
     }
     // 最后更新帧
     this.tickNumber++;
@@ -145,8 +137,6 @@ export class EntityRenderer {
       this.project.urlNodeRenderer.render(entity);
     } else if (entity instanceof PenStroke) {
       this.renderPenStroke(entity);
-    } else if (entity instanceof PortalNode) {
-      this.project.portalNodeRenderer.render(entity);
     } else if (entity instanceof SvgNode) {
       this.project.svgNodeRenderer.render(entity);
     }

@@ -1,3 +1,4 @@
+import "@/css/markdown.css";
 import { cn } from "@/utils/cn";
 import { useEffect, useState } from "react";
 import production from "react/jsx-runtime";
@@ -7,7 +8,6 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import "../css/markdown.css";
 
 // TODO: 使用unified渲染markdown
 export default function Markdown({ source, className = "" }: { source: string; className?: string }) {

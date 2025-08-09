@@ -82,8 +82,8 @@ export class NodeConnector {
       edge.source = edge.target;
       edge.target = oldSource;
       const oldSourceRectRage = edge.sourceRectangleRate;
-      edge.setSourceRectangleRate(edge.targetRectangleRate);
-      edge.setTargetRectangleRate(oldSourceRectRage);
+      edge.sourceRectangleRate = edge.targetRectangleRate;
+      edge.targetRectangleRate = oldSourceRectRage;
     });
     this.project.stageManager.updateReferences();
   }

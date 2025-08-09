@@ -1,15 +1,16 @@
-import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
-import { Line, SymmetryCurve } from "@graphif/shapes";
 import { CircleFlameEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Effect } from "@/core/service/feedbackService/effectEngine/effectObject";
 import { LineEdge } from "@/core/stage/stageObject/association/LineEdge";
+import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { Line, SymmetryCurve } from "@graphif/shapes";
 // import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { Project, service } from "@/core/Project";
-import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
-import { SvgUtils } from "@/core/render/svg/SvgUtils";
-import { Renderer } from "@/core/render/canvas2d/renderer";
 import { EdgeRendererClass } from "@/core/render/canvas2d/entityRenderer/edge/EdgeRendererClass";
+import { Renderer } from "@/core/render/canvas2d/renderer";
+import { SvgUtils } from "@/core/render/svg/SvgUtils";
+import { Settings } from "@/core/service/Settings";
+import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 贝塞尔曲线
@@ -272,7 +273,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 画文本底色
     this.project.shapeRenderer.renderRect(
       this.project.renderer.transformWorld2View(edge.textRectangle),
-      this.project.stageStyleManager.currentStyle.Background.toNewAlpha(this.project.renderer.windowBackgroundAlpha),
+      this.project.stageStyleManager.currentStyle.Background.toNewAlpha(Settings.windowBackgroundAlpha),
       Color.Transparent,
       1,
     );

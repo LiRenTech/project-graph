@@ -49,9 +49,11 @@ export default function MyContextMenuContent() {
         <Button variant="ghost" size="icon">
           <Scissors />
         </Button>
-        <Button variant="ghost" size="icon">
-          <Trash className="text-destructive" />
-        </Button>
+        {p.stageManager.getSelectedStageObjects().length > 0 && (
+          <Button variant="ghost" size="icon">
+            <Trash className="text-destructive" />
+          </Button>
+        )}
       </Item>
       {p.stageManager.getSelectedStageObjects().length === 0 && (
         <>

@@ -3,6 +3,7 @@ import { LineCuttingEffect } from "@/core/service/feedbackService/effectEngine/c
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { ProgressNumber, Vector } from "@graphif/data-structures";
 import { Line, Rectangle } from "@graphif/shapes";
+import { Settings } from "../../Settings";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件

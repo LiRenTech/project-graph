@@ -10,12 +10,11 @@ import { ConnectableEntity } from "@/core/stage/stageObject/abstract/Connectable
 import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import ColorWindow from "@/pages/_sub_window/ColorWindow";
-import FindWindow from "@/pages/_sub_window/FindWindow";
-import RecentFilesWindow from "@/pages/_sub_window/RecentFilesWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
-import TagWindow from "@/pages/_sub_window/TagWindow";
 import { activeProjectAtom, store } from "@/state";
+import ColorWindow from "@/sub/ColorWindow";
+import FindWindow from "@/sub/FindWindow";
+import KeyboardRecentFilesWindow from "@/sub/KeyboardRecentFilesWindow";
+import SettingsWindow from "@/sub/SettingsWindow";
 import { Direction } from "@/types/directions";
 import { openBrowserOrFile } from "@/utils/externalOpen";
 import { isMac } from "@/utils/platform";
@@ -68,7 +67,7 @@ export class KeyBindsRegistrar {
 
     await this.project.keyBinds.create("checkoutClassroomMode", "F5", async () => {
       // F5 是PPT的播放快捷键
-      await Settings.set("isClassroomMode", !Settings.isClassroomMode);
+      Settings.isClassroomMode = !Settings.isClassroomMode;
     });
 
     await this.project.keyBinds.create("resetView", "F", () => {
@@ -350,24 +349,24 @@ export class KeyBindsRegistrar {
     await this.project.keyBinds.create("clickAppMenuSettingsButton", "S-!", () => {
       SettingsWindow.open();
     });
-    await this.project.keyBinds.create("clickTagPanelButton", "S-@", () => {
-      TagWindow.open();
-    });
+    // await this.project.keyBinds.create("clickTagPanelButton", "S-@", () => {
+    //   TagWindow.open();
+    // });
     await this.project.keyBinds.create("clickAppMenuRecentFileButton", "S-#", () => {
-      RecentFilesWindow.open();
+      KeyboardRecentFilesWindow.open();
     });
-    await this.project.keyBinds.create("clickStartFilePanelButton", "S-$", () => {
-      const button = document.getElementById("app-start-file-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
-      setTimeout(() => {
-        this.project.controller.pressingKeySet.clear();
-      }, 200);
-    });
+    // await this.project.keyBinds.create("clickStartFilePanelButton", "S-$", () => {
+    //   const button = document.getElementById("app-start-file-btn");
+    //   const event = new MouseEvent("click", {
+    //     bubbles: true,
+    //     cancelable: true,
+    //     view: window,
+    //   });
+    //   button?.dispatchEvent(event);
+    //   setTimeout(() => {
+    //     this.project.controller.pressingKeySet.clear();
+    //   }, 200);
+    // });
     await this.project.keyBinds.create("saveFile", "C-s", () => {
       store.get(activeProjectAtom)?.save();
     });

@@ -1,8 +1,10 @@
 import { Project, service } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { Direction } from "@/types/directions";
 import { Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
 import { v4 } from "uuid";
 import { Settings } from "../../Settings";
 
@@ -30,7 +32,7 @@ export class KeyboardOnlyTreeEngine {
     const childSet = this.project.graphMethods.getOneStepSuccessorSet(rootNode);
 
     // 寻找创建位置
-    let createLocation;
+    let createLocation: Vector;
     if (childSet.length === 0) {
       // 在正右侧创建
       createLocation = rootNode.collisionBox.getRectangle().rightCenter.add(new Vector(100, 0));
@@ -43,10 +45,12 @@ export class KeyboardOnlyTreeEngine {
     // 创建位置寻找完毕
     const newNode = new TextNode(this.project, {
       text: "新节点",
-      details: "",
-      uuid: v4(),
-      location: [createLocation.x, createLocation.y],
-      size: [rootNode instanceof TextNode ? rootNode.collisionBox.getRectangle().width : 100, 100],
+      collisionBox: new CollisionBox([
+        new Rectangle(
+          createLocation,
+          new Vector(rootNode instanceof TextNode ? rootNode.collisionBox.getRectangle().width : 100, 100),
+        ),
+      ]),
       sizeAdjust: rootNode instanceof TextNode ? rootNode.sizeAdjust : "auto",
     });
     this.project.stageManager.add(newNode);

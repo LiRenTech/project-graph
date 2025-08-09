@@ -1,9 +1,9 @@
 import { onNewDraft, onOpenFile } from "@/core/service/GlobalMenu";
 import { open as shellOpen } from "@tauri-apps/plugin-shell";
 import { Earth, FilePlus, FolderOpen, Info, Settings } from "lucide-react";
-import SettingsWindow from "../_sub_window/SettingsWindow";
+import SettingsWindow from "../sub/SettingsWindow";
 
-export default function Welcome() {
+export default function WelcomePage() {
   return (
     <div className="bg-stage-background text-stage-node-details-text flex h-full w-full items-center justify-center">
       <div className="flex flex-col gap-8">
@@ -18,7 +18,7 @@ export default function Welcome() {
                 <FilePlus />
                 <span>新建文件</span>
               </div>
-              <div onClick={onOpenFile}>
+              <div onClick={() => onOpenFile(undefined, "欢迎页面")}>
                 <FolderOpen />
                 <span>打开文件</span>
               </div>

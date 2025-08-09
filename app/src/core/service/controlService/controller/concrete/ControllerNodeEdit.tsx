@@ -1,15 +1,11 @@
 import { Project } from "@/core/Project";
 import { Settings } from "@/core/service/Settings";
 import { ControllerClass } from "@/core/service/controlService/controller/ControllerClass";
-import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import { Path } from "@/utils/path";
-import { PathString } from "@/utils/pathString";
 import { isMac } from "@/utils/platform";
 import { Vector } from "@graphif/data-structures";
 import { open } from "@tauri-apps/plugin-shell";
-import { toast } from "sonner";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -49,35 +45,6 @@ export class ControllerNodeEditClass extends ControllerClass {
         // 跳转链接
         open(clickedEntity.url);
       }
-    } else if (clickedEntity instanceof PortalNode) {
-      const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
-      if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
-        // 编辑标题
-        this.project.controllerUtils.editPortalNodeTitle(clickedEntity);
-      } else if (diffNodeLeftTopLocation.y < PortalNode.PATH_LINE_Y) {
-        // 更改路径
-        const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
-        if (newPortalFilePath) {
-          clickedEntity.portalFilePath = newPortalFilePath;
-        }
-      } else {
-        // 跳转链接
-        if (this.project.isDraft) {
-          toast.error("草稿不支持传送门");
-          return;
-        } else {
-          // 开新标签页
-          const relativePath = clickedEntity.portalFilePath;
-          const absolutePath = new Path(this.project.uri).parent.toString();
-          const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
-          // 开始传送
-          // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
-          setTimeout(() => {
-            FileLoader.openFileByPath(newPath);
-            Stage.path.setPathAndChangeUI(newPath);
-          }, 100);
-        }
-      }
     }
   };
 
@@ -100,7 +67,7 @@ export class ControllerNodeEditClass extends ControllerClass {
     /**
      * 如果一直显示详细信息，则不显示鼠标悬停效果
      */
-    if (this.project.renderer.isAlwaysShowDetails) {
+    if (Settings.alwaysShowDetails) {
       return;
     }
 

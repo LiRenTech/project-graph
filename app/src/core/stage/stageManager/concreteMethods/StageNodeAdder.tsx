@@ -45,7 +45,6 @@ export class NodeAdder {
 
     for (const section of addToSections) {
       section.children.push(node);
-      section.childrenUUIDs.push(node.uuid); // 修复
       section.adjustLocationAndSize();
       this.project.effects.addEffect(
         new RectanglePushInEffect(node.rectangle.clone(), section.rectangle.clone(), new ProgressNumber(0, 100)),
@@ -159,7 +158,6 @@ export class NodeAdder {
     this.project.stageManager.add(connectPoint);
     for (const section of addToSections) {
       section.children.push(connectPoint);
-      section.childrenUUIDs.push(connectPoint.uuid);
       section.adjustLocationAndSize();
       this.project.effects.addEffect(
         new RectanglePushInEffect(
@@ -190,13 +188,14 @@ export class NodeAdder {
     const nodeDict = new Map<string, TextNode>();
 
     const createNodeByName = (name: string) => {
-      const newUUID = uuidv4();
       const node = new TextNode(this.project, {
-        uuid: newUUID,
         text: name,
-        details: "",
-        location: [diffLocation.x + randomRadius * Math.random(), diffLocation.y + randomRadius * Math.random()],
-        size: [100, 100],
+        collisionBox: new CollisionBox([
+          new Rectangle(
+            diffLocation.add(new Vector(randomRadius * Math.random(), randomRadius * Math.random())),
+            Vector.same(100),
+          ),
+        ]),
       });
       this.project.stageManager.add(node);
       nodeDict.set(name, node);
@@ -285,15 +284,10 @@ export class NodeAdder {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
 
-    const rootUUID = uuidv4();
-
     // 准备好栈和根节点
     const rootNode = new TextNode(this.project, {
-      uuid: rootUUID,
       text: "root",
-      details: "",
-      location: [diffLocation.x, diffLocation.y],
-      size: [100, 100],
+      collisionBox: new CollisionBox([new Rectangle(diffLocation, Vector.same(100))]),
     });
     const nodeStack = new MonoStack<TextNode>();
     nodeStack.push(rootNode, -1);
@@ -310,13 +304,11 @@ export class NodeAdder {
       // 解析文本内容
       const textContent = line.trim();
 
-      const newUUID = uuidv4();
       const node = new TextNode(this.project, {
-        uuid: newUUID,
         text: textContent,
-        details: "",
-        location: [indent * 50 + diffLocation.x, yIndex * 100 + diffLocation.y],
-        size: [100, 100],
+        collisionBox: new CollisionBox([
+          new Rectangle(diffLocation.add(new Vector(indent * 50, yIndex * 100)), Vector.same(100)),
+        ]),
       });
       this.project.stageManager.add(node);
 
@@ -363,11 +355,8 @@ export class NodeAdder {
     const monoStack = new MonoStack<TextNode>();
     monoStack.push(
       new TextNode(this.project, {
-        uuid: uuidv4(),
         text: "root",
-        details: "",
-        location: [diffLocation.x, diffLocation.y],
-        size: [100, 100],
+        collisionBox: new CollisionBox([new Rectangle(diffLocation, Vector.same(100))]),
       }),
       -1,
     );
@@ -376,13 +365,12 @@ export class NodeAdder {
 
     const visitFunction = (markdownNode: MarkdownNode, deepLevel: number) => {
       visitedCount++;
-      const newUUID = uuidv4();
       const node = new TextNode(this.project, {
-        uuid: newUUID,
         text: markdownNode.title,
         details: markdownNode.content,
-        location: [diffLocation.x + deepLevel * 50, diffLocation.y + visitedCount * 100],
-        size: [100, 100],
+        collisionBox: new CollisionBox([
+          new Rectangle(diffLocation.add(new Vector(deepLevel * 50, visitedCount * 100)), Vector.same(100)),
+        ]),
       });
       this.project.stageManager.add(node);
       monoStack.push(node, deepLevel);

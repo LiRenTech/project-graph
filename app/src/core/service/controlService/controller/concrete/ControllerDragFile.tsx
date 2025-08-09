@@ -2,7 +2,6 @@ import { Dialog } from "@/components/ui/dialog";
 import { ControllerClassDragFile } from "@/core/service/controlService/controller/ControllerClassDragFile";
 import { CircleChangeRadiusEffect } from "@/core/service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
-import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { Path } from "@/utils/path";
 import { PathString } from "@/utils/pathString";
@@ -39,61 +38,62 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
    * @param event
    * @returns
    */
-  drop = async (event: DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const mouseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+  drop = async () => {
+    toast("拖入文件需要改为tauri的api,待实现。。。");
+    // TODO: 需要改为tauri的api
+    // event.preventDefault();
+    // event.stopPropagation();
+    // const mouseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    const files = event.dataTransfer?.files;
+    // const files = event.dataTransfer?.files;
 
-    if (files) {
-      if (files.length === 0) {
-        // 在别的浏览器中选中文字并拽到窗口里释放会走这个if分支
-        await this.dealTempFileDrop(mouseWorldLocation);
-      }
-      let i = -1;
-      for (const file of files) {
-        i++;
-        if (file.type.includes("json")) {
-          await this.dealJsonFileDrop(file, mouseWorldLocation);
-        } else if (file.type.includes("text")) {
-          this.readFileText(file).then((dataString) => {
-            if (file.name.endsWith(".txt")) {
-              this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
-            } else if (file.name.endsWith(".md")) {
-              this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
-            } else {
-              this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
-            }
-          });
-        } else if (file.type.includes("image/svg+xml")) {
-          this.readFileText(file).then((dataString) => {
-            const entity = new SvgNode(this.project, {
-              uuid: uuidv4(),
-              content: dataString,
-              location: [mouseWorldLocation.x, mouseWorldLocation.y],
-              size: [400, 100],
-              color: [0, 0, 0, 0],
-            });
-            this.project.stageManager.add(entity);
-          });
-        } else if (file.type.includes("image/png")) {
-          if (this.project.isDraft) {
-            // TODO: 文件附件
-          } else {
-            await this.dealPngFileDrop(file, mouseWorldLocation);
-          }
-        } else {
-          if (file.name.endsWith(".md")) {
-            this.readFileText(file).then((dataString) => {
-              this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
-            });
-          }
-          await this.dealUnknownFileDrop(file, mouseWorldLocation, i);
-        }
-      }
-    }
-    this.isDraggingFile = false;
+    // if (files) {
+    //   if (files.length === 0) {
+    //     // 在别的浏览器中选中文字并拽到窗口里释放会走这个if分支
+    //     await this.dealTempFileDrop(mouseWorldLocation);
+    //   }
+    //   let i = -1;
+    //   for (const file of files) {
+    //     i++;
+    //     if (file.type.includes("json")) {
+    //       await this.dealJsonFileDrop(file, mouseWorldLocation);
+    //     } else if (file.type.includes("text")) {
+    //       this.readFileText(file).then((dataString) => {
+    //         if (file.name.endsWith(".txt")) {
+    //           this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
+    //         } else if (file.name.endsWith(".md")) {
+    //           this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+    //         } else {
+    //           this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
+    //         }
+    //       });
+    //     } else if (file.type.includes("image/svg+xml")) {
+    //       this.readFileText(file).then((dataString) => {
+    //         const entity = new SvgNode(this.project, {
+    //           uuid: uuidv4(),
+    //           content: dataString,
+    //           location: [mouseWorldLocation.x, mouseWorldLocation.y],
+    //           size: [400, 100],
+    //         });
+    //         this.project.stageManager.add(entity);
+    //       });
+    //     } else if (file.type.includes("image/png")) {
+    //       if (this.project.isDraft) {
+    //         // TODO: 文件附件
+    //       } else {
+    //         await this.dealPngFileDrop(file, mouseWorldLocation);
+    //       }
+    //     } else {
+    //       if (file.name.endsWith(".md")) {
+    //         this.readFileText(file).then((dataString) => {
+    //           this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+    //         });
+    //       }
+    //       await this.dealUnknownFileDrop(file, mouseWorldLocation, i);
+    //     }
+    //   }
+    // }
+    // this.isDraggingFile = false;
   };
 
   dragLeave = (event: DragEvent) => {

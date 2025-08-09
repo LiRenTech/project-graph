@@ -4,12 +4,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Settings, settingsSchema } from "@/core/service/Settings";
+import { settingsIcons } from "@/core/service/SettingsIcons";
 import { Telemetry } from "@/core/service/Telemetry";
-import { settingsIcons } from "@/pages/_sub_window/SettingsWindow/_icons";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";
-import React, { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { CSSProperties, Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof Settings; extra?: React.ReactNode }) {
@@ -139,6 +139,8 @@ export function Field({
   color = "default",
   icon = <></>,
   className = "",
+  style = {},
+  onClick = () => {},
 }: {
   title?: string;
   description?: string;
@@ -146,6 +148,8 @@ export function Field({
   color?: "default" | "celebrate" | "danger" | "warning" | "thinking" | "imaging";
   icon?: React.ReactNode;
   className?: string;
+  style?: CSSProperties;
+  onClick?: () => void;
 }) {
   return (
     <div
@@ -154,8 +158,10 @@ export function Field({
         fieldColors[color],
         className,
       )}
+      style={style}
+      onClick={onClick}
     >
-      <div className="text-settings-text flex items-center gap-2">
+      <div className="flex items-center gap-2 mix-blend-difference">
         <span>{icon}</span>
         <div className="flex flex-col">
           <span>{title}</span>

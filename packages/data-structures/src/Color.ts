@@ -267,7 +267,7 @@ export class Color {
   }
 
   // 辅助方法：RGB转HSL
-  private rgbToHsl(): { h: number; s: number; l: number } {
+  rgbToHsl(): { h: number; s: number; l: number } {
     const r = this.r / 255;
     const g = this.g / 255;
     const b = this.b / 255;

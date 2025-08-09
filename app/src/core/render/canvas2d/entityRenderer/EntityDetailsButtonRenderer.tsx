@@ -1,7 +1,7 @@
-import { Vector } from "@graphif/data-structures";
 import { NumberFunctions } from "@/core/algorithm/numberFunctions";
 import { Project, service } from "@/core/Project";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Vector } from "@graphif/data-structures";
 /**
  * 仅仅渲染一个节点右上角的按钮
  */

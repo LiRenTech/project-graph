@@ -12,7 +12,7 @@ import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import AutoCompleteWindow from "@/pages/_sub_window/AutoCompleteWindow";
+import AutoCompleteWindow from "@/sub/AutoCompleteWindow";
 import { Direction } from "@/types/directions";
 import { isDesktop } from "@/utils/platform";
 import { colorInvert, Vector } from "@graphif/data-structures";
@@ -103,7 +103,7 @@ export class ControllerUtils {
           borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale}px`,
         },
         selectAll,
-        rectWorld.width * this.project.camera.currentScale, // limit width
+        // rectWorld.width * this.project.camera.currentScale, // limit width
       )
       .then(() => {
         SubWindow.close(lastAutoCompleteWindowId);
