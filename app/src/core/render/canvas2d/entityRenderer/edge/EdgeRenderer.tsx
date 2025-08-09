@@ -186,7 +186,7 @@ export class EdgeRenderer {
     }
     if (edge.target.isHiddenBySectionCollapse) {
       return new LineEdge(this.project, {
-        associationList: [this.getMinNonCollapseParentSection(edge.target), edge.source],
+        associationList: [edge.source, this.getMinNonCollapseParentSection(edge.target)],
         text: edge.text,
         uuid: edge.uuid,
       });

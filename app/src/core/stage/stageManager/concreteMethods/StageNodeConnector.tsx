@@ -53,7 +53,7 @@ export class NodeConnector {
       return;
     }
     const newEdge = new LineEdge(this.project, {
-      associationList: [toNode, fromNode],
+      associationList: [fromNode, toNode],
       text,
       targetRectangleRate: new Vector(...(targetRectRate || [0.5, 0.5])),
       sourceRectangleRate: new Vector(...(sourceRectRate || [0.5, 0.5])),

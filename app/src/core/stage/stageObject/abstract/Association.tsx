@@ -23,23 +23,21 @@ export abstract class ConnectableAssociation extends Association {
   public override associationList: ConnectableEntity[] = [];
 
   public reverse() {
-    const temp = this.associationList[0];
-    this.associationList[0] = this.associationList[1];
-    this.associationList[1] = temp;
+    this.associationList.reverse();
   }
 
   get target(): ConnectableEntity {
-    return this.associationList[0];
+    return this.associationList[1];
   }
 
   set target(value: ConnectableEntity) {
-    this.associationList[0] = value;
+    this.associationList[1] = value;
   }
 
   get source(): ConnectableEntity {
-    return this.associationList[1];
+    return this.associationList[0];
   }
   set source(value: ConnectableEntity) {
-    this.associationList[1] = value;
+    this.associationList[0] = value;
   }
 }

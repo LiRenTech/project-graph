@@ -1,4 +1,5 @@
 import { Serialized } from "@/types/node";
+import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { ConnectableEntity } from "./stageObject/abstract/ConnectableEntity";
 
@@ -385,7 +386,7 @@ export namespace ProjectUpgrader {
         const toNode = uuidMap.get(toUUID);
 
         if (fromNode === undefined || toNode === undefined) {
-          console.warn(`关联边的节点不存在`);
+          toast.warning(`边 ${association.uuid} 关联的节点不存在: ${fromUUID} -> ${toUUID}`);
           continue;
         }
 
