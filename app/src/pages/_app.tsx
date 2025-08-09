@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
 import { Button } from "@/components/ui/button";
+import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { Dialog } from "@/components/ui/dialog";
 import { Project, ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
@@ -19,6 +20,7 @@ import { CloudUpload, Copy, Dot, Minus, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import MyContextMenuContent from "./_context_menu_content";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);
@@ -36,6 +38,7 @@ export default function App() {
 
   const tabsContainerRef = useRef<HTMLDivElement>(null);
   const scrollPositionRef = useRef(0); // 用于保存滚动位置的 ref，防止切换标签页时滚动位置丢失
+  const contextMenuTriggerRef = useRef<HTMLDivElement>(null);
 
   const { t } = useTranslation("app");
 
@@ -212,12 +215,23 @@ export default function App() {
         // 强制重新渲染一次
         setProjects([...projects]);
       });
+      project.on("contextmenu", ({ x, y }) => {
+        contextMenuTriggerRef.current?.dispatchEvent(
+          new MouseEvent("contextmenu", {
+            bubbles: true,
+            clientX: x,
+            clientY: y,
+          }),
+        );
+        setProjects([...projects]);
+      });
     }
 
     return () => {
       unlisten1?.();
       for (const project of projects) {
         project.removeAllListeners("state-change");
+        project.removeAllListeners("contextmenu");
       }
     };
   }, [projects.length]);
@@ -332,6 +346,12 @@ export default function App() {
           <Welcome />
         </div>
       )}
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <div ref={contextMenuTriggerRef} />
+        </ContextMenuTrigger>
+        <MyContextMenuContent />
+      </ContextMenu>
 
       {/* ======= */}
       {/* <ErrorHandler /> */}

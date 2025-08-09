@@ -72,6 +72,7 @@ import { HistoryManager } from "@/core/stage/stageManager/StageHistoryManager";
 import type { StageManager } from "@/core/stage/stageManager/StageManager";
 import { StageObject } from "@/core/stage/stageObject/abstract/StageObject";
 import { nextProjectIdAtom, projectsAtom, store } from "@/state";
+import { Vector } from "@graphif/data-structures";
 import { deserialize, serialize } from "@graphif/serializer";
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { BlobReader, BlobWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from "@zip.js/zip.js";
@@ -93,6 +94,7 @@ if (import.meta.hot) {
  */
 export class Project extends EventEmitter<{
   "state-change": [state: ProjectState];
+  contextmenu: [location: Vector];
 }> {
   static readonly latestVersion = 18;
   /**
