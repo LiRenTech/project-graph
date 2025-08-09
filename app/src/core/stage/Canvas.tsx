@@ -22,7 +22,8 @@ export class Canvas {
       this.project.loop();
     });
     // pointerdown或wheel时focus
-    element.addEventListener("pointerdown", () => {
+    element.addEventListener("mouseup", (e) => {
+      e.preventDefault();
       element.focus();
     });
     element.addEventListener("wheel", () => {

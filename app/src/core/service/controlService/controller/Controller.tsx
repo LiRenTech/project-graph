@@ -1,8 +1,6 @@
 import { Vector } from "@graphif/data-structures";
 // import { ControllerKeyboardOnly } from "@/core/service/controlService/controller/concrete/ControllerKeyboardOnly";
 // ...
-import { CursorNameEnum } from "@/types/cursors";
-import { isMac } from "@/utils/platform";
 import { Project, service } from "@/core/Project";
 import { ControllerAssociationReshapeClass } from "@/core/service/controlService/controller/concrete/ControllerAssociationReshape";
 import { ControllerCameraClass } from "@/core/service/controlService/controller/concrete/ControllerCamera";
@@ -22,6 +20,8 @@ import { ControllerPenStrokeControlClass } from "@/core/service/controlService/c
 import { ControllerPenStrokeDrawingClass } from "@/core/service/controlService/controller/concrete/ControllerPenStrokeDrawing";
 import { ControllerRectangleSelectClass } from "@/core/service/controlService/controller/concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "@/core/service/controlService/controller/concrete/ControllerSectionEdit";
+import { CursorNameEnum } from "@/types/cursors";
+import { isMac } from "@/utils/platform";
 
 /**
  * 控制器，控制鼠标、键盘事件

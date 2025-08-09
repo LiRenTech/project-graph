@@ -1,21 +1,23 @@
 import { Project } from "@/core/Project";
-import { SectionRenderer } from "@/core/render/canvas2d/entityRenderer/section/SectionRenderer";
 import { Renderer } from "@/core/render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "@/core/service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
+import { Settings } from "@/core/service/Settings";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
-import { Serialized } from "@/types/node";
 import { getTextSize } from "@/utils/font";
 import { Color, ProgressNumber, Vector } from "@graphif/data-structures";
+import { passExtraAtArg1, passObject, serializable } from "@graphif/serializer";
 import { Line, Rectangle, Shape } from "@graphif/shapes";
-import { v4 as uuidv4 } from "uuid";
 
+@passExtraAtArg1
+@passObject
 export class Section extends ConnectableEntity {
   /**
    * 节点是否被选中
    */
   _isSelected: boolean = false;
+  @serializable
   public uuid: string;
   _isEditingTitle: boolean = false;
   private _collisionBoxWhenCollapsed: CollisionBox;
@@ -26,7 +28,7 @@ export class Section extends ConnectableEntity {
   }
   public set isEditingTitle(value: boolean) {
     this._isEditingTitle = value;
-    SectionRenderer.render(this);
+    this.project.sectionRenderer.render(this);
   }
 
   /**
@@ -55,78 +57,65 @@ export class Section extends ConnectableEntity {
     return new CollisionBox([collapsedRectangle]);
   }
 
+  @serializable
   color: Color = Color.Transparent;
+  @serializable
   text: string;
-
-  /**
-   * 此数组要跟随 childrenUUIDs 变化而变化
-   * 字符串数组才是老大
-   */
+  @serializable
   children: Entity[];
-  childrenUUIDs: string[];
 
   /** 是否是折叠状态 */
+  @serializable
   isCollapsed: boolean;
   /** 是否是隐藏状态 */
+  @serializable
   isHidden: boolean;
   isHiddenBySectionCollapse = false;
 
   constructor(
     protected readonly project: Project,
     {
-      uuid,
+      uuid = crypto.randomUUID() as string,
       text = "",
-      location = [0, 0],
-      size = [0, 0],
-      color = [0, 0, 0, 0],
+      collisionBox = new CollisionBox([new Rectangle(new Vector(0, 0), new Vector(0, 0))]),
+      color = Color.Transparent,
       isHidden = false,
       isCollapsed = false,
-      children = [],
+      children = [] as Entity[],
       details = "",
-    }: Partial<Serialized.Section> & { uuid: string },
+    } = {},
     public unknown = false,
   ) {
     super();
     this.uuid = uuid;
 
-    this._collisionBoxWhenCollapsed = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
+    this._collisionBoxWhenCollapsed = collisionBox;
 
-    const shapes: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
+    const rect = collisionBox.getRectangle();
+    const shapes: Shape[] = rect.getBoundingLines();
     // shapes.push(
-    //   new Rectangle(new Vector(...location), new Vector(size[0], 50)),
+    //   new Rectangle(rect.location, new Vector(rect.size.x, 50)),
     // );
     this._collisionBoxNormal = new CollisionBox(shapes);
 
-    this.color = new Color(...color);
+    this.color = color;
     this.text = text;
     this.isHidden = isHidden;
     this.isCollapsed = isCollapsed;
     this.details = details;
-    this.childrenUUIDs = children;
-    this.children = this.project.stageManager.getEntitiesByUUIDs(children);
+    this.children = children;
     // 一定要放在最后
     this.adjustLocationAndSize();
-  }
-
-  isHaveChildrenByUUID(uuid: string): boolean {
-    return this.childrenUUIDs.includes(uuid);
-    // return this.children.some((child) => child.uuid === uuid);
   }
 
   /**
    * 根据多个实体创建Section
    * @param entities
    */
-  static fromEntities(entities: Entity[]): Section {
-    const section = new Section({
-      uuid: uuidv4(),
+  static fromEntities(project: Project, entities: Entity[]): Section {
+    const section = new Section(project, {
       text: "section",
-      location: [0, 0],
-      size: [0, 0],
-      color: [0, 0, 0, 0],
-      isHidden: false,
-      isCollapsed: false,
-      children: entities.map((entity) => entity.uuid),
+      children: entities,
     });
 
     return section;

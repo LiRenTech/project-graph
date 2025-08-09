@@ -1,9 +1,9 @@
-import { Vector } from "@graphif/data-structures";
 import { Project, service } from "@/core/Project";
 import { EntityJumpMoveEffect } from "@/core/service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
 import { RectanglePushInEffect } from "@/core/service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
+import { Vector } from "@graphif/data-structures";
 
 /**
  * 管理节点的位置移动
@@ -38,7 +38,7 @@ export class EntityMoveManager {
     // }
     if (isAutoAdjustSection) {
       for (const section of this.project.stageManager.getSections()) {
-        if (section.isHaveChildrenByUUID(nodeUUID)) {
+        if (section.children.find((it) => it.uuid === nodeUUID)) {
           section.adjustLocationAndSize();
         }
       }
@@ -90,7 +90,7 @@ export class EntityMoveManager {
     entity.moveTo(location);
     const nodeUUID = entity.uuid;
     for (const section of this.project.stageManager.getSections()) {
-      if (section.isHaveChildrenByUUID(nodeUUID)) {
+      if (section.children.find((it) => it.uuid === nodeUUID)) {
         section.adjustLocationAndSize();
       }
     }

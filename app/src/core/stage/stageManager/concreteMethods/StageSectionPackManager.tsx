@@ -274,7 +274,7 @@ export class SectionPackManager {
     for (const fatherSection of firstParents) {
       this.project.stageManager.goOutSection(addEntities, fatherSection);
     }
-    const section = Section.fromEntities(addEntities);
+    const section = Section.fromEntities(this.project, addEntities);
     section.text = this.project.stageUtils.replaceAutoNameTemplate(Settings.autoNamerSectionTemplate, section);
     this.project.stageManager.add(section);
     for (const fatherSection of firstParents) {
