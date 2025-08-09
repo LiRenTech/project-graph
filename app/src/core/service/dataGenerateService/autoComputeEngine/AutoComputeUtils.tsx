@@ -76,7 +76,7 @@ export class AutoComputeUtils {
           ),
         ]),
         // 将 color 数组转换为 Color 对象
-        color: Color.Transparent, // [0, 0, 0, 0] 对应 Color.Transparent
+        color: Color.Transparent.clone(), // [0, 0, 0, 0] 对应 Color.Transparent
       });
       this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(node, newNode);
@@ -105,7 +105,7 @@ export class AutoComputeUtils {
         collisionBox: new CollisionBox([
           new Rectangle(new Vector(rect.location.x, rect.bottom + 100), new Vector(100, 100)),
         ]),
-        color: Color.Transparent,
+        color: Color.Transparent.clone(),
       });
       this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(section, newNode);
@@ -128,7 +128,7 @@ export class AutoComputeUtils {
               new Vector(100, 100),
             ),
           ]),
-          color: Color.Transparent,
+          color: Color.Transparent.clone(),
         });
         this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(section, newNode);
@@ -174,7 +174,7 @@ export class AutoComputeUtils {
               new Vector(100, 100),
             ),
           ]),
-          color: Color.Transparent,
+          color: Color.Transparent.clone(),
         });
         this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(node, newNode);
