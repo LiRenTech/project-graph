@@ -89,7 +89,7 @@ We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribut
 
 <!----------------------------------------------------------------------------->
 
-[Install]: https://project-graph.top/installation
+[Install]: https://project-graph.top/docs/app
 [Website]: https://project-graph.top
 [Online Demo]: https://web.project-graph.top
 [Weblate]: https://hosted.weblate.org/engage/project-graph/
