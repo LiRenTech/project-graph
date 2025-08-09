@@ -1,4 +1,3 @@
-import { Color, ProgressNumber } from "@graphif/data-structures";
 import { Project, service } from "@/core/Project";
 import { ExplodeDashEffect } from "@/core/service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Association } from "@/core/stage/stageObject/abstract/Association";
@@ -8,11 +7,11 @@ import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
-import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
+import { Color, ProgressNumber } from "@graphif/data-structures";
 
 type DeleteHandler<T extends Entity> = (entity: T) => void;
 type Constructor<T> = { new (...args: any[]): T };
@@ -55,14 +54,6 @@ export class DeleteManager {
 
   private deleteSvgNode(entity: SvgNode) {
     if (this.project.stageManager.getEntities().includes(entity)) {
-      this.project.stageManager.delete(entity);
-      // 删除所有相关的边
-      this.deleteEntityAfterClearAssociation(entity);
-    }
-  }
-
-  private deletePortalNode(entity: PortalNode) {
-    if (this.project.stageManager.getPortalNodes().includes(entity)) {
       this.project.stageManager.delete(entity);
       // 删除所有相关的边
       this.deleteEntityAfterClearAssociation(entity);

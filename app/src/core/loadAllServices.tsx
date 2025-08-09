@@ -66,7 +66,6 @@ import { StageObjectColorManager } from "@/core/stage/stageManager/concreteMetho
 import { StageObjectSelectCounter } from "@/core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { SectionInOutManager } from "@/core/stage/stageManager/concreteMethods/StageSectionInOutManager";
 import { SectionPackManager } from "@/core/stage/stageManager/concreteMethods/StageSectionPackManager";
-import { SerializedDataAdder } from "@/core/stage/stageManager/concreteMethods/StageSerializedAdder";
 import { TagManager } from "@/core/stage/stageManager/concreteMethods/StageTagManager";
 import { HistoryManager } from "@/core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "@/core/stage/stageManager/StageManager";
@@ -141,6 +140,5 @@ export function loadAllServices(project: Project): void {
   project.loadService(StageExportPng);
   project.loadService(StageExportSvg);
   project.loadService(GenerateFromFolder);
-  project.loadService(SerializedDataAdder);
   project.loadService(KeyBindsRegistrar);
 }

@@ -5,7 +5,6 @@ import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
-import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
@@ -138,8 +137,6 @@ export class EntityRenderer {
       this.project.urlNodeRenderer.render(entity);
     } else if (entity instanceof PenStroke) {
       this.renderPenStroke(entity);
-    } else if (entity instanceof PortalNode) {
-      this.project.portalNodeRenderer.render(entity);
     } else if (entity instanceof SvgNode) {
       this.project.svgNodeRenderer.render(entity);
     }
