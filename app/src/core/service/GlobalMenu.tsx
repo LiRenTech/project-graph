@@ -582,10 +582,6 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
     return;
   }
   const project = new Project(uri);
-  if (stage) {
-    project.stage = deserialize(stage, project);
-    console.log(project.stage);
-  }
   const t = performance.now();
   loadAllServices(project);
   const loadServiceTime = performance.now() - t;
@@ -593,6 +589,9 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
   toast.promise(project.init(), {
     loading: "正在打开文件...",
     success: () => {
+      if (stage) {
+        project.stage = deserialize(stage, project);
+      }
       const readFileTime = performance.now() - t;
       store.set(projectsAtom, [...store.get(projectsAtom), project]);
       store.set(activeProjectAtom, project);

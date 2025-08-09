@@ -52,10 +52,14 @@ export class TextRenderer {
     return nearestBitmap;
   }
 
-  private buildCache(text: string, size: number, color: Color) {
+  private buildCache(text: string, size: number, color: Color): CanvasImageSource {
     const textSize = getTextSize(text, size);
     // 这里用OffscreenCanvas而不是document.createElement("canvas")
     // 因为OffscreenCanvas有神秘优化，后续也方便移植到Worker中渲染
+    if (textSize.x <= 1 || textSize.y <= 1) {
+      // 如果文本大小为0，直接返回一个透明图片
+      return new Image();
+    }
     const canvas = new OffscreenCanvas(textSize.x, textSize.y * 1.5);
     const ctx = canvas.getContext("2d")!;
     // 如果这里开了抗锯齿，并且外层的canvas也开了抗锯齿，会导致文字模糊
@@ -65,10 +69,12 @@ export class TextRenderer {
     ctx.font = `${size}px normal ${FONT}`;
     ctx.fillStyle = color.toString();
     ctx.fillText(text, 0, size / 2);
-    createImageBitmap(canvas).then((bmp) => {
-      const cacheKey = this.hash(text, size);
-      this.cache.set(cacheKey, bmp);
-    });
+    createImageBitmap(canvas)
+      .then((bmp) => {
+        const cacheKey = this.hash(text, size);
+        this.cache.set(cacheKey, bmp);
+      })
+      .catch(() => {});
     return canvas;
   }
 
