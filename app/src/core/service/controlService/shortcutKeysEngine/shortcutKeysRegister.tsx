@@ -10,12 +10,12 @@ import { ConnectableEntity } from "@/core/stage/stageObject/abstract/Connectable
 import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import ColorWindow from "@/pages/_sub_window/ColorWindow";
-import FindWindow from "@/pages/_sub_window/FindWindow";
-import RecentFilesWindow from "@/pages/_sub_window/RecentFilesWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
-import TagWindow from "@/pages/_sub_window/TagWindow";
 import { activeProjectAtom, store } from "@/state";
+import ColorWindow from "@/sub/ColorWindow";
+import FindWindow from "@/sub/FindWindow";
+import RecentFilesWindow from "@/sub/RecentFilesWindow";
+import SettingsWindow from "@/sub/SettingsWindow";
+import TagWindow from "@/sub/TagWindow";
 import { Direction } from "@/types/directions";
 import { openBrowserOrFile } from "@/utils/externalOpen";
 import { isMac } from "@/utils/platform";

@@ -1,4 +1,4 @@
-import Markdown from "@/components/markdown";
+import Markdown from "@/components/ui/markdown";
 import { Settings } from "@/core/service/Settings";
 import { SubWindow } from "@/core/service/SubWindow";
 import { activeProjectAtom } from "@/state";

@@ -1,5 +1,5 @@
-import { SettingField } from "@/components/field";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { SettingField } from "@/components/ui/field";
 import {
   Sidebar,
   SidebarContent,

@@ -1,4 +1,4 @@
-import Markdown from "@/components/markdown";
+import Markdown from "@/components/ui/markdown";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { cn } from "@/utils/cn";
