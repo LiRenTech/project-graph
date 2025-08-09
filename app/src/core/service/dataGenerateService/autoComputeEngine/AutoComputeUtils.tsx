@@ -1,3 +1,6 @@
+import { Color, Vector } from "@graphif/data-structures";
+import { Rectangle } from "@graphif/shapes";
+import { CollisionBox } from "@/core/stage/stageObject/collisionBox/collisionBox";
 import { v4 as uuidv4 } from "uuid";
 import { Project, service } from "@/core/Project";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
@@ -61,12 +64,19 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
+      const rect = node.collisionBox.getRectangle();
       const newNode = new TextNode(this.project, {
         uuid: uuidv4(),
         text: resultText,
-        location: [node.collisionBox.getRectangle().location.x, node.collisionBox.getRectangle().location.y + 100],
-        size: [100, 100],
-        color: [0, 0, 0, 0],
+        // 将 location 和 size 合并到 collisionBox 中
+        collisionBox: new CollisionBox([
+          new Rectangle(
+            new Vector(rect.location.x, rect.location.y + 100), // 原来的 location
+            new Vector(100, 100), // 原来的 size
+          ),
+        ]),
+        // 将 color 数组转换为 Color 对象
+        color: Color.Transparent, // [0, 0, 0, 0] 对应 Color.Transparent
       });
       this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(node, newNode);
@@ -88,12 +98,14 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
+      const rect = section.collisionBox.getRectangle();
       const newNode = new TextNode(this.project, {
         uuid: uuidv4(),
         text: resultText,
-        location: [section.collisionBox.getRectangle().location.x, section.collisionBox.getRectangle().bottom + 100],
-        size: [100, 100],
-        color: [0, 0, 0, 0],
+        collisionBox: new CollisionBox([
+          new Rectangle(new Vector(rect.location.x, rect.bottom + 100), new Vector(100, 100)),
+        ]),
+        color: Color.Transparent,
       });
       this.project.stageManager.add(newNode);
       this.project.stageManager.connectEntity(section, newNode);
@@ -106,15 +118,17 @@ export class AutoComputeUtils {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
+        const rect = section.collisionBox.getRectangle();
         const newNode = new TextNode(this.project, {
           uuid: uuidv4(),
           text: "",
-          location: [
-            section.collisionBox.getRectangle().location.x,
-            section.collisionBox.getRectangle().bottom + 100 + j * 100,
-          ],
-          size: [100, 100],
-          color: [0, 0, 0, 0],
+          collisionBox: new CollisionBox([
+            new Rectangle(
+              new Vector(rect.location.x, rect.bottom + 100 + j * 100), // 原来的 location
+              new Vector(100, 100),
+            ),
+          ]),
+          color: Color.Transparent,
         });
         this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(section, newNode);
@@ -150,15 +164,17 @@ export class AutoComputeUtils {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
+        const rect = node.collisionBox.getRectangle();
         const newNode = new TextNode(this.project, {
           uuid: uuidv4(),
           text: "",
-          location: [
-            node.collisionBox.getRectangle().location.x,
-            node.collisionBox.getRectangle().location.y + 100 + j * 100,
-          ],
-          size: [100, 100],
-          color: [0, 0, 0, 0],
+          collisionBox: new CollisionBox([
+            new Rectangle(
+              new Vector(rect.location.x, rect.location.y + 100 + j * 100), // 原来的 location
+              new Vector(100, 100),
+            ),
+          ]),
+          color: Color.Transparent,
         });
         this.project.stageManager.add(newNode);
         this.project.stageManager.connectEntity(node, newNode);
