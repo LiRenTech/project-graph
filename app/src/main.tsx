@@ -103,7 +103,7 @@ async function renderApp(cli: boolean = false) {
     // }
     root.render(
       <Provider store={store}>
-        <Toaster richColors />
+        <Toaster richColors visibleToasts={5} expand />
         <App />
       </Provider>,
     );

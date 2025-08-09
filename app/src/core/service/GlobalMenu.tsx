@@ -15,11 +15,11 @@ import { Project } from "@/core/Project";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
 import AIWindow from "@/sub/AIWindow";
 import SettingsWindow from "@/sub/SettingsWindow";
-import { serialize } from "@graphif/serializer";
+import { deserialize, serialize } from "@graphif/serializer";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open, save } from "@tauri-apps/plugin-dialog";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { open as openFilePath } from "@tauri-apps/plugin-shell";
 import { useAtom } from "jotai";
 import {
@@ -67,11 +67,11 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { URI } from "vscode-uri";
+import { ProjectUpgrader } from "../stage/ProjectUpgrader";
 import { LineEdge } from "../stage/stageObject/association/LineEdge";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
 import { RecentFileManager } from "./dataFileService/RecentFileManager";
 import { Telemetry } from "./Telemetry";
-import { ProjectUpgrader } from "../stage/ProjectUpgrader";
 
 const Content = MenubarContent;
 const Item = MenubarItem;
@@ -117,10 +117,6 @@ export function GlobalMenu() {
           >
             <FolderOpen />
             打开
-          </Item>
-          <Item onClick={onOpenOldFile}>
-            <FolderClock />
-            打开旧版本文件
           </Item>
           <Sub>
             <SubTrigger>
@@ -521,7 +517,7 @@ export function GlobalMenu() {
           关于
         </Trigger>
         <Content>
-          <Item onClick={() => SettingsWindow.open("about")}>
+          <Item onClick={() => SettingsWindow.open()}>
             <MessageCircleWarning />
             关于
           </Item>
@@ -547,10 +543,32 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
     const path = await open({
       directory: false,
       multiple: false,
-      filters: [{ name: "工程文件", extensions: ["prg"] }],
+      filters: [{ name: "工程文件", extensions: ["prg", "json"] }],
     });
     if (!path) return;
     uri = URI.file(path);
+  }
+  let stage;
+  if (uri.fsPath.endsWith(".json")) {
+    const content = await readTextFile(uri.fsPath);
+    const json = JSON.parse(content);
+    const t = performance.now();
+    stage = await toast
+      .promise(ProjectUpgrader.convertVAnyToN1(json), {
+        loading: "正在转换旧版项目文件...",
+        success: () => {
+          const time = performance.now() - t;
+          Telemetry.event("转换vany->n1", { time, length: content.length });
+          return `转换成功，耗时 ${time}ms`;
+        },
+        error: (e) => {
+          Telemetry.event("转换vany->n1报错", { error: String(e) });
+          return `转换失败，已发送错误报告，可在群内联系开发者\n${String(e)}`;
+        },
+      })
+      .unwrap();
+    toast.info("您正在尝试导入旧版的文件！稍后如果点击了保存文件，文件会保存为相同文件夹内的 .prg 后缀的文件");
+    uri = uri.with({ path: uri.path.replace(/\.json$/, ".prg") });
   }
   if (store.get(projectsAtom).some((p) => p.uri.toString() === uri.toString())) {
     store.set(activeProjectAtom, store.get(projectsAtom).find((p) => p.uri.toString() === uri.toString())!);
@@ -564,6 +582,9 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
     return;
   }
   const project = new Project(uri);
+  if (stage) {
+    project.stage = deserialize(stage);
+  }
   const t = performance.now();
   loadAllServices(project);
   const loadServiceTime = performance.now() - t;
@@ -579,7 +600,7 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
         readFileTime,
         source,
       });
-      return `耗时 ${readFileTime} ms，共 ${project.stage.length} 个舞台对象，${project.attachments.size} 个附件`;
+      return `耗时 ${readFileTime}ms，共 ${project.stage.length} 个舞台对象，${project.attachments.size} 个附件`;
     },
     error: (e) => {
       Telemetry.event("打开文件失败", {
@@ -588,23 +609,4 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
       return `读取时发生错误，已发送错误报告，可在群内联系开发者\n${String(e)}`;
     },
   });
-}
-
-/**
- * 打开旧版本文件
- */
-export async function onOpenOldFile() {
-  const path = await open({
-    directory: false,
-    multiple: false,
-    filters: [{ name: "工程文件", extensions: ["json"] }],
-  });
-  if (!path) return;
-  const project = await ProjectUpgrader.convertV16toN1(path);
-  if (!project) {
-    Dialog.confirm("文件格式错误", "文件格式错误");
-    return;
-  }
-  store.set(projectsAtom, [...store.get(projectsAtom), project]);
-  store.set(activeProjectAtom, project);
 }
