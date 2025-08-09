@@ -16,17 +16,19 @@ import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/s
 import AIWindow from "@/sub/AIWindow";
 import SettingsWindow from "@/sub/SettingsWindow";
 import { deserialize, serialize } from "@graphif/serializer";
+import { getVersion } from "@tauri-apps/api/app";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { open as openFilePath } from "@tauri-apps/plugin-shell";
+import { open as openFilePath, open as shellOpen } from "@tauri-apps/plugin-shell";
 import { useAtom } from "jotai";
 import {
   Airplay,
   AppWindow,
   Axe,
   Bot,
+  Bug,
   CircleAlert,
   ExternalLink,
   File,
@@ -87,6 +89,8 @@ export function GlobalMenu() {
   const [activeProject] = useAtom(activeProjectAtom);
   const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
   const [recentFiles, setRecentFiles] = useState<RecentFileManager.RecentFile[]>([]);
+  const [version, setVersion] = useState<string>("");
+  const [isUnstableVersion, setIsUnstableVersion] = useState(false);
 
   useEffect(() => {
     refresh();
@@ -94,6 +98,9 @@ export function GlobalMenu() {
 
   async function refresh() {
     setRecentFiles(await RecentFileManager.getRecentFiles());
+    const ver = await getVersion();
+    setVersion(ver);
+    setIsUnstableVersion(ver.includes("alpha") || ver.includes("beta") || ver.includes("rc") || ver.includes("dev"));
   }
 
   return (
@@ -527,6 +534,25 @@ export function GlobalMenu() {
           </Item>
         </Content>
       </Menu>
+
+      {isUnstableVersion && (
+        <Menu>
+          <Trigger className="*:text-destructive! text-destructive!">
+            <MessageCircleWarning />
+            测试版
+          </Trigger>
+          <Content>
+            <Item variant="destructive">v{version}</Item>
+            <Item variant="destructive">此版本并非正式版</Item>
+            <Item variant="destructive">可能包含 Bug 和未完善的功能</Item>
+            <Separator />
+            <Item onClick={() => shellOpen("https://github.com/graphif/project-graph/issues/487")}>
+              <Bug />
+              报告 Bug: 在 Issue #487 中评论
+            </Item>
+          </Content>
+        </Menu>
+      )}
     </Menubar>
   );
 }
