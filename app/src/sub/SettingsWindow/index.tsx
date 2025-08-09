@@ -7,7 +7,7 @@ import { useState } from "react";
 import AppearanceTab from "./appearance";
 import SettingsTab from "./settings";
 
-type TabName = "settings" | "customize" | "startFile";
+type TabName = "settings" | "appearance" | "startFile";
 
 export default function SettingsWindow({ defaultTab = "settings" }: { defaultTab?: TabName }) {
   const [currentTab, setCurrentTab] = useState<TabName>(defaultTab);

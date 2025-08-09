@@ -33,7 +33,6 @@ export class DeleteManager {
     this.registerHandler(ConnectPoint, this.deleteConnectPoint.bind(this));
     this.registerHandler(ImageNode, this.deleteImageNode.bind(this));
     this.registerHandler(UrlNode, this.deleteUrlNode.bind(this));
-    this.registerHandler(PortalNode, this.deletePortalNode.bind(this));
     this.registerHandler(PenStroke, this.deletePenStroke.bind(this));
     this.registerHandler(SvgNode, this.deleteSvgNode.bind(this));
   }

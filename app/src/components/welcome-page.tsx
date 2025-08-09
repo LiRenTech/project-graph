@@ -18,7 +18,7 @@ export default function WelcomePage() {
                 <FilePlus />
                 <span>新建文件</span>
               </div>
-              <div onClick={onOpenFile}>
+              <div onClick={() => onOpenFile(undefined, "欢迎页面")}>
                 <FolderOpen />
                 <span>打开文件</span>
               </div>

@@ -13,9 +13,8 @@ import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { activeProjectAtom, store } from "@/state";
 import ColorWindow from "@/sub/ColorWindow";
 import FindWindow from "@/sub/FindWindow";
-import RecentFilesWindow from "@/sub/RecentFilesWindow";
+import KeyboardRecentFilesWindow from "@/sub/KeyboardRecentFilesWindow";
 import SettingsWindow from "@/sub/SettingsWindow";
-import TagWindow from "@/sub/TagWindow";
 import { Direction } from "@/types/directions";
 import { openBrowserOrFile } from "@/utils/externalOpen";
 import { isMac } from "@/utils/platform";
@@ -350,24 +349,24 @@ export class KeyBindsRegistrar {
     await this.project.keyBinds.create("clickAppMenuSettingsButton", "S-!", () => {
       SettingsWindow.open();
     });
-    await this.project.keyBinds.create("clickTagPanelButton", "S-@", () => {
-      TagWindow.open();
-    });
+    // await this.project.keyBinds.create("clickTagPanelButton", "S-@", () => {
+    //   TagWindow.open();
+    // });
     await this.project.keyBinds.create("clickAppMenuRecentFileButton", "S-#", () => {
-      RecentFilesWindow.open();
+      KeyboardRecentFilesWindow.open();
     });
-    await this.project.keyBinds.create("clickStartFilePanelButton", "S-$", () => {
-      const button = document.getElementById("app-start-file-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
-      setTimeout(() => {
-        this.project.controller.pressingKeySet.clear();
-      }, 200);
-    });
+    // await this.project.keyBinds.create("clickStartFilePanelButton", "S-$", () => {
+    //   const button = document.getElementById("app-start-file-btn");
+    //   const event = new MouseEvent("click", {
+    //     bubbles: true,
+    //     cancelable: true,
+    //     view: window,
+    //   });
+    //   button?.dispatchEvent(event);
+    //   setTimeout(() => {
+    //     this.project.controller.pressingKeySet.clear();
+    //   }, 200);
+    // });
     await this.project.keyBinds.create("saveFile", "C-s", () => {
       store.get(activeProjectAtom)?.save();
     });

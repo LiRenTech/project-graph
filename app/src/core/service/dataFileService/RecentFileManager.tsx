@@ -1,6 +1,7 @@
+import { createStore } from "@/utils/store";
 import { exists } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
-import { createStore } from "@/utils/store";
+import { URI } from "vscode-uri";
 
 /**
  * 管理最近打开的文件列表
@@ -9,28 +10,8 @@ import { createStore } from "@/utils/store";
 export namespace RecentFileManager {
   let store: Store;
 
-  /**
-   * 这次软件启动的时候是否成功触发了 打开用户自定义的工程文件 事件
-   */
-  export function isOpenByPathWhenAppStart() {
-    return isThisOpenByPathFlag;
-  }
-  let isThisOpenByPathFlag = false;
-
-  /**
-   * 仅在软件启动时调用一次
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  export function openFileByPathWhenAppStart(autoOpenPath: string) {
-    isThisOpenByPathFlag = true;
-    // TODO: startHookFunction(autoOpenPath);
-  }
-
   export type RecentFile = {
-    /**
-     * 绝对路径
-     */
-    path: string;
+    uri: URI;
     /**
      * 上次保存或打开的时间戳
      */
@@ -38,7 +19,7 @@ export namespace RecentFileManager {
   };
 
   export async function init() {
-    store = await createStore("recent-files.json");
+    store = await createStore("recent-files2.json");
     store.save();
   }
 
@@ -49,38 +30,44 @@ export namespace RecentFileManager {
   export async function addRecentFile(file: RecentFile) {
     // 如果已经有了，则先删除
     const existingFiles = await getRecentFiles();
-    const existingIndex = existingFiles.findIndex((f) => f.path === file.path);
+    const existingIndex = existingFiles.findIndex((f) => f.uri.toString() === file.uri.toString());
     if (existingIndex >= 0) {
       existingFiles.splice(existingIndex, 1); // 删除已有记录
     }
 
     existingFiles.push(file); // 添加新文件
 
-    await store.set("recentFiles", existingFiles); // 更新存储
+    await store.set(
+      "recentFiles",
+      existingFiles.map((f) => ({ ...f, uri: f.uri.toString() })),
+    ); // 更新存储
     store.save();
   }
 
-  export async function addRecentFileByPath(path: string) {
+  export async function addRecentFileByUri(uri: URI) {
     await addRecentFile({
-      path: path,
+      uri: uri,
       time: new Date().getTime(),
     });
   }
 
-  export async function addRecentFilesByPaths(paths: string[]) {
+  export async function addRecentFilesByUris(uris: URI[]) {
     // 先去重
-    const uniquePaths = Array.from(new Set(paths));
+    const uniqueUris = Array.from(new Set(uris.map((u) => u.toString()))).map((str) => URI.parse(str));
     const existingFiles = await getRecentFiles();
-    for (const path of uniquePaths) {
+    for (const uri of uniqueUris) {
       const addFile = {
-        path: path,
+        uri: uri,
         time: new Date().getTime(),
       };
-      if (!existingFiles.some((f) => f.path === addFile.path)) {
+      if (!existingFiles.some((f) => f.uri.toString() === addFile.uri.toString())) {
         existingFiles.push(addFile); // 添加新文件
       }
     }
-    await store.set("recentFiles", existingFiles); // 更新存储
+    await store.set(
+      "recentFiles",
+      existingFiles.map((f) => ({ ...f, uri: f.uri.toString() })),
+    ); // 更新存储
     store.save();
   }
 
@@ -88,12 +75,15 @@ export namespace RecentFileManager {
    * 删除一条历史记录
    * @param path
    */
-  export async function removeRecentFileByPath(path: string) {
+  export async function removeRecentFileByUri(uri: URI) {
     const existingFiles = await getRecentFiles();
-    const existingIndex = existingFiles.findIndex((f) => f.path === path);
+    const existingIndex = existingFiles.findIndex((f) => f.uri.toString() === uri.toString());
     if (existingIndex >= 0) {
       existingFiles.splice(existingIndex, 1); // 删除已有记录
-      await store.set("recentFiles", existingFiles); // 更新存储
+      await store.set(
+        "recentFiles",
+        existingFiles.map((f) => ({ ...f, uri: f.uri.toString() })),
+      ); // 更新存储
       store.save();
       return true;
     }
@@ -112,8 +102,12 @@ export namespace RecentFileManager {
    * 获取最近打开的文件列表
    */
   export async function getRecentFiles(): Promise<RecentFile[]> {
-    const data = ((await store.get("recentFiles")) as RecentFile[]) || [];
-    return data; // 返回最近文件列表
+    const data = ((await store.get("recentFiles")) as any[]) || [];
+    // 恢复为Uri对象
+    return data.map((f) => ({
+      ...f,
+      uri: typeof f.uri === "string" ? URI.parse(f.uri) : f.uri,
+    }));
   }
 
   /**
@@ -130,19 +124,22 @@ export namespace RecentFileManager {
 
     for (const file of recentFiles) {
       try {
-        const isExists = await exists(file.path);
+        const isExists = await exists(file.uri.toString());
         if (isExists) {
           recentFilesValid.push(file); // 存在则保留
         } else {
           isFileLost = true;
         }
       } catch (e) {
-        console.error("无法检测文件是否存在：", file.path);
+        console.error("无法检测文件是否存在：", file.uri.toString());
         console.error(e);
       }
     }
     if (isFileLost) {
-      await store.set("recentFiles", recentFilesValid); // 更新存储
+      await store.set(
+        "recentFiles",
+        recentFilesValid.map((f) => ({ ...f, uri: f.uri.toString() })),
+      ); // 更新存储
     }
   }
 
@@ -153,7 +150,10 @@ export namespace RecentFileManager {
     const recentFiles = await getRecentFiles();
     // 新的在前面
     recentFiles.sort((a, b) => b.time - a.time);
-    await store.set("recentFiles", recentFiles); // 更新存储
+    await store.set(
+      "recentFiles",
+      recentFiles.map((f) => ({ ...f, uri: f.uri.toString() })),
+    ); // 更新存储
     store.save();
   }
 

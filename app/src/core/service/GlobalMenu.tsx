@@ -49,6 +49,7 @@ import {
   MapPin,
   MessageCircleWarning,
   MousePointer2,
+  Palette,
   PersonStanding,
   Radiation,
   Redo,
@@ -59,13 +60,16 @@ import {
   SquareDashedMousePointer,
   TestTube2,
   TextQuote,
+  Trash,
   Undo,
   View,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { URI } from "vscode-uri";
 import { LineEdge } from "../stage/stageObject/association/LineEdge";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
+import { RecentFileManager } from "./dataFileService/RecentFileManager";
 import { Telemetry } from "./Telemetry";
 
 const Content = MenubarContent;
@@ -81,6 +85,15 @@ export function GlobalMenu() {
   // const [projects, setProjects] = useAtom(projectsAtom);
   const [activeProject] = useAtom(activeProjectAtom);
   const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
+  const [recentFiles, setRecentFiles] = useState<RecentFileManager.RecentFile[]>([]);
+
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  async function refresh() {
+    setRecentFiles(await RecentFileManager.getRecentFiles());
+  }
 
   return (
     <Menubar className="shrink-0">
@@ -91,11 +104,16 @@ export function GlobalMenu() {
           文件
         </Trigger>
         <Content>
-          <Item onClick={onNewDraft}>
+          <Item onClick={() => onNewDraft()}>
             <FilePlus />
             新建
           </Item>
-          <Item onClick={onOpenFile}>
+          <Item
+            onClick={async () => {
+              await onOpenFile(undefined, "GlobalMenu");
+              await refresh();
+            }}
+          >
             <FolderOpen />
             打开
           </Item>
@@ -105,11 +123,29 @@ export function GlobalMenu() {
               最近打开的文件
             </SubTrigger>
             <SubContent>
-              <Item>2.0保存测试.prg</Item>
-              <Item>file.prg</Item>
-              <Item>file.prg</Item>
-              <Item>file.prg</Item>
-              <Item>file.prg</Item>
+              {recentFiles.map((file) => (
+                <Item
+                  key={file.uri.toString()}
+                  onClick={async () => {
+                    await onOpenFile(file.uri, "GlobalMenu最近打开的文件");
+                    await refresh();
+                  }}
+                >
+                  <File />
+                  {file.uri.toString()}
+                </Item>
+              ))}
+              <Separator />
+              <Item
+                variant="destructive"
+                onClick={async () => {
+                  await RecentFileManager.clearAllRecentFiles();
+                  await refresh();
+                }}
+              >
+                <Trash />
+                清空
+              </Item>
             </SubContent>
           </Sub>
           <Separator />
@@ -364,9 +400,13 @@ export function GlobalMenu() {
           设置
         </Trigger>
         <Content>
-          <Item onClick={() => SettingsWindow.open("visual")}>
+          <Item onClick={() => SettingsWindow.open("settings")}>
             <SettingsIcon />
             设置
+          </Item>
+          <Item onClick={() => SettingsWindow.open("appearance")}>
+            <Palette />
+            个性化
           </Item>
           <Sub>
             <SubTrigger disabled={!activeProject}>
@@ -405,6 +445,13 @@ export function GlobalMenu() {
                 }}
               >
                 编辑文本节点
+              </Item>
+              <Item
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                refresh
               </Item>
             </SubContent>
           </Sub>
@@ -490,17 +537,32 @@ export async function onNewDraft() {
   store.set(projectsAtom, [...store.get(projectsAtom), project]);
   store.set(activeProjectAtom, project);
 }
-export async function onOpenFile() {
-  const path = await open({
-    directory: false,
-    multiple: false,
-    filters: [{ name: "工程文件", extensions: ["prg"] }],
-  });
-  if (!path) return;
-  const project = new Project(URI.file(path));
+export async function onOpenFile(uri?: URI, source: string = "unknown") {
+  if (!uri) {
+    const path = await open({
+      directory: false,
+      multiple: false,
+      filters: [{ name: "工程文件", extensions: ["prg"] }],
+    });
+    if (!path) return;
+    uri = URI.file(path);
+  }
+  if (store.get(projectsAtom).some((p) => p.uri.toString() === uri.toString())) {
+    store.set(activeProjectAtom, store.get(projectsAtom).find((p) => p.uri.toString() === uri.toString())!);
+    store.get(activeProjectAtom)?.loop();
+    // 把其他项目pause
+    store
+      .get(projectsAtom)
+      .filter((p) => p.uri.toString() !== uri.toString())
+      .forEach((p) => p.pause());
+    toast.success("切换到已打开的标签页");
+    return;
+  }
+  const project = new Project(uri);
   const t = performance.now();
   loadAllServices(project);
   const loadServiceTime = performance.now() - t;
+  await RecentFileManager.addRecentFileByUri(uri);
   toast.promise(project.init(), {
     loading: "正在打开文件...",
     success: () => {
@@ -510,6 +572,7 @@ export async function onOpenFile() {
       Telemetry.event("打开文件", {
         loadServiceTime,
         readFileTime,
+        source,
       });
       return `耗时 ${readFileTime} ms，共 ${project.stage.length} 个舞台对象，${project.attachments.size} 个附件`;
     },

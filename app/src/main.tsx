@@ -6,7 +6,7 @@ import { RecentFileManager } from "@/core/service/dataFileService/RecentFileMana
 import { StartFilesManager } from "@/core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "@/core/service/feedbackService/ColorManager";
 import { Settings } from "@/core/service/Settings";
-import { Tourials } from "@/core/service/Tourials";
+import { Tutorials } from "@/core/service/Tourials";
 import { UserState } from "@/core/service/UserState";
 import { EdgeCollisionBoxGetter } from "@/core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import { store } from "@/state";
@@ -43,7 +43,7 @@ const el = document.getElementById("root")!;
     RecentFileManager.init(),
     StartFilesManager.init(),
     ColorManager.init(),
-    Tourials.init(),
+    Tutorials.init(),
     UserScriptsManager.init(),
     UserState.init(),
   ]);
