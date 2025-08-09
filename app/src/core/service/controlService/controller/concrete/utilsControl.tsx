@@ -321,15 +321,16 @@ export class ControllerUtils {
     this.editTextNodeHookGlobal.hookFunctionStart(clickedNode);
   }
 
-  addTextNodeByLocation(location: Vector, selectCurrent: boolean = false, successCallback?: (uuid: string) => void) {
+  async addTextNodeByLocation(location: Vector, selectCurrent: boolean = false) {
     const sections = this.project.sectionMethods.getSectionsByInnerLocation(location);
     // 新建节点
-    this.project.nodeAdder.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
-      this.textNodeInEditModeByUUID(uuid);
-      if (successCallback) {
-        successCallback(uuid);
-      }
-    });
+    const uuid = await this.project.nodeAdder.addTextNodeByClick(location, sections, selectCurrent);
+    this.textNodeInEditModeByUUID(uuid);
+    return uuid;
+  }
+  createConnectPoint(location: Vector) {
+    const sections = this.project.sectionMethods.getSectionsByInnerLocation(location);
+    this.project.nodeAdder.addConnectPoint(location, sections);
   }
 
   addTextNodeFromCurrentSelectedNode(direction: Direction, selectCurrent = false) {

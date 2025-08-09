@@ -151,13 +151,10 @@ export class SectionPackManager {
   targetTextNodeToSection(textNode: TextNode, ignoreEdges: boolean = false): Section {
     // 获取这个节点的父级Section
     const fatherSections = this.project.sectionMethods.getFatherSections(textNode);
-    const rect = textNode.collisionBox.getRectangle().expandFromCenter(50);
     const newSection = new Section(this.project, {
-      uuid: v4(),
       text: textNode.text,
-      location: [rect.left, rect.top],
-      size: [rect.size.x, rect.size.y],
-      color: [textNode.color.r, textNode.color.g, textNode.color.b, textNode.color.a],
+      collisionBox: textNode.collisionBox,
+      color: textNode.color,
       details: textNode.details,
     });
     newSection.adjustLocationAndSize();

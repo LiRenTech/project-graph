@@ -310,7 +310,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
       const newConnectFromEntities = this.connectFromEntities;
 
-      this.project.controllerUtils.addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
+      this.project.controllerUtils.addTextNodeByLocation(releaseWorldLocation, true).then((uuid) => {
         const createdNode = this.project.stageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
         for (const fromEntity of newConnectFromEntities) {
           const connectResult = this.project.stageManager.connectEntity(fromEntity, createdNode);

@@ -179,14 +179,14 @@ export class EdgeRenderer {
 
     if (edge.source.isHiddenBySectionCollapse) {
       return new LineEdge(this.project, {
-        associationList: [edge.target.uuid, this.getMinNonCollapseParentSection(edge.source).uuid],
+        associationList: [this.getMinNonCollapseParentSection(edge.source), edge.target],
         text: edge.text,
         uuid: edge.uuid,
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
       return new LineEdge(this.project, {
-        associationList: [edge.source.uuid, this.getMinNonCollapseParentSection(edge.target).uuid],
+        associationList: [this.getMinNonCollapseParentSection(edge.target), edge.source],
         text: edge.text,
         uuid: edge.uuid,
       });
