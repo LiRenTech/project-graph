@@ -116,8 +116,8 @@ export class Controller {
     // 绑定事件
     this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
     this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
-    this.project.canvas.element.addEventListener("mousedown", this.mousedown.bind(this));
-    this.project.canvas.element.addEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.addEventListener("pointerdown", this.mousedown.bind(this));
+    this.project.canvas.element.addEventListener("pointerup", this.mouseup.bind(this));
     this.project.canvas.element.addEventListener("touchstart", this.touchstart.bind(this), false);
     this.project.canvas.element.addEventListener("touchmove", this.touchmove.bind(this), false);
     this.project.canvas.element.addEventListener("touchend", this.touchend.bind(this), false);
@@ -142,8 +142,8 @@ export class Controller {
     });
     this.project.canvas.element.removeEventListener("keydown", this.keydown.bind(this));
     this.project.canvas.element.removeEventListener("keyup", this.keyup.bind(this));
-    this.project.canvas.element.removeEventListener("mousedown", this.mousedown.bind(this));
-    this.project.canvas.element.removeEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.removeEventListener("pointerdown", this.mousedown.bind(this));
+    this.project.canvas.element.removeEventListener("pointerup", this.mouseup.bind(this));
     this.project.canvas.element.removeEventListener("touchstart", this.touchstart.bind(this), false);
     this.project.canvas.element.removeEventListener("touchmove", this.touchmove.bind(this), false);
     this.project.canvas.element.removeEventListener("touchend", this.touchend.bind(this), false);

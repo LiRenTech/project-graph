@@ -395,6 +395,10 @@ export class Project extends EventEmitter<{
   get state(): ProjectState {
     return this._state;
   }
+
+  get isRunning(): boolean {
+    return this.rafHandle !== -1;
+  }
 }
 
 declare module "./Project" {

@@ -12,7 +12,7 @@ export class Canvas {
     private readonly project: Project,
     public element: HTMLCanvasElement = document.createElement("canvas"),
   ) {
-    element.tabIndex = 0;
+    element.tabIndex = -1;
     // 鼠标移动到画布上开始tick
     element.addEventListener("mousemove", () => {
       if (document.querySelector("[data-radix-popper-content-wrapper]")) {
@@ -21,16 +21,33 @@ export class Canvas {
       }
       this.project.loop();
     });
-    // pointerdown或wheel时focus
-    element.addEventListener("mouseup", (e) => {
-      e.preventDefault();
-      element.focus();
+    // 重定向键盘事件
+    window.addEventListener("keydown", (event) => {
+      if (project.isRunning) {
+        element.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            key: event.key,
+            altKey: event.altKey,
+            ctrlKey: event.ctrlKey,
+            shiftKey: event.shiftKey,
+          }),
+        );
+      }
     });
-    element.addEventListener("wheel", () => {
-      element.focus();
+    window.addEventListener("keyup", (event) => {
+      if (project.isRunning) {
+        element.dispatchEvent(
+          new KeyboardEvent("keyup", {
+            key: event.key,
+            altKey: event.altKey,
+            ctrlKey: event.ctrlKey,
+            shiftKey: event.shiftKey,
+          }),
+        );
+      }
     });
     // 失焦时清空按下的按键
-    element.addEventListener("blur", () => {
+    window.addEventListener("blur", () => {
       this.project.controller.pressingKeySet.clear();
     });
     this.ctx = element.getContext("2d", {

@@ -34,7 +34,7 @@ export class InputElement {
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
 
-      inputElement.id = "input-element";
+      inputElement.id = "pg-input";
       inputElement.autocomplete = "off";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
@@ -130,7 +130,7 @@ export class InputElement {
       const textareaElement = document.createElement("textarea");
       textareaElement.value = defaultValue;
 
-      textareaElement.id = "textarea-element";
+      textareaElement.id = "pg-textarea";
       textareaElement.autocomplete = "off"; // 禁止使用自动填充内容，防止影响输入体验
       // const initSizeView = this.project.textRenderer.measureMultiLineTextSize(
       //   defaultValue,
