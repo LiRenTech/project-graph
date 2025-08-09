@@ -1,5 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "@/types/node";
+import { readTextFile } from "@tauri-apps/plugin-fs";
+import { Project } from "../Project";
+import { loadAllServices } from "../loadAllServices";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { CollisionBox } from "./stageObject/collisionBox/collisionBox";
+import { Rectangle } from "@graphif/shapes";
+import { Vector } from "@graphif/data-structures";
+import { LineEdge } from "./stageObject/association/LineEdge";
+import { ConnectableEntity } from "./stageObject/abstract/ConnectableEntity";
 
 export namespace ProjectUpgrader {
   export function upgrade(data: Record<string, any>): Record<string, any> {
@@ -315,5 +324,102 @@ export namespace ProjectUpgrader {
       }
     }
     return data;
+  }
+
+  /**
+   * 将一个json文件的路径转换为prj格式
+   * @param jsonFilePath json文件路径
+   */
+  export async function convertV16toN1(jsonFilePath: string) {
+    // 读取json文件内容
+    const content = await readTextFile(jsonFilePath);
+    try {
+      let json = JSON.parse(content);
+      // 升级json数据到最新版本
+      json = ProjectUpgrader.upgrade(json);
+
+      const newProject = Project.newDraft();
+      loadAllServices(newProject);
+      await newProject.init();
+
+      const uuidDict = new Map<string, ConnectableEntity>();
+
+      // 遍历每一个实体
+      for (const entity of json.entities) {
+        uuidDict.set(entity.uuid, entity);
+
+        if (entity.type === "core:text_node") {
+          uuidDict.set(entity.uuid, entity.uuid);
+          newProject.stageManager.add(
+            new TextNode(newProject, {
+              uuid: entity.uuid,
+              text: entity.text,
+              details: entity.details,
+              collisionBox: new CollisionBox([
+                new Rectangle(
+                  new Vector(entity.location[0], entity.location[1]),
+                  new Vector(entity.size[0], entity.size[1]),
+                ),
+              ]),
+              color: entity.color,
+              sizeAdjust: entity.sizeAdjust,
+            }),
+          );
+        } else if (entity.type === "core:pen_stroke") {
+          // 涂鸦
+        } else if (entity.type === "core:image_node") {
+          // 图片
+        } else if (entity.type === "core:section") {
+          // 框
+        } else if (entity.type === "core:connect_point") {
+          // 连接点
+        } else if (entity.type === "core:url_node") {
+          // 链接
+        } else if (entity.type === "core:portal_node") {
+          // 传送门，先不管
+        } else if (entity.type === "core:svg_node") {
+          // svg节点，先不管
+        } else {
+          console.warn(`未知的实体类型${entity.type}`);
+        }
+      }
+
+      for (const association of json.associations) {
+        if (association.type === "core:line_edge") {
+          // 线
+          const fromUUID = association.source;
+          const toUUID = association.target;
+          const fromNode = uuidDict.get(fromUUID);
+          const toNode = uuidDict.get(toUUID);
+
+          if (fromNode === undefined || toNode === undefined) {
+            console.warn(`关联边的节点不存在`);
+            continue;
+          }
+
+          const newEdge = new LineEdge(newProject, {
+            associationList: [toNode, fromNode],
+            text: association.text,
+            targetRectangleRate: new Vector(...((association.targetRectRate as [number, number]) || [0.5, 0.5])),
+            sourceRectangleRate: new Vector(...((association.sourceRectRate as [number, number]) || [0.5, 0.5])),
+          });
+
+          newProject.stageManager.add(newEdge);
+        } else if (association.type === "core:cublic_catmull_rom_spline_edge") {
+          // CR曲线
+        } else if (association.type === "core:multi_target_undirected_edge") {
+          // 多源无向边
+        }
+      }
+
+      // 遍历所有标签
+      // TODO
+
+      // 将其作为一个草稿打开
+      return newProject;
+    } catch (e) {
+      console.error("json文件格式错误", e);
+      return null;
+    }
   }
 }

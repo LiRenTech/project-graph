@@ -146,16 +146,15 @@ export class Project extends EventEmitter<{
   private encoder = new Encoder();
   private decoder = new Decoder();
 
-  constructor(
-    /**
-     * 工程文件的URI
-     * 之所以从“路径”改为了“URI”，是因为要为后面的云同步功能做铺垫。
-     * 普通的“路径”无法表示云盘中的文件，而URI可以。
-     * 同时，草稿文件也从硬编码的“Project Graph”特殊文件路径改为了协议为draft、内容为UUID的URI。
-     * @see https://code.visualstudio.com/api/references/vscode-api#workspace.workspaceFile
-     */
-    uri: URI,
-  ) {
+  /**
+   * 创建一个项目
+   * @param uri 工程文件的URI
+   * 之所以从“路径”改为了“URI”，是因为要为后面的云同步功能做铺垫。
+   * 普通的“路径”无法表示云盘中的文件，而URI可以。
+   * 同时，草稿文件也从硬编码的“Project Graph”特殊文件路径改为了协议为draft、内容为UUID的URI。
+   * @see https://code.visualstudio.com/api/references/vscode-api#workspace.workspaceFile
+   */
+  constructor(uri: URI) {
     super();
     this._uri = uri;
   }

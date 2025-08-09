@@ -67,6 +67,7 @@ import { URI } from "vscode-uri";
 import { LineEdge } from "../stage/stageObject/association/LineEdge";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
 import { Telemetry } from "./Telemetry";
+import { ProjectUpgrader } from "../stage/ProjectUpgrader";
 
 const Content = MenubarContent;
 const Item = MenubarItem;
@@ -98,6 +99,10 @@ export function GlobalMenu() {
           <Item onClick={onOpenFile}>
             <FolderOpen />
             打开
+          </Item>
+          <Item onClick={onOpenOldFile}>
+            <FolderClock />
+            打开旧版本文件
           </Item>
           <Sub>
             <SubTrigger>
@@ -520,4 +525,23 @@ export async function onOpenFile() {
       return `读取时发生错误，已发送错误报告，可在群内联系开发者\n${String(e)}`;
     },
   });
+}
+
+/**
+ * 打开旧版本文件
+ */
+export async function onOpenOldFile() {
+  const path = await open({
+    directory: false,
+    multiple: false,
+    filters: [{ name: "工程文件", extensions: ["json"] }],
+  });
+  if (!path) return;
+  const project = await ProjectUpgrader.convertV16toN1(path);
+  if (!project) {
+    Dialog.confirm("文件格式错误", "文件格式错误");
+    return;
+  }
+  store.set(projectsAtom, [...store.get(projectsAtom), project]);
+  store.set(activeProjectAtom, project);
 }
