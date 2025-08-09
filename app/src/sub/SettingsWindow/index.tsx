@@ -1,110 +1,43 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { SettingField } from "@/components/ui/field";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SubWindow } from "@/core/service/SubWindow";
 import { activeProjectAtom, store } from "@/state";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
-import { ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { settingsCategories } from "./_categories";
-import { settingsCategoriesIcons } from "./_icons";
+import AppearanceTab from "./appearance";
+import SettingsTab from "./settings";
 
-export default function SettingsWindow({
-  defaultCategory = "",
-  defaultGroup = "",
-}: {
-  defaultCategory?: string;
-  defaultGroup?: string;
-}) {
-  const { t } = useTranslation("settings");
-  const [currentCategory, setCurrentCategory] = useState<keyof typeof settingsCategories>(defaultCategory as any);
-  const [currentGroup, setCurrentGroup] = useState(defaultGroup);
+type TabName = "settings" | "customize" | "startFile";
+
+export default function SettingsWindow({ defaultTab = "settings" }: { defaultTab?: TabName }) {
+  const [currentTab, setCurrentTab] = useState<TabName>(defaultTab);
 
   return (
-    <SidebarProvider className="h-full w-full overflow-hidden">
-      <Sidebar className="h-full overflow-auto">
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {Object.entries(settingsCategories).map(([category, value]) => {
-                  // @ts-expect-error fuck ts
-                  const CategoryIcon = settingsCategoriesIcons[category].icon;
-                  return (
-                    <Collapsible key={category} defaultOpen className="group/collapsible">
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <CollapsibleTrigger>
-                            <CategoryIcon />
-                            <span>{t(`categories.${category}.title`)}</span>
-                            <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                          </CollapsibleTrigger>
-                        </SidebarMenuButton>
-                        <SidebarMenuSub>
-                          <CollapsibleContent>
-                            {Object.entries(value).map(([group]) => {
-                              // @ts-expect-error fuck ts
-                              const GroupIcon = settingsCategoriesIcons[category][group];
-                              return (
-                                <SidebarMenuSubItem key={group}>
-                                  <SidebarMenuSubButton
-                                    asChild
-                                    isActive={category === currentCategory && group === currentGroup}
-                                    onClick={() => {
-                                      // @ts-expect-error fuck ts
-                                      setCurrentCategory(category);
-                                      setCurrentGroup(group);
-                                    }}
-                                  >
-                                    <a href="#">
-                                      <GroupIcon />
-                                      <span>{t(`categories.${category}.${group}`)}</span>
-                                    </a>
-                                  </SidebarMenuSubButton>
-                                </SidebarMenuSubItem>
-                              );
-                            })}
-                          </CollapsibleContent>
-                        </SidebarMenuSub>
-                      </SidebarMenuItem>
-                    </Collapsible>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-      <div className="flex w-full flex-col overflow-auto">
-        {currentCategory &&
-          currentGroup &&
-          // @ts-expect-error fuck ts
-          settingsCategories[currentCategory][currentGroup].map((key) => <SettingField key={key} settingKey={key} />)}
+    <Tabs value={currentTab} onValueChange={setCurrentTab as any} className="h-full gap-0 overflow-hidden">
+      <div className="flex">
+        <TabsList>
+          <TabsTrigger value="settings">设置</TabsTrigger>
+          <TabsTrigger value="appearance">个性化</TabsTrigger>
+          <TabsTrigger value="startFile">启动文件</TabsTrigger>
+        </TabsList>
+        <div data-pg-drag-region className="h-full flex-1" />
       </div>
-    </SidebarProvider>
+      <TabsContent value="settings" className="h-full">
+        <SettingsTab />
+      </TabsContent>
+      <TabsContent value="appearance" className="h-full">
+        <AppearanceTab />
+      </TabsContent>
+    </Tabs>
   );
 }
 
 // TODO: page参数
-SettingsWindow.open = (category: string, group: string) => {
+SettingsWindow.open = (tab: TabName = "settings") => {
   store.get(activeProjectAtom)?.pause();
   SubWindow.create({
-    title: "设置",
-    children: <SettingsWindow defaultCategory={category} defaultGroup={group} />,
+    children: <SettingsWindow defaultTab={tab} />,
     rect: Rectangle.inCenter(new Vector(innerWidth > 1653 ? 1240 : innerWidth * 0.75, innerHeight * 0.875)),
+    titleBarOverlay: true,
   });
 };
