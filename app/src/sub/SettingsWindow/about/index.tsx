@@ -8,7 +8,7 @@ import { BookOpenText, MessageCircleWarning, UsersRound } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 // 这行导入语句 open 不能删，否则会调用webview内部的窗口打开网页，非常卡
-import Introduction from "@/pages/_sub_window/SettingsWindow/about/_introduction";
+import Introduction from "@/sub/SettingsWindow/about/_introduction";
 import { cn } from "@/utils/cn";
 import { open } from "@tauri-apps/plugin-shell";
 import { useNavigate } from "react-router-dom";

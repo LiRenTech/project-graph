@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/menubar";
 import { loadAllServices } from "@/core/loadAllServices";
 import { Project } from "@/core/Project";
-import AIWindow from "@/pages/_sub_window/AIWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 import { activeProjectAtom, isClassroomModeAtom, projectsAtom, store } from "@/state";
+import AIWindow from "@/sub/AIWindow";
+import SettingsWindow from "@/sub/SettingsWindow";
 import { serialize } from "@graphif/serializer";
 import { appCacheDir, dataDir, join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";

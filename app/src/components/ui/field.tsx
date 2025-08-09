@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Settings, settingsSchema } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
-import { settingsIcons } from "@/pages/_sub_window/SettingsWindow/_icons";
+import { settingsIcons } from "@/sub/SettingsWindow/_icons";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { ChevronRight, RotateCw } from "lucide-react";

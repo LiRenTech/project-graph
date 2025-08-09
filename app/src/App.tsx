@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // FIXME: 移除上面的disable注释
+import MyContextMenuContent from "@/components/context-menu-content";
+import RenderSubWindows from "@/components/render-sub-windows";
 import { Button } from "@/components/ui/button";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { Dialog } from "@/components/ui/dialog";
+import Welcome from "@/components/welcome-page";
 import { Project, ProjectState } from "@/core/Project";
 import { GlobalMenu } from "@/core/service/GlobalMenu";
 import { Settings } from "@/core/service/Settings";
 import { Telemetry } from "@/core/service/Telemetry";
 import { Themes } from "@/core/service/Themes";
-import RenderSubWindows from "@/pages/_render_sub_windows";
-import Welcome from "@/pages/_welcome";
 import { activeProjectAtom, projectsAtom } from "@/state";
 import { getCurrentWindow } from "@/utils/platform";
 import { getVersion } from "@tauri-apps/api/app";
@@ -20,7 +21,6 @@ import { CloudUpload, Copy, Dot, Minus, Square, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import MyContextMenuContent from "./_context_menu_content";
 
 export default function App() {
   const [maximized, _setMaximized] = useState(false);

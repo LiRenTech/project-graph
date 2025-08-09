@@ -16,13 +16,11 @@
     "tauri:build:android": "tauri android build"
   },
   "dependencies": {
-    "@generouted/react-router": "^1.20.0",
     "@graphif/data-structures": "workspace:*",
     "@graphif/serializer": "workspace:*",
     "@graphif/shapes": "workspace:*",
     "@graphif/unplugin-original-class-name": "workspace:*",
     "@headlessui/react": "^2.2.4",
-    "@marsidev/react-turnstile": "^1.1.0",
     "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@msgpack/msgpack": "^3.1.2",
     "@octokit/rest": "^22.0.0",
@@ -82,8 +80,6 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.6.0",
-    "react-router": "^7.6.3",
-    "react-router-dom": "^7.6.3",
     "react-scan": "^0.4.3",
     "reflect-metadata": "^0.2.2",
     "rehype-katex": "^7.0.1",

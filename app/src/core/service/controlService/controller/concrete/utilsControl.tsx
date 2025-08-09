@@ -12,7 +12,7 @@ import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import { UrlNode } from "@/core/stage/stageObject/entity/UrlNode";
-import AutoCompleteWindow from "@/pages/_sub_window/AutoCompleteWindow";
+import AutoCompleteWindow from "@/sub/AutoCompleteWindow";
 import { Direction } from "@/types/directions";
 import { isDesktop } from "@/utils/platform";
 import { colorInvert, Vector } from "@graphif/data-structures";

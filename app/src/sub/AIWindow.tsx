@@ -1,8 +1,8 @@
 import Markdown from "@/components/markdown";
 import { Settings } from "@/core/service/Settings";
 import { SubWindow } from "@/core/service/SubWindow";
-import SettingsWindow from "@/pages/_sub_window/SettingsWindow";
 import { activeProjectAtom } from "@/state";
+import SettingsWindow from "@/sub/SettingsWindow";
 import { Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { useAtom } from "jotai";
