@@ -22,6 +22,7 @@ import { ControllerRectangleSelectClass } from "@/core/service/controlService/co
 import { ControllerSectionEdit } from "@/core/service/controlService/controller/concrete/ControllerSectionEdit";
 import { CursorNameEnum } from "@/types/cursors";
 import { isMac } from "@/utils/platform";
+import { Settings } from "../../Settings";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -98,9 +99,7 @@ export class Controller {
    * 进而决定不刷新屏幕
    */
   isManipulateOverTime() {
-    return (
-      performance.now() - this.lastManipulateTime > this.project.renderer.renderOverTimeWhenNoManipulateTime * 1000
-    );
+    return performance.now() - this.lastManipulateTime > Settings.renderOverTimeWhenNoManipulateTime * 1000;
   }
 
   /**

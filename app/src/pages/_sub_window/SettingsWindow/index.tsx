@@ -23,10 +23,16 @@ import { useTranslation } from "react-i18next";
 import { settingsCategories } from "./_categories";
 import { settingsCategoriesIcons } from "./_icons";
 
-export default function SettingsWindow() {
+export default function SettingsWindow({
+  defaultCategory = "",
+  defaultGroup = "",
+}: {
+  defaultCategory?: string;
+  defaultGroup?: string;
+}) {
   const { t } = useTranslation("settings");
-  const [currentCategory, setCurrentCategory] = useState<keyof typeof settingsCategories>("visual");
-  const [currentGroup, setCurrentGroup] = useState("");
+  const [currentCategory, setCurrentCategory] = useState<keyof typeof settingsCategories>(defaultCategory as any);
+  const [currentGroup, setCurrentGroup] = useState(defaultGroup);
 
   return (
     <SidebarProvider className="h-full w-full overflow-hidden">
@@ -94,12 +100,11 @@ export default function SettingsWindow() {
 }
 
 // TODO: page参数
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-SettingsWindow.open = (_page: string) => {
+SettingsWindow.open = (category: string, group: string) => {
   store.get(activeProjectAtom)?.pause();
   SubWindow.create({
     title: "设置",
-    children: <SettingsWindow />,
+    children: <SettingsWindow defaultCategory={category} defaultGroup={group} />,
     rect: Rectangle.inCenter(new Vector(innerWidth > 1653 ? 1240 : innerWidth * 0.75, innerHeight * 0.875)),
   });
 };

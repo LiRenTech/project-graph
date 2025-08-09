@@ -14,7 +14,6 @@ import type { EdgeRenderer } from "@/core/render/canvas2d/entityRenderer/edge/Ed
 import type { EntityDetailsButtonRenderer } from "@/core/render/canvas2d/entityRenderer/EntityDetailsButtonRenderer";
 import type { EntityRenderer } from "@/core/render/canvas2d/entityRenderer/EntityRenderer";
 import type { MultiTargetUndirectedEdgeRenderer } from "@/core/render/canvas2d/entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
-import type { PortalNodeRenderer } from "@/core/render/canvas2d/entityRenderer/portalNode/portalNodeRenderer";
 import type { SectionRenderer } from "@/core/render/canvas2d/entityRenderer/section/SectionRenderer";
 import type { SvgNodeRenderer } from "@/core/render/canvas2d/entityRenderer/svgNode/SvgNodeRenderer";
 import type { TextNodeRenderer } from "@/core/render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
@@ -461,7 +460,6 @@ declare module "./Project" {
     straightEdgeRenderer: StraightEdgeRenderer;
     symmetryCurveEdgeRenderer: SymmetryCurveEdgeRenderer;
     verticalPolyEdgeRenderer: VerticalPolyEdgeRenderer;
-    portalNodeRenderer: PortalNodeRenderer;
     sectionRenderer: SectionRenderer;
     svgNodeRenderer: SvgNodeRenderer;
     textNodeRenderer: TextNodeRenderer;

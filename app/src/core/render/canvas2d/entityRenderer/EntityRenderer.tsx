@@ -51,13 +51,6 @@ export class EntityRenderer {
       }
       this.project.sectionRenderer.renderBackgroundColor(section);
     }
-    // 2 遍历所有传送门,渲染黑底
-    for (const portalNode of this.project.stageManager.getPortalNodes()) {
-      if (this.project.renderer.isOverView(viewRectangle, portalNode)) {
-        continue;
-      }
-      this.project.portalNodeRenderer.renderBackground(portalNode);
-    }
     // 最后更新帧
     this.tickNumber++;
   }

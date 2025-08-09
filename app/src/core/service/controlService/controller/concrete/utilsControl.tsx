@@ -103,7 +103,7 @@ export class ControllerUtils {
           borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale}px`,
         },
         selectAll,
-        rectWorld.width * this.project.camera.currentScale, // limit width
+        // rectWorld.width * this.project.camera.currentScale, // limit width
       )
       .then(() => {
         SubWindow.close(lastAutoCompleteWindowId);

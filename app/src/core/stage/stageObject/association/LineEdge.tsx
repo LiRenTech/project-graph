@@ -40,7 +40,7 @@ export class LineEdge extends Edge {
     {
       associationList = [] as ConnectableEntity[],
       text = "",
-      uuid = crypto.randomUUID(),
+      uuid = crypto.randomUUID() as string,
       color = Color.Transparent,
       sourceRectangleRate = Vector.same(0.5),
       targetRectangleRate = Vector.same(0.5),

@@ -179,26 +179,16 @@ export class EdgeRenderer {
 
     if (edge.source.isHiddenBySectionCollapse) {
       return new LineEdge(this.project, {
-        source: this.getMinNonCollapseParentSection(edge.source).uuid,
-        target: edge.target.uuid,
+        associationList: [edge.target.uuid, this.getMinNonCollapseParentSection(edge.source).uuid],
         text: edge.text,
         uuid: edge.uuid,
-        type: "core:line_edge",
-        color: [0, 0, 0, 0],
-        sourceRectRate: [0.5, 0.5],
-        targetRectRate: [0.5, 0.5],
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
       return new LineEdge(this.project, {
-        source: edge.source.uuid,
-        target: this.getMinNonCollapseParentSection(edge.target).uuid,
+        associationList: [edge.source.uuid, this.getMinNonCollapseParentSection(edge.target).uuid],
         text: edge.text,
         uuid: edge.uuid,
-        type: "core:line_edge",
-        color: [0, 0, 0, 0],
-        sourceRectRate: [0.5, 0.5],
-        targetRectRate: [0.5, 0.5],
       });
     }
     return edge;

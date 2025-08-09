@@ -50,7 +50,7 @@ export class SectionRenderer {
   // 非折叠状态
   private renderNoCollapse(section: Section) {
     let borderWidth = 2 * this.project.camera.currentScale;
-    if (this.project.entityRenderer.sectionBitTitleRenderType !== "none") {
+    if (Settings.sectionBitTitleRenderType !== "none") {
       borderWidth =
         this.project.camera.currentScale > Settings.ignoreTextNodeTextRenderLessThanCameraScale
           ? 2 * this.project.camera.currentScale

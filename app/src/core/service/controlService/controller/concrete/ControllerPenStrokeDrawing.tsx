@@ -20,8 +20,6 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   /** 在移动的过程中，记录这一笔画的笔迹 */
   public currentStroke: PenStrokeSegment[] = [];
 
-  private autoFillPenStrokeColor: Color = Color.Transparent;
-
   /**
    * 初始按下的起始点的位置
    */

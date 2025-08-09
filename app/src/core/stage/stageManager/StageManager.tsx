@@ -13,7 +13,6 @@ import { MultiTargetUndirectedEdge } from "@/core/stage/stageObject/association/
 import { ConnectPoint } from "@/core/stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "@/core/stage/stageObject/entity/ImageNode";
 import { PenStroke } from "@/core/stage/stageObject/entity/PenStroke";
-import { PortalNode } from "@/core/stage/stageObject/entity/PortalNode";
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
@@ -162,10 +161,10 @@ export class StageManager {
       // 更新孩子数组，并调整位置和大小
       const newChildList = [];
 
-      for (const childUUID of section.childrenUUIDs) {
-        if (this.project.stage.find((node) => node.uuid === childUUID)) {
+      for (const child of section.children) {
+        if (this.project.stage.find((node) => node.uuid === child.uuid)) {
           const childObject = this.project.stage.find(
-            (node) => node.uuid === childUUID && node instanceof Entity,
+            (node) => node.uuid === child.uuid && node instanceof Entity,
           ) as Entity;
           if (childObject) {
             newChildList.push(childObject);
@@ -634,8 +633,6 @@ export class StageManager {
         if (entity.sizeAdjust === "auto") {
           entity.forceAdjustSizeByText();
         }
-      } else if (entity instanceof ImageNode) {
-        entity.refresh();
       } else if (entity instanceof Section) {
         entity.adjustLocationAndSize();
       }
@@ -649,7 +646,7 @@ export class StageManager {
     const entities = this.getSelectedEntities();
     for (const entity of entities) {
       if (entity instanceof ImageNode) {
-        entity.refresh();
+        // entity.refresh();
       }
     }
   }
@@ -683,9 +680,9 @@ export class StageManager {
 
     for (const edge of edges) {
       if (isSource) {
-        edge.setSourceRectangleRate(newLocationRate);
+        edge.sourceRectangleRate = newLocationRate;
       } else {
-        edge.setTargetRectangleRate(newLocationRate);
+        edge.targetRectangleRate = newLocationRate;
       }
     }
   }

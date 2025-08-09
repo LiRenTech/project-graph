@@ -1,5 +1,7 @@
 ## 项目背景
 
+Github 仓库: `graphif/project-graph`
+
 Project Graph 是一个图形化思维桌面工具和知识管理系统，支持节点连接、图形渲染和自动布局等功能，基于 Tauri + React (TypeScript) 技术栈构建。它旨在提供一个高效、直观的方式来组织和管理个人知识。
 
 ## 技术栈
