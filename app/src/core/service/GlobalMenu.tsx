@@ -583,7 +583,8 @@ export async function onOpenFile(uri?: URI, source: string = "unknown") {
   }
   const project = new Project(uri);
   if (stage) {
-    project.stage = deserialize(stage);
+    project.stage = deserialize(stage, project);
+    console.log(project.stage);
   }
   const t = performance.now();
   loadAllServices(project);

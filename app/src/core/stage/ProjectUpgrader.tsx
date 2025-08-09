@@ -1,7 +1,6 @@
 import { Serialized } from "@/types/node";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-import { ConnectableEntity } from "./stageObject/abstract/ConnectableEntity";
 
 export namespace ProjectUpgrader {
   export function upgrade(data: Record<string, any>): Record<string, any> {
@@ -323,16 +322,14 @@ export namespace ProjectUpgrader {
     // 升级json数据到最新版本
     json = ProjectUpgrader.upgrade(json);
 
-    const uuidMap = new Map<string, ConnectableEntity>();
+    const uuidMap = new Map<string, Record<string, any>>();
     const stage: Record<string, any>[] = [];
 
     // 遍历每一个实体
     for (const entity of json.entities) {
-      uuidMap.set(entity.uuid, entity);
-
+      let data;
       if (entity.type === "core:text_node") {
-        uuidMap.set(entity.uuid, entity.uuid);
-        stage.push({
+        data = {
           _: "TextNode",
           uuid: entity.uuid,
           text: entity.text,
@@ -355,9 +352,15 @@ export namespace ProjectUpgrader {
               },
             ],
           },
-          color: entity.color,
+          color: {
+            _: "Color",
+            r: entity.color[0],
+            g: entity.color[1],
+            b: entity.color[2],
+            a: entity.color[3],
+          },
           sizeAdjust: entity.sizeAdjust,
-        });
+        };
       } else if (entity.type === "core:pen_stroke") {
         // 涂鸦
       } else if (entity.type === "core:image_node") {
@@ -374,6 +377,10 @@ export namespace ProjectUpgrader {
         // svg节点，先不管
       } else {
         console.warn(`未知的实体类型${entity.type}`);
+      }
+      if (data) {
+        stage.push(data);
+        uuidMap.set(entity.uuid, data);
       }
     }
 
@@ -395,7 +402,13 @@ export namespace ProjectUpgrader {
           uuid: association.uuid,
           associationList: [fromNode, toNode],
           text: association.text,
-          color: association.color,
+          color: {
+            _: "Color",
+            r: association.color[0],
+            g: association.color[1],
+            b: association.color[2],
+            a: association.color[3],
+          },
           sourceRectangleRate: {
             _: "Vector",
             x: association.sourceRectRate[0],
