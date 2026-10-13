@@ -3,6 +3,7 @@ mod cli_desktop_acceptance;
 mod cmd;
 mod project_ownership;
 pub mod project_reference_store;
+#[cfg(target_os = "windows")]
 mod custom_drag_drop;
 mod project_runtime_bridge;
 
