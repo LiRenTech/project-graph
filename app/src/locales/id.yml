@@ -430,6 +430,11 @@ settings:
     title: Selalu Tampilkan Detail Node
     description: |
       Saat diaktifkan, detail node akan ditampilkan tanpa perlu mengarahkan mouse ke node.
+  exportMermaidIncludeNodeDetails:
+    title: Sertakan Detail Node
+    description: |
+      Tambahkan detail node dan kotak grup sebagai komentar saat mengekspor Mermaid, untuk disimpan atau dibagikan ke AI.
+      Komentar tidak tampil pada diagram. Pilihan ini disimpan secara otomatis.
   nodeDetailsPanel:
     title: Panel Detail Node
     options:
