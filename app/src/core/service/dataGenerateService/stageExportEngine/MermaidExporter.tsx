@@ -229,7 +229,8 @@ export class MermaidExporter {
         if (node.details.length === 0) continue;
         // Serialize the full value: the first paragraph can be empty while later blocks contain details.
         const details = DetailsManager.detailsToMarkdown(node.details);
-        if (!details.trim()) continue;
+        // The editor serializes empty paragraphs with zero-width space placeholders.
+        if (!details.replace(/\u200b/g, "").trim()) continue;
         result += `\n%% Node details: ${getNodeId(node)}\n`;
         for (const line of details.split(/\r\n?|\n|\u2028|\u2029/)) {
           // Mermaid processes directives before comments, including %%{...} inside comment text.

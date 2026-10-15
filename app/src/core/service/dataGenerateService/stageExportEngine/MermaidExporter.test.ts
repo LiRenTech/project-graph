@@ -121,7 +121,7 @@ describe("Mermaid node details export", () => {
     const a = node("a", "Empty");
     const b = node("b", "Whitespace", details);
     vi.mocked(CopyEngineUtils.getAllStageObjectFromEntities).mockReturnValue([a, b]);
-    vi.mocked(DetailsManager.detailsToMarkdown).mockReturnValue(" \n ");
+    vi.mocked(DetailsManager.detailsToMarkdown).mockReturnValue(" \n \u200b");
     expect(new MermaidExporter(project()).export([a, b], true)).not.toContain("%%");
     expect(DetailsManager.detailsToMarkdown).toHaveBeenCalledTimes(1);
   });
