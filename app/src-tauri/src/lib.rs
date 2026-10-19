@@ -15,7 +15,7 @@ pub mod ownership_helper {
 }
 
 use std::sync::{Arc, Mutex, OnceLock};
-use tauri::{Emitter, Listener, Manager, State};
+use tauri::{Manager, State};
 
 // 这两行可能不能去掉，否则会导致linux打包软件报错
 use std::path::Path;
@@ -58,13 +58,6 @@ pub fn run() {
         }
     }
 
-    // CEF 单 binary 自举：子进程 re-exec 本程序时必须在任何 Tauri 初始化前分流。
-    #[cfg(target_os = "linux")]
-    tauri_runtime_cef::dispatch_cef_subprocess();
-
-    #[cfg(target_os = "linux")]
-    let builder = tauri::Builder::<tauri_runtime_cef::Cef<tauri::EventLoopMessage>>::new();
-    #[cfg(not(target_os = "linux"))]
     let builder = tauri::Builder::default();
 
     builder
@@ -127,12 +120,6 @@ pub fn run() {
             project_reference_store::load_project_reference_snapshot,
             project_reference_store::save_project_reference_snapshot,
             project_runtime_bridge::respond_project_runtime_bridge,
-            #[cfg(desktop)]
-            cmd::paddle::get_aha_directory,
-            #[cfg(desktop)]
-            cmd::paddle::paddleocr_vl_1_6_model_exists,
-            #[cfg(desktop)]
-            cmd::paddle::paddleocr_vl_1_6_generate,
             cmd::fs::read_folder_structure,
             cmd::fs::exists,
             cmd::fs::read_folder,

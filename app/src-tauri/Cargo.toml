@@ -39,15 +39,7 @@ regex = "1.12.3"
 dirs = "6"
 sha2 = "0.10.9"
 
-[target.'cfg(target_os = "macos")'.dependencies]
-aha = { version = "0.2.6", features = ["metal"] }
-
-[target.'cfg(target_os = "linux")'.dependencies]
-aha = { version = "0.2.6", features = [] }
-tauri-runtime-cef = { path = "vendor/tauri-runtime-cef" }
-
 [target.'cfg(target_os = "windows")'.dependencies]
-aha = { version = "0.2.6" }
 windows = { version = "0.61", features = [
   "Win32_Foundation",
   "Win32_System_Com",
@@ -78,10 +70,6 @@ tokio = { version = "1", features = [
   "process",
   "sync",
 ] }
-
-[patch.crates-io]
-esaxx-rs = { path = "vendor/esaxx-rs" }
-sentencepiece-sys = { path = "vendor/sentencepiece-sys" }
 
 [profile.release]
 codegen-units = 1 # Allows LLVM to perform better optimization.

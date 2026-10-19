@@ -1,4 +1,5 @@
 import { Project, service } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import { Settings } from "@/core/service/Settings";
 import { ConnectableEntity } from "@/core/stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "@/core/stage/stageObject/abstract/StageEntity";
@@ -284,6 +285,7 @@ export class EntityRenderer {
         imageNode.bitmap!,
         this.project.renderer.transformWorld2View(imageNode.rectangle.location),
         imageNode.scale,
+        Renderer.NODE_ROUNDED_RADIUS,
       );
     } else if (imageNode.state === "notFound") {
       this.project.textRenderer.renderTextFromCenter(
@@ -301,6 +303,7 @@ export class EntityRenderer {
         Color.Red.toNewAlpha(0.5),
         Color.Red.clone(),
         2 * this.project.camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS,
       );
     }
 

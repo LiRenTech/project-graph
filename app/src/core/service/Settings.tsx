@@ -51,9 +51,9 @@ export const settingsSchema = z.object({
   viewerMode: z.boolean().default(false),
   showQuickSettingsToolbar: z.boolean().default(true),
   showRecentFilesThumbnails: z.boolean().default(true),
-  windowBackgroundAlpha: z.number().min(0).max(1).default(0.9),
+  windowBackgroundAlpha: z.number().min(0).max(1).default(0.72),
   windowBackgroundOpacityAfterOpenClickThrough: z.number().min(0).max(1).default(0),
-  windowBackgroundOpacityAfterCloseClickThrough: z.number().min(0).max(1).default(0.5),
+  windowBackgroundOpacityAfterCloseClickThrough: z.number().min(0).max(1).default(0.72),
   isRenderCenterPointer: z.boolean().default(false),
   centerCrosshairColor: z.tuple([z.number(), z.number(), z.number()]).default([255, 255, 255]),
   centerCrosshairShape: z
@@ -66,15 +66,15 @@ export const settingsSchema = z.object({
     ])
     .default("crossDot"),
   centerCrosshairAlpha: z.number().min(0).max(1).default(0.5),
-  showBackgroundHorizontalLines: z.boolean().default(true),
-  showBackgroundVerticalLines: z.boolean().default(true),
-  showBackgroundDots: z.boolean().default(false),
-  showBackgroundCartesian: z.boolean().default(true),
+  showBackgroundHorizontalLines: z.boolean().default(false),
+  showBackgroundVerticalLines: z.boolean().default(false),
+  showBackgroundDots: z.boolean().default(true),
+  showBackgroundCartesian: z.boolean().default(false),
   enableTagTextNodesBigDisplay: z.boolean().default(true),
   forceHideTextNodeBorder: z.boolean().default(false),
   textNodeInitBorderStyle: z.union([z.literal("solid"), z.literal("dashed"), z.literal("none")]).default("solid"),
   showTreeDirectionHint: z.boolean().default(false),
-  lineStyle: z.union([z.literal("straight"), z.literal("bezier"), z.literal("vertical")]).default("straight"),
+  lineStyle: z.union([z.literal("straight"), z.literal("bezier"), z.literal("vertical")]).default("bezier"),
   hideArrowWhenPointingToConnectPoint: z.boolean().default(true),
   sectionBitTitleRenderType: z.union([z.literal("none"), z.literal("top"), z.literal("cover")]).default("cover"),
   nodeDetailsPanel: z.union([z.literal("small"), z.literal("vditor")]).default("vditor"),
@@ -131,7 +131,6 @@ export const settingsSchema = z.object({
   aiCustomHeaders: projectToolSettingSchemas.aiCustomHeaders,
   aiContextWindow: z.number().int().nonnegative().default(0),
   aiShowTokenCount: z.boolean().default(false),
-  enableOCR: z.boolean().default(true),
   aiAutoApproveMcpTools: z.boolean().default(false),
   mouseRightDragBackground: z.union([z.literal("cut"), z.literal("moveCamera")]).default("cut"),
   enableSpaceKeyMouseLeftDrag: z.boolean().default(true),
@@ -240,7 +239,7 @@ export const settingsSchema = z.object({
   enableBackslashGenerateNodeInInput: z.boolean().default(false),
   gamepadDeadzone: z.number().min(0).max(1).default(0.1),
   showGrid: z.boolean().default(true),
-  maxFps: z.number().default(60),
+  maxFps: z.number().default(120),
   maxFpsUnfocused: z.number().default(30),
   effectsPerferences: projectToolSettingSchemas.effectsPerferences,
   autoFillNodeColor: z.tuple([z.number(), z.number(), z.number(), z.number()]).default([0, 0, 0, 0]),
@@ -276,10 +275,10 @@ export const settingsSchema = z.object({
   uiSwitchButtonOffSoundFile: z.string().default(""),
   githubToken: z.string().default(""),
   githubUser: z.string().default(""),
-  theme: z.string().default("dark-blue"),
+  theme: z.string().default("catppuccin-mocha"),
   themeMode: z.union([z.literal("light"), z.literal("dark")]).default("dark"),
-  lightTheme: z.string().default("morandi"),
-  darkTheme: z.string().default("dark"),
+  lightTheme: z.string().default("catppuccin-latte"),
+  darkTheme: z.string().default("catppuccin-mocha"),
   telemetry: z.boolean().default(true),
   historyManagerMode: projectToolSettingSchemas.historyManagerMode,
   isStealthModeEnabled: z.boolean().default(false),
@@ -972,6 +971,19 @@ for (const [rawKey, rawValue] of Object.entries(rawSettings)) {
   console.error(`设置项 ${rawKey} 格式错误，将使用默认值`, result.error);
   pendingSettingsLoadErrorKeys.add(rawKey);
   pendingSettingsLoadErrorValues.set(rawKey, rawValue);
+}
+
+if (rawSettings.windowBackgroundAlpha === 0.28) {
+  savedSettings.windowBackgroundAlpha = 0.72;
+  await store.set("windowBackgroundAlpha", 0.72);
+  await store.save();
+}
+
+// 鼠标左键模式每次启动时恢复为默认“选择和移动”，防止误切到连线/切割或涂鸦模式后持久化导致左键表现像右键
+savedSettings.mouseLeftMode = "selectAndMove";
+if (rawSettings.mouseLeftMode !== "selectAndMove") {
+  await store.set("mouseLeftMode", "selectAndMove");
+  await store.save();
 }
 
 // 检查菜单配置中是否存在指定 id 的节点（用于版本升级时的配置重置判断）

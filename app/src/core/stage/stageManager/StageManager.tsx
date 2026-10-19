@@ -277,7 +277,6 @@ export class StageManager {
       entityMap.set(entity.uuid, entity);
       entity.parentSection = null;
       entity.sectionDepth = 0;
-      entity.nearestLockedAncestorSection = null;
       if (entity instanceof Section) {
         originalChildrenMap.set(entity.uuid, [...entity.children]);
       }
@@ -323,7 +322,7 @@ export class StageManager {
     }
 
     for (const entity of this.topLevelEntities) {
-      this.assignSectionRuntimeInfo(entity, 0, null);
+      this.assignSectionRuntimeInfo(entity, 0);
     }
 
     for (const entity of entities) {
@@ -370,15 +369,13 @@ export class StageManager {
     return validCandidates[0];
   }
 
-  private assignSectionRuntimeInfo(entity: Entity, depth: number, lockedAncestor: Section | null) {
+  private assignSectionRuntimeInfo(entity: Entity, depth: number) {
     entity.sectionDepth = depth;
-    entity.nearestLockedAncestorSection = lockedAncestor;
     if (!(entity instanceof Section)) {
       return;
     }
-    const nextLockedAncestor = entity.locked ? entity : lockedAncestor;
     for (const child of entity.children) {
-      this.assignSectionRuntimeInfo(child, depth + 1, nextLockedAncestor);
+      this.assignSectionRuntimeInfo(child, depth + 1);
     }
   }
 

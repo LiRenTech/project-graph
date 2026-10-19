@@ -21,6 +21,8 @@ export default defineConfig({
     },
   },
   test: {
+    css: { include: [/katex\.min\.css/] },
+    server: { deps: { inline: ["@platejs/math"] } },
     include: ["app/src/**/*.test.{ts,tsx}", "packages/*/tests/**/*.test.{ts,tsx}"],
     maxWorkers: 4,
   },

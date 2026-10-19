@@ -21,7 +21,7 @@ export function createProjectToolSettingSchemas(defaultFontFamily: string) {
     showDebug: z.boolean().default(false),
     protectingPrivacy: z.boolean().default(false),
     textIntegerLocationAndSizeRender: z.boolean().default(false),
-    isEnableEntityCollision: z.boolean().default(false),
+    isEnableEntityCollision: z.boolean().default(true),
     isEnableSectionCollision: z.boolean().default(false),
     moveFriction: z.number().min(0).max(1).default(0.1),
     moveAmplitude: z.number().min(0).max(10).default(2),

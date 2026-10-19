@@ -75,33 +75,31 @@ export class EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(
-        edge.collisionBox,
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-      );
       // 还要标注起始点和终止点
       this.project.shapeRenderer.renderCircle(
         this.project.renderer.transformWorld2View(edge.sourceLocation),
         10 * this.project.camera.currentScale,
         Color.Transparent,
         this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+        Math.max(1.25, 2 * this.project.camera.currentScale),
       );
       this.project.shapeRenderer.renderCircle(
         this.project.renderer.transformWorld2View(edge.targetLocation),
         10 * this.project.camera.currentScale,
         Color.Transparent,
         this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
+        Math.max(1.25, 2 * this.project.camera.currentScale),
       );
       // 画一个虚线
-      this.project.curveRenderer.renderDashedLine(
-        this.project.renderer.transformWorld2View(edge.sourceLocation),
-        this.project.renderer.transformWorld2View(edge.targetLocation),
-        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        2 * this.project.camera.currentScale,
-        10 * this.project.camera.currentScale,
-      );
+      if (this.currentRenderer instanceof StraightEdgeRenderer) {
+        this.project.curveRenderer.renderDashedLine(
+          this.project.renderer.transformWorld2View(edge.sourceLocation),
+          this.project.renderer.transformWorld2View(edge.targetLocation),
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+          Math.max(1.25, 2 * this.project.camera.currentScale),
+          10 * this.project.camera.currentScale,
+        );
+      }
     }
   }
 

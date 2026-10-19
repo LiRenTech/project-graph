@@ -15,7 +15,6 @@ import { ReferenceBlockNode } from "@/core/stage/stageObject/entity/ReferenceBlo
 import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
-import NodeDetailsWindow from "@/sub/NodeDetailsWindow";
 import type { Direction } from "@/types/directions";
 import { isDesktop } from "@/utils/platform";
 import { colorInvert, Vector } from "@graphif/data-structures";
@@ -83,8 +82,7 @@ export class ControllerUtils {
       ele.style.top = `${currentRectClient.top.toFixed(2)}px`;
       ele.style.minWidth = `${currentRectClient.width.toFixed(2)}px`;
       ele.style.minHeight = `${currentRectClient.height.toFixed(2)}px`;
-      ele.style.height = "auto";
-      ele.style.height = `${(currentRectClient.height + 8 * clientScale.y).toFixed(2)}px`;
+      ele.style.height = `${currentRectClient.height.toFixed(2)}px`;
       if (clickedNode.sizeAdjust === "manual") {
         ele.style.width = `${currentRectClient.width.toFixed(2)}px`;
       }
@@ -166,7 +164,7 @@ export class ControllerUtils {
           width: `${(clickedNode.sizeAdjust === "manual" ? rectClient.width : rectClient.width + 8 * clientScale.x).toFixed(2)}px`,
           minWidth: `${rectClient.width.toFixed(2)}px`,
           minHeight: `${rectClient.height.toFixed(2)}px`,
-          // height: `${rectView.height.toFixed(2)}px`,
+          height: `${rectClient.height.toFixed(2)}px`,
           padding: `${clickedNode.getPadding() * this.project.camera.currentScale * clientScale.x}px`,
           fontSize: `${clickedNode.getFontSize() * this.project.camera.currentScale * clientScale.x}px`,
           backgroundColor: "transparent",
@@ -193,7 +191,7 @@ export class ControllerUtils {
         }
 
         await autoChangeTextNodeToReferenceBlock(this.project, clickedNode);
-        // 检测 $...$ 格式，自动转换为 LaTeX 公式节点
+        // 完整公式在退出编辑时转换，编辑期间保留源码。
         await autoChangeTextNodeToLatexNode(this.project, clickedNode);
       });
   }
@@ -246,9 +244,11 @@ export class ControllerUtils {
     this.editNodeDetails(nodes[0]);
   }
 
-  editNodeDetails(clickedNode: Entity) {
+  async editNodeDetails(clickedNode: Entity) {
     // this.project.controller.isCameraLocked = true;
     // 编辑节点详细信息的视野移动锁定解除，——用户：快深频
+    const { default: NodeDetailsWindow } = await import("@/sub/NodeDetailsWindow");
+    if (!this.project.stage.includes(clickedNode)) return;
     NodeDetailsWindow.open(clickedNode.details, (value) => {
       clickedNode.details = value;
       // 向孪生兄弟同步 details
@@ -389,18 +389,23 @@ export class ControllerUtils {
       .transformWorld2View(section.rectangle.location.subtract(new Vector(0, section.text === "" ? 50 : 0)))
       .add(Vector.same(Renderer.NODE_PADDING).multiply(this.project.camera.currentScale));
     const clientScale = this.project.canvas.viewToClientScale();
+    const titleWidth = () =>
+      `${Math.max(1, section.rectangle.size.x - Renderer.NODE_PADDING * 2) * this.project.camera.currentScale * clientScale.x}px`;
     this.project.inputElement
       .input(
         this.project.canvas.viewToClient(inputViewLocation),
         section.text,
-        (text) => {
+        (text, element) => {
           section.rename(text);
+          element.style.width = titleWidth();
         },
         {
           position: "fixed",
           resize: "none",
           boxSizing: "border-box",
+          width: titleWidth(),
           fontSize: `${Renderer.FONT_SIZE * this.project.camera.currentScale * clientScale.x}px`,
+          borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale * clientScale.x}px`,
           backgroundColor: "transparent",
           color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
           outline: `solid ${2 * this.project.camera.currentScale * clientScale.x}px ${this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,

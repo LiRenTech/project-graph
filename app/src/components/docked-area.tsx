@@ -1,11 +1,46 @@
 import { ProjectTabs } from "@/ProjectTabs";
+import { Project, ProjectState } from "@/core/Project";
 import { Tab } from "@/core/Tab";
 import { TabGroupNode } from "@/core/TabGroup";
 import { TabWorkspace } from "@/core/TabWorkspace";
 import { activeGroupIdAtom, tabDropTargetAtom, tabGroupRootAtom, tabsAtom } from "@/state";
 import { cn } from "@/utils/cn";
 import { useAtomValue } from "jotai";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+function ProjectStatus({ project, isClassroomMode }: { project: Project; isClassroomMode: boolean }) {
+  const { t } = useTranslation("projectStatus");
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const manager = project.stageManager;
+      const state = {
+        [ProjectState.Saved]: "saved",
+        [ProjectState.Stashed]: "stashed",
+        [ProjectState.Unsaved]: "unsaved",
+      }[project.projectState];
+      setText(
+        `${t("nodes", { count: manager.getEntities().length })} · ${t("edges", { count: manager.getAssociations().length })} · ${t("selected", { count: manager.getSelectedStageObjects().length })}  |  ${Math.round(project.camera.currentScale * 100)}%  |  ${t(state)}`,
+      );
+    };
+    update();
+    const interval = window.setInterval(update, 250);
+    return () => window.clearInterval(interval);
+  }, [project, t]);
+
+  return (
+    <div
+      className={cn(
+        "bg-background text-muted-foreground absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full px-3 py-1.5 text-xs shadow-xs transition-opacity hover:opacity-100",
+        isClassroomMode && "opacity-0",
+      )}
+    >
+      {text}
+    </div>
+  );
+}
 
 function SplitView({
   node,
@@ -100,8 +135,18 @@ export default function DockedArea({
   const tabs = useAtomValue(tabsAtom);
   const activeGroupId = useAtomValue(activeGroupIdAtom);
 
-  const renderNode = (node: TabGroupNode): React.ReactNode => {
-    if (node.type === "split") return <SplitView key={node.id} node={node} renderNode={renderNode} />;
+  const renderNode = (node: TabGroupNode, atWindowTop = true): React.ReactNode => {
+    if (node.type === "split") {
+      return (
+        <SplitView
+          key={node.id}
+          node={node}
+          renderNode={(child) =>
+            renderNode(child, atWindowTop && (node.direction === "horizontal" || child === node.children[0]))
+          }
+        />
+      );
+    }
     const groupTabs = node.tabIds.flatMap((id) => {
       const tab = tabs.find((candidate) => candidate.id === id && candidate.layout === "docked");
       return tab ? [tab] : [];
@@ -117,25 +162,36 @@ export default function DockedArea({
         )}
         onPointerDownCapture={() => activeTab && TabWorkspace.focus(activeTab.id)}
       >
-        <ProjectTabs
-          groupId={node.id}
-          tabs={groupTabs}
-          activeTab={activeTab}
-          onTabClick={onTabClick}
-          onTabClose={onTabClose}
-          isClassroomMode={isClassroomMode}
-        />
-        <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
+        <div
+          className={cn(
+            "relative z-10 shrink-0",
+            atWindowTop && "pt-[calc(2rem*var(--pg-ui-scale,1))] sm:pt-[calc(3.5rem*var(--pg-ui-scale,1))]",
+          )}
+        >
+          <ProjectTabs
+            groupId={node.id}
+            tabs={groupTabs}
+            activeTab={activeTab}
+            onTabClick={onTabClick}
+            onTabClose={onTabClose}
+            isClassroomMode={isClassroomMode}
+          />
+        </div>
+        <div
+          className={cn(
+            "min-h-0 min-w-0 overflow-hidden",
+            activeTab instanceof Project ? "absolute inset-0" : "relative flex-1",
+          )}
+        >
           {activeTab && React.createElement(activeTab.getComponent())}
+          {activeTab instanceof Project && (
+            <ProjectStatus key={activeTab.id} project={activeTab} isClassroomMode={isClassroomMode} />
+          )}
         </div>
         <DropPreview groupId={node.id} />
       </section>
     );
   };
 
-  return (
-    <div className="absolute inset-x-0 top-4 bottom-0 min-h-0 min-w-0 overflow-hidden sm:top-8">
-      {root && renderNode(root)}
-    </div>
-  );
+  return <div className="absolute inset-0 min-h-0 min-w-0 overflow-hidden">{root && renderNode(root)}</div>;
 }

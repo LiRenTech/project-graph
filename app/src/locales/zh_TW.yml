@@ -1,4 +1,13 @@
+projectStatus:
+  nodes: "{{count}} 節點"
+  edges: "{{count}} 連線"
+  selected: "已選 {{count}}"
+  saved: 已保存
+  stashed: 已暫存
+  unsaved: 有未保存的修改
+
 welcome:
+  aboutDescription: 用節點連接想法，用圖譜整理知識。Project Graph 為頭腦風暴、知識管理和項目規劃提供自由畫布，通過連線與自動佈局，讓複雜思路變得清晰。
   slogan: 基於圖論的思維框架圖繪製軟件
   slogans:
     - 基於圖論的思維框架圖繪製軟件
@@ -151,7 +160,6 @@ settings:
     ai:
       title: AI
       api: API
-      ocr: 筆跡識別
     automation:
       title: 自動化
       autoNamer: 自動命名
@@ -1162,11 +1170,6 @@ settings:
     title: 顯示 AI 消耗的token數
     description: |
       啟用後，在 AI 操作時顯示消耗的token數
-  enableOCR:
-    title: 啟用筆跡 OCR
-    description: |
-      開啟後，使用畫筆繪製的內容會在鬆手後自動進行 OCR 識別，轉換為文字節點
-      需要下載 OCR 模型才能使用
   aiAutoApproveMcpTools:
     title: 自動批准 MCP 工具
     description: |
@@ -1299,6 +1302,9 @@ effects:
     title: 劈砍時的刀光
     description: |
       劈砍時，出現類似水果忍者一樣的刀光
+  ConnectionPulseEffect:
+    title: 連線光點
+    description: 連接節點時顯示短暫的細光點。
   LineEffect:
     title: 直線段淡出效果
     description: |

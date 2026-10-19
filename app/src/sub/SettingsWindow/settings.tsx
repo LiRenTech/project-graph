@@ -41,7 +41,6 @@ import {
   Save,
   Scan,
   ScanSearch,
-  ScanText,
   Search,
   Sparkle,
   SplinePointer,
@@ -132,7 +131,7 @@ export default function SettingsTab() {
 
   return (
     <div className="flex h-full min-h-0">
-      <Sidebar className="h-full overflow-auto">
+      <Sidebar className="h-full overflow-hidden">
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupContent>
@@ -209,7 +208,7 @@ export default function SettingsTab() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="mx-auto flex min-h-0 w-2/3 flex-col">
+      <div className="mx-auto flex min-h-0 w-2/3 min-w-0 flex-col py-2">
         {currentCategory === "search" ? (
           <>
             <Input
@@ -249,6 +248,7 @@ export const categories = {
   visual: {
     basic: [
       "language",
+      "allowGlobalHotKeys",
       "isClassroomMode",
       "viewerMode",
       "showQuickSettingsToolbar",
@@ -435,7 +435,6 @@ export const categories = {
       "aiShowTokenCount",
       "aiAutoApproveMcpTools",
     ],
-    ocr: ["enableOCR"],
   },
 };
 
@@ -443,7 +442,6 @@ export const categoryIcons = {
   ai: {
     icon: Brain,
     api: Unplug,
-    ocr: ScanText,
   },
   automation: {
     icon: Bot,

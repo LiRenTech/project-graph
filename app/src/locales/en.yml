@@ -1,4 +1,13 @@
+projectStatus:
+  nodes: "{{count}} nodes"
+  edges: "{{count}} edges"
+  selected: "{{count}} selected"
+  saved: Saved
+  stashed: Stashed locally
+  unsaved: Unsaved changes
+
 welcome:
+  aboutDescription: Connect ideas with nodes and organize knowledge with graphs. Project Graph provides a freeform canvas for brainstorming, knowledge management, and project planning. Connections and automatic layouts help make complex ideas clear.
   slogan: Infinite canvas mind mapping software based on graph theory
   slogans:
     - Infinite canvas mind mapping software based on graph theory
@@ -1078,12 +1087,6 @@ settings:
     title: Show AI token count
     description: |
       When enabled, shows the token count for AI operations
-  enableOCR:
-    title: Enable Handwriting OCR
-    description: |
-      When enabled, handwritten strokes will be automatically recognized via OCR
-      after you stop drawing, and converted to text nodes
-      Requires downloading the OCR model
   aiAutoApproveMcpTools:
     title: Automatically approve MCP tools
     description: |
@@ -2023,6 +2026,9 @@ effects:
   LineCuttingEffect:
     description: "When cutting, a blade light like the Fruit Ninja will appear.\n"
     title: Line Cutting Blade Light Effect
+  ConnectionPulseEffect:
+    title: Connection pulse
+    description: A short light pulse when connecting nodes.
   LineEffect:
     title: Line Fade Out Effect
     description: "Ghost Trails for Subtree Drag-Rotation\n"

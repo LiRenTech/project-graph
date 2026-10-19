@@ -25,6 +25,18 @@ const invokeMock = vi.mocked(invoke);
 const isTauriMock = vi.mocked(isTauri);
 
 describe("desktop Project ownership lifecycle", () => {
+  it("reloads an orphaned backend lease after a frontend reload", async () => {
+    invokeMock.mockResolvedValue({
+      status: "already_owned",
+      ownershipId: "retained",
+      canonicalPath: "/projects/graph.prg",
+    });
+    const load = vi.fn(async (lease) => ({ ownershipId: lease?.ownershipId }));
+    const result = await loadWithProjectOwnership("/projects/graph.prg", load, () => false);
+    expect(result).toEqual({ status: "opened", value: { ownershipId: "retained" } });
+    expect(load).toHaveBeenCalledOnce();
+    expect(invokeMock).toHaveBeenCalledTimes(1);
+  });
   beforeEach(() => {
     invokeMock.mockReset();
     isTauriMock.mockReturnValue(true);

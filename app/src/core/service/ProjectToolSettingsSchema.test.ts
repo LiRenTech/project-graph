@@ -7,7 +7,7 @@ describe("Project tool Settings schema", () => {
       parseProjectToolSettings(
         {
           historySize: "invalid",
-          isEnableEntityCollision: true,
+          isEnableEntityCollision: false,
           moveFriction: 2,
           unknownSetting: "ignored",
         },
@@ -16,8 +16,14 @@ describe("Project tool Settings schema", () => {
     ).toMatchObject({
       defaultFontFamily: "test-font",
       historySize: 150,
-      isEnableEntityCollision: true,
+      isEnableEntityCollision: false,
       moveFriction: 0.1,
+    });
+  });
+
+  it("enables entity collision by default when not specified", () => {
+    expect(parseProjectToolSettings({}, "test-font")).toMatchObject({
+      isEnableEntityCollision: true,
     });
   });
 });

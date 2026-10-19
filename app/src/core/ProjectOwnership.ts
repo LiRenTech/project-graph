@@ -239,6 +239,7 @@ async function reserveProjectOwnershipForSave(projectPath: string): Promise<Proj
 export async function loadWithProjectOwnership<T>(
   projectPath: string,
   load: (ownership: ProjectOwnershipLease | undefined) => Promise<T>,
+  hasFrontendOwner: (ownershipId: string, canonicalPath: string) => boolean = () => true,
 ): Promise<ProjectOwnershipLoadResult<T>> {
   if (!isTauri()) {
     return { status: "opened", value: await load(undefined) };
@@ -253,7 +254,7 @@ export async function loadWithProjectOwnership<T>(
   } catch (error) {
     throw toProjectOwnershipError(error);
   }
-  if (acquisition.status === "already_owned") {
+  if (acquisition.status === "already_owned" && hasFrontendOwner(acquisition.ownershipId, acquisition.canonicalPath)) {
     return {
       status: "already_open",
       ownershipId: acquisition.ownershipId,

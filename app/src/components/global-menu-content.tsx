@@ -166,5 +166,9 @@ export default function GlobalMenuContent() {
     );
   };
 
-  return <Menubar className="shrink-0">{config.map(renderTopMenu)}</Menubar>;
+  return (
+    <Menubar className="bg-background shrink-0 rounded-full px-2 sm:rounded-full sm:px-2 [&_[data-slot=menubar-trigger]]:rounded-full">
+      {config.map(renderTopMenu)}
+    </Menubar>
+  );
 }

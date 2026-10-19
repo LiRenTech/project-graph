@@ -1,6 +1,7 @@
 import { Color, Vector } from "@graphif/data-structures";
 import { CubicBezierCurve, CubicCatmullRomSpline, Rectangle, SymmetryCurve } from "@graphif/shapes";
 import { Project, service } from "@/core/Project";
+import { superellipseRect } from "@/utils/superellipse";
 
 /**
  * 一些基础的渲染图形
@@ -16,7 +17,7 @@ export class WorldRenderUtils {
    */
   renderCubicCatmullRomSpline(spline: CubicCatmullRomSpline, color: Color, width: number): void {
     const points = spline.computePath().map((it) => this.project.renderer.transformWorld2View(it));
-    width *= this.project.camera.currentScale;
+    width = Math.max(1.25, width * this.project.camera.currentScale);
     const start = this.project.renderer.transformWorld2View(spline.controlPoints[1]);
     const end = this.project.renderer.transformWorld2View(spline.controlPoints[spline.controlPoints.length - 2]);
     // 绘制首位控制点到曲线首尾的虚线
@@ -76,7 +77,7 @@ export class WorldRenderUtils {
     // 使用视图坐标系下的点创建新的贝塞尔曲线
     const viewBezier = new CubicBezierCurve(viewStart, viewCtrlPt1, viewCtrlPt2, viewEnd);
 
-    this.project.curveRenderer.renderBezierCurve(viewBezier, color, width);
+    this.project.curveRenderer.renderBezierCurve(viewBezier, color, Math.max(1.25, width));
   }
 
   /**
@@ -104,7 +105,7 @@ export class WorldRenderUtils {
     this.project.curveRenderer.renderDashedBezierCurve(
       viewBezier,
       color,
-      width * this.project.camera.currentScale,
+      Math.max(1.25, width * this.project.camera.currentScale),
       dashLength,
     );
   }
@@ -126,7 +127,7 @@ export class WorldRenderUtils {
     this.project.curveRenderer.renderDoubleBezierCurve(
       viewBezier,
       color,
-      width * this.project.camera.currentScale,
+      Math.max(1.25, width * this.project.camera.currentScale),
       gap,
     );
   }
@@ -202,7 +203,8 @@ export class WorldRenderUtils {
     this.project.canvas.ctx.shadowBlur = shadowBlur;
     // 绘制矩形
     this.project.canvas.ctx.beginPath();
-    this.project.canvas.ctx.roundRect(
+    superellipseRect(
+      this.project.canvas.ctx,
       rectangle.location.x,
       rectangle.location.y,
       rectangle.size.x,

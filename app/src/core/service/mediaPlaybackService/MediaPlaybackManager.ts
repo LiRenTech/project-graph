@@ -1,6 +1,7 @@
 import { store, activeResourceTabAtom } from "@/state";
 import type { MediaNode } from "@/core/stage/stageObject/entity/MediaNode";
 import type { Project } from "@/core/Project";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import { toast } from "sonner";
 
 let activeNode: MediaNode | null = null;
@@ -15,10 +16,6 @@ const VIDEO_Z_INDEX = 40;
 const DEBOUNCE_MS = 300;
 const AUDIO_CHECK_INTERVAL_MS = 1000;
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
-
 function syncVideoRect(el: HTMLVideoElement, project: Project, node: MediaNode) {
   const rect = node.rectangle;
   const viewRect = project.renderer.transformWorld2View(rect);
@@ -28,7 +25,7 @@ function syncVideoRect(el: HTMLVideoElement, project: Project, node: MediaNode) 
   el.style.top = `${topLeft.y}px`;
   el.style.width = `${viewRect.size.x * s.x}px`;
   el.style.height = `${viewRect.size.y * s.y}px`;
-  el.style.borderRadius = `${clamp(4 * project.camera.currentScale * s.x, 0, 20)}px`;
+  el.style.borderRadius = `${Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale * s.x}px`;
 }
 
 function isProjectStillOpen(project: Project): boolean {
@@ -123,11 +120,7 @@ export namespace MediaPlaybackManager {
       document.body.appendChild(el);
 
       el.addEventListener("loadedmetadata", () => {
-        if (
-          node._lastPlaybackTime > 0 &&
-          Number.isFinite(el.duration) &&
-          node._lastPlaybackTime < el.duration
-        ) {
+        if (node._lastPlaybackTime > 0 && Number.isFinite(el.duration) && node._lastPlaybackTime < el.duration) {
           el.currentTime = node._lastPlaybackTime;
         }
       });
@@ -156,11 +149,7 @@ export namespace MediaPlaybackManager {
       document.body.appendChild(el);
 
       el.addEventListener("loadedmetadata", () => {
-        if (
-          node._lastPlaybackTime > 0 &&
-          Number.isFinite(el.duration) &&
-          node._lastPlaybackTime < el.duration
-        ) {
+        if (node._lastPlaybackTime > 0 && Number.isFinite(el.duration) && node._lastPlaybackTime < el.duration) {
           el.currentTime = node._lastPlaybackTime;
         }
       });

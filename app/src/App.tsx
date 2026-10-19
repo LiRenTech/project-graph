@@ -30,7 +30,7 @@ import { arch, platform, version } from "@tauri-apps/plugin-os";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { ChevronsLeftRight, Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { cpuInfo } from "tauri-plugin-system-info-api";
 import CommandPalette from "./CommandPalette";
@@ -52,12 +52,30 @@ export default function App() {
   // const [isWide, setIsWide] = useState(false);
   const [telemetryEventSent, setTelemetryEventSent] = useState(false);
   const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
-  const [windowBackgroundAlpha, setWindowBackgroundAlpha] = useState(Settings.windowBackgroundAlpha);
   const [uiScalePercent, setUiScalePercent] = useState(Settings.uiScalePercent);
 
   const contextMenuTriggerRef = useRef<HTMLDivElement>(null);
+  const titlebarRef = useRef<HTMLDivElement>(null);
+  const titlebarMenuRef = useRef<HTMLDivElement>(null);
+  const titlebarControlsRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const titlebar = titlebarRef.current;
+    const menu = titlebarMenuRef.current;
+    const controls = titlebarControlsRef.current;
+    if (!titlebar || !menu || !controls) return;
+    const update = () => {
+      titlebar.style.setProperty("--pg-titlebar-side-width", `${Math.max(menu.offsetWidth, controls.offsetWidth)}px`);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(menu);
+    observer.observe(controls);
+    return () => observer.disconnect();
+  }, []);
 
   const handleTitleBarMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    if ((event.target as Element).closest('[role="tablist"]')) return;
     if (event.buttons !== 1) return;
 
     if (event.detail === 2) {
@@ -98,8 +116,8 @@ export default function App() {
     });
 
     // 监听主题样式切换
-    Settings.watch("theme", async (value) => {
-      const theme = await Themes.applyThemeById(value);
+    Settings.watch("theme", (value) => {
+      const theme = Themes.applyThemeById(value);
       if (!theme) return;
       if (theme.metadata.type === "light") {
         Settings.lightTheme = value;
@@ -124,11 +142,6 @@ export default function App() {
       if (Settings.themeMode === "dark" && Settings.theme !== value) {
         Settings.theme = value;
       }
-    });
-
-    // 监听窗口背景不透明度
-    const unwatchWindowBackgroundAlpha = Settings.watch("windowBackgroundAlpha", (value) => {
-      setWindowBackgroundAlpha(value);
     });
 
     // 初始化 UI 缩放（只缩放 UI 组件层，不缩放 Canvas 画布）
@@ -176,7 +189,6 @@ export default function App() {
       unlisten1?.then((f) => f());
       KeyBindsUI.uiStopListen();
       // 清理全局快捷键资源
-      unwatchWindowBackgroundAlpha();
       unwatchUiScale();
       globalShortcutManager.dispose();
     };
@@ -345,10 +357,9 @@ export default function App() {
 
   return (
     <>
-      {/* 这是一个底层的 div，用于在拖拽改变窗口大小时填充背景，防止窗口出现透明闪烁 */}
-      <div className="fixed inset-0 z-[-1] bg-(--stage-background)" style={{ opacity: windowBackgroundAlpha }} />
       <div
-        className="relative flex h-full w-full flex-col overflow-clip rounded-lg sm:gap-2"
+        className="has-[[data-pg-settings-view]]:bg-background/[0.9516] relative flex h-full w-full flex-col overflow-clip rounded-lg sm:gap-2"
+        style={{ "--pg-ui-scale": uiScalePercent / 100 } as React.CSSProperties}
         onContextMenu={(event) => {
           if ((event.target as Element).closest('[data-slot="context-menu-trigger"]')) return;
           event.preventDefault();
@@ -364,26 +375,52 @@ export default function App() {
         >
           {/* 菜单 | 标签页 | ...移动窗口区域... | 窗口控制按钮 */}
           <div
+            ref={titlebarRef}
             className={cn(
-              "bg-background z-10 flex h-4 items-center border-b transition-all hover:opacity-100 sm:h-8 sm:gap-2",
+              "z-10 grid h-8 grid-cols-[minmax(0,var(--pg-titlebar-side-width,max-content))_minmax(0,1fr)_minmax(0,var(--pg-titlebar-side-width,max-content))] items-center gap-2 px-1 py-1 transition-opacity hover:opacity-100 sm:h-14 sm:gap-4 sm:px-3 sm:py-2",
               isClassroomMode && "opacity-0",
             )}
           >
             <div
-              className="hover:bg-primary/25 h-full min-w-6 cursor-grab transition-colors active:cursor-grabbing sm:hidden"
+              className="scrollbar-hide flex h-full min-w-0 items-center overflow-x-auto rounded-full"
+              onMouseDown={(event) => {
+                if (event.target === event.currentTarget) handleTitleBarMouseDown(event);
+              }}
+            >
+              <div ref={titlebarMenuRef} className="flex h-full w-max shrink-0 items-center gap-1">
+                {isMac && (
+                  <div className="bg-background flex h-full shrink-0 items-center rounded-full">
+                    <WindowButtons />
+                  </div>
+                )}
+                <GlobalMenu />
+              </div>
+            </div>
+            <div
+              id="pg-titlebar-navigation"
+              className="flex h-full min-w-0 items-center justify-center"
               onMouseDown={handleTitleBarMouseDown}
             />
-            {isMac && <WindowButtons />}
-            <GlobalMenu />
-            <div className="h-full flex-1 cursor-grab active:cursor-grabbing" onMouseDown={handleTitleBarMouseDown} />
-            <div className="hidden sm:block">
-              <ThemeModeSwitch />
+            <div
+              className="flex h-full min-w-0 items-center justify-end"
+              onMouseDown={(event) => {
+                if (event.target === event.currentTarget) handleTitleBarMouseDown(event);
+              }}
+            >
+              <div
+                ref={titlebarControlsRef}
+                className="bg-background flex h-full shrink-0 items-center gap-2 rounded-full px-2 shadow-xs"
+              >
+                <div className="hidden sm:block">
+                  <ThemeModeSwitch />
+                </div>
+                {!isMac && <WindowButtons />}
+              </div>
             </div>
-            {!isMac && <WindowButtons />}
           </div>
 
           {/* 右键菜单 */}
-          <ContextMenu>
+          <ContextMenu modal={false}>
             <ContextMenuTrigger>
               <div ref={contextMenuTriggerRef} />
             </ContextMenuTrigger>
@@ -430,7 +467,7 @@ function WindowButtons() {
   };
 
   return (
-    <div className="bg-background flex h-full items-center">
+    <div className="flex h-full items-center rounded-full [&_button]:rounded-full">
       {isClickThroughEnabled && <span className="text-destructive font-bold">Alt + 2关闭窗口穿透点击</span>}
       {isMac ? (
         <span className="flex *:flex *:size-3 sm:px-2 sm:*:m-1">

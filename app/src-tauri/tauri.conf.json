@@ -1,13 +1,13 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Project Graph",
-  "version": "0.0.0-dev",
+  "version": "4.2.6-dev",
   "identifier": "liren.project-graph",
   "build": {
-    "beforeDevCommand": "",
+    "beforeDevCommand": "pnpm --filter @graphif/project-graph dev",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "",
-    "beforeBundleCommand": "node ./scripts/collect-cef-linux.js",
+    "beforeBundleCommand": "node ./scripts/prepare-bundle.js",
     "frontendDist": "../dist",
     "removeUnusedCommands": false
   },
@@ -52,23 +52,7 @@
     },
     "linux": {
       "appimage": {
-        "bundleMediaFramework": true,
-        "files": {
-          "/usr/lib/project-graph/": "cef-linux-runtime/"
-        }
-      },
-      "deb": {
-        "files": {
-          "/usr/lib/project-graph/": "cef-linux-runtime/"
-        }
-      },
-      "rpm": {
-        "compression": {
-          "type": "none"
-        },
-        "files": {
-          "/usr/lib/project-graph/": "cef-linux-runtime/"
-        }
+        "bundleMediaFramework": true
       }
     },
     "macOS": {

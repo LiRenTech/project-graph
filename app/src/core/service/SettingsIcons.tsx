@@ -266,7 +266,6 @@ export const settingsIcons = {
   showEditModeHint: MessageSquareText,
   textNodeEditModeOutlineOpacity: SquareDashed,
   colorPanelMouseEnterPreview: Mouse,
-  enableOCR: ScanText,
   maxFps: Timer,
   maxFpsUnfocused: Timer,
   aiContextWindow: Gauge,

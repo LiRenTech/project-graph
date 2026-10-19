@@ -1,3 +1,11 @@
+projectStatus:
+  nodes: "{{count}} 節點"
+  edges: "{{count}} 連線"
+  selected: "已選 {{count}}"
+  saved: 已儲存
+  stashed: 已暫存
+  unsaved: 有未儲存的修改
+
 welcome:
   slogan: 基於圖論的思維框架圖繪製軟體
   slogans:
@@ -198,7 +206,6 @@ settings:
     ai:
       title: AI
       api: API
-      ocr: 筆跡辨識
     automation:
       title: 自動化
       autoNamer: 自動命名
@@ -1139,11 +1146,6 @@ settings:
     title: 顯示 AI 消耗的token數
     description: |
       啟用後，在 AI 操作時顯示消耗的token數
-  enableOCR:
-    title: 啟用筆跡 OCR
-    description: |
-      開啟後，使用畫筆繪製的內容會在鬆手後自動進行 OCR 辨識，轉換為文字節點
-      需要下載 OCR 模型才能使用
   aiAutoApproveMcpTools:
     title: 自動批准 MCP 工具
     description: |

@@ -39,6 +39,16 @@ export abstract class Edge extends ConnectableAssociation {
    */
   abstract get textRectangle(): Rectangle;
 
+  private bodyLineCache?: {
+    source: ConnectableEntity;
+    target: ConnectableEntity;
+    sourceRectangle: Rectangle;
+    targetRectangle: Rectangle;
+    sourceRate: Vector;
+    targetRate: Vector;
+    line: Line;
+  };
+
   /**
    * 获取两个实体之间的直线
    * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
@@ -47,6 +57,20 @@ export abstract class Edge extends ConnectableAssociation {
   get bodyLine(): Line {
     const sourceRectangle = this.source.collisionBox.getRectangle();
     const targetRectangle = this.target.collisionBox.getRectangle();
+
+    const cached = this.bodyLineCache;
+    if (
+      cached &&
+      cached.source === this.source &&
+      cached.target === this.target &&
+      cached.sourceRectangle.location.equals(sourceRectangle.location) &&
+      cached.sourceRectangle.size.equals(sourceRectangle.size) &&
+      cached.targetRectangle.location.equals(targetRectangle.location) &&
+      cached.targetRectangle.size.equals(targetRectangle.size) &&
+      cached.sourceRate.equals(this.sourceRectangleRate) &&
+      cached.targetRate.equals(this.targetRectangleRate)
+    )
+      return cached.line;
 
     const sourceInner = sourceRectangle.getInnerLocationByRateVector(this.sourceRectangleRate);
     const targetInner = targetRectangle.getInnerLocationByRateVector(this.targetRectangleRate);
@@ -76,7 +100,17 @@ export abstract class Edge extends ConnectableAssociation {
       // Center rate: clip to the bounding rectangle edge along the connection direction
       endPoint = targetRectangle.getLineIntersectionPoint(edgeCenterLine);
     }
-    return new Line(startPoint, endPoint);
+    const line = new Line(startPoint, endPoint);
+    this.bodyLineCache = {
+      source: this.source,
+      target: this.target,
+      sourceRectangle: sourceRectangle.clone(),
+      targetRectangle: targetRectangle.clone(),
+      sourceRate: this.sourceRectangleRate.clone(),
+      targetRate: this.targetRectangleRate.clone(),
+      line,
+    };
+    return line;
   }
 
   /**

@@ -1,4 +1,6 @@
 import { Project, service } from "@/core/Project";
+import { superellipseRect } from "@/utils/superellipse";
+import { Renderer } from "@/core/render/canvas2d/renderer";
 import { Settings } from "@/core/service/Settings";
 import { MouseLocation } from "@/core/service/controlService/MouseLocation";
 import { MediaPlaybackManager } from "@/core/service/mediaPlaybackService/MediaPlaybackManager";
@@ -23,9 +25,7 @@ export class MediaNodeRenderer {
     }
 
     const scale = this.project.camera.currentScale;
-    const viewLocation = this.project.renderer.transformWorld2View(
-      entity.rectangle.location,
-    );
+    const viewLocation = this.project.renderer.transformWorld2View(entity.rectangle.location);
     const viewSize = entity.rectangle.size.multiply(scale);
 
     if (entity.state === "loading") {
@@ -47,17 +47,13 @@ export class MediaNodeRenderer {
     }
   }
 
-  private renderLoadingState(
-    viewLocation: Vector,
-    viewSize: Vector,
-    scale: number,
-  ) {
+  private renderLoadingState(viewLocation: Vector, viewSize: Vector, scale: number) {
     this.project.shapeRenderer.renderRect(
       new Rectangle(viewLocation, viewSize),
       new Color(128, 128, 128, 0.1),
       this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * scale,
-      4 * scale,
+      Renderer.NODE_ROUNDED_RADIUS,
     );
     this.project.textRenderer.renderTextFromCenter(
       "加载中...",
@@ -67,17 +63,13 @@ export class MediaNodeRenderer {
     );
   }
 
-  private renderNotFoundState(
-    viewLocation: Vector,
-    viewSize: Vector,
-    scale: number,
-  ) {
+  private renderNotFoundState(viewLocation: Vector, viewSize: Vector, scale: number) {
     this.project.shapeRenderer.renderRect(
       new Rectangle(viewLocation, viewSize),
       Color.Red.toNewAlpha(0.15),
       Color.Red.clone(),
       2 * scale,
-      4 * scale,
+      Renderer.NODE_ROUNDED_RADIUS,
     );
     this.project.textRenderer.renderTextFromCenter(
       "媒体文件缺失",
@@ -87,18 +79,13 @@ export class MediaNodeRenderer {
     );
   }
 
-  private renderUnsupportedState(
-    entity: MediaNode,
-    viewLocation: Vector,
-    viewSize: Vector,
-    scale: number,
-  ) {
+  private renderUnsupportedState(entity: MediaNode, viewLocation: Vector, viewSize: Vector, scale: number) {
     this.project.shapeRenderer.renderRect(
       new Rectangle(viewLocation, viewSize),
       new Color(128, 128, 128, 0.15),
       this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * scale,
-      4 * scale,
+      Renderer.NODE_ROUNDED_RADIUS,
     );
     this.project.textRenderer.renderTextFromCenter(
       entity.title || "不支持的媒体格式",
@@ -108,12 +95,7 @@ export class MediaNodeRenderer {
     );
   }
 
-  private renderVideoReady(
-    entity: MediaNode,
-    viewLocation: Vector,
-    viewSize: Vector,
-    scale: number,
-  ) {
+  private renderVideoReady(entity: MediaNode, viewLocation: Vector, viewSize: Vector, scale: number) {
     if (entity.poster) {
       this.renderCoverImage(entity.poster, viewLocation, viewSize);
     } else {
@@ -122,23 +104,18 @@ export class MediaNodeRenderer {
         new Color(30, 30, 30, 1),
         this.project.stageStyleManager.currentStyle.StageObjectBorder,
         2 * scale,
-        4 * scale,
+        Renderer.NODE_ROUNDED_RADIUS,
       );
     }
   }
 
-  private renderAudioReady(
-    entity: MediaNode,
-    viewLocation: Vector,
-    viewSize: Vector,
-    scale: number,
-  ) {
+  private renderAudioReady(entity: MediaNode, viewLocation: Vector, viewSize: Vector, scale: number) {
     this.project.shapeRenderer.renderRect(
       new Rectangle(viewLocation, viewSize),
       new Color(45, 45, 55, 1),
       this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * scale,
-      6 * scale,
+      Renderer.NODE_ROUNDED_RADIUS,
     );
 
     const iconSize = viewSize.y * 0.5;
@@ -146,12 +123,7 @@ export class MediaNodeRenderer {
       viewLocation.x + viewSize.x * 0.1 + iconSize * 0.5,
       viewLocation.y + viewSize.y * 0.5,
     );
-    this.project.textRenderer.renderTextFromCenter(
-      "\u266A",
-      iconCenter,
-      iconSize,
-      Color.White.clone(),
-    );
+    this.project.textRenderer.renderTextFromCenter("\u266A", iconCenter, iconSize, Color.White.clone());
 
     const titleX = viewLocation.x + viewSize.x * 0.1 + iconSize + viewSize.y * 0.04;
     const titleAreaRightX = viewLocation.x + viewSize.x * 0.62;
@@ -161,11 +133,7 @@ export class MediaNodeRenderer {
       const ctx = this.project.canvas.ctx;
       const titleTextY = viewLocation.y + viewSize.y * 0.5 - titleFontSize * 0.5;
 
-      const fullTextSize = this.project.textRenderer.measureMultiLineTextSize(
-        entity.title,
-        titleFontSize,
-        Infinity,
-      );
+      const fullTextSize = this.project.textRenderer.measureMultiLineTextSize(entity.title, titleFontSize, Infinity);
       const fullWidth = fullTextSize.x;
       const overflow = fullWidth > maxTitleWidth;
 
@@ -210,11 +178,7 @@ export class MediaNodeRenderer {
       const ss = Math.floor(entity.duration % 60);
       const durationText = `${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
       const durFontSize = viewSize.y * 0.12;
-      const durTextSize = this.project.textRenderer.measureMultiLineTextSize(
-        durationText,
-        durFontSize,
-        Infinity,
-      );
+      const durTextSize = this.project.textRenderer.measureMultiLineTextSize(durationText, durFontSize, Infinity);
       this.project.textRenderer.renderTextFromCenter(
         durationText,
         new Vector(durationTextRightX - durTextSize.x * 0.5, viewLocation.y + viewSize.y * 0.5),
@@ -265,25 +229,20 @@ export class MediaNodeRenderer {
         ctx.save();
         ctx.fillStyle = new Color(255, 255, 255, 0.1).toString();
         ctx.beginPath();
-        ctx.roundRect(barLeft, barY, barWidth, barHeight, barHeight / 2);
+        superellipseRect(ctx, barLeft, barY, barWidth, barHeight, barHeight / 2);
         ctx.fill();
 
-        const fillColor =
-          this.project.stageStyleManager.currentStyle.CollideBoxSelected;
+        const fillColor = this.project.stageStyleManager.currentStyle.CollideBoxSelected;
         ctx.fillStyle = fillColor.toString();
         ctx.beginPath();
-        ctx.roundRect(barLeft, barY, barWidth * ratio, barHeight, barHeight / 2);
+        superellipseRect(ctx, barLeft, barY, barWidth * ratio, barHeight, barHeight / 2);
         ctx.fill();
         ctx.restore();
       }
     }
   }
 
-  private renderCoverImage(
-    bitmap: ImageBitmap,
-    viewLocation: Vector,
-    viewSize: Vector,
-  ) {
+  private renderCoverImage(bitmap: ImageBitmap, viewLocation: Vector, viewSize: Vector) {
     const imgAspect = bitmap.width / bitmap.height;
     const boxAspect = viewSize.x / viewSize.y;
     let sx: number, sy: number, sw: number, sh: number;
@@ -303,25 +262,16 @@ export class MediaNodeRenderer {
     const ctx = this.project.canvas.ctx;
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(
+    superellipseRect(
+      ctx,
       viewLocation.x,
       viewLocation.y,
       viewSize.x,
       viewSize.y,
-      4 * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS,
     );
     ctx.clip();
-    ctx.drawImage(
-      bitmap,
-      sx,
-      sy,
-      sw,
-      sh,
-      viewLocation.x,
-      viewLocation.y,
-      viewSize.x,
-      viewSize.y,
-    );
+    ctx.drawImage(bitmap, sx, sy, sw, sh, viewLocation.x, viewLocation.y, viewSize.x, viewSize.y);
     ctx.restore();
   }
 

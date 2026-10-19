@@ -1,3 +1,11 @@
+projectStatus:
+  nodes: "{{count}} simpul"
+  edges: "{{count}} koneksi"
+  selected: "{{count}} dipilih"
+  saved: Tersimpan
+  stashed: Disimpan sementara
+  unsaved: Perubahan belum disimpan
+
 welcome:
   slogan: Perangkat Lunak Pemetaan Kerangka Berpikir Berbasis Teori Graf
   slogans:
@@ -150,7 +158,6 @@ settings:
     ai:
       title: AI
       api: API
-      ocr: Pengenalan Tulisan Tangan
     automation:
       title: Otomatisasi
       autoNamer: Penamaan Otomatis
@@ -1137,12 +1144,6 @@ settings:
     title: Tampilkan Jumlah Token AI
     description: |
       Saat diaktifkan, tampilkan jumlah token untuk operasi AI
-  enableOCR:
-    title: Aktifkan OCR Tulisan Tangan
-    description: |
-      Saat diaktifkan, goresan tangan akan secara otomatis dikenali melalui OCR
-      setelah Anda berhenti menggambar, dan diubah menjadi node teks
-      Memerlukan pengunduhan model OCR
   aiAutoApproveMcpTools:
     title: Setujui alat MCP secara otomatis
     description: |

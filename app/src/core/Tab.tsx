@@ -121,25 +121,22 @@ export abstract class Tab extends React.Component<Record<string, never>, Record<
   loop() {
     if (this.rafHandle !== -1) return;
 
-    const startTime = performance.now();
-    let ticksExecuted = 0;
+    let nextTickTime: number | undefined;
+    let previousMaxFps = 0;
 
     const animationFrame = (time: number) => {
       const isFocused = document.hasFocus();
       const maxFps = Math.max(1, isFocused ? Settings.maxFps : Settings.maxFpsUnfocused);
       const timeStep = 1000 / maxFps;
-      const totalElapsed = time - startTime;
-      const expectedTicks = Math.floor(totalElapsed / timeStep);
-      let ticksNeeded = expectedTicks - ticksExecuted;
-      if (ticksNeeded > 10) {
-        ticksExecuted = expectedTicks;
-        ticksNeeded = 0;
-      }
-      while (ticksNeeded > 0) {
+      if (nextTickTime === undefined || previousMaxFps !== maxFps) nextTickTime = time;
+      previousMaxFps = maxFps;
+      if (time + 0.1 >= nextTickTime) {
         this.tick();
-        ticksExecuted++;
-        ticksNeeded--;
+        // 保留刷新周期之间的余量，避免 144Hz 屏幕上的 120fps 限制退化为 72fps。
+        nextTickTime += timeStep;
+        if (nextTickTime < time - timeStep) nextTickTime = time + timeStep;
       }
+      if (this.rafHandle === -1) return;
       this.rafHandle = requestAnimationFrame(animationFrame);
     };
 

@@ -126,7 +126,7 @@ export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof 
       title={t(`${settingKey}.title`)}
       description={t(`${settingKey}.description`, { defaultValue: "" })}
       icon={<Icon />}
-      className="border-accent hover:bg-accent border-b transition not-hover:rounded-none"
+      className="border-accent hover:bg-accent rounded-xl border-b transition-colors [corner-shape:round]"
       titleExtra={
         showPin && (
           <Tooltip>
@@ -143,7 +143,7 @@ export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof 
       }
     >
       <RotateCw
-        className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 group-hover/field:opacity-100 hover:rotate-180"
+        className="text-muted-foreground h-4 w-4 cursor-pointer opacity-0 group-hover/field:opacity-100 hover:rotate-180"
         onClick={() => setValue((schema as any)._def.defaultValue)}
       />
       {extra}
@@ -287,7 +287,7 @@ export function Field({
               {title}
               {titleExtra}
             </span>
-            <span className="text-panel-details-text text-xs font-light opacity-60 select-text">
+            <span className="text-muted-foreground text-xs select-text">
               {description.split("\n").map((dd, ii) => (
                 <p key={ii} className="text-xs">
                   {dd}
@@ -370,7 +370,7 @@ export function FieldGroup({
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
       <div
-        className="text-settings-text my-2 flex cursor-pointer items-center gap-2 pt-4 pl-4 text-sm opacity-60 hover:opacity-100"
+        className="text-muted-foreground hover:text-foreground my-2 flex cursor-pointer items-center gap-2 pt-4 pl-4 text-sm"
         onClick={handleToggle}
       >
         <span>{icon}</span>
@@ -378,7 +378,7 @@ export function FieldGroup({
         <ChevronRight className={cn(isOpen && "rotate-90")} />
       </div>
 
-      {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
+      {description && isOpen && <div className="text-muted-foreground pl-4 text-xs">{description}</div>}
 
       <div ref={contentRef} className="overflow-hidden rounded-xl transition-all" style={{ height }}>
         {shouldMount && (

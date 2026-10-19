@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "dev": "nx run-many -t dev tauri:dev",
+    "dev": "pnpm --filter @graphif/project-graph tauri:dev",
     "build": "nx run-many -t build tauri:build",
     "build:ci": "nx run-many --skipNxCache -t build tauri:build",
     "build:no-tauri": "nx run-many -t build",

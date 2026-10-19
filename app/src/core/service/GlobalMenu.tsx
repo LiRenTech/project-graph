@@ -248,7 +248,15 @@ export async function onOpenFile(uri?: URI, source: string = "unknown"): Promise
   try {
     const result =
       uri.scheme === "file" && uri.fsPath.toLowerCase().endsWith(".prg")
-        ? await loadWithProjectOwnership(uri.fsPath, createTab)
+        ? await loadWithProjectOwnership(
+            uri.fsPath,
+            createTab,
+            (ownershipId, canonicalPath) =>
+              openingProjects.has(ownershipId) ||
+              store
+                .get(tabsAtom)
+                .some((candidate) => candidate instanceof Project && candidate.canonicalProjectPath === canonicalPath),
+          )
         : { status: "opened" as const, value: await createTab() };
     if (result.status === "already_open") {
       const opening = getOpeningProject(result.ownershipId);

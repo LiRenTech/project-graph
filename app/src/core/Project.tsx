@@ -1,5 +1,3 @@
-import RightToolbar from "@/components/right-toolbar";
-import ToolbarContent from "@/components/toolbar-content";
 import { Dialog } from "@/components/ui/dialog";
 import type { CurveRenderer } from "@/core/render/canvas2d/basicRenderer/curveRenderer";
 import type { ImageRenderer } from "@/core/render/canvas2d/basicRenderer/ImageRenderer";
@@ -52,7 +50,6 @@ import type { ContentSearch } from "@/core/service/dataManageService/contentSear
 import type { CopyEngine } from "@/core/service/dataManageService/copyEngine/copyEngine";
 import type { Effects } from "@/core/service/feedbackService/effectEngine/effectMachine";
 import { StageStyleManager } from "@/core/service/feedbackService/stageStyle/StageStyleManager";
-import { Settings } from "@/core/service/Settings";
 import type { Camera } from "@/core/stage/Camera";
 import type { Canvas } from "@/core/stage/Canvas";
 import { GraphMethods } from "@/core/stage/stageManager/basicMethods/GraphMethods";
@@ -96,10 +93,6 @@ import { ProjectUpgrader } from "./stage/ProjectUpgrader";
 import { ReferenceManager } from "./stage/stageManager/concreteMethods/StageReferenceManager";
 import { Tab } from "./Tab";
 
-if (import.meta.hot) {
-  import.meta.hot.accept();
-}
-
 export enum ProjectState {
   /**
    * “已保存”
@@ -139,6 +132,7 @@ export class Project extends Tab {
   private _isSaving = false;
   private readonly projectOwnership = new ProjectOwnershipLifecycle(this);
   public stage: StageObject[] = [];
+  public sectionMoveDepth = 0;
   public tags: string[] = [];
   /**
    * string：UUID
@@ -265,6 +259,8 @@ export class Project extends Tab {
 
       // 应用升级后的数据
       this.stage = deserialize(upgradedStageObjects, this);
+      const { convertLatexNodes } = await import("@/core/stage/stageObject/tools/convertLatexNodes");
+      convertLatexNodes(this);
       this.tags = tags;
       this.references = references;
       this.metadata = upgradedMetadata;
@@ -477,37 +473,21 @@ export class Project extends Tab {
     if (this.currentComponent) return this.currentComponent;
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
-    this.currentComponent = class extends React.Component<
-      Record<string, never>,
-      { showQuickSettingsToolbar: boolean }
-    > {
+    this.currentComponent = class extends React.Component<Record<string, never>> {
       displayName = "ProjectContainer";
       private containerRef = React.createRef<HTMLDivElement>();
-      private unwatchShowQuickSettingsToolbar?: () => void;
-      state = {
-        showQuickSettingsToolbar: Settings.showQuickSettingsToolbar,
-      };
 
       componentDidMount(): void {
         (self as any)._lastContainer = this.containerRef.current;
         if (this.containerRef.current && self.getService("canvas")) {
           self.canvas.mount(this.containerRef.current);
         }
-        this.unwatchShowQuickSettingsToolbar = Settings.watch("showQuickSettingsToolbar", (value) => {
-          this.setState({ showQuickSettingsToolbar: value });
-        });
-      }
-
-      componentWillUnmount(): void {
-        this.unwatchShowQuickSettingsToolbar?.();
       }
 
       render() {
         return (
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden" ref={this.containerRef}></div>
-            <ToolbarContent />
-            {this.state.showQuickSettingsToolbar && <RightToolbar />}
           </div>
         );
       }
@@ -519,8 +499,6 @@ export class Project extends Tab {
     return (
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden" ref={this.containerRef}></div>
-        <ToolbarContent />
-        {Settings.showQuickSettingsToolbar && <RightToolbar />}
       </div>
     );
   }
@@ -541,6 +519,7 @@ export class Project extends Tab {
           .map(({ reason }) => reason),
       );
       this.stage.length = 0;
+      this.attachments.clear();
       if (cleanupErrors.length > 0) throw new AggregateError(cleanupErrors, "Project cleanup failed");
     });
   }
