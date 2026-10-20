@@ -20,12 +20,14 @@ function RangeNumberInput({
   value,
   min,
   max,
+  step,
   settingKey,
   onChange,
 }: {
   value: number;
   min: number;
   max: number;
+  step: number;
   settingKey: keyof Settings;
   onChange: (value: number) => void;
 }) {
@@ -61,6 +63,7 @@ function RangeNumberInput({
       type="number"
       min={min}
       max={max}
+      step={step}
       className="w-24"
     />
   );
@@ -172,6 +175,7 @@ export function SettingField({ settingKey, extra = <></> }: { settingKey: keyof 
             value={value}
             min={bag.minimum}
             max={bag.maximum}
+            step={bag.format === "safeint" ? 1 : 0.01}
             settingKey={settingKey}
             onChange={setValue}
           />
