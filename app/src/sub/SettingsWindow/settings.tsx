@@ -297,6 +297,7 @@ export const categories = {
     entityDetails: [
       "nodeDetailsPanel",
       "alwaysShowDetails",
+      "exportMermaidIncludeNodeDetails",
       "entityDetailsFontSize",
       "entityDetailsLinesLimit",
       "entityDetailsWidthLimit",

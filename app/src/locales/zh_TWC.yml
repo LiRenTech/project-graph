@@ -483,6 +483,11 @@ settings:
   alwaysShowDetails:
     title: 始終顯示節點詳細資訊
     description: 開啟後，無需滑鼠移動到節點上時，才顯示節點的詳細資訊。
+  exportMermaidIncludeNodeDetails:
+    title: 包含節點詳情
+    description: |
+      匯出 Mermaid 時，將節點與分組框的詳情以註解附在原始碼中，方便儲存或交給 AI 閱讀。
+      註解不會顯示在渲染後的圖中；這個選擇會自動儲存。
   nodeDetailsPanel:
     title: 節點詳細資訊面板
     options:

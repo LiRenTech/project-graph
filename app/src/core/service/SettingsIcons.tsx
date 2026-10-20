@@ -232,6 +232,7 @@ export const settingsIcons = {
   autoEnterSectionEditMode: SquarePen,
   nodeDetailsPanel: AppWindow,
   alwaysShowDetails: ListCollapse,
+  exportMermaidIncludeNodeDetails: ListCollapse,
   entityDetailsFontSize: CaseSensitive,
   entityDetailsLinesLimit: ArrowDownNarrowWide,
   entityDetailsWidthLimit: Space,

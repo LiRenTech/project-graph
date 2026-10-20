@@ -458,6 +458,11 @@ settings:
     title: 始终显示节点详细信息
     description: |
       开启后，无需鼠标移动到节点上时，才显示节点的详细信息。
+  exportMermaidIncludeNodeDetails:
+    title: 包含节点详情
+    description: |
+      导出 Mermaid 时，将节点和分组框的详情作为注释附在源码中，方便保存或交给 AI 阅读。
+      注释不会显示在渲染后的图中；此选择会自动保存。
   nodeDetailsPanel:
     title: 节点详细信息面板
     options:

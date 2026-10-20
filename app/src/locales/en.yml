@@ -301,6 +301,11 @@ settings:
     title: Always Show Node Details
     description: |
       When enabled, node details will be displayed without needing to hover the mouse over the node.
+  exportMermaidIncludeNodeDetails:
+    title: Include Node Details
+    description: |
+      Append node and section details as comments when exporting Mermaid, for saving or sharing with AI.
+      Comments are not displayed in the rendered diagram. This preference is saved automatically.
   nodeDetailsPanel:
     title: Node Details Panel
     options:

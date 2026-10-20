@@ -79,6 +79,7 @@ export const settingsSchema = z.object({
   sectionBitTitleRenderType: z.union([z.literal("none"), z.literal("top"), z.literal("cover")]).default("cover"),
   nodeDetailsPanel: z.union([z.literal("small"), z.literal("vditor")]).default("vditor"),
   alwaysShowDetails: z.boolean().default(false),
+  exportMermaidIncludeNodeDetails: z.boolean().default(false),
   entityDetailsFontSize: z.number().int().min(18).max(36).default(18),
   entityDetailsLinesLimit: z.number().int().min(1).max(200).default(4),
   entityDetailsWidthLimit: z.number().int().min(200).max(2000).default(200),
