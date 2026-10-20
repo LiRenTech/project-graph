@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Project Graph",
-  "version": "4.2.6-dev",
+  "version": "4.2.6-alpha1",
   "identifier": "liren.project-graph",
   "build": {
     "beforeDevCommand": "pnpm --filter @graphif/project-graph dev",

@@ -1,3 +1,6 @@
+windowControls:
+  alwaysOnTop: Keep window on top
+
 projectStatus:
   nodes: "{{count}} nodes"
   edges: "{{count}} edges"

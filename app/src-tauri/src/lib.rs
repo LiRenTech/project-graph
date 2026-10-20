@@ -1,6 +1,8 @@
 #[cfg(debug_assertions)]
 mod cli_desktop_acceptance;
 mod cmd;
+#[cfg(target_os = "macos")]
+mod macos_resize_cursor;
 mod project_ownership;
 pub mod project_reference_store;
 #[cfg(target_os = "windows")]
@@ -75,6 +77,10 @@ pub fn run() {
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .setup(|app| {
+            #[cfg(target_os = "macos")]
+            if let Some(window) = app.get_webview_window("main") {
+                macos_resize_cursor::install(&window)?;
+            }
             app.manage(project_runtime_bridge::ProjectRuntimeBridgeManager::start(
                 app.handle().clone(),
             )?);
@@ -102,6 +108,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            #[cfg(target_os = "macos")]
+            cmd::macos_menu::style_macos_menu_icons,
             cmd::device::get_device_id,
             #[cfg(debug_assertions)]
             cli_desktop_acceptance::load_cli_desktop_acceptance_manifest,

@@ -5,6 +5,7 @@ import { TabGroupNode } from "@/core/TabGroup";
 import { TabWorkspace } from "@/core/TabWorkspace";
 import { activeGroupIdAtom, tabDropTargetAtom, tabGroupRootAtom, tabsAtom } from "@/state";
 import { cn } from "@/utils/cn";
+import { isMac } from "@/utils/platform";
 import { useAtomValue } from "jotai";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -157,8 +158,9 @@ export default function DockedArea({
         key={node.id}
         data-pg-tab-group-id={node.id}
         className={cn(
-          "border-border relative flex size-full min-h-0 min-w-0 flex-col overflow-hidden border",
-          activeGroupId === node.id && "border-primary/60",
+          "relative flex size-full min-h-0 min-w-0 flex-col overflow-hidden",
+          root?.type === "split" && "border-border border",
+          root?.type === "split" && activeGroupId === node.id && "border-primary/60",
         )}
         onPointerDownCapture={() => activeTab && TabWorkspace.focus(activeTab.id)}
       >
@@ -166,6 +168,7 @@ export default function DockedArea({
           className={cn(
             "relative z-10 shrink-0",
             atWindowTop && "pt-[calc(2rem*var(--pg-ui-scale,1))] sm:pt-[calc(3.5rem*var(--pg-ui-scale,1))]",
+            atWindowTop && isMac && root?.type === "group" && "w-[35%] pt-7 sm:pt-7",
           )}
         >
           <ProjectTabs

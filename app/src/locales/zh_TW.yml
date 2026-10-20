@@ -1,3 +1,6 @@
+windowControls:
+  alwaysOnTop: 窗口置頂
+
 projectStatus:
   nodes: "{{count}} 節點"
   edges: "{{count}} 連線"
