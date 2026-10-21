@@ -39,6 +39,8 @@ export function getFontIdentity(fontFamily?: string, fontWeight?: string): strin
 }
 
 export function isBundledCanvasFont(fontFamily?: string, fontWeight?: string): boolean {
+  // 桌面端不使用 MSDF，也不替换系统字体，避免异步字体加载后节点尺寸与文字脱节。
+  if (typeof window !== "undefined" && "__TAURI_INTERNALS__" in window) return false;
   return (
     !fontFamily &&
     (!fontWeight || fontWeight === "normal" || fontWeight === "400") &&
