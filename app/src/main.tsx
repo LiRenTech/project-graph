@@ -70,7 +70,10 @@ setTimeout(() => {
       Tutorials.init(),
       UserState.init(),
       QuickSettingsManager.init(),
-      ExtensionManager.init(),
+      // 扩展加载失败不应阻断主程序启动（否则 renderApp 不会执行，窗口为空白）
+      ExtensionManager.init().catch((e) => {
+        console.error("[ExtensionManager] 扩展初始化失败，已跳过：", e);
+      }),
     ]);
     if (isCliDesktopAcceptance) {
       await invoke("write_cli_desktop_acceptance_state", {
