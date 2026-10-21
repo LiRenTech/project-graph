@@ -9,7 +9,7 @@ vi.hoisted(() => {
   vi.stubGlobal("document", { createElement: () => ({ getContext: () => null }) });
 });
 
-import { setCanvasFont } from "./font";
+import { isBundledCanvasFont, resolveFont, setCanvasFont } from "./font";
 
 function context() {
   let actual = "10px sans-serif";
@@ -68,4 +68,14 @@ describe("setCanvasFont", () => {
     expect(a.assign).toHaveBeenCalledTimes(1);
     expect(b.assign).toHaveBeenCalledTimes(1);
   });
+});
+
+it("keeps the configured system font on desktop instead of swapping in the MSDF font", () => {
+  vi.stubGlobal("window", { __TAURI_INTERNALS__: {} });
+  try {
+    expect(isBundledCanvasFont()).toBe(false);
+    expect(resolveFont(32)).toBe("normal 32px sans-serif");
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });

@@ -3,7 +3,7 @@ import { Project, ProjectState } from "@/core/Project";
 import { Tab } from "@/core/Tab";
 import { TabGroupNode } from "@/core/TabGroup";
 import { TabWorkspace } from "@/core/TabWorkspace";
-import { activeGroupIdAtom, tabDropTargetAtom, tabGroupRootAtom, tabsAtom } from "@/state";
+import { activeGroupIdAtom, activeTabAtom, store, tabDropTargetAtom, tabGroupRootAtom, tabsAtom } from "@/state";
 import { cn } from "@/utils/cn";
 import { isMac } from "@/utils/platform";
 import { useAtomValue } from "jotai";
@@ -162,7 +162,9 @@ export default function DockedArea({
           root?.type === "split" && "border-border border",
           root?.type === "split" && activeGroupId === node.id && "border-primary/60",
         )}
-        onPointerDownCapture={() => activeTab && TabWorkspace.focus(activeTab.id)}
+        onPointerDownCapture={() => {
+          if (activeTab && store.get(activeTabAtom) !== activeTab) TabWorkspace.focus(activeTab.id);
+        }}
       >
         <div
           className={cn(
