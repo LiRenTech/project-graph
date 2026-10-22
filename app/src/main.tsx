@@ -22,6 +22,7 @@ import { exists } from "@tauri-apps/plugin-fs";
 import "driver.js/dist/driver.css";
 import i18next from "i18next";
 import { Provider } from "jotai";
+import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { initReactI18next } from "react-i18next";
@@ -42,11 +43,8 @@ if (import.meta.env.DEV && isMobile) {
 
 const el = document.getElementById("root")!;
 
-// 兜底：任何原因导致 React 渲染中断时，窗口也要可见，避免应用"隐形"
 let cliMode = false;
-setTimeout(() => {
-  if (!cliMode && !isWeb) void getCurrentWindow().show();
-}, 5000);
+let appRendered = false;
 
 // 建议挂载根节点前的一系列操作统一写成函数，
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
@@ -83,6 +81,7 @@ setTimeout(() => {
     // 这些东西依赖上面的东西，所以单独一个Promise.all
     await Promise.all([loadLanguageFiles(), loadSyncModules(), ...(isCliDesktopAcceptance ? [] : [initAuth()])]);
     await renderApp(isCliMode, isCliDesktopAcceptance);
+    appRendered = true;
     if (isCliDesktopAcceptance) {
       await invoke("write_cli_desktop_acceptance_state", {
         state: { phase: "initializing", step: "application-rendered" },
@@ -109,6 +108,10 @@ setTimeout(() => {
       await invoke("write_cli_desktop_acceptance_state", {
         state: { phase: "error", message: error instanceof Error ? (error.stack ?? error.message) : String(error) },
       });
+    }
+    if (!appRendered && !cliMode && !isCliDesktopAcceptance) {
+      await renderStartupError(error);
+      return;
     }
     throw error;
   }
@@ -193,6 +196,11 @@ async function renderApp(cli: boolean = false, cliDesktopAcceptance: boolean = f
       </Provider>,
     );
   }
+}
+
+async function renderStartupError(error: unknown) {
+  flushSync(() => createRoot(el).render(<Fallback error={error} resetErrorBoundary={() => location.reload()} />));
+  if (!isWeb) await getCurrentWindow().show();
 }
 
 async function loadStartFile() {
