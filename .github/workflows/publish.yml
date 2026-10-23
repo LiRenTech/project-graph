@@ -128,7 +128,7 @@ jobs:
       matrix:
         include:
           - platform: "ubuntu-22.04"
-            args: "--bundles deb,rpm"
+            args: "--bundles deb"
             dist: "src-tauri/target/release/bundle/**/*.{deb,rpm,sig}"
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
@@ -374,11 +374,24 @@ jobs:
           cd app/src-tauri/target/*/release/bundle/macos
           mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_universal.app.tar.gz"
           mv *.app.tar.gz.sig "Project Graph_${{ inputs.app_version }}_universal.app.tar.gz.sig"
+      - name: Linux - Bundle rpm
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          APP_VERSION: ${{ inputs.app_version }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          CI: "true"
+        run: |
+          node --test .github/scripts/rpm-config.test.mjs
+          # shortcut: Tauri 2.12.4 passes SemVer directly to rpm-rs; remove when upstream maps prereleases.
+          RPM_CONFIG=$(node .github/scripts/rpm-config.mjs "$APP_VERSION")
+          pnpm --filter @graphif/project-graph exec tauri bundle --bundles rpm --config "$RPM_CONFIG"
       - name: Linux - Rename rpm
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           cd app/src-tauri/target/release/bundle/rpm
           mv *.rpm "Project Graph_${{ inputs.app_version }}_amd64.rpm"
+          mv *.rpm.sig "Project Graph_${{ inputs.app_version }}_amd64.rpm.sig"
       - name: Linux / MacOS - Upload
         if: matrix.platform != 'windows-latest'
         run: |
