@@ -19,7 +19,7 @@ pub mod ownership_helper {
 use std::sync::{Arc, Mutex, OnceLock};
 use tauri::{Manager, State};
 
-// 这两行可能不能去掉，否则会导致linux打包软件报错
+#[cfg(target_os = "linux")]
 use std::path::Path;
 
 pub static APP_HANDLE: OnceLock<tauri::AppHandle> = OnceLock::new();
