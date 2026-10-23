@@ -283,7 +283,8 @@ jobs:
             if [[ "${{ matrix.platform }}" == "macos-latest" ]]; then
               script -q "$LOG_FILE" bash -lc "$BUILD_CMD"
             else
-              script -q -c "$BUILD_CMD" "$LOG_FILE"
+              # util-linux script must propagate the build's exit code to Actions.
+              script -q -e -c "$BUILD_CMD" "$LOG_FILE"
             fi
           else
             bash -lc "$BUILD_CMD" 2>&1 | tee "$LOG_FILE"

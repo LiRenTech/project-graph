@@ -45,7 +45,7 @@ objc2-app-kit = { version = "0.3", default-features = false, features = ["std", 
 objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSString", "NSGeometry"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-windows = { version = "0.61", features = [
+windows = { version = "0.62", features = [
   "Win32_Foundation",
   "Win32_System_Com",
   "Win32_System_Com_StructuredStorage",
@@ -56,7 +56,11 @@ windows = { version = "0.61", features = [
   "Win32_Graphics_Gdi",
   "Win32_System_SystemServices",
 ] }
-windows-core = "0.61"
+windows-core = "0.62"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+# shortcut: deep-link 2.6.2 requires the two-field ParseOption; remove when the plugin supports newer rust-ini.
+rust-ini = "=0.21.1"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-cli = "2.5.0"
