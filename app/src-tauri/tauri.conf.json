@@ -21,7 +21,6 @@
         "height": 800,
         "decorations": false,
         "transparent": true,
-        "noRedirectionBitmap": true,
         "visible": false
       }
     ],
