@@ -20,6 +20,10 @@ import type { Value } from "platejs";
 @passExtraAtArg1
 @passObject
 export class TextNode extends ConnectableEntity implements ResizeAble {
+  public override get clipConnectionToBoundary(): boolean {
+    return true;
+  }
+
   @id
   @serializable
   uuid: string;

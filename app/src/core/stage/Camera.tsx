@@ -18,8 +18,9 @@ import { toast } from "sonner";
  */
 @service("camera")
 export class Camera {
-  static readonly MIN_SCALE = 0.02;
-  static readonly MAX_SCALE = 16;
+  static validScale(value: number, fallback: number): number {
+    return Number.isFinite(value) && value > 0 ? value : fallback;
+  }
   /**
    * 空气摩擦力速度指数
    * 指数=2，表示 f = -k * v^2
@@ -141,8 +142,8 @@ export class Camera {
       return;
     }
 
-    this.currentScale = Math.max(Camera.MIN_SCALE, Math.min(Camera.MAX_SCALE, this.currentScale));
-    this.targetScale = Math.max(Camera.MIN_SCALE, Math.min(Camera.MAX_SCALE, this.targetScale));
+    this.currentScale = Camera.validScale(this.currentScale, 1);
+    this.targetScale = Camera.validScale(this.targetScale, this.currentScale);
     // 冲击式移动
     if (!this.shockMoveDiffLocationsQueue.isEmpty()) {
       const diffLocation = this.shockMoveDiffLocationsQueue.dequeue();
@@ -193,7 +194,7 @@ export class Camera {
     if (this.isStartZoomOut) {
       this.targetScale *= 0.95;
     }
-    this.targetScale = Math.max(Camera.MIN_SCALE, Math.min(Camera.MAX_SCALE, this.targetScale));
+    this.targetScale = Camera.validScale(this.targetScale, this.currentScale);
     this.tickNumber++;
   }
   /**
@@ -263,7 +264,7 @@ export class Camera {
     if (!Number.isFinite(scaleFactor) || scaleFactor <= 0) return;
     const anchor = this.project.renderer.transformView2World(previous);
     this.stopImmediately();
-    this.currentScale = Math.max(Camera.MIN_SCALE, Math.min(Camera.MAX_SCALE, this.currentScale * scaleFactor));
+    this.currentScale = Camera.validScale(this.currentScale * scaleFactor, this.currentScale);
     this.targetScale = this.currentScale;
     const center = new Vector(this.project.renderer.w / 2, this.project.renderer.h / 2);
     this.location = anchor.subtract(current.subtract(center).subtract(this.shakeLocation).divide(this.currentScale));
@@ -296,10 +297,6 @@ export class Camera {
         this.targetScale,
       );
     }
-    // 性能优化之，将缩放小数点保留四位
-    if (this.currentScale > 0.01) {
-      newCurrentScale = parseFloat(newCurrentScale.toFixed(4));
-    }
     const diff = newCurrentScale / this.currentScale;
     this.currentScale = newCurrentScale;
 
@@ -331,6 +328,7 @@ export class Camera {
       Math.min(this.project.renderer.h / allEntitiesSize.y, this.project.renderer.w / allEntitiesSize.x),
     );
     this.targetScale = this.currentScale;
+    this.stopImmediately();
     SoundService.play.viewAdjustSoundFile();
   }
 

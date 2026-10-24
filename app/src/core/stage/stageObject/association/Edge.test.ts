@@ -33,6 +33,7 @@ function node(x: number) {
     uuid: crypto.randomUUID(),
     collisionBox: new CollisionBox([new Rectangle(new Vector(x, 0), new Vector(100, 80))]),
     getBorderWidth: () => 2,
+    clipConnectionToBoundary: true,
   }) as TextNode;
 }
 function setup() {
@@ -47,6 +48,13 @@ beforeEach(() => {
 });
 
 describe("edge geometry cache", () => {
+  it("clips non-center text anchors to node boundaries", () => {
+    const { edge } = setup();
+    edge.sourceRectangleRate = new Vector(0.25, 0.25);
+    edge.targetRectangleRate = new Vector(0.75, 0.25);
+    expect(edge.bodyLine.start).toEqual(new Vector(100, 20));
+    expect(edge.bodyLine.end).toEqual(new Vector(300, 20));
+  });
   it("reuses world geometry while endpoints and connection rates are unchanged", () => {
     const { edge } = setup();
     const line = edge.bodyLine,

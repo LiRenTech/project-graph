@@ -2,6 +2,9 @@ windowControls:
   alwaysOnTop: 窗口置頂
 
 projectStatus:
+  emptyCanvas: 畫布裡沒有節點
+  noVisibleNodes: 當前視野內沒有可見節點，點擊按鈕復位
+  fitView: 適應視野
   nodes: "{{count}} 節點"
   edges: "{{count}} 連線"
   selected: "已選 {{count}}"

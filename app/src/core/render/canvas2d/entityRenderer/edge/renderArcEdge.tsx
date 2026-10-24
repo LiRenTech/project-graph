@@ -22,7 +22,7 @@ export function renderArcEdge(
   const geo = edge.arcGeometry;
   const startPoint = edge.clippedStart;
   const endPoint = edge.clippedEnd;
-  const scaledWidth = Math.max(1.25, edge.edgeWidth * project.camera.currentScale);
+  const scaledWidth = edge.edgeWidth * project.camera.currentScale;
 
   // 安全兜底：offset 过小导致三点共线，radius 巨大 → 直接画直线
   if (geo.radius > 1e6) {

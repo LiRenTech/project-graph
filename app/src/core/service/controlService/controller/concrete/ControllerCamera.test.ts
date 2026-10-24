@@ -60,6 +60,28 @@ const wheel = (values: Partial<WheelEvent>) =>
   }) as WheelEvent;
 
 describe("trackpad camera handoff", () => {
+  it.each([1e-6, 1e6])("supports gesture zoom beyond the old limits at %s", (scale) => {
+    const { camera, project } = setup();
+    camera.applyGesture(new Vector(50, 50), new Vector(60, 60), scale);
+    expect(camera.currentScale).toBe(scale);
+    expect(project.renderer.transformWorld2View(Vector.getZero()).x).toBeCloseTo(60);
+    const location = camera.location.clone();
+    for (let i = 0; i < 10; i++) camera.tick();
+    expect(camera.currentScale).toBe(scale);
+    expect(camera.location).toEqual(location);
+  });
+  it.each([0.000001, 1000000])("keeps wheel zoom proportional at %s", (scale) => {
+    const { camera, control } = setup();
+    Object.assign(control, { lastZoomFeedbackTime: 0 });
+    camera.currentScale = camera.targetScale = scale;
+    const wheelControl = control as unknown as {
+      applyWheelZoom: (delta: number, time: number, mode: number) => void;
+    };
+    wheelControl.applyWheelZoom(-100, 0, 0);
+    expect(camera.targetScale / scale).toBeCloseTo(Math.exp(0.14));
+    wheelControl.applyWheelZoom(100, 0, 0);
+    expect(camera.targetScale).toBeCloseTo(scale);
+  });
   it("direct panning clears velocity, queued movement and old zoom targets", () => {
     const { camera, control } = setup();
     camera.speed = new Vector(5, 3);

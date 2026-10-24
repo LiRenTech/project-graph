@@ -79,6 +79,15 @@ export class TextNodeRenderer {
     }
 
     if (node.isEditing) {
+      this.project.shapeRenderer.renderRect(
+        nodeViewRect,
+        Color.Transparent,
+        this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(
+          Settings.textNodeEditModeOutlineOpacity,
+        ),
+        1,
+        node.getBorderRadius(),
+      );
       // 在外面增加一个虚线框
       this.project.collisionBoxRenderer.render(
         node.collisionBox,

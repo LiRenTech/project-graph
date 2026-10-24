@@ -2,6 +2,9 @@ windowControls:
   alwaysOnTop: Keep window on top
 
 projectStatus:
+  emptyCanvas: No nodes on the canvas
+  noVisibleNodes: No visible nodes in this view. Click to reset.
+  fitView: Fit view
   nodes: "{{count}} nodes"
   edges: "{{count}} edges"
   selected: "{{count}} selected"
