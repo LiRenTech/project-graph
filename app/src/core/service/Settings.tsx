@@ -292,7 +292,7 @@ export const settingsSchema = z.object({
   soundPitchVariationRange: z.number().int().min(0).max(1200).default(150),
   autoImportTxtFileWhenOpenPrg: z.boolean().default(false),
   imageImportOrder: z.union([z.literal("mtime"), z.literal("path")]).default("mtime"),
-  enableAutoEdgeWidth: z.boolean().default(true),
+  enableAutoEdgeWidth: projectToolSettingSchemas.enableAutoEdgeWidth,
   enableCollisionBoxAutoWidth: z.boolean().default(true),
   newNodeScaleByCamera: z.boolean().default(false),
   newNodeScaleByCameraOffset: z.number().int().min(-5).max(5).default(-1),

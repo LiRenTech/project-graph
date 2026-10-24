@@ -127,13 +127,16 @@ export abstract class Entity extends StageObject {
     }
 
     // 两者相交，需要调整位置
-    const overlapSize = selfRectangle.getOverlapSize(otherRectangle);
-    let moveDelta;
-    if (Math.abs(overlapSize.x) < Math.abs(overlapSize.y)) {
-      moveDelta = new Vector(overlapSize.x * Math.sign(otherRectangle.center.x - selfRectangle.center.x), 0);
-    } else {
-      moveDelta = new Vector(0, overlapSize.y * Math.sign(otherRectangle.center.y - selfRectangle.center.y));
-    }
+    // Equal centers still need a nonzero direction; intersection size alone also cannot separate contained rectangles.
+    const dx =
+      otherRectangle.center.x >= selfRectangle.center.x
+        ? selfRectangle.right - otherRectangle.left
+        : selfRectangle.left - otherRectangle.right;
+    const dy =
+      otherRectangle.center.y >= selfRectangle.center.y
+        ? selfRectangle.bottom - otherRectangle.top
+        : selfRectangle.top - otherRectangle.bottom;
+    const moveDelta = Math.abs(dx) < Math.abs(dy) ? new Vector(dx, 0) : new Vector(0, dy);
     other.move(moveDelta);
   }
   /**

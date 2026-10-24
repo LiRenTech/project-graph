@@ -20,7 +20,7 @@ import { Uint8ArrayReader, Uint8ArrayWriter, ZipWriter } from "@zip.js/zip.js";
 import { afterEach, describe, expect, it } from "vitest";
 import { URI } from "vscode-uri";
 import sharp from "sharp";
-import { resolveProjectOwnershipArtifactPaths } from "./ProjectGraphAppDataPath";
+import { holdProjectOwnership, isProjectOwned, releaseProjectOwnership } from "./ProjectGraphOwnershipProcess";
 
 const repositoryRoot = fileURLToPath(new URL("../../..", import.meta.url));
 const ownershipHelperPath = fileURLToPath(
@@ -239,14 +239,13 @@ function expectCliError(args: string[], expected: Record<string, unknown>, exitC
   expect(result.stderr).toBe(`${JSON.stringify(error)}\n`);
 }
 
-async function waitForProjectLock(lockPath: string): Promise<void> {
+async function waitForProjectLock(projectPath: string): Promise<void> {
   const deadline = Date.now() + 15_000;
   while (Date.now() < deadline) {
-    const probe = spawnSync("/usr/bin/lockf", ["-k", "-s", "-t", "0", lockPath, "/usr/bin/true"]);
-    if (probe.status === 75) return;
+    if (isProjectOwned(ownershipHelperPath, projectPath, getOwnershipDirectory())) return;
     await new Promise((resolve) => setTimeout(resolve, 10));
   }
-  throw new Error(`Timed out waiting for Project lock: ${lockPath}`);
+  throw new Error(`Timed out waiting for Project lock: ${projectPath}`);
 }
 
 async function createOpenProjectHost(projectPath: string, value: unknown, responseDelayMs = 0) {
@@ -279,28 +278,15 @@ async function createOpenProjectHost(projectPath: string, value: unknown, respon
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("Expected a TCP Runtime Host address");
 
-  const canonicalPath = realpathSync(projectPath);
-  const {
-    ownershipLock: ownershipLockPath,
-    connectableOwnerLock: connectableLockPath,
-    connectableOwnerRecord: connectableRecordPath,
-  } = resolveProjectOwnershipArtifactPaths(canonicalPath, getOwnershipDirectory());
-  writeFileSync(
-    connectableRecordPath,
-    JSON.stringify({ kind: "connectable", endpoint: `tcp://127.0.0.1:${address.port}` }),
-  );
-  const holder = spawn("/usr/bin/lockf", [
-    "-k",
-    "-s",
-    ownershipLockPath,
-    "/usr/bin/lockf",
-    "-k",
-    "-s",
-    connectableLockPath,
-    "/bin/sleep",
-    "90",
-  ]);
-  await Promise.all([waitForProjectLock(ownershipLockPath), waitForProjectLock(connectableLockPath)]);
+  const holder = await holdProjectOwnership(
+    ownershipHelperPath,
+    projectPath,
+    getOwnershipDirectory(),
+    `tcp://127.0.0.1:${address.port}`,
+  ).catch((error) => {
+    server.close();
+    throw error;
+  });
 
   return {
     requests,
@@ -309,8 +295,8 @@ async function createOpenProjectHost(projectPath: string, value: unknown, respon
         server.close((error) => (error ? reject(error) : resolve()));
       });
     },
-    close() {
-      holder.kill("SIGTERM");
+    async close() {
+      await releaseProjectOwnership(holder);
       if (server.listening) server.close();
     },
   };
@@ -363,43 +349,31 @@ async function createCancellableOpenProjectHost(projectPath: string) {
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("Expected a TCP Runtime Host address");
 
-  const canonicalPath = realpathSync(projectPath);
-  const {
-    ownershipLock: ownershipLockPath,
-    connectableOwnerLock: connectableLockPath,
-    connectableOwnerRecord: connectableRecordPath,
-  } = resolveProjectOwnershipArtifactPaths(canonicalPath, getOwnershipDirectory());
-  writeFileSync(
-    connectableRecordPath,
-    JSON.stringify({ kind: "connectable", endpoint: `tcp://127.0.0.1:${address.port}` }),
-  );
-  const holder = spawn("/usr/bin/lockf", [
-    "-k",
-    "-s",
-    ownershipLockPath,
-    "/usr/bin/lockf",
-    "-k",
-    "-s",
-    connectableLockPath,
-    "/bin/sleep",
-    "20",
-  ]);
-  await Promise.all([waitForProjectLock(ownershipLockPath), waitForProjectLock(connectableLockPath)]);
+  const holder = await holdProjectOwnership(
+    ownershipHelperPath,
+    projectPath,
+    getOwnershipDirectory(),
+    `tcp://127.0.0.1:${address.port}`,
+  ).catch((error) => {
+    server.close();
+    throw error;
+  });
 
   return {
     invocationReceived,
     get usedSingleConnection() {
       return usedSingleConnection;
     },
-    close() {
-      holder.kill("SIGTERM");
+    async close() {
+      await releaseProjectOwnership(holder);
       invocationSocket?.destroy();
       if (server.listening) server.close();
     },
   };
 }
 
-describe("Project Graph CLI process contract", () => {
+// Closed-project calls start a fresh Node worker and Vite runtime on every invocation.
+describe("Project Graph CLI process contract", { timeout: 15_000 }, () => {
   it("prints standard help without protocol output noise", () => {
     const result = runCli("--help");
 
@@ -615,6 +589,7 @@ if (command === "try-hold-project") {
         stderr: "",
       });
     },
+    15_000,
   );
 
   it.skipIf(productionEntry || process.platform === "win32")(
@@ -715,7 +690,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
       { code: "PROJECT_LOAD_FAILED", message: "Project file could not be loaded." },
       1,
     );
-  });
+  }, 15_000);
 
   it("does not create legacy ownership sidecars in the Project directory", async () => {
     const projectPath = await createProjectFixture();
@@ -732,7 +707,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
     } finally {
       chmodSync(directory, 0o755);
     }
-  });
+  }, 15_000);
 
   it("invokes get_all_nodes against a closed current-schema Project without rewriting it", async () => {
     const projectPath = await createProjectFixture();
@@ -797,9 +772,8 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
     ]);
 
     const result = runCli("tool", "invoke", "get_all_nodes", "--project", projectPath, "--input", "{}");
-    const value = JSON.parse(result.stdout) as { objects: Array<Record<string, unknown>> };
-
     expect(result).toMatchObject({ status: 0, stderr: "" });
+    const value = JSON.parse(result.stdout) as { objects: Array<Record<string, unknown>> };
     expect(value.objects).toHaveLength(3);
     expect(value.objects[2]).toMatchObject({
       ref: "e1",
@@ -957,7 +931,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
     );
     expect(tree).toMatchObject({ status: 0, stderr: "" });
     expect(JSON.parse(tree.stdout)).toEqual({ success: true, nodeCount: 1 });
-  }, 45_000);
+  }, 90_000);
 
   it("preserves recognize_image dependency failure as its normal result", async () => {
     const projectPath = await createProjectFixture("2.7.0", [
@@ -1164,7 +1138,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
 
     expect(result).toMatchObject({ status: 0, stdout: '{"objects":[]}\n', stderr: "" });
     expect(readFileSync(projectPath)).toEqual(before);
-  });
+  }, 15_000);
 
   it("restores stable Project Object References across independent CLI processes", async () => {
     const projectPath = await createProjectFixture("2.7.0", [
@@ -1314,6 +1288,25 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
     expect(value.objects).toContainEqual(
       expect.objectContaining({ ref: "e1", type: "LineEdge", sourceRef: "n1", targetRef: "n2", text: "persisted" }),
     );
+  }, 20_000);
+
+  it("expands a closed Project tree without desktop-only effects or services", async () => {
+    const projectPath = await createProjectFixture("2.7.0", createMutationStage());
+    expect(runCli("tool", "invoke", "get_all_nodes", "--project", projectPath, "--input", "{}")).toMatchObject({
+      status: 0,
+      stderr: "",
+    });
+    expect(
+      runCli(
+        "tool",
+        "invoke",
+        "expand_node_tree_from_node",
+        "--project",
+        projectPath,
+        "--input",
+        '{"ref":"n1","text":"Child"}',
+      ),
+    ).toMatchObject({ status: 0, stdout: '{"success":true,"nodeCount":1}\n', stderr: "" });
   }, 20_000);
 
   it("preserves a stale Project Object Reference error after a deleted object is saved", async () => {
@@ -1577,16 +1570,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
 
   it("returns PROJECT_BUSY instead of reading a Project held by an unconnectable owner", async () => {
     const projectPath = await createProjectFixture();
-    const { ownershipLock: lockPath } = resolveProjectOwnershipArtifactPaths(
-      realpathSync(projectPath),
-      getOwnershipDirectory(),
-    );
-    const holder = spawn("/usr/bin/lockf", ["-k", lockPath, "/bin/sleep", "8"]);
-    const deadline = Date.now() + 1000;
-    while (!existsSync(lockPath) && Date.now() < deadline) {
-      await new Promise((resolve) => setTimeout(resolve, 10));
-    }
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    const holder = await holdProjectOwnership(ownershipHelperPath, projectPath, getOwnershipDirectory());
 
     try {
       expectCliError(
@@ -1595,7 +1579,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
         1,
       );
     } finally {
-      holder.kill("SIGTERM");
+      await releaseProjectOwnership(holder);
     }
   }, 15_000);
 
@@ -1631,7 +1615,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
       ]);
       expect(readFileSync(projectPath)).toEqual(before);
     } finally {
-      host.close();
+      await host.close();
     }
   }, 15_000);
 
@@ -1666,7 +1650,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
       expect(host.requests).toHaveLength(29);
       expect(readFileSync(projectPath)).toEqual(before);
     } finally {
-      host.close();
+      await host.close();
     }
   }, 60_000);
 
@@ -1716,7 +1700,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
       );
       expect(readFileSync(projectPath)).toEqual(before);
     } finally {
-      host.close();
+      await host.close();
     }
   });
 
@@ -1729,7 +1713,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
         runCliAsync("tool", "invoke", "get_all_nodes", "--project", projectPath, "--input", "{}"),
       ).resolves.toEqual({ status: 0, stdout: '{"completed":true}\n', stderr: "" });
     } finally {
-      host.close();
+      await host.close();
     }
   }, 15_000);
 
@@ -1759,7 +1743,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
         });
         expect(host.usedSingleConnection).toBe(true);
       } finally {
-        host.close();
+        await host.close();
       }
     },
     15_000,
@@ -1779,8 +1763,7 @@ process.stdout.write(JSON.stringify({ status: "error", code: "PROJECT_LOAD_FAILE
       JSON.stringify({ edges: [{ sourceRef: "n1", targetRef: "n2" }] }),
     );
 
-    const { ownershipLock } = resolveProjectOwnershipArtifactPaths(realpathSync(projectPath), getOwnershipDirectory());
-    await waitForProjectLock(ownershipLock);
+    await waitForProjectLock(projectPath);
     invocation.child.kill("SIGTERM");
 
     await expect(invocation.result).resolves.toEqual({

@@ -7,6 +7,7 @@ export function createProjectToolSettingSchemas(defaultFontFamily: string) {
   return {
     defaultFontFamily: z.string().default(defaultFontFamily),
     defaultEdgeLineType: z.union([z.literal("solid"), z.literal("dashed"), z.literal("double")]).default("solid"),
+    enableAutoEdgeWidth: z.boolean().default(true),
     defaultEdgeArrowType: z
       .union([
         z.literal("default"),
