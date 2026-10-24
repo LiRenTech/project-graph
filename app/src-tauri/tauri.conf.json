@@ -57,7 +57,13 @@
       }
     },
     "macOS": {
-      "minimumSystemVersion": "11.0"
+      "minimumSystemVersion": "11.0",
+      "dmg": {
+        "background": "dmg/background.png",
+        "windowSize": { "width": 720, "height": 460 },
+        "appPosition": { "x": 184, "y": 254 },
+        "applicationFolderPosition": { "x": 536, "y": 254 }
+      }
     },
     "fileAssociations": [
       {
