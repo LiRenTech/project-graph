@@ -16,7 +16,6 @@ import { Section } from "@/core/stage/stageObject/entity/Section";
 import { SvgNode } from "@/core/stage/stageObject/entity/SvgNode";
 import { TextNode } from "@/core/stage/stageObject/entity/TextNode";
 import type { Direction } from "@/types/directions";
-import { isDesktop } from "@/utils/platform";
 import { colorInvert, Vector } from "@graphif/data-structures";
 import { Rectangle } from "@graphif/shapes";
 import { toast } from "sonner";
@@ -172,8 +171,10 @@ export class ControllerUtils {
             ? colorInvert(clickedNode.color)
             : colorInvert(this.project.stageStyleManager.currentStyle.Background)
           ).toHexStringWithoutAlpha(),
-          outline: `solid 1px ${this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(Settings.textNodeEditModeOutlineOpacity).toString()}`,
-          borderRadius: `${clickedNode.getBorderRadius() * this.project.camera.currentScale * clientScale.x}px`,
+          // 编辑描边由 Canvas 绘制，避免 WebView 的 CSS 圆角与节点轮廓不一致。
+          outline: "none",
+          border: "none",
+          borderRadius: `${clickedNode.getBorderRadius() * clientScale.x}px`,
         },
         selectAll,
         Settings.textNodeExitEditModeOnWheel,
@@ -287,9 +288,7 @@ export class ControllerUtils {
     }
     // 整特效
     this.project.effects.addEffect(EntityCreateFlashEffect.fromCreateEntity(createNode));
-    if (isDesktop) {
-      this.editTextNode(createNode);
-    }
+    this.editTextNode(createNode);
   }
 
   /**

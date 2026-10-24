@@ -81,14 +81,14 @@ export class EdgeRenderer {
         10 * this.project.camera.currentScale,
         Color.Transparent,
         this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        Math.max(1.25, 2 * this.project.camera.currentScale),
+        2 * this.project.camera.currentScale,
       );
       this.project.shapeRenderer.renderCircle(
         this.project.renderer.transformWorld2View(edge.targetLocation),
         10 * this.project.camera.currentScale,
         Color.Transparent,
         this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-        Math.max(1.25, 2 * this.project.camera.currentScale),
+        2 * this.project.camera.currentScale,
       );
       // 画一个虚线
       if (this.currentRenderer instanceof StraightEdgeRenderer) {
@@ -96,7 +96,7 @@ export class EdgeRenderer {
           this.project.renderer.transformWorld2View(edge.sourceLocation),
           this.project.renderer.transformWorld2View(edge.targetLocation),
           this.project.stageStyleManager.currentStyle.CollideBoxSelected,
-          Math.max(1.25, 2 * this.project.camera.currentScale),
+          2 * this.project.camera.currentScale,
           10 * this.project.camera.currentScale,
         );
       }

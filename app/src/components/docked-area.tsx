@@ -9,14 +9,24 @@ import { isMac } from "@/utils/platform";
 import { useAtomValue } from "jotai";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "./ui/button";
 
 function ProjectStatus({ project, isClassroomMode }: { project: Project; isClassroomMode: boolean }) {
   const { t } = useTranslation("projectStatus");
   const [text, setText] = useState("");
+  const [viewHint, setViewHint] = useState("");
 
   useEffect(() => {
     const update = () => {
       const manager = project.stageManager;
+      const entities = manager.getEntities();
+      const view = project.renderer.getCoverWorldRectangle();
+      const hasVisibleNode = entities.some((entity) => {
+        if (entity.isHiddenBySectionCollapse) return false;
+        const rect = entity.collisionBox.getRectangle();
+        return view.isCollideWith(rect) && Math.max(rect.width, rect.height) * project.camera.currentScale >= 1;
+      });
+      setViewHint(entities.length === 0 ? t("emptyCanvas") : hasVisibleNode ? "" : t("noVisibleNodes"));
       const state = {
         [ProjectState.Saved]: "saved",
         [ProjectState.Stashed]: "stashed",
@@ -34,11 +44,14 @@ function ProjectStatus({ project, isClassroomMode }: { project: Project; isClass
   return (
     <div
       className={cn(
-        "bg-background text-muted-foreground absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full px-3 py-1.5 text-xs shadow-xs transition-opacity hover:opacity-100",
+        "bg-background text-muted-foreground absolute bottom-3 left-3 flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full px-3 py-1.5 text-xs shadow-xs transition-opacity hover:opacity-100",
         isClassroomMode && "opacity-0",
       )}
     >
-      {text}
+      <span className="truncate">{viewHint || text}</span>
+      <Button variant="ghost" size="sm" className="h-6 shrink-0 px-2 text-xs" onClick={() => project.camera.reset()}>
+        {t("fitView")}
+      </Button>
     </div>
   );
 }

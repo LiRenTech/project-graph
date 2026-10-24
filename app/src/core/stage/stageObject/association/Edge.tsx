@@ -78,15 +78,14 @@ export abstract class Edge extends ConnectableAssociation {
     let startPoint: Vector;
     let endPoint: Vector;
 
-    // Only the center rate (0.5, 0.5) requires computing the intersection with the
-    // bounding rectangle edge. All other rates use the exact rate position directly.
     const isCenterRate = (rate: Vector): boolean => rate.x === 0.5 && rate.y === 0.5;
 
     if (this.source instanceof ConnectPoint) {
       startPoint = this.source.geometryCenter;
     } else if (!isCenterRate(this.sourceRectangleRate)) {
-      // Non-center rate: use exact edge center for sentinel values, or inner position for image/precise rates
-      startPoint = Edge.getExactEdgePositionByRate(sourceRectangle, this.sourceRectangleRate) ?? edgeCenterLine.start;
+      startPoint =
+        Edge.getExactEdgePositionByRate(sourceRectangle, this.sourceRectangleRate) ??
+        (this.source.clipConnectionToBoundary ? sourceRectangle.getLineIntersectionPoint(edgeCenterLine) : sourceInner);
     } else {
       // Center rate: clip to the bounding rectangle edge along the connection direction
       startPoint = sourceRectangle.getLineIntersectionPoint(edgeCenterLine);
@@ -94,8 +93,9 @@ export abstract class Edge extends ConnectableAssociation {
     if (this.target instanceof ConnectPoint) {
       endPoint = this.target.geometryCenter;
     } else if (!isCenterRate(this.targetRectangleRate)) {
-      // Non-center rate: use exact edge center for sentinel values, or inner position for image/precise rates
-      endPoint = Edge.getExactEdgePositionByRate(targetRectangle, this.targetRectangleRate) ?? edgeCenterLine.end;
+      endPoint =
+        Edge.getExactEdgePositionByRate(targetRectangle, this.targetRectangleRate) ??
+        (this.target.clipConnectionToBoundary ? targetRectangle.getLineIntersectionPoint(edgeCenterLine) : targetInner);
     } else {
       // Center rate: clip to the bounding rectangle edge along the connection direction
       endPoint = targetRectangle.getLineIntersectionPoint(edgeCenterLine);

@@ -736,17 +736,37 @@ export class Renderer {
       if (this.project.sectionMethods.isAssociationHiddenByBigTitleSection(association)) {
         continue;
       }
-      if (association instanceof MultiTargetUndirectedEdge) {
-        this.project.multiTargetUndirectedEdgeRenderer.render(association);
+      const ctx = this.project.canvas.ctx;
+      ctx.save();
+      // 连线在图片上方绘制，但不能覆盖端点文本；逐个裁剪也能处理节点重叠。
+      for (const entity of association.associationList) {
+        if (
+          !("clipConnectionToBoundary" in entity) ||
+          !entity.clipConnectionToBoundary ||
+          ("isHiddenBySectionCollapse" in entity && entity.isHiddenBySectionCollapse)
+        )
+          continue;
+        const rect = this.transformWorld2View(entity.collisionBox.getRectangle());
+        ctx.beginPath();
+        ctx.rect(0, 0, this.w, this.h);
+        ctx.rect(rect.left, rect.top, rect.width, rect.height);
+        ctx.clip("evenodd");
       }
-      if (association instanceof LineEdge) {
-        this.project.edgeRenderer.renderLineEdge(association);
-      }
-      if (association instanceof CubicCatmullRomSplineEdge) {
-        this.project.edgeRenderer.renderCrEdge(association);
-      }
-      if (association instanceof ArcEdge) {
-        this.project.edgeRenderer.renderArcEdge(association);
+      try {
+        if (association instanceof MultiTargetUndirectedEdge) {
+          this.project.multiTargetUndirectedEdgeRenderer.render(association);
+        }
+        if (association instanceof LineEdge) {
+          this.project.edgeRenderer.renderLineEdge(association);
+        }
+        if (association instanceof CubicCatmullRomSplineEdge) {
+          this.project.edgeRenderer.renderCrEdge(association);
+        }
+        if (association instanceof ArcEdge) {
+          this.project.edgeRenderer.renderArcEdge(association);
+        }
+      } finally {
+        ctx.restore();
       }
       this.renderedEdges++;
     }

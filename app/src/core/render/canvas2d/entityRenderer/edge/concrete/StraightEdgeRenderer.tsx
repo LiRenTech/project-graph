@@ -75,7 +75,6 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const edgeColor = edge.color.equals(Color.Transparent)
       ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
-    width = Math.max(1.25, width);
     const warning = this.project.controller.cutting.warningAssociations.includes(edge);
     if (warning || this.project.mouseInteraction.hoverEdges.some((hovered) => hovered.uuid === edge.uuid)) {
       const ctx = this.project.canvas.ctx;

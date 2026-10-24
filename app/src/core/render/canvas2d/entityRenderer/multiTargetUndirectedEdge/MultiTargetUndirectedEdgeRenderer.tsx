@@ -89,7 +89,7 @@ export class MultiTargetUndirectedEdgeRenderer {
       }
       const startView = this.project.renderer.transformWorld2View(targetPoint);
       const endView = this.project.renderer.transformWorld2View(toCenterPoint);
-      const lineWidth = Math.max(1.25, 2 * this.project.camera.currentScale);
+      const lineWidth = 2 * this.project.camera.currentScale;
       const lineType = edge.lineType || "solid";
       if (lineType === "dashed") {
         this.project.curveRenderer.renderDashedLine(

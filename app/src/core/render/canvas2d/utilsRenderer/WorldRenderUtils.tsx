@@ -17,7 +17,7 @@ export class WorldRenderUtils {
    */
   renderCubicCatmullRomSpline(spline: CubicCatmullRomSpline, color: Color, width: number): void {
     const points = spline.computePath().map((it) => this.project.renderer.transformWorld2View(it));
-    width = Math.max(1.25, width * this.project.camera.currentScale);
+    width *= this.project.camera.currentScale;
     const start = this.project.renderer.transformWorld2View(spline.controlPoints[1]);
     const end = this.project.renderer.transformWorld2View(spline.controlPoints[spline.controlPoints.length - 2]);
     // 绘制首位控制点到曲线首尾的虚线
@@ -77,7 +77,7 @@ export class WorldRenderUtils {
     // 使用视图坐标系下的点创建新的贝塞尔曲线
     const viewBezier = new CubicBezierCurve(viewStart, viewCtrlPt1, viewCtrlPt2, viewEnd);
 
-    this.project.curveRenderer.renderBezierCurve(viewBezier, color, Math.max(1.25, width));
+    this.project.curveRenderer.renderBezierCurve(viewBezier, color, width);
   }
 
   /**
@@ -105,7 +105,7 @@ export class WorldRenderUtils {
     this.project.curveRenderer.renderDashedBezierCurve(
       viewBezier,
       color,
-      Math.max(1.25, width * this.project.camera.currentScale),
+      width * this.project.camera.currentScale,
       dashLength,
     );
   }
@@ -127,7 +127,7 @@ export class WorldRenderUtils {
     this.project.curveRenderer.renderDoubleBezierCurve(
       viewBezier,
       color,
-      Math.max(1.25, width * this.project.camera.currentScale),
+      width * this.project.camera.currentScale,
       gap,
     );
   }
