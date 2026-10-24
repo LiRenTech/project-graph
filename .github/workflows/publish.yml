@@ -299,6 +299,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
           NX_SKIP_LOG_GROUPING: "true"
           CI: "true"
+          TAURI_BUNDLER_DMG_IGNORE_CI: ${{ matrix.platform == 'macos-latest' && 'true' || '' }}
       - name: Build (Windows)
         if: matrix.platform == 'windows-latest'
         id: build_windows
@@ -368,6 +369,21 @@ jobs:
           }
           Write-Host "========================================================================"
 
+      - name: macOS - Verify DMG background and layout
+        if: matrix.platform == 'macos-latest'
+        shell: bash
+        run: |
+          set -euo pipefail
+          MOUNT_POINT=$(mktemp -d "$RUNNER_TEMP/project-graph-dmg.XXXXXX")
+          trap 'hdiutil detach "$MOUNT_POINT" >/dev/null 2>&1 || true; rmdir "$MOUNT_POINT"' EXIT
+          DMG_PATH=$(find app/src-tauri/target/universal-apple-darwin/release/bundle/dmg -maxdepth 1 -name '*.dmg' -print -quit)
+          test -n "$DMG_PATH"
+          hdiutil attach "$DMG_PATH" -readonly -nobrowse -mountpoint "$MOUNT_POINT"
+          test -s "$MOUNT_POINT/.DS_Store"
+          cmp app/src-tauri/dmg/background.png "$MOUNT_POINT/.background/background.png"
+          test -d "$MOUNT_POINT/Project Graph.app"
+          test -L "$MOUNT_POINT/Applications"
+          echo "DMG background, Finder layout record, application and Applications link verified."
       - name: MacOS - Rename app.tar.gz
         if: matrix.platform == 'macos-latest'
         run: |

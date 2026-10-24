@@ -50,9 +50,16 @@ impl HelperProcess {
     }
 
     fn hold(command: &str, path: &Path) -> Self {
-        let mut child = Command::new(env!("CARGO_BIN_EXE_project-graph-ownership-helper"))
-            .arg(command)
-            .arg(path)
+        Self::hold_with_endpoint(command, path, None)
+    }
+
+    fn hold_with_endpoint(command: &str, path: &Path, endpoint: Option<&str>) -> Self {
+        let mut process = Command::new(env!("CARGO_BIN_EXE_project-graph-ownership-helper"));
+        process.arg(command).arg(path);
+        if let Some(endpoint) = endpoint {
+            process.arg(endpoint);
+        }
+        let mut child = process
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::inherit())
@@ -287,4 +294,40 @@ fn helper_crash_releases_project_ownership() {
     helper.kill();
 
     assert!(acquire_project_ownership(&project_path, ProjectOwner::UnconnectableHolder).is_ok());
+}
+
+#[test]
+fn connectable_helper_publishes_owner_and_releases_both_locks() {
+    let directory = TestDirectory::new();
+    let project_path = directory.path().join("graph.prg");
+    fs::write(&project_path, []).unwrap();
+    let endpoint = "tcp://127.0.0.1:43123";
+    let mut holder = HelperProcess::hold_with_endpoint(
+        "hold-connectable-project",
+        &project_path,
+        Some(endpoint),
+    );
+    assert_eq!(holder.read_response()["status"], "acquired");
+
+    let mut probe = HelperProcess::try_hold_project(&project_path);
+    assert_eq!(
+        probe.read_response(),
+        serde_json::json!({
+            "status": "busy",
+            "owner": { "kind": "connectable", "endpoint": endpoint }
+        })
+    );
+    assert_eq!(probe.wait().code(), Some(75));
+    holder.release();
+
+    let mut next_owner = HelperProcess::hold_with_endpoint(
+        "hold-connectable-project",
+        &project_path,
+        Some(endpoint),
+    );
+    assert_eq!(next_owner.read_response()["status"], "acquired");
+    next_owner.kill();
+    let mut probe = HelperProcess::try_hold_project(&project_path);
+    assert_eq!(probe.read_response()["status"], "acquired");
+    probe.release();
 }

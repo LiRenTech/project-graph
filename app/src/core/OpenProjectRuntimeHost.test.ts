@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import { mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
@@ -101,7 +101,7 @@ import {
   OpenProjectRuntimeHost,
   registerOpenProjectRuntimeHost,
 } from "./OpenProjectRuntimeHost";
-import { resolveProjectOwnershipArtifactPaths } from "@/cli/ProjectGraphAppDataPath";
+import { holdProjectOwnership, isProjectOwned, releaseProjectOwnership } from "@/cli/ProjectGraphOwnershipProcess";
 
 const repositoryRoot = process.cwd();
 const ownershipHelperPath = join(
@@ -187,31 +187,22 @@ function createLiveProject(canonicalPath = "/projects/graph.prg", restoreReferen
   return { project, node };
 }
 
-function waitForProjectLock(lockPath: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const deadline = Date.now() + 1000;
-    const probe = () => {
-      const result = spawnSync("/usr/bin/lockf", ["-k", "-s", "-t", "0", lockPath, "/usr/bin/true"]);
-      if (result.status === 75) return resolve();
-      if (Date.now() >= deadline) return reject(new Error(`Timed out waiting for Project lock: ${lockPath}`));
-      setTimeout(probe, 10);
-    };
-    probe();
-  });
-}
-
 function runCli(...args: string[]): Promise<{ status: number | null; stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
-    const child = spawn("pnpm", ["cli", "--", ...args], {
-      cwd: repositoryRoot,
-      env: {
-        ...process.env,
-        NO_COLOR: "1",
-        PROJECT_GRAPH_OWNERSHIP_HELPER_PATH: ownershipHelperPath,
-        PROJECT_GRAPH_OWNERSHIP_DIRECTORY: ownershipDirectory,
+    const child = spawn(
+      process.execPath,
+      [join(repositoryRoot, "packages/project-graph-cli/src/cli.mjs"), "--", ...args],
+      {
+        cwd: repositoryRoot,
+        env: {
+          ...process.env,
+          NO_COLOR: "1",
+          PROJECT_GRAPH_OWNERSHIP_HELPER_PATH: ownershipHelperPath,
+          PROJECT_GRAPH_OWNERSHIP_DIRECTORY: ownershipDirectory,
+        },
+        stdio: ["ignore", "pipe", "pipe"],
       },
-      stdio: ["ignore", "pipe", "pipe"],
-    });
+    );
     let stdout = "";
     let stderr = "";
     child.stdout.setEncoding("utf8");
@@ -255,32 +246,19 @@ async function startDesktopRuntimeBridge(projectPath: string, host: OpenProjectR
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("Expected a TCP Runtime Host address");
 
-  const {
-    ownershipLock: ownershipLockPath,
-    connectableOwnerLock: connectableLockPath,
-    connectableOwnerRecord: connectableRecordPath,
-  } = resolveProjectOwnershipArtifactPaths(projectPath, ownershipDirectory);
-  writeFileSync(
-    connectableRecordPath,
-    JSON.stringify({ kind: "connectable", endpoint: `tcp://127.0.0.1:${address.port}` }),
-  );
-  const lockHolder = spawn("/usr/bin/lockf", [
-    "-k",
-    "-s",
-    ownershipLockPath,
-    "/usr/bin/lockf",
-    "-k",
-    "-s",
-    connectableLockPath,
-    "/bin/sleep",
-    "20",
-  ]);
-  await Promise.all([waitForProjectLock(ownershipLockPath), waitForProjectLock(connectableLockPath)]);
+  const lockHolder = await holdProjectOwnership(
+    ownershipHelperPath,
+    projectPath,
+    ownershipDirectory,
+    `tcp://127.0.0.1:${address.port}`,
+  ).catch((error) => {
+    server.close();
+    throw error;
+  });
 
   return {
-    ownershipLockPath,
-    close() {
-      lockHolder.kill("SIGTERM");
+    async close() {
+      await releaseProjectOwnership(lockHolder);
       server.close();
     },
   };
@@ -1004,11 +982,9 @@ describe("Open Project Runtime Host", () => {
       expect(store.get(activeTabAtom)).toBe(foregroundProject);
       expect(foregroundProject.camera.location).toEqual(foregroundCameraBefore);
       expect(document.activeElement).toBe(focusedElement);
-      expect(
-        spawnSync("/usr/bin/lockf", ["-k", "-s", "-t", "0", bridge.ownershipLockPath, "/usr/bin/true"]).status,
-      ).toBe(75);
+      expect(isProjectOwned(ownershipHelperPath, projectPath, ownershipDirectory)).toBe(true);
     } finally {
-      bridge.close();
+      await bridge.close();
       await runtimeHost.dispose();
       store.set(activeTabAtom, undefined);
       store.set(tabsAtom, []);

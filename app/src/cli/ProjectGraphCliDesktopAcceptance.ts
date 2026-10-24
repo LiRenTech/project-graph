@@ -13,7 +13,7 @@ import type {
   CliDesktopAcceptanceManifest,
   CliDesktopAcceptanceState,
 } from "./ProjectGraphCliDesktopAcceptanceProtocol";
-import { resolveProjectOwnershipArtifactPaths } from "./ProjectGraphAppDataPath";
+import { isProjectOwned } from "./ProjectGraphOwnershipProcess";
 
 const repositoryRoot = fileURLToPath(new URL("../../..", import.meta.url));
 const ownershipHelperPath = fileURLToPath(
@@ -308,10 +308,9 @@ function assertSuccessfulInvocation(
 }
 
 function assertProjectOwned(projectPath: string, ownershipDirectory: string): void {
-  if (process.platform === "win32") return;
-  const { ownershipLock } = resolveProjectOwnershipArtifactPaths(realpathSync(projectPath), ownershipDirectory);
-  const lock = spawnSync("/usr/bin/lockf", ["-k", "-s", "-t", "0", ownershipLock, "/usr/bin/true"]);
-  if (lock.status !== 75) throw new Error(`Desktop does not own Project: ${projectPath}`);
+  if (!isProjectOwned(ownershipHelperPath, projectPath, ownershipDirectory)) {
+    throw new Error(`Desktop does not own Project: ${projectPath}`);
+  }
 }
 
 async function runAcceptance(): Promise<void> {

@@ -39,11 +39,11 @@ fn write_response(response: &HelperResponse<'_>) -> io::Result<()> {
     stdout.flush()
 }
 
-fn hold_project(project_path: &Path, retry: bool) -> ExitCode {
+fn hold_project(project_path: &Path, retry: bool, owner: ProjectOwner) -> ExitCode {
     let acquisition = if retry {
-        acquire_project_ownership(project_path, ProjectOwner::UnconnectableHolder)
+        acquire_project_ownership(project_path, owner)
     } else {
-        try_acquire_project_ownership(project_path, ProjectOwner::UnconnectableHolder)
+        try_acquire_project_ownership(project_path, owner)
     };
     match acquisition {
         Ok(ownership) => {
@@ -131,8 +131,24 @@ fn usage_error() -> ExitCode {
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
     match arguments.as_slice() {
-        [command, path] if command == "hold-project" => hold_project(Path::new(path), true),
-        [command, path] if command == "try-hold-project" => hold_project(Path::new(path), false),
+        [command, path] if command == "hold-project" => {
+            hold_project(Path::new(path), true, ProjectOwner::UnconnectableHolder)
+        }
+        [command, path] if command == "try-hold-project" => {
+            hold_project(Path::new(path), false, ProjectOwner::UnconnectableHolder)
+        }
+        [command, path, endpoint] if command == "hold-connectable-project" => {
+            let Some(endpoint) = endpoint.to_str() else {
+                return usage_error();
+            };
+            hold_project(
+                Path::new(path),
+                false,
+                ProjectOwner::Connectable {
+                    endpoint: endpoint.to_owned(),
+                },
+            )
+        }
         [command, project_uri] if command == "load-project-references" => {
             load_project_references(project_uri, None)
         }

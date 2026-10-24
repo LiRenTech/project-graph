@@ -85,6 +85,8 @@ pnpm dev
 | `pnpm test`                                       | 运行测试            |
 | `pnpm lint`                                       | 检查代码规范        |
 
+首次运行测试或修改 Rust 所有权辅助程序后，先运行 `cargo test --manifest-path app/src-tauri/Cargo.toml --test project_ownership_helper`，准备并验证 CLI 测试所需的本地辅助程序，再运行 `pnpm test`。文件锁测试使用项目自带的 Rust 实现，无需安装 `lockf`。
+
 <details>
 <summary><strong>修改后界面没有更新？</strong></summary>
 
